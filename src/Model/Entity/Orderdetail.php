@@ -11,11 +11,11 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $quantity_orderDetails
  * @property int $amount_orderDetails
- * @property int $orderDetail_point
+ * @property int $point_orderDetail
  * @property int $product_id
  * @property int $order_id
- * @property \Cake\I18n\FrozenTime $created_at
- * @property \Cake\I18n\FrozenTime $updated_at
+ * @property \Cake\I18n\FrozenTime $created_date
+ * @property \Cake\I18n\FrozenTime $updated_date
  *
  * @property \App\Model\Entity\Product $product
  * @property \App\Model\Entity\Order $order
@@ -34,11 +34,11 @@ class Orderdetail extends Entity
     protected $_accessible = [
         'quantity_orderDetails' => true,
         'amount_orderDetails' => true,
-        'orderDetail_point' => true,
+        'point_orderDetail' => true,
         'product_id' => true,
         'order_id' => true,
-        'created_at' => true,
-        'updated_at' => true,
+        'created_date' => true,
+        'updated_date' => true,
         'product' => true,
         'order' => true,
     ];

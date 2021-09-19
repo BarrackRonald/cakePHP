@@ -14,11 +14,11 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property string $email
  * @property int $phonenumber
- * @property int $point
+ * @property int $point_user
  * @property bool $del_flag
  * @property int $role_id
- * @property \Cake\I18n\FrozenTime $created_at
- * @property \Cake\I18n\FrozenTime $updated_at
+ * @property \Cake\I18n\FrozenTime $created_date
+ * @property \Cake\I18n\FrozenTime $updated_date
  *
  * @property \App\Model\Entity\Role $role
  * @property \App\Model\Entity\Order[] $orders
@@ -40,11 +40,11 @@ class User extends Entity
         'password' => true,
         'email' => true,
         'phonenumber' => true,
-        'point' => true,
+        'point_user' => true,
         'del_flag' => true,
         'role_id' => true,
-        'created_at' => true,
-        'updated_at' => true,
+        'created_date' => true,
+        'updated_date' => true,
         'role' => true,
         'orders' => true,
     ];

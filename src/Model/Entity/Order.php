@@ -19,8 +19,8 @@ use Cake\ORM\Entity;
  * @property int $total_amount
  * @property bool $status
  * @property int $user_id
- * @property \Cake\I18n\FrozenTime $created_at
- * @property \Cake\I18n\FrozenTime $updated_at
+ * @property \Cake\I18n\FrozenTime $created_date
+ * @property \Cake\I18n\FrozenTime $updated_date
  *
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\Orderdetail[] $orderdetails
@@ -47,8 +47,8 @@ class Order extends Entity
         'total_amount' => true,
         'status' => true,
         'user_id' => true,
-        'created_at' => true,
-        'updated_at' => true,
+        'created_date' => true,
+        'updated_date' => true,
         'user' => true,
         'orderdetails' => true,
     ];

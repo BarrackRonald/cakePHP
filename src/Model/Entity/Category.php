@@ -10,9 +10,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $category_name
- * @property bool $status
- * @property \Cake\I18n\FrozenTime $created_at
- * @property \Cake\I18n\FrozenTime $updated_at
+ * @property \Cake\I18n\FrozenTime $created_date
+ * @property \Cake\I18n\FrozenTime $updated_date
  *
  * @property \App\Model\Entity\Product[] $products
  */
@@ -29,9 +28,8 @@ class Category extends Entity
      */
     protected $_accessible = [
         'category_name' => true,
-        'status' => true,
-        'created_at' => true,
-        'updated_at' => true,
+        'created_date' => true,
+        'updated_date' => true,
         'products' => true,
     ];
 }

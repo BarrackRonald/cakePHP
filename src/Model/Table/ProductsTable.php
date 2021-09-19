@@ -82,26 +82,30 @@ class ProductsTable extends Table
             ->notEmptyString('description');
 
         $validator
-            ->integer('amount')
-            ->notEmptyString('amount');
+            ->integer('amount_product')
+            ->notEmptyString('amount_product');
 
         $validator
-            ->integer('product_point')
-            ->notEmptyString('product_point');
+            ->integer('point_product')
+            ->notEmptyString('point_product');
+
+        $validator
+            ->boolean('del_flag')
+            ->notEmptyString('del_flag');
 
         $validator
             ->boolean('status')
             ->notEmptyString('status');
 
         $validator
-            ->dateTime('created_at')
-            ->requirePresence('created_at', 'create')
-            ->notEmptyDateTime('created_at');
+            ->dateTime('created_date')
+            ->requirePresence('created_date', 'create')
+            ->notEmptyDateTime('created_date');
 
         $validator
-            ->dateTime('updated_at')
-            ->requirePresence('updated_at', 'create')
-            ->notEmptyDateTime('updated_at');
+            ->dateTime('updated_date')
+            ->requirePresence('updated_date', 'create')
+            ->notEmptyDateTime('updated_date');
 
         return $validator;
     }

@@ -11,12 +11,13 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $product_name
  * @property string $description
- * @property int $amount
- * @property int $product_point
+ * @property int $amount_product
+ * @property int $point_product
+ * @property bool $del_flag
  * @property bool $status
  * @property int $category_id
- * @property \Cake\I18n\FrozenTime $created_at
- * @property \Cake\I18n\FrozenTime $updated_at
+ * @property \Cake\I18n\FrozenTime $created_date
+ * @property \Cake\I18n\FrozenTime $updated_date
  *
  * @property \App\Model\Entity\Category $category
  * @property \App\Model\Entity\Image[] $images
@@ -36,12 +37,13 @@ class Product extends Entity
     protected $_accessible = [
         'product_name' => true,
         'description' => true,
-        'amount' => true,
-        'product_point' => true,
+        'amount_product' => true,
+        'point_product' => true,
+        'del_flag' => true,
         'status' => true,
         'category_id' => true,
-        'created_at' => true,
-        'updated_at' => true,
+        'created_date' => true,
+        'updated_date' => true,
         'category' => true,
         'images' => true,
         'orderdetails' => true,

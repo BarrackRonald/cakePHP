@@ -19,8 +19,8 @@ class RolesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'role_name' => ['type' => 'string', 'length' => 50, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'created_at' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
-        'updated_at' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
+        'created_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
+        'updated_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -41,8 +41,8 @@ class RolesFixture extends TestFixture
             [
                 'id' => 1,
                 'role_name' => 'Lorem ipsum dolor sit amet',
-                'created_at' => '2021-09-17 07:34:15',
-                'updated_at' => '2021-09-17 07:34:15',
+                'created_date' => '2021-09-18 17:28:23',
+                'updated_date' => '2021-09-18 17:28:23',
             ],
         ];
         parent::init();

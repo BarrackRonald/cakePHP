@@ -68,10 +68,10 @@ class ImagesTable extends Table
             ->notEmptyFile('image_name');
 
         $validator
-            ->scalar('image_function')
-            ->maxLength('image_function', 70)
-            ->requirePresence('image_function', 'create')
-            ->notEmptyFile('image_function');
+            ->scalar('image_type')
+            ->maxLength('image_type', 70)
+            ->requirePresence('image_type', 'create')
+            ->notEmptyFile('image_type');
 
         $validator
             ->scalar('file')
@@ -80,14 +80,14 @@ class ImagesTable extends Table
             ->notEmptyFile('file');
 
         $validator
-            ->dateTime('created_at')
-            ->requirePresence('created_at', 'create')
-            ->notEmptyDateTime('created_at');
+            ->dateTime('created_date')
+            ->requirePresence('created_date', 'create')
+            ->notEmptyDateTime('created_date');
 
         $validator
-            ->dateTime('updated_at')
-            ->requirePresence('updated_at', 'create')
-            ->notEmptyDateTime('updated_at');
+            ->dateTime('updated_date')
+            ->requirePresence('updated_date', 'create')
+            ->notEmptyDateTime('updated_date');
 
         return $validator;
     }

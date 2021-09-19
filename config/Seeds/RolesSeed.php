@@ -25,8 +25,8 @@ class RolesSeed extends AbstractSeed
         for ($i = 0; $i < 10; $i++) {
             $data[] = [
                 'role_name'      => $faker->userName,
-                'created_at'       => date('Y-m-d H:i:s'),
-                'updated_at'       => date('Y-m-d H:i:s'),
+                'created_date'       => date('Y-m-d H:i:s'),
+                'updated_date'       => date('Y-m-d H:i:s'),
                 // 'username'      => $faker->userName,
                 // 'password'      => sha1($faker->password),
                 // 'password_salt' => sha1('foo'),

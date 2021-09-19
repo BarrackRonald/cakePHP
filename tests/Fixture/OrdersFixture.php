@@ -28,8 +28,8 @@ class OrdersFixture extends TestFixture
         'total_amount' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'status' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         'user_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'created_at' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
-        'updated_at' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
+        'created_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
+        'updated_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
         '_indexes' => [
             'user_id' => ['type' => 'index', 'columns' => ['user_id'], 'length' => []],
         ],
@@ -57,14 +57,14 @@ class OrdersFixture extends TestFixture
                 'email' => 'Lorem ipsum dolor sit amet',
                 'phonenumber' => 1,
                 'address' => 'Lorem ipsum dolor sit amet',
-                'date_order' => '2021-09-17 07:35:29',
+                'date_order' => '2021-09-18 17:29:41',
                 'total_point' => 1,
                 'total_quantity' => 1,
                 'total_amount' => 1,
                 'status' => 1,
                 'user_id' => 1,
-                'created_at' => '2021-09-17 07:35:29',
-                'updated_at' => '2021-09-17 07:35:29',
+                'created_date' => '2021-09-18 17:29:41',
+                'updated_date' => '2021-09-18 17:29:41',
             ],
         ];
         parent::init();

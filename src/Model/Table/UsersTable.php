@@ -94,22 +94,22 @@ class UsersTable extends Table
             ->notEmptyString('phonenumber');
 
         $validator
-            ->integer('point')
-            ->notEmptyString('point');
+            ->integer('point_user')
+            ->notEmptyString('point_user');
 
         $validator
             ->boolean('del_flag')
             ->notEmptyString('del_flag');
 
         $validator
-            ->dateTime('created_at')
-            ->requirePresence('created_at', 'create')
-            ->notEmptyDateTime('created_at');
+            ->dateTime('created_date')
+            ->requirePresence('created_date', 'create')
+            ->notEmptyDateTime('created_date');
 
         $validator
-            ->dateTime('updated_at')
-            ->requirePresence('updated_at', 'create')
-            ->notEmptyDateTime('updated_at');
+            ->dateTime('updated_date')
+            ->requirePresence('updated_date', 'create')
+            ->notEmptyDateTime('updated_date');
 
         return $validator;
     }

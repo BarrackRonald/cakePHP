@@ -75,18 +75,18 @@ class OrderdetailsTable extends Table
             ->notEmptyString('amount_orderDetails');
 
         $validator
-            ->integer('orderDetail_point')
-            ->notEmptyString('orderDetail_point');
+            ->integer('point_orderDetail')
+            ->notEmptyString('point_orderDetail');
 
         $validator
-            ->dateTime('created_at')
-            ->requirePresence('created_at', 'create')
-            ->notEmptyDateTime('created_at');
+            ->dateTime('created_date')
+            ->requirePresence('created_date', 'create')
+            ->notEmptyDateTime('created_date');
 
         $validator
-            ->dateTime('updated_at')
-            ->requirePresence('updated_at', 'create')
-            ->notEmptyDateTime('updated_at');
+            ->dateTime('updated_date')
+            ->requirePresence('updated_date', 'create')
+            ->notEmptyDateTime('updated_date');
 
         return $validator;
     }

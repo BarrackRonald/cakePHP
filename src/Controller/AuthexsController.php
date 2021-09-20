@@ -8,6 +8,7 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Locator\LocatorAwareTrait;
 class AuthexsController extends AppController {
    public function index(){
+      return $this->redirect(['controller'=>'/', 'action' => 'index']);
    }
    public function login(){
       if($this->request->is('post')) {

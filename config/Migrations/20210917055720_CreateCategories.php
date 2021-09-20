@@ -18,6 +18,9 @@ class CreateCategories extends AbstractMigration
         $table->addColumn('category_name', 'string', [
             'limit' => 70,
         ]);
+        $table->addColumn('del_flag', 'boolean', [
+            'default' => 1,
+        ]);
         $table->addColumn('created_date', 'datetime', [
             'default' => null,
         ]);

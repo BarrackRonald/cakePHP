@@ -28,6 +28,8 @@ class CreateImages extends AbstractMigration
             'default' => null,
         ]);
 
+        $table->addColumn('user_id', 'integer')->addForeignKey('user_id', 'users', 'id');
+
         $table->addColumn('product_id', 'integer')->addForeignKey('product_id', 'products', 'id');
 
         $table->addColumn('created_date', 'datetime', [

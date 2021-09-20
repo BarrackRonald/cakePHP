@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $category_name
+ * @property bool $del_flag
  * @property \Cake\I18n\FrozenTime $created_date
  * @property \Cake\I18n\FrozenTime $updated_date
  *
@@ -28,6 +29,7 @@ class Category extends Entity
      */
     protected $_accessible = [
         'category_name' => true,
+        'del_flag' => true,
         'created_date' => true,
         'updated_date' => true,
         'products' => true,

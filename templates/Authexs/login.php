@@ -4,8 +4,11 @@
 ?>
 <body>
 	<div class="limiter">
+	<?= $this->Flash->render() ?>
 		<div class="container-login100">
+		
 			<div class="wrap-login100">
+			
 				<div class="login100-pic js-tilt" data-tilt>
 					<img src="img/Login/img-01.png" alt="IMG">
 				</div>

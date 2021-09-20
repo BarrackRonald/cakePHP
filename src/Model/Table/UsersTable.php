@@ -64,6 +64,7 @@ class UsersTable extends Table
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
+            
 
         $validator
             ->scalar('username')

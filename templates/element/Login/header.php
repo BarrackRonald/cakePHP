@@ -21,3 +21,8 @@
 	<link rel="stylesheet" type="text/css" href="css/Login/main.css">
 <!--===============================================================================================-->
 </head>
+<?php
+    $this->disableAutoLayout();
+
+
+?>

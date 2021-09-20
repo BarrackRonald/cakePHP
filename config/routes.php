@@ -53,6 +53,12 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //     'httpOnly' => true,
     //  ]));
     //  $builder->applyMiddleware('csrf');
+    //NormalUser
+    $builder->connect('/',['controller'=>'NormalUsers','action'=>'index']);
+    $builder->connect('/contact',['controller'=>'NormalUsers','action'=>'contact']);
+    $builder->connect('/product',['controller'=>'NormalUsers','action'=>'product']);
+    $builder->connect('/preview',['controller'=>'NormalUsers','action'=>'preview']);
+    $builder->connect('/about',['controller'=>'NormalUsers','action'=>'about']);
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
@@ -87,7 +93,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Delete
     $builder->connect('/users/delete', ['controller' => 'Users', 'action' => 'delete']);
 
-    $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    // $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
     $builder->connect('pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
@@ -120,6 +126,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->fallbacks();
 });
 
+$routes->scope('/admin', function (RouteBuilder $builder) {
+    $builder->connect('/',['controller'=>'NormalUsers','action'=>'index']);
+    $builder->fallbacks();
+});
 
 
 

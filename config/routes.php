@@ -62,7 +62,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
-    $builder->connect('/login',['controller'=>'Authexs','action'=>'login']);
+    $builder->connect('/login',['controller'=>'Users','action'=>'login']);
     $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
 
     //redirect-controller

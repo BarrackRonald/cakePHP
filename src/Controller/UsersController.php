@@ -17,6 +17,14 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+    //component
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('Data');
+       
+    }
+
     public function index()
     {
         $users = TableRegistry::get('users');
@@ -26,24 +34,27 @@ class UsersController extends AppController
 
     // LOGIN
     public function login(){
-        
         if($this->request->is('post')) {
 
            $con = mysqli_connect("localhost", "root", "", "cakephp");
-  
+
            $username =$this->request->getData('username');
            $password = $this->request->getData('password');
-           $users_table = $this->getTableLocator()->get('users');
-  
+
            $query = "SELECT* from users where username = '$username' and password = '$password'";
            $result = mysqli_query($con, $query);
-  
+
            if(mysqli_num_rows($result) > 0){
               return $this->redirect(['controller'=>'/', 'action' => 'index']);
            } else
            $this->Flash->error('Your username or password is incorrect.');
         }
-        $this->set('user', $user);
+
+    }
+
+    //Register (sau)
+    public function register(){
+
     }
 
     /**
@@ -83,21 +94,22 @@ class UsersController extends AppController
     // }
 
     public function add(){
-        if($this->request->is('post')){
-           $username = $this->request->getData('username');
-           $hashPswdObj = new DefaultPasswordHasher;
-           $password = $hashPswdObj->hash($this->request->getData('password'));
-           $users_table = TableRegistry::get('users');
-           $users = $users_table->newEntity($this->request->getData());
-           $users->username = $username;
-           $users->password = $password;
-           $this->set('users', $users);
-           if($users_table->save($users))
-           echo "User is added.";
-           return $this->redirect(['action' => 'index']);
-        }
+        $rolesTable = TableRegistry::getTableLocator()->get('Roles')->find()->all();
 
+        if($this->request->is('post')){
+            $atribute = $this->request->getData();
+            $this->render();
+            $sc = $this->Data->createUsers($atribute);
+
+            if($sc['result'] == "success")
+            {
+                return $this->redirect(['action' => 'index']);
+            }
+            
+        }
+        $this->set(compact('rolesTable'));
     }
+
 
     /**
      * Edit method
@@ -153,4 +165,6 @@ class UsersController extends AppController
         echo "User deleted successfully.";
         return $this->redirect(['action' => 'index']);
      }
+
+     
 }

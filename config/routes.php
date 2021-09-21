@@ -60,9 +60,13 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/preview',['controller'=>'NormalUsers','action'=>'preview']);
     $builder->connect('/about',['controller'=>'NormalUsers','action'=>'about']);
 
+    //TestComponents
+    $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);
+
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
     $builder->connect('/login',['controller'=>'Users','action'=>'login']);
+    $builder->connect('/register',['controller'=>'Users','action'=>'register']);
     $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
 
     //redirect-controller

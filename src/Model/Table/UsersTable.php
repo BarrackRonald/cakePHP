@@ -61,18 +61,19 @@ class UsersTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
+
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
-            
+
 
         $validator
             ->scalar('username')
-            ->minLength('username', 10)
+            ->minLength('username', 5)
             ->maxLength('username', 100)
-            ->requirePresence('username', 'create')
-            ->notEmptyString('username');
-
+            // ->requirePresence('username', 'create')
+            ->notEmptyString('username', 'Test');
+            // dd($validator);
         $validator
             ->scalar('avatar')
             ->maxLength('avatar', 200)

@@ -59,6 +59,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/product',['controller'=>'NormalUsers','action'=>'product']);
     $builder->connect('/preview',['controller'=>'NormalUsers','action'=>'preview']);
     $builder->connect('/about',['controller'=>'NormalUsers','action'=>'about']);
+    $builder->connect('/search',['controller'=>'NormalUsers','action'=>'search']);
 
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);

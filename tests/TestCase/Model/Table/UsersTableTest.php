@@ -26,6 +26,7 @@ class UsersTableTest extends TestCase
     protected $fixtures = [
         'app.Users',
         'app.Roles',
+        'app.Images',
         'app.Orders',
     ];
 

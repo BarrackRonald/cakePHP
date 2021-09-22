@@ -67,6 +67,10 @@ class CategoriesTable extends Table
             ->notEmptyString('category_name');
 
         $validator
+            ->boolean('del_flag')
+            ->notEmptyString('del_flag');
+
+        $validator
             ->dateTime('created_date')
             ->requirePresence('created_date', 'create')
             ->notEmptyDateTime('created_date');

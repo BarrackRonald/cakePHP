@@ -575,6 +575,7 @@ ul.sub-menu.list-unstyled.sub-menu3 {
 	clear: both;
 	padding: 0px;
 	margin: 0px;
+	
 }
 .group:before,
 .group:after {
@@ -602,10 +603,12 @@ ul.sub-menu.list-unstyled.sub-menu3 {
 	float:left;
 	margin: 2% 0 0% 3.6%;
 }
-.listview_1_of_2:first-child { margin-left: 0; } 
+.listview_1_of_2:first-child {
+	 margin-left: 0;
+	 }
 .images_1_of_2 {
 	width: 46.2%;
-	padding:1.5%; 
+	padding:1.5%;
 }
 .listimg_2_of_1 {
 	width: 48.2%;

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
+
 /**
  * NormalUsers Controller
  *
@@ -10,6 +13,11 @@ namespace App\Controller;
  */
 class NormalUsersController extends AppController
 {
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('Data');
+    }
     /**
      * Index method
      *
@@ -17,9 +25,21 @@ class NormalUsersController extends AppController
      */
     public function index()
     {
-        // $normalUsers = $this->paginate($this->NormalUsers);
+        $dataProducts = $this->{'Data'}->getAllProducts();
+        $dataSlideImages = $this->{'Data'}->getSlideImage();
+        $dataNewsProducts = $this->{'Data'}->getNewsProduct();
 
-        // $this->set(compact('normalUsers'));
+        $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts'));
+
+    }
+
+    public function search(){
+        if($this->request->is('get')){
+            $keyword = $this->request->getQueryParams();
+            dd($keyword);
+            $this->{'Data'}->getSearch($keyword);
+            return $this->redirect(['action' => 'index']);
+        }
     }
 
     public function contact(){

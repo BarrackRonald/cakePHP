@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $updated_date
  *
  * @property \App\Model\Entity\Role $role
+ * @property \App\Model\Entity\Image[] $images
  * @property \App\Model\Entity\Order[] $orders
  */
 class User extends Entity
@@ -46,6 +47,7 @@ class User extends Entity
         'created_date' => true,
         'updated_date' => true,
         'role' => true,
+        'images' => true,
         'orders' => true,
     ];
 

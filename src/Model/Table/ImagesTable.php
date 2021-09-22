@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
 /**
  * Images Model
  *
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\ProductsTable&\Cake\ORM\Association\BelongsTo $Products
  *
  * @method \App\Model\Entity\Image newEmptyEntity()
@@ -43,6 +44,10 @@ class ImagesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER',
+        ]);
         $this->belongsTo('Products', [
             'foreignKey' => 'product_id',
             'joinType' => 'INNER',
@@ -101,6 +106,7 @@ class ImagesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
+        $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
         $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
 
         return $rules;

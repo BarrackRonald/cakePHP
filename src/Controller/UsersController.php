@@ -98,6 +98,7 @@ class UsersController extends AppController
 
         if($this->request->is('post')){
             $atribute = $this->request->getData();
+            dd($atribute);
             $this->render();
             $sc = $this->Data->createUsers($atribute);
 
@@ -105,7 +106,7 @@ class UsersController extends AppController
             {
                 return $this->redirect(['action' => 'index']);
             }
-            
+
         }
         $this->set(compact('rolesTable'));
     }

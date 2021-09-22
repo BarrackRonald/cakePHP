@@ -22,7 +22,7 @@ class ProductsFixture extends TestFixture
         'description' => ['type' => 'string', 'length' => 300, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
         'amount_product' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'point_product' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'del_flag' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
+        'del_flag' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         'status' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
         'category_id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
@@ -57,8 +57,8 @@ class ProductsFixture extends TestFixture
                 'del_flag' => 1,
                 'status' => 1,
                 'category_id' => 1,
-                'created_date' => '2021-09-18 17:30:17',
-                'updated_date' => '2021-09-18 17:30:17',
+                'created_date' => '2021-09-22 02:34:12',
+                'updated_date' => '2021-09-22 02:34:12',
             ],
         ];
         parent::init();

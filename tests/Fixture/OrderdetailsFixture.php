@@ -55,8 +55,8 @@ class OrderdetailsFixture extends TestFixture
                 'point_orderDetail' => 1,
                 'product_id' => 1,
                 'order_id' => 1,
-                'created_date' => '2021-09-18 17:30:57',
-                'updated_date' => '2021-09-18 17:30:57',
+                'created_date' => '2021-09-22 02:34:44',
+                'updated_date' => '2021-09-22 02:34:44',
             ],
         ];
         parent::init();

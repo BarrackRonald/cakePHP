@@ -19,7 +19,7 @@ class CategoriesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'category_name' => ['type' => 'string', 'length' => 70, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null],
-        'del_flag' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '1', 'comment' => '', 'precision' => null],
+        'del_flag' => ['type' => 'boolean', 'length' => null, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null],
         'created_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
         'updated_date' => ['type' => 'datetime', 'length' => null, 'precision' => null, 'null' => false, 'default' => null, 'comment' => ''],
         '_constraints' => [
@@ -43,8 +43,8 @@ class CategoriesFixture extends TestFixture
                 'id' => 1,
                 'category_name' => 'Lorem ipsum dolor sit amet',
                 'del_flag' => 1,
-                'created_date' => '2021-09-20 02:52:54',
-                'updated_date' => '2021-09-20 02:52:54',
+                'created_date' => '2021-09-22 02:33:59',
+                'updated_date' => '2021-09-22 02:33:59',
             ],
         ];
         parent::init();

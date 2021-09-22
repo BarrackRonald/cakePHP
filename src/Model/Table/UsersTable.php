@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * Users Model
  *
  * @property \App\Model\Table\RolesTable&\Cake\ORM\Association\BelongsTo $Roles
+ * @property \App\Model\Table\ImagesTable&\Cake\ORM\Association\HasMany $Images
  * @property \App\Model\Table\OrdersTable&\Cake\ORM\Association\HasMany $Orders
  *
  * @method \App\Model\Entity\User newEmptyEntity()
@@ -48,6 +49,9 @@ class UsersTable extends Table
             'foreignKey' => 'role_id',
             'joinType' => 'INNER',
         ]);
+        $this->hasMany('Images', [
+            'foreignKey' => 'user_id',
+        ]);
         $this->hasMany('Orders', [
             'foreignKey' => 'user_id',
         ]);
@@ -61,19 +65,16 @@ class UsersTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-
         $validator
             ->integer('id')
             ->allowEmptyString('id', null, 'create');
 
-
         $validator
             ->scalar('username')
-            ->minLength('username', 5)
             ->maxLength('username', 100)
-            // ->requirePresence('username', 'create')
-            ->notEmptyString('username', 'Test');
-            // dd($validator);
+            ->requirePresence('username', 'create')
+            ->notEmptyString('username');
+
         $validator
             ->scalar('avatar')
             ->maxLength('avatar', 200)

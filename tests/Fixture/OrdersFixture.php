@@ -57,14 +57,14 @@ class OrdersFixture extends TestFixture
                 'email' => 'Lorem ipsum dolor sit amet',
                 'phonenumber' => 1,
                 'address' => 'Lorem ipsum dolor sit amet',
-                'date_order' => '2021-09-18 17:29:41',
+                'date_order' => '2021-09-22 02:33:30',
                 'total_point' => 1,
                 'total_quantity' => 1,
                 'total_amount' => 1,
                 'status' => 1,
                 'user_id' => 1,
-                'created_date' => '2021-09-18 17:29:41',
-                'updated_date' => '2021-09-18 17:29:41',
+                'created_date' => '2021-09-22 02:33:30',
+                'updated_date' => '2021-09-22 02:33:30',
             ],
         ];
         parent::init();

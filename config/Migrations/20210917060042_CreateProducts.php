@@ -31,7 +31,7 @@ class CreateProducts extends AbstractMigration
             'default' => 0,
         ]);
         $table->addColumn('del_flag', 'boolean', [
-            'default' => 1,
+            'default' => 0,
         ]);
 
         $table->addColumn('status', 'boolean', [

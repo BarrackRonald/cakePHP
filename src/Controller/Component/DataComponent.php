@@ -25,12 +25,55 @@ class DataComponent extends CommonComponent
     {
         $this->loadModel(['Users']);
         $this->loadModel('Roles');
+        $this->loadModel('Products');
+        $this->loadModel('Images');
+        $this->loadModel('Categories');
     }
-    public function getAllRole(){
-        $rolesTable = TableRegistry::getTableLocator()->get('Roles');
+
+    public function getSlideImage($key = null) {
+        $query = $this->Images->find()
+            ->where(['Images.image_type' => 'Slider'])
+            ->order('created_date DESC')
+            ->limit(5)
+            ->all();
+        return $query;
+    }
+
+    public function getSearch($keyword){
+        $query = $this->Products->find()
+            ->where([
+                'Products.product_name like' => '%' . $keyword . '%',
+                'Products.description like' => '%' . $keyword . '%'
+            ]);
+        return $query;
+
+    }
+
+    public function getNewsProduct($key = null){
+        $query = $this->Products->find()
+        ->order('created_date DESC')
+        ->contain(['Images'])
+        ->all();
+        return $query;
+    }
+
+    public function getCategory($key = null){
+        $query = $this->Categories->find()
+            ->all();
+        return $query;
+    }
+
+    public function getAllProducts($key = null){
+        $query = $this->Products->find()
+            ->order('created_date DESC')
+            ->limit(2)
+            ->contain(['Images'])
+            ->all();
+        return $query;
     }
 
     public function createUsers($atribute){
+        
         $user = [];
         $user['username'] = $atribute['username'];
         $user['password'] = $atribute['password'];
@@ -54,8 +97,10 @@ class DataComponent extends CommonComponent
             'data' =>  $result
         ];
         // dd($usersTable->save($user));
+    }
 
-
+    public function getAllProduct(){
+        
 
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 use Migrations\AbstractSeed;
 
 /**
- * Roles seed.
+ * Categories seed.
  */
-class RolesSeed extends AbstractSeed
+class CategoriesSeed extends AbstractSeed
 {
     /**
      * Run Method.
@@ -21,12 +21,16 @@ class RolesSeed extends AbstractSeed
     public function run()
     {
         $faker = Faker\Factory::create();
-            $data[] = [
-                'role_name'      => 'NormalUser',
-                'created_date'       => date('Y-m-d H:i:s'),
-                'updated_date'       => date('Y-m-d H:i:s'),
+        for ($i = 0; $i < 10; $i++) {
+            $data = [
+                'category_name' => $faker->userName,
+                'created_date' => date('Y-m-d H:i:s'),
+                'updated_date' => date('Y-m-d H:i:s'),
             ];
 
-        $this->insert('roles', $data);
+        }
+
+        $table = $this->table('categories');
+        $table->insert($data)->save();
     }
 }

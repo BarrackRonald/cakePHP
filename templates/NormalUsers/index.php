@@ -14,7 +14,9 @@ echo $this->element('NormalUser/header');
 						<div class="text list_2_of_1">
 							<h2><?php echo $product['product_name'] ?></h2>
 							<p><?php echo Text::excerpt($product['description'], 'method', 50, '...');?></p>
-							<div class="button"><span><a href="/preview">Add to cart</a></span></div>
+		
+
+							<a href="javascript:;" onclick="addCard(<?php echo $product['id']?>)" >AddCard</a>
 						</div>
 					</div>
 			<?php } ?>
@@ -182,6 +184,91 @@ echo $this->element('NormalUser/header');
 	</div>
 </div>
 </div>
+<script>
+
+$('#add-to-cart-mt').on('click', function(e){
+        e.preventDefault();
+        var id =$(this).attr('id');
+        $('#add-to-cat-dialog').dialog({
+            autoOpen:false,
+            modal:true,
+            hide:"pluff",
+            show:"slide",
+            height:200,
+            open: function() { $(".ui-dialog-titlebar-close").hide(); },
+            
+            buttons:{
+                "Add":function (){
+                    $('#add-to-cat-dialog').dialog("close");
+                    $.ajax({
+                        url: 'add_to_cart.php',
+                        data: {  productId : id },
+                        
+                        success: function (data) {
+                            $('.top-cart-contain').empty();
+                            $('.top-cart-contain').load("header_cart_summary.php");
+                        },
+                        
+                        error :function (data, textStatus, jqXHR) {  }
+                    });
+                },
+                
+                "Cancel":function (){
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $('#add-to-cat-dialog').dialog("open");
+    });
+
+	function addCard(product_id){
+		// console.log(product_id)
+		$.ajax({
+			url: '/addcard',
+			type: 'post',
+			data: { productId : (product_id) },
+
+			success: function (data) {
+				console.log(JSON.parse(data));
+				// var dataObj = JSON.parse(data);
+				console.log(dataObj[0].id);
+				// var htmlString = `<h1>${dataObj.id}</h1>`;
+            	// $('.cart_title').html(htmlString);
+				// console.log($('#quantity').val());
+				// var  a = parseInt($('#quantity').val());
+				// $('#quantity').val(a+1);
+				// $('.cart_title').html($('#quantity').val());
+
+			},
+			error :function (data, textStatus, jqXHR) {
+
+				console.log("error");
+			 }
+		});
+	}
+
+	function displayCard()
+	{
+		$.ajax({
+			url: '/addcard',
+			type: 'post',
+			data: { productId : (product_id) },
+
+			success: function (data) {
+				$('#quantity').val('2');
+				$('#id_quantity').html('1');
+				console.log("susuccessu");
+
+			},
+			error :function (data, textStatus, jqXHR) {
+
+				console.log("error");
+			 }
+		});
+	}
+
+
+</script>
 <?php
 echo $this->element('NormalUser/footer');
 ?>

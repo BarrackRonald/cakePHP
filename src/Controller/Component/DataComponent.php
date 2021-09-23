@@ -36,17 +36,34 @@ class DataComponent extends CommonComponent
             ->order('created_date DESC')
             ->limit(5)
             ->all();
+        // dd($query);
         return $query;
     }
 
     public function getSearch($keyword){
+
         $query = $this->Products->find()
             ->where([
                 'Products.product_name like' => '%' . $keyword . '%',
-                'Products.description like' => '%' . $keyword . '%'
+                // 'Products.description like' => '%' . $keyword . '%'
             ]);
+            // dd($query);
         return $query;
 
+    }
+
+    public function addCard($product_id){
+        $query = $this->Products->find()
+            ->select([
+                'Products.id',
+                'Products.product_name',
+                'Products.amount_product',
+            ])
+            ->where([
+                'products.id' => $product_id,
+            ])
+            ;
+        return $query->toArray();
     }
 
     public function getNewsProduct($key = null){

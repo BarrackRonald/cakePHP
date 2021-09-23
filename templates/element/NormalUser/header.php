@@ -18,6 +18,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <script type="text/javascript" src="js/NormalUser/easing.js"></script>
 <link href='//fonts.googleapis.com/css?family=Monda' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Doppio+One' rel='stylesheet' type='text/css'>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 </head>
 <body>
 	<div class="wrap">
@@ -44,7 +48,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 							<a href="#" title="View my shopping cart" rel="nofollow">
 								<strong class="opencart"> </strong>
 								<span class="cart_title">Cart</span>
-								<span class="no_product">(empty)</span>
+								<input type="text" name="quantity" id="quantity" value="0"hidden>
+								<span class="no_product" id="id_quantity">(empty)</span>
 							</a>
 						</div>
 					</div>

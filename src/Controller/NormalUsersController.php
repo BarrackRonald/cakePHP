@@ -33,10 +33,57 @@ class NormalUsersController extends AppController
 
     }
 
+
+    public function addCard(){
+        if($this->request->is('post')){
+
+
+            $session = $this->request->getSession();
+            $dataCard= $session->read('cart');
+
+            $product_id = $this->request->getData()['productId'];
+
+
+            
+            var_dump($dataCard);die;
+
+           
+            $data = $this->{'Data'}->addCard($product_id);
+
+            
+            $session->write('cart', $data);
+            
+
+            
+           
+            
+
+            // echo json_encode($dataCard); die;
+
+          return  $this->response->withStringBody(json_encode($dataCard));
+
+        }
+    }
+
+    public function displayCart(){
+        // die('ok');
+        // $product_id = $this->request->getData();
+
+        // if($this->request->is('post')){
+
+        //     $session = $this->request->getSession();
+        //     $a = $session->read('cart');
+
+        //     return $a['quanti'];
+        // //    $dataAddCard = $this->{'Data'}->addCard($atribute);
+        // //    $this->set(compact('dataAddCard'));
+        // }
+    }
+
+
     public function search(){
         if($this->request->is('get')){
             $keyword = $this->request->getQueryParams();
-            dd($keyword);
             $this->{'Data'}->getSearch($keyword);
             return $this->redirect(['action' => 'index']);
         }

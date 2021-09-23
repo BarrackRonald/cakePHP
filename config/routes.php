@@ -60,6 +60,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/preview',['controller'=>'NormalUsers','action'=>'preview']);
     $builder->connect('/about',['controller'=>'NormalUsers','action'=>'about']);
     $builder->connect('/search',['controller'=>'NormalUsers','action'=>'search']);
+    $builder->connect('/addcard',['controller'=>'NormalUsers','action'=>'addCard']);
 
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);

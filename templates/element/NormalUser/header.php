@@ -44,14 +44,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 						</form>
 					</div>
 					<div class="shopping_cart">
-						<div class="cart">
-							<a href="#" title="View my shopping cart" rel="nofollow">
-								<strong class="opencart"> </strong>
-								<span class="cart_title">Cart</span>
-								<input type="text" name="quantity" id="quantity" value="0"hidden>
-								<span class="no_product" id="id_quantity">(empty)</span>
-							</a>
-						</div>
+							<div class="cart">
+								<a href="/carts" title="View my shopping cart" rel="nofollow" style="padding: 9% 30%">
+									<strong class="opencart"> </strong>
+									<span class="cart_title">Cart</span>
+									<input type="text" name="quantity" id="quantity" value="0"hidden>
+									<span class="no_product" id="id_quantity">
+										<?php
+											echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? $this->request->getSession()->read('cartData')['totalquantity'] : "0";
+										?>
+									</span>
+								</a>
+							</div>
 					</div>
 					<div class="languages" title="language">
 						<div id="language" class="wrapper-dropdown" tabindex="1">EN

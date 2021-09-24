@@ -52,16 +52,24 @@ class DataComponent extends CommonComponent
 
     }
 
-    public function addCard($product_id){
+    public function getProductByID($product_id){
         $query = $this->Products->find()
             ->select([
                 'Products.id',
                 'Products.product_name',
                 'Products.amount_product',
+                'Images.file'
+            ])
+            ->join([
+                'table' => 'images',
+                'alias' => 'Images' ,
+                'type' => 'left',
+                'conditions' => ['Products.id = Images.product_id']
             ])
             ->where([
                 'products.id' => $product_id,
             ])
+
             ;
         return $query->toArray();
     }

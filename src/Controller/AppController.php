@@ -55,7 +55,11 @@ class AppController extends Controller
     public function beforeRender(EventInterface $event)
     {
         $dataCategories = $this->{'Data'}->getCategory();
-        $this->set(compact('dataCategories'));
+        $dataProducts = $this->{'Data'}->getAllProducts();
+        $dataSlideImages = $this->{'Data'}->getSlideImage();
+        $dataNewsProducts = $this->{'Data'}->getNewsProduct();
+
+        $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts', 'dataCategories'));
     }
 
 }

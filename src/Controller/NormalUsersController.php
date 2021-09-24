@@ -25,61 +25,112 @@ class NormalUsersController extends AppController
      */
     public function index()
     {
-        $dataProducts = $this->{'Data'}->getAllProducts();
-        $dataSlideImages = $this->{'Data'}->getSlideImage();
-        $dataNewsProducts = $this->{'Data'}->getNewsProduct();
+        //Viết ở beforeRender
+    }
 
-        $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts'));
+    public function informationCart(){
+        $session = $this->request->getSession();
+			if(!$session->check('cartData')){
+                $this->Flash->error(__('Giỏ hàng trống'));
+            }
+            else{
+                $dataProds = $session->read('cartData');
+
+            }
+            $this->set(compact('dataProds'));
 
     }
 
+    
 
-    public function addCard(){
+    public function dellCart(){
         if($this->request->is('post')){
-
-
-            $session = $this->request->getSession();
-            $dataCard= $session->read('cart');
+            $dataSession = [];
+            $cartData = [];
 
             $product_id = $this->request->getData()['productId'];
-
-
-            
-            var_dump($dataCard);die;
-
-           
-            $data = $this->{'Data'}->addCard($product_id);
-
-            
-            $session->write('cart', $data);
             
 
-            
-           
-            
+            $data = $this->{'Data'}->getProductByID($product_id);
 
-            // echo json_encode($dataCard); die;
+            $session = $this->request->getSession();
 
-          return  $this->response->withStringBody(json_encode($dataCard));
+            if($session->check('cartData')){
+                $dataSession = $session->read('cartData');
+                $cartData = $dataSession['cart'];
+            }
 
+
+            //Số lượng = kiểm tra sản phẩm trong giỏ hàng có tồn tại ko, nếu tồn tại thì lấy theo số lượng trong giỏ hàng, nếu ko tồn tại thì =0
+            $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
+
+            //Tạo arr sản phẩm để lưu thông tin và số lượng.
+            $productArr = [
+                $product_id => [
+                  'name' => $data[0]['product_name'],
+                  'image'=> $data[0]['Images']["file"],
+                  'amount' => $data[0]['amount_product'],
+                  'quantity'=> $quantity - 1
+                ],
+            ];
+
+            //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
+            $cartData[$product_id] = $productArr[$product_id];
+
+            //Tổng số lượng mặt hàng
+            $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
+
+            $dataSession['totalquantity'] = $totalquantity - 1;
+            $dataSession['cart'] = $cartData;
+
+            $session->write('cartData', $dataSession);
+           return  $this->response->withStringBody(json_encode($dataSession));
         }
     }
 
-    public function displayCart(){
-        // die('ok');
-        // $product_id = $this->request->getData();
+    public function addCart(){
+        if($this->request->is('post')){
+            $dataSession = [];
+            $cartData = [];
 
-        // if($this->request->is('post')){
+            $product_id = $this->request->getData()['productId'];
 
-        //     $session = $this->request->getSession();
-        //     $a = $session->read('cart');
+            $data = $this->{'Data'}->getProductByID($product_id);
 
-        //     return $a['quanti'];
-        // //    $dataAddCard = $this->{'Data'}->addCard($atribute);
-        // //    $this->set(compact('dataAddCard'));
-        // }
+            $session = $this->request->getSession();
+
+            if($session->check('cartData')){
+                $dataSession = $session->read('cartData');
+                $cartData = $dataSession['cart'];
+            }
+
+
+            //Số lượng = kiểm tra sản phẩm trong giỏ hàng có tồn tại ko, nếu tồn tại thì lấy theo số lượng trong giỏ hàng, nếu ko tồn tại thì =0
+            $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
+
+            //Tạo arr sản phẩm để lưu thông tin và số lượng.
+            $productArr = [
+                $product_id => [
+                  'name' => $data[0]['product_name'],
+                  'image'=> $data[0]['Images']["file"],
+                  'amount' => $data[0]['amount_product'],
+                  'quantity'=> $quantity + 1
+                ],
+            ];
+
+            //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
+            $cartData[$product_id] = $productArr[$product_id];
+
+            //Tổng số lượng mặt hàng
+            $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
+
+            $dataSession['totalquantity'] = $totalquantity + 1;
+            $dataSession['cart'] = $cartData;
+
+            $session->write('cartData', $dataSession);
+           return  $this->response->withStringBody(json_encode($dataSession));
+        }
     }
-
 
     public function search(){
         if($this->request->is('get')){

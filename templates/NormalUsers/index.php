@@ -1,210 +1,295 @@
 <?php
 use Cake\Utility\Text;
-echo $this->element('NormalUser/header');
+echo $this->element('NormalUsers/header');
 ?>
-<div class="header_bottom">
-	<div class="header_bottom_left">
-		<div class="section group">
-		<div class="row">
-			<?php foreach ($dataProducts as $product) { ?>
-					<div class="listview_1_of_2 images_1_of_2">
-						<div class="listimg listimg_2_of_1">
-							<a href="/preview"> <img src="<?php echo $product->images[0]->file ?>" alt="" /></a>
-						</div>
-						<div class="text list_2_of_1">
-							<h2><?php echo $product['product_name'] ?></h2>
-							<p><?php echo Text::excerpt($product['description'], 'method', 50, '...');?></p>
-		
+    <div class="slider-area">
+        	<!-- Slider -->
+			<div class="block-slider block-slider4">
+				<ul class="" id="bxslider-home4">
+                    <?php 
+                        foreach ($dataSlideImages as $slideImage) {?>
 
-							<a href="javascript:;" onclick="addCart(<?php echo $product['id']?>)" >addCart</a>
-						</div>
-					</div>
-			<?php } ?>
-		</div>
-		</div>
-		<div class="clear"></div>
-	</div>
-	<div class="header_bottom_right_images">
-		<!-- FlexSlider -->
-		<section class="slider">
-			<div class="flexslider">
-				<ul class="slides">
-					<?php foreach ($dataSlideImages as $slideImage) {
-						# code...
-					?>
-					<li><img style="width: 100%;" src="<?php echo $slideImage['file']?>" alt="" /></li>
-					<?php }?>
+                        <li>
+                            <img src="<?php echo $slideImage['file']?>" alt="Slide">
+                            <div class="caption-group">
+                                <h2 class="caption title">
+                                    iPhone <span class="primary">6 <strong>Plus</strong></span>
+                                </h2>
+                                <h4 class="caption subtitle">Dual SIM</h4>
+                                <a class="caption button-radius" href="#"><span class="icon"></span>Shop now</a>
+                            </div>
+                        </li>
+                    <?php }
+                    ?>
 				</ul>
 			</div>
-		</section>
-		<!-- FlexSlider -->
-	</div>
-	<div class="clear"></div>
-</div>
-</div>
+			<!-- ./Slider -->
+    </div> <!-- End slider area -->
+    
+    <div class="promo-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo1">
+                        <i class="fa fa-refresh"></i>
+                        <p>30 Days return</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo2">
+                        <i class="fa fa-truck"></i>
+                        <p>Free shipping</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo3">
+                        <i class="fa fa-lock"></i>
+                        <p>Secure payments</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo4">
+                        <i class="fa fa-gift"></i>
+                        <p>New products</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End promo area -->
+    
+    <div class="maincontent-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="latest-product">
+                        <h2 class="section-title">Latest Products</h2>
+                        <div class="product-carousel">
 
-<div class="main">
-	<div class="content">
-		<div class="content_top">
-			<div class="heading">
-				<h3>SẢN PHẨM MỚI</h3>
-			</div>
-			<div class="sort">
-				<p>Sort by:
-					<select>
-						<option>Lowest Price</option>
-						<option>Highest Price</option>
-						<option>Lowest Price</option>
-						<option>Lowest Price</option>
-						<option>Lowest Price</option>
-						<option>In Stock</option>
-					</select>
-				</p>
-			</div>
-			<div class="show">
-				<p>Show:
-					<select>
-						<option>4</option>
-						<option>8</option>
-						<option>12</option>
-						<option>16</option>
-						<option>20</option>
-						<option>In Stock</option>
-					</select>
-				</p>
-			</div>
-			<div class="page-no">
-				<p>Result Pages:
-				<ul>
-					<li><a href="#">1</a></li>
-					<li class="active"><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li>[<a href="#"> Next>>></a>]</li>
-				</ul>
-				</p>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div class="section group">
-			<?php foreach ($dataNewsProducts as $NewsProduct) { ?>
+                        <?php foreach ($dataProducts as $product) { ?>
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="<?php echo $product->images[0]->file ?>" alt="">
+                                    <div class="product-hover">
+                                        <a href="javascript:;" onclick="addCart(<?php echo $product['id']?>)" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                    </div>
+                                </div>
+                                
+                                <h2><a href="single-product.html"><?php echo $product['product_name']?></a></h2>
+                                
+                                <div class="product-carousel-price">
+                                    <ins><?php echo $product['amount_product']?></ins> <del>$100.00</del>
+                                </div> 
+                            </div>
 
-			<div class="grid_1_of_4 images_1_of_4">
-				<a href="preview-3.html"><img src="<?php echo $NewsProduct->images[0]->file ?>" alt="" /></a>
-				<h2><?php echo $NewsProduct['product_name']?> </h2>
-				<p><?php echo Text::excerpt($NewsProduct['description'], 'method', 100, '...');?></p>
-				<p><span class="strike">10$</span><span class="price"><?php echo $NewsProduct['amount_product']?>$</span></p>
-				<div class="button"><span><img src="img/NormalUser/cart.jpg" alt="" /><a href="preview-3.html" class="cart-button">Add to Cart</a></span> </div>
-				<div class="button"><span><a href="preview-3.html" class="details">Details</a></span></div>
-			</div>
+                        <?php }?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End main content area -->
+    
+    <div class="brands-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="brand-wrapper">
+                        <div class="brand-list">
+                            <img src="img/NormalUsers/brand2.png" alt="">
+                            <img src="img/NormalUsers/brand1.png" alt="">
+                            <img src="img/NormalUsers/brand3.png" alt="">
+                            <img src="img/NormalUsers/brand4.png" alt="">
+                            <img src="img/NormalUsers/brand5.png" alt="">
+                            <img src="img/NormalUsers/brand6.png" alt="">
+                            <img src="img/NormalUsers/brand1.png" alt="">
+                            <img src="img/NormalUsers/brand2.png" alt="">                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End brands area -->
+    
+    <div class="product-widget-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="single-product-widget">
+                        <h2 class="product-wid-title">Top Sellers</h2>
+                        <a href="" class="wid-view-more">View All</a>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-1.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-2.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Apple new mac book 2015</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-3.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Apple new i phone 6</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="single-product-widget">
+                        <h2 class="product-wid-title">Recently Viewed</h2>
+                        <a href="#" class="wid-view-more">View All</a>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-4.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Sony playstation microsoft</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-1.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Sony Smart Air Condtion</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-2.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Samsung gallaxy note 4</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="single-product-widget">
+                        <h2 class="product-wid-title">Top New</h2>
+                        <a href="#" class="wid-view-more">View All</a>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-3.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Apple new i phone 6</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-4.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Samsung gallaxy note 4</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                        <div class="single-wid-product">
+                            <a href="single-product.html"><img src="img/NormalUsers/product-thumb-1.jpg" alt="" class="product-thumb"></a>
+                            <h2><a href="single-product.html">Sony playstation microsoft</a></h2>
+                            <div class="product-wid-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-wid-price">
+                                <ins>$400.00</ins> <del>$425.00</del>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End product widget area -->
 
-			<?php } ?>
-		</div>
-		<div class="content_bottom">
-			<div class="heading">
-				<h3>New Products</h3>
-			</div>
-			<div class="sort">
-				<p>Sort by:
-					<select>
-						<option>Lowest Price</option>
-						<option>Highest Price</option>
-						<option>Lowest Price</option>
-						<option>Lowest Price</option>
-						<option>Lowest Price</option>
-						<option>In Stock</option>
-					</select>
-				</p>
-			</div>
-			<div class="show">
-				<p>Show:
-					<select>
-						<option>4</option>
-						<option>8</option>
-						<option>12</option>
-						<option>16</option>
-						<option>20</option>
-						<option>In Stock</option>
-					</select>
-				</p>
-			</div>
-			<div class="page-no">
-				<p>Result Pages:
-				<ul>
-					<li><a href="#">1</a></li>
-					<li class="active"><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li>[<a href="#"> Next>>></a>]</li>
-				</ul>
-				</p>
-			</div>
-			<div class="clear"></div>
-		</div>
-		<div class="section group">
-			<div class="grid_1_of_4 images_1_of_4">
-				<a href="preview-3.html"><img src="img/NormalUser/new-pic1.jpg" alt="" /></a>
-				<div class="discount">
-					<span class="percentage">40%</span>
-				</div>
-				<h2>Lorem Ipsum is simply </h2>
-				<p><span class="strike">$438.99</span><span class="price">$403.66</span></p>
-				<div class="button"><span><img src="img/NormalUser/cart.jpg" alt="" /><a href="preview-3.html" class="cart-button">Add to Cart</a></span> </div>
-				<div class="button"><span><a href="preview-3.html" class="details">Details</a></span></div>
-			</div>
-			<div class="grid_1_of_4 images_1_of_4">
-				<a href="preview-4.html"><img src="img/NormalUser/new-pic2.jpg" alt="" /></a>
-				<div class="discount">
-					<span class="percentage">22%</span>
-				</div>
-				<h2>Lorem Ipsum is simply </h2>
-				<p><span class="strike">$667.22</span><span class="price">$621.75</span></p>
-				<div class="button"><span><img src="img/NormalUser/cart.jpg" alt="" /><a href="preview-4.html" class="cart-button">Add to Cart</a></span></div>
-				<div class="button"><span><a href="preview-4.html" class="details">Details</a></span></div>
-			</div>
-			<div class="grid_1_of_4 images_1_of_4">
-				<a href="preview-2.html"><img src="img/NormalUser/feature-pic2.jpg" alt="" /></a>
-				<div class="discount">
-					<span class="percentage">55%</span>
-				</div>
-				<h2>Lorem Ipsum is simply </h2>
-				<p><span class="strike">$457.22</span><span class="price">$428.02</span></p>
-				<div class="button"><span><img src="images/cart.jpg" alt="" /><a href="preview-2.html" class="cart-button">Add to Cart</a></span> </div>
-				<div class="button"><span><a href="preview-2.html" class="details">Details</a></span></div>
-			</div>
-			<div class="grid_1_of_4 images_1_of_4">
-				<a href="preview-2.html"> <img src="img/NormalUser/new-pic3.jpg" alt="" /></a>
-				<div class="discount">
-					<span class="percentage">66%</span>
-				</div>
-				<h2>Lorem Ipsum is simply </h2>
-				<p><span class="strike">$643.22</span><span class="price">$457.88</span></p>
-				<div class="button"><span><img src="img/NormalUser/cart.jpg" alt="" /><a href="preview-2.html" class="cart-button">Add to Cart</a></span> </div>
-				<div class="button"><span><a href="#" class="details">Details</a></span></div>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
-<script>
-	function addCart(product_id){
-		// console.log(product_id)
-		$.ajax({
-			url: '/addCart',
-			type: 'post',
-			data: { productId : (product_id) },
+    <script>
+        function addCart(product_id){
+            // console.log(product_id)
+            $.ajax({
+                url: '/addCart',
+                type: 'post',
+                data: { productId : (product_id) },
 
-			success: function (data) {
-				console.log(JSON.parse(data));
-				var data = JSON.parse(data);
-				$('#id_quantity').html(data.totalquantity);
-			},
-			error :function (data, textStatus, jqXHR) {
+                success: function (data) {
+                    console.log(JSON.parse(data));
+                   
 
-				console.log("error");
-			 }
-		});
-	}
+                },
+                error :function (data, textStatus, jqXHR) {
 
-</script>
+                    console.log("error");
+                }
+            });
+        }
+    </script>
+
+
 <?php
-echo $this->element('NormalUser/footer');
+echo $this->element('NormalUsers/footer');
 ?>
+    
+  

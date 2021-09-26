@@ -104,7 +104,6 @@ class NormalUsersController extends AppController
                 $cartData = $dataSession['cart'];
             }
 
-
             //Số lượng = kiểm tra sản phẩm trong giỏ hàng có tồn tại ko, nếu tồn tại thì lấy theo số lượng trong giỏ hàng, nếu ko tồn tại thì =0
             $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
 

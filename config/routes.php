@@ -65,6 +65,8 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/dellAllCart',['controller'=>'NormalUsers','action'=>'dellAllCart']);
     $builder->connect('/carts',['controller'=>'NormalUsers','action'=>'informationCart']);
 
+    $builder->connect('/checkout',['controller'=>'NormalUsers','action'=>'checkout']);
+
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);
 

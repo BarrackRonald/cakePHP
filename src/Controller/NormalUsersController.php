@@ -41,6 +41,10 @@ class NormalUsersController extends AppController
 
     }
 
+    public function checkout(){
+        
+    }
+
     public function dellAllCart(){
         if($this->request->is('post')){
             $dataSession = [];
@@ -90,24 +94,42 @@ class NormalUsersController extends AppController
                 $cartData = $dataSession['cart'];
             }
 
-            $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
+            $quantity = (isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0) -1;
+            $amount = $data[0]['amount_product'];
+            $point = $data[0]['point_product'];
+
+            // Tính số lượng từng sản phẩm
+            $totalAmount = $quantity * $amount;
+            $totalPoint = $quantity * $point;
+
+            
 
             $productArr = [
                 $product_id => [
                   'name' => $data[0]['product_name'],
                   'image'=> $data[0]['Images']["file"],
                   'amount' => $data[0]['amount_product'],
-                  'quantity'=> $quantity - 1
+                  'point' => $data[0]['point_product'],
+                  'quantity'=> $quantity,
+                  'totalAmount' =>  $totalAmount,
+                  'totalPoint' => $totalPoint
                 ],
             ];
 
             $cartData[$product_id] = $productArr[$product_id];
 
+            //Tổng tất cả mặt hàng
+            $totalAmounts = $cartData[$product_id]['amount'];
+
+            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']-$totalAmounts : $totalAmounts;
+
+            $dataSession['totalAllAmount'] = $totalAllAmount;
+
             $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
 
             $dataSession['totalquantity'] = $totalquantity - 1;
 
-            if($quantity <= 1){
+            if($quantity <= 0){
                 unset($cartData[$product_id]);
             }
 
@@ -139,9 +161,13 @@ class NormalUsersController extends AppController
 
             $amount = $data[0]['amount_product'];
 
+            $point = $data[0]['point_product'];
+
             // Tính số lượng từng sản phẩm
 
             $totalAmount = $quantity * $amount;
+
+            $totalPoint = $quantity * $point;
 
             //Tạo arr sản phẩm để lưu thông tin và số lượng.
             $productArr = [
@@ -149,14 +175,21 @@ class NormalUsersController extends AppController
                   'name' => $data[0]['product_name'],
                   'image'=> $data[0]['Images']["file"],
                   'amount' => $data[0]['amount_product'],
+                  'point' => $data[0]['point_product'],
                   'quantity'=> $quantity,
-                  'totalAmount' =>  $totalAmount
+                  'totalAmount' =>  $totalAmount,
+                  'totalPoint' => $totalPoint
                 ],
             ];
 
             //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
             $cartData[$product_id] = $productArr[$product_id];
+            //Tổng tất cả mặt hàng
+            $totalAmounts = $cartData[$product_id]['amount'];
 
+            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']+$totalAmounts : $totalAmounts;
+
+            $dataSession['totalAllAmount'] = $totalAllAmount;
 
             //Tổng số lượng mặt hàng
             $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;

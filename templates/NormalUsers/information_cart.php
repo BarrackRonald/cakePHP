@@ -23,7 +23,7 @@ echo $this->element('NormalUsers/header');
                 <div class="col-md-12">
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <form method="post" action="#">
+                            <form method="post" action="/checkout">
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
@@ -31,13 +31,14 @@ echo $this->element('NormalUsers/header');
                                             <th class="product-thumbnail">&nbsp;</th>
                                             <th class="product-name">Product</th>
                                             <th class="product-price">Price</th>
+                                            <th class="product-point">Point</th>
                                             <th class="product-quantity">Quantity</th>
                                             <th class="product-subtotal">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                    <?php  foreach ($dataProds['cart'] as $key => $product) {?>
+                                    <?php  foreach ($dataProds['cart'] as $key => $product) {  ?>
                                         <tr class="cart_item" id="cart_item_<?= $key?>">
                                             <td class="product-remove">
                                                 <a  title="Remove this item" class="remove" href="javascript:;" onclick="dellAllCart(<?= $key?>)">x</a>
@@ -53,6 +54,10 @@ echo $this->element('NormalUsers/header');
 
                                             <td class="product-price">
                                                 <span class="amount"><?= $product['amount']?></span> 
+                                            </td>
+
+                                            <td class="product-point">
+                                                <span class="amount" id="point_<?= $key?>"><?= $product['totalPoint']?></span> 
                                             </td>
 
                                             <td class="product-quantity" style="width:auto">
@@ -80,24 +85,22 @@ echo $this->element('NormalUsers/header');
                                         <tr>
                                             <td class="actions" colspan="6">
                                                 <div class="coupon">
-                                                    <label for="coupon_code">Coupon:</label>
-                                                    <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">
-                                                    <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+                                                    <label for="coupon_code">Total Amount:</label>
                                                 </div>
-                                                <input type="submit" value="Update Cart" name="update_cart" class="button">
-                                                <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward">
+                                            </td>
+                                            <td class="actions" colspan="1">
+                                            <label for="coupon_code" id="totalAllAmount">
+                                                <?php
+                                                    echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? $this->request->getSession()->read('cartData')['totalAllAmount'] : "0";
+                                                ?>
+                                            </label>
+                                            
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <td class="actions" colspan="6">
-                                                <div class="coupon">
-                                                    <label for="coupon_code">Coupon:</label>
-                                                    <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">
-                                                    <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
-                                                </div>
-                                                <input type="submit" value="Update Cart" name="update_cart" class="button">
-                                                <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward">
+                                            <td class="actions" colspan="7">
+                                                    <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward">
                                             </td>
                                         </tr>
 
@@ -125,11 +128,17 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
+                $('.totalAllAmount').html(datatotal.totalAllAmount);
+                
 
                 //total Amount Product_id
                 var totalAmount = JSON.parse(data).cart[product_id]["totalAmount"];
                 console.log(totalAmount);
                 $('#amount_'+product_id).html(totalAmount);
+
+                //total Point
+                var totalPoint = JSON.parse(data).cart[product_id]["totalPoint"];
+                $('#point_'+product_id).html(totalPoint);
 
                 //quantity
                 var data = JSON.parse(data).cart[product_id]["quantity"];
@@ -157,16 +166,18 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
+                $('.totalAllAmount').html(datatotal.totalAllAmount);
 
-                 //total Amount Product_id
-                 $('#amount_'+product_id).html(datatotal.totalAmountID);
+                 
 
-                //quantity
+                //quantity and total mount
                 var dataProduct = JSON.parse(data).cart[product_id]
                 if(typeof dataProduct == 'undefined'){
 
                     $("#cart_item_"+product_id).remove();
                 }else{
+                    $('#point_'+product_id).html(dataProduct["totalPoint"]);
+                    $('#amount_'+product_id).html(dataProduct["totalAmount"]);
                     $("#product_"+product_id).val(dataProduct["quantity"]);
                 }
 

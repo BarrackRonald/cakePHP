@@ -11,10 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ustora Demo</title>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'> -->
     
     <!-- Bootstrap -->
     <link rel="stylesheet" href="css/NormalUsers/bootstrap.min.css">
@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="css/NormalUsers/owl.carousel.css">
     <link rel="stylesheet" href="css/NormalUsers/style.css">
     <link rel="stylesheet" href="css/NormalUsers/responsive.css">
+    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -87,9 +88,17 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="logo">
-                        <h1><a href="./"><img src="img/NormalUsers/vertu.jpg"></a></h1>
+                        <h1>
+                            <?php
+                                echo $this->Html->image("NormalUsers/vertu.jpg", [
+                                    "alt" => "logo",
+                                    'url' => '/'
+                                ]);
+                            ?>
+                        </h1>
                     </div>
                 </div>
+                
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">

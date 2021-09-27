@@ -20,9 +20,16 @@ class AuthexsController extends AppController {
 
          $query = "SELECT* from users where username = '$username' and password = '$password'";
          $result = mysqli_query($con, $query);
+         $row_user = mysqli_fetch_assoc($result);
 
          if(mysqli_num_rows($result) > 0){
-            return $this->redirect(['action' => 'index']);
+            die('ok');
+            $idUser = $row_user['id'];
+            $username = $row_user['username'];
+            $session = $this->request->getSession();
+            $session->write('idUser', $idUser);
+            $session->write('username', $username);
+            // return $this->redirect(['action' => 'index']);
          } else
          $this->Flash->error('Your username or password is incorrect.');
       }

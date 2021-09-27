@@ -27,27 +27,34 @@ class UsersController extends AppController
 
     public function index()
     {
-        $users = TableRegistry::get('users');
-         $query = $users->find();
-         $this->set('results',$query);
+        // $users = TableRegistry::get('users');
+        //  $query = $users->find();
+        //  $this->set('results',$query);
+         return $this->redirect(['controller'=>'/', 'action' => 'index']);
     }
 
     // LOGIN
     public function login(){
         if($this->request->is('post')) {
-
-           $con = mysqli_connect("localhost", "root", "", "cakephp");
-
-           $username =$this->request->getData('username');
-           $password = $this->request->getData('password');
-
-           $query = "SELECT* from users where username = '$username' and password = '$password'";
-           $result = mysqli_query($con, $query);
-
-           if(mysqli_num_rows($result) > 0){
-              return $this->redirect(['controller'=>'/', 'action' => 'index']);
-           } else
-           $this->Flash->error('Your username or password is incorrect.');
+            $con = mysqli_connect("localhost", "root", "", "cakephp");
+   
+            $username = $this->request->getData('username');
+            $password = $this->request->getData('password');
+            $users_table = $this->getTableLocator()->get('users');
+   
+            $query = "SELECT* from users where username = '$username' and password = '$password'";
+            $result = mysqli_query($con, $query);
+            $row_user = mysqli_fetch_assoc($result);
+   
+            if(mysqli_num_rows($result) > 0){
+               $idUser = $row_user['id'];
+               $username = $row_user['username'];
+               $session = $this->request->getSession();
+               $session->write('idUser', $idUser);
+               $session->write('username', $username);
+               return $this->redirect(['action' => 'index']);
+            } else
+            $this->Flash->error('Your username or password is incorrect.');
         }
 
     }

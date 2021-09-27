@@ -58,6 +58,7 @@ class DataComponent extends CommonComponent
                 'Products.id',
                 'Products.product_name',
                 'Products.amount_product',
+                'Products.point_product',
                 'Images.file'
             ])
             ->join([

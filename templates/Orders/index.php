@@ -14,7 +14,6 @@ echo $this->element('NormalUser/header');
 						<div class="text list_2_of_1">
 							<h2><?php echo $product['product_name'] ?></h2>
 							<p><?php echo Text::excerpt($product['description'], 'method', 50, '...');?></p>
-		
 
 							<a href="javascript:;" onclick="addCart(<?php echo $product['id']?>)" >addCart</a>
 						</div>
@@ -195,7 +194,7 @@ echo $this->element('NormalUser/header');
 
                 success: function (data) {
                     console.log(JSON.parse(data));
-                   
+					$('.product-count').html($(JSON.parse(data)['totalquantity']));
 
                 },
                 error :function (data, textStatus, jqXHR) {

@@ -41,15 +41,12 @@ class NormalUsersController extends AppController
 
     }
 
-    
-
-    public function dellCart(){
+    public function dellAllCart(){
         if($this->request->is('post')){
             $dataSession = [];
             $cartData = [];
 
             $product_id = $this->request->getData()['productId'];
-            
 
             $data = $this->{'Data'}->getProductByID($product_id);
 
@@ -60,11 +57,41 @@ class NormalUsersController extends AppController
                 $cartData = $dataSession['cart'];
             }
 
-
-            //Số lượng = kiểm tra sản phẩm trong giỏ hàng có tồn tại ko, nếu tồn tại thì lấy theo số lượng trong giỏ hàng, nếu ko tồn tại thì =0
             $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
 
-            //Tạo arr sản phẩm để lưu thông tin và số lượng.
+            $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
+
+            $dataSession['totalquantity'] = $totalquantity - $quantity;
+
+            if(isset($cartData[$product_id])){
+                unset($cartData[$product_id]);
+            }
+
+            $dataSession['cart'] = $cartData;
+
+            $session->write('cartData', $dataSession);
+           return  $this->response->withStringBody(json_encode($dataSession));
+        }
+    }
+
+    public function dellCart(){
+        if($this->request->is('post')){
+            $dataSession = [];
+            $cartData = [];
+
+            $product_id = $this->request->getData()['productId'];
+
+            $data = $this->{'Data'}->getProductByID($product_id);
+
+            $session = $this->request->getSession();
+
+            if($session->check('cartData')){
+                $dataSession = $session->read('cartData');
+                $cartData = $dataSession['cart'];
+            }
+
+            $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
+
             $productArr = [
                 $product_id => [
                   'name' => $data[0]['product_name'],
@@ -74,13 +101,16 @@ class NormalUsersController extends AppController
                 ],
             ];
 
-            //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
             $cartData[$product_id] = $productArr[$product_id];
 
-            //Tổng số lượng mặt hàng
             $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
 
             $dataSession['totalquantity'] = $totalquantity - 1;
+
+            if($quantity <= 1){
+                unset($cartData[$product_id]);
+            }
+
             $dataSession['cart'] = $cartData;
 
             $session->write('cartData', $dataSession);
@@ -105,7 +135,13 @@ class NormalUsersController extends AppController
             }
 
             //Số lượng = kiểm tra sản phẩm trong giỏ hàng có tồn tại ko, nếu tồn tại thì lấy theo số lượng trong giỏ hàng, nếu ko tồn tại thì =0
-            $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
+            $quantity = (isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0) + 1;
+
+            $amount = $data[0]['amount_product'];
+
+            // Tính số lượng từng sản phẩm
+
+            $totalAmount = $quantity * $amount;
 
             //Tạo arr sản phẩm để lưu thông tin và số lượng.
             $productArr = [
@@ -113,12 +149,14 @@ class NormalUsersController extends AppController
                   'name' => $data[0]['product_name'],
                   'image'=> $data[0]['Images']["file"],
                   'amount' => $data[0]['amount_product'],
-                  'quantity'=> $quantity + 1
+                  'quantity'=> $quantity,
+                  'totalAmount' =>  $totalAmount
                 ],
             ];
 
             //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
             $cartData[$product_id] = $productArr[$product_id];
+
 
             //Tổng số lượng mặt hàng
             $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
@@ -126,7 +164,9 @@ class NormalUsersController extends AppController
             $dataSession['totalquantity'] = $totalquantity + 1;
             $dataSession['cart'] = $cartData;
 
+
             $session->write('cartData', $dataSession);
+
            return  $this->response->withStringBody(json_encode($dataSession));
         }
     }

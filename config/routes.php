@@ -62,8 +62,8 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/search',['controller'=>'NormalUsers','action'=>'search']);
     $builder->connect('/addCart',['controller'=>'NormalUsers','action'=>'addCart']);
     $builder->connect('/dellCart',['controller'=>'NormalUsers','action'=>'dellCart']);
+    $builder->connect('/dellAllCart',['controller'=>'NormalUsers','action'=>'dellAllCart']);
     $builder->connect('/carts',['controller'=>'NormalUsers','action'=>'informationCart']);
-    $builder->connect('/test',['controller'=>'NormalUsersU','action'=>'index']);
 
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);

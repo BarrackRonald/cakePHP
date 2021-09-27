@@ -6,7 +6,7 @@ echo $this->element('NormalUsers/header');
         	<!-- Slider -->
 			<div class="block-slider block-slider4">
 				<ul class="" id="bxslider-home4">
-                    <?php 
+                    <?php
                         foreach ($dataSlideImages as $slideImage) {?>
 
                         <li>
@@ -25,7 +25,6 @@ echo $this->element('NormalUsers/header');
 			</div>
 			<!-- ./Slider -->
     </div> <!-- End slider area -->
-    
     <div class="promo-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -57,7 +56,6 @@ echo $this->element('NormalUsers/header');
             </div>
         </div>
     </div> <!-- End promo area -->
-    
     <div class="maincontent-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -67,7 +65,7 @@ echo $this->element('NormalUsers/header');
                         <h2 class="section-title">Latest Products</h2>
                         <div class="product-carousel">
 
-                        <?php foreach ($dataProducts as $product) { ?>
+                        <?php foreach ($dataNewsProducts as $product) { ?>
                             <div class="single-product">
                                 <div class="product-f-image">
                                     <img src="<?php echo $product->images[0]->file ?>" alt="">
@@ -76,14 +74,13 @@ echo $this->element('NormalUsers/header');
                                         <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                 </div>
-                                
+
                                 <h2><a href="single-product.html"><?php echo $product['product_name']?></a></h2>
-                                
+
                                 <div class="product-carousel-price">
                                     <ins><?php echo $product['amount_product']?></ins> <del>$100.00</del>
-                                </div> 
+                                </div>
                             </div>
-
                         <?php }?>
                         </div>
                     </div>
@@ -91,7 +88,6 @@ echo $this->element('NormalUsers/header');
             </div>
         </div>
     </div> <!-- End main content area -->
-    
     <div class="brands-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -106,7 +102,7 @@ echo $this->element('NormalUsers/header');
                             <img src="img/NormalUsers/brand5.png" alt="">
                             <img src="img/NormalUsers/brand6.png" alt="">
                             <img src="img/NormalUsers/brand1.png" alt="">
-                            <img src="img/NormalUsers/brand2.png" alt="">                            
+                            <img src="img/NormalUsers/brand2.png" alt="">
                         </div>
                     </div>
                 </div>
@@ -134,7 +130,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="single-wid-product">
                             <a href="single-product.html"><img src="img/NormalUsers/product-thumb-2.jpg" alt="" class="product-thumb"></a>
@@ -148,7 +144,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="single-wid-product">
                             <a href="single-product.html"><img src="img/NormalUsers/product-thumb-3.jpg" alt="" class="product-thumb"></a>
@@ -162,7 +158,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -182,7 +178,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="single-wid-product">
                             <a href="single-product.html"><img src="img/NormalUsers/product-thumb-1.jpg" alt="" class="product-thumb"></a>
@@ -196,7 +192,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="single-wid-product">
                             <a href="single-product.html"><img src="img/NormalUsers/product-thumb-2.jpg" alt="" class="product-thumb"></a>
@@ -210,7 +206,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -230,7 +226,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="single-wid-product">
                             <a href="single-product.html"><img src="img/NormalUsers/product-thumb-4.jpg" alt="" class="product-thumb"></a>
@@ -244,7 +240,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="single-wid-product">
                             <a href="single-product.html"><img src="img/NormalUsers/product-thumb-1.jpg" alt="" class="product-thumb"></a>
@@ -258,7 +254,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <div class="product-wid-price">
                                 <ins>$400.00</ins> <del>$425.00</del>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,7 +272,8 @@ echo $this->element('NormalUsers/header');
 
                 success: function (data) {
                     console.log(JSON.parse(data));
-                   
+                    var data = JSON.parse(data);
+				    $('.product-count').html(data.totalquantity);
 
                 },
                 error :function (data, textStatus, jqXHR) {
@@ -291,5 +288,3 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
-    
-  

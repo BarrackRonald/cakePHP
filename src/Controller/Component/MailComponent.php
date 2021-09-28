@@ -17,7 +17,7 @@ require ROOT. '/vendor/phpmailer/phpmailer/src/SMTP.php';
 class MailComponent extends Component
 {
     public function send_mail($to, $subject, $message){
-        $sender = "lctiendat@gmail.com"; // this will be overwritten by GMail
+        $sender = "phoan434@gmail.com"; // this will be overwritten by GMail
 
         $header = "X-Mailer: PHP/" . phpversion() . "Return-Path: $sender";
 
@@ -27,8 +27,8 @@ class MailComponent extends Component
         $mail->IsSMTP();
         $mail->Host = "smtp.gmail.com";
         $mail->SMTPAuth = true;
-        $mail->Username   = "lctiendat@gmail.com";
-        $mail->Password   = "Tiendat11082000";
+        $mail->Username   = "phoan434@gmail.com";
+        $mail->Password   = "H19101976";
         $mail->SMTPSecure = "ssl"; // ssl and tls
         $mail->Port = 465; // 465 and 587
 
@@ -59,9 +59,11 @@ class MailComponent extends Component
 
         // return an array with two keys: error & message
         if (!$mail->Send()) {
+            echo 'Đã gửi';
             // return array('error' => true, 'message' => 'Mailer Error: ' . $mail->ErrorInfo);
             return true;
         } else {
+            echo 'Chưa gửi';
             // return array('error' => false, 'message' =>  "Message sent!");
             return false;
         }

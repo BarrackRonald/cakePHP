@@ -46,6 +46,7 @@ class NormalUsersController extends AppController
                 $idUsers = $session->read('idUser');
                 $dataUser = $this->{'Data'}->getInfoUser($idUsers);
 
+
             }else{
                 $this->Flash->error(__('Giỏ hàng trống hoặc chưa đăng nhập'));
                 return $this->redirect(['controller'=>'/', 'action' => 'index']);
@@ -64,6 +65,18 @@ class NormalUsersController extends AppController
 
                 if(!$result['result'] == "invalid")
                 {
+                    //Gửi mail
+                    $to = $atribute['email'];;
+                    $subject = 'Mail Confirm Order';
+                    $message = '
+                        Thông tin đặt hàng gồm: 
+                            + Họ và tên khách hàng: '.$atribute['fullname'].'
+                            + Địa chỉ: '.$atribute['address'].'
+                            + Số điện thoại:'.$atribute['phonenumber'].'
+                            + Tổng số tiền cần thanh toán:'.$atribute['totalAllAmount'].'
+                            ';
+
+                    $this->{'Mail'}->send_mail($to, $subject, $message);
                     unset($dataProds);
                     $session->write('cartData',[]);
                     return $this->redirect(['action' => 'index']);

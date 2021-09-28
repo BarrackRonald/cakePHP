@@ -75,14 +75,14 @@ echo $this->element('NormalUsers/header');
                                                 <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input type="hidden" name="idUser" value="<?= $User['id'] ?>">
-                                                <input type="text" value="<?= $User['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text ">
+                                                <input type="text" value="<?= $User['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " readonly>
                                             </p>
                                             <div class="clear"></div>
 
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $User['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text ">
+                                                <input type="text" value="<?= $User['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
                                             </p>
 
                                             <div class="clear"></div>
@@ -90,13 +90,13 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $User['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text ">
+                                                <input type="text" value="<?= $User['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text " readonly>
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text ">
+                                                <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text " readonly>
                                             </p>
                                             <div class="clear"></div>
                                             <?php }?>
@@ -138,7 +138,7 @@ echo $this->element('NormalUsers/header');
                                                         <th>Order Total</th>
                                                         <td><strong><span class="amount"><?= $dataProds['totalAllAmount'] ?></span></strong> </td>
                                                         <input type="hidden" name="totalAllPoint" value="<?= $dataProds['totalAllPoint'] ?>">
-                                                        <input type="hidden" name="totalAllAmount" value="<?= $dataProds['totalAllPoint'] ?>">
+                                                        <input type="hidden" name="totalAllAmount" value="<?= $dataProds['totalAllAmount'] ?>">
                                                         <input type="hidden" name="totalQuantity" value="<?= $dataProds['totalquantity'] ?>">
                                                     </tr>
 

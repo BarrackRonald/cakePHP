@@ -28,6 +28,8 @@ class DataComponent extends CommonComponent
         $this->loadModel('Products');
         $this->loadModel('Images');
         $this->loadModel('Categories');
+        $this->loadModel('Orders');
+        $this->loadModel('Orderdetails');
     }
 
     public function getSlideImage($key = null) {
@@ -49,6 +51,67 @@ class DataComponent extends CommonComponent
             ]);
             // dd($query);
         return $query;
+
+    }
+
+    public function createOrders($atribute, $dataProds){
+        $order = [];
+        $order['order_name'] = 'order_'.$atribute['fullname'];
+        $order['email'] = $atribute['email'];
+        $order['phonenumber'] = $atribute['phonenumber'];
+        $order['address'] = $atribute['address'];
+        $order['date_order'] = date('Y-m-d h:m:s');
+        $order['user_id'] = $atribute['idUser'];
+        $order['total_point'] = $atribute['totalAllPoint'];
+        $order['total_quantity'] = $atribute['totalQuantity'];
+        $order['total_amount'] = $atribute['totalAllAmount'];
+        $order['created_date'] = date('Y-m-d h:m:s');
+        $order['updated_date'] = date('Y-m-d h:m:s');
+        $dataOrder = $this->Orders->newEntity($order);
+
+        if ($dataOrder->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataOrder->getErrors(),
+            ];
+        };
+        $result = $this->Orders->save($dataOrder);
+
+            //Add Orderdetail
+        foreach ($dataProds['cart'] as $key => $product) {
+            $orderDetail = [];
+            $orderDetail['quantity_orderDetails'] = $product['quantity'];
+            $orderDetail['amount_orderDetails'] = $product['totalAmount'];
+            $orderDetail['point_orderDetails'] = $product['totalPoint'];
+            $orderDetail['product_id'] = $key;
+            $orderDetail['order_id'] = $result['id'];
+            $orderDetail['created_date'] = date('Y-m-d h:m:s');
+            $orderDetail['updated_date'] = date('Y-m-d h:m:s');
+            $dataOrderDetails = $this->Orderdetails->newEntity($orderDetail);
+            if ($dataOrderDetails->hasErrors()) {
+                return [
+                    'result' => 'invalid',
+                    'data' => $dataOrderDetails->getErrors(),
+                ];
+            };
+            $this->Orderdetails->save($dataOrderDetails);
+        }
+    }
+
+
+    public function getInfoUser($idUser){
+        $query = $this->Users->find()
+            ->select([
+                'Users.id',
+                'Users.username',
+                'Users.email',
+                'Users.phonenumber',
+                'Users.address'
+            ])
+            ->where([
+                'Users.id' => $idUser,
+            ]);
+        return $query->toArray();
 
     }
 
@@ -111,7 +174,7 @@ class DataComponent extends CommonComponent
 
         $ac = $this->Users->newEntity($user);
         $result = $this->Users->save($ac);
-        dd($ac->getErrors());
+        dd($ac->hasErrors());
         if ($ac->hasErrors()) {
             return [
                 'result' => 'invalid',

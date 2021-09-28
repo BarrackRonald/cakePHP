@@ -5,6 +5,14 @@ namespace App\Controller;
 
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
+// use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+use App\Controller\PHPMailer;
+require 'path/to/PHPMailer/src/Exception.php';
+require 'path/to/PHPMailer/src/PHPMailer.php';
+require 'path/to/PHPMailer/src/SMTP.php';
+require 'vendor/autoload.php';
 
 /**
  * NormalUsers Controller
@@ -27,22 +35,60 @@ class NormalUsersController extends AppController
     {
         //Viết ở beforeRender
     }
+    
+    public function sendMail(){
+        
+    }
+
+    public function billOrder(){
+        if($this->request->is('post')){
+            $session = $this->request->getSession();
+            if($session->check('idUser') && $session->check('cartData')){
+                $dataProds = $session->read('cartData');
+                $idUsers = $session->read('idUser');
+                $dataUser = $this->{'Data'}->getInfoUser($idUsers);
+
+            }else{
+                $this->Flash->error(__('Giỏ hàng trống hoặc chưa đăng nhập'));
+                return $this->redirect(['controller'=>'/', 'action' => 'index']);
+            }
+            $this->set(compact('dataProds', 'dataUser'));
+        }
+    }
+
+    public function addorders(){
+        if($this->request->is('post')){
+           $atribute = $this->request->getData();
+           $session = $this->request->getSession();
+           if($session->check('cartData')){
+                $dataProds = $session->read('cartData');
+                $result = $this->{'Data'}->createOrders($atribute, $dataProds);
+
+                if(!$result['result'] == "invalid")
+                {
+                    unset($dataProds);
+                    $session->write('cartData',[]);
+                    return $this->redirect(['action' => 'index']);
+                }
+            }
+        }
+    }
 
     public function informationCart(){
         $session = $this->request->getSession();
 			if(!$session->check('cartData')){
                 $this->Flash->error(__('Giỏ hàng trống'));
+
             }
             else{
                 $dataProds = $session->read('cartData');
-
+                $this->set(compact('dataProds'));
             }
-            $this->set(compact('dataProds'));
 
     }
 
     public function checkout(){
-        
+
     }
 
     public function dellAllCart(){
@@ -60,6 +106,24 @@ class NormalUsersController extends AppController
                 $dataSession = $session->read('cartData');
                 $cartData = $dataSession['cart'];
             }
+
+            //Tổng tất cả mặt hàng
+            $totalAmounts = $cartData[$product_id]['totalAmount'];
+
+            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']-$totalAmounts : $totalAmounts;
+
+            $dataSession['totalAllAmount'] = $totalAllAmount;
+
+            //End
+
+            //Tổng tất cả point
+            $totalPoint = $cartData[$product_id]['totalPoint'];
+
+            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint']-$totalPoint : $totalPoint;
+
+            $dataSession['totalAllPoint'] = $totalAllPoint;
+
+            //End
 
             $quantity = isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0;
 
@@ -124,6 +188,14 @@ class NormalUsersController extends AppController
             $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']-$totalAmounts : $totalAmounts;
 
             $dataSession['totalAllAmount'] = $totalAllAmount;
+
+            //Tổng tất cả point
+            $totalPoint = $cartData[$product_id]['point'];
+
+            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint']+$totalPoint : $totalPoint;
+
+            $dataSession['totalAllPoint'] = $totalAllPoint;
+
 
             $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;
 
@@ -190,6 +262,13 @@ class NormalUsersController extends AppController
             $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']+$totalAmounts : $totalAmounts;
 
             $dataSession['totalAllAmount'] = $totalAllAmount;
+
+            //Tổng tất cả point
+            $totalPoint = $cartData[$product_id]['point'];
+
+            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint']+$totalPoint : $totalPoint;
+
+            $dataSession['totalAllPoint'] = $totalAllPoint;
 
             //Tổng số lượng mặt hàng
             $totalquantity = isset($dataSession['totalquantity']) ? $dataSession['totalquantity'] : 0;

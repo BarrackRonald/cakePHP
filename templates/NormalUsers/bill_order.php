@@ -14,21 +14,15 @@ echo $this->element('NormalUsers/header');
             </div>
         </div>
     </div>
-    
-    
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-                
                 <div class="col-md-12">
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <div class="woocommerce-info">Returning customer? <a class="showlogin" data-toggle="collapse" href="#login-form-wrap" aria-expanded="false" aria-controls="login-form-wrap">Click here to login</a>
-                            </div>
 
                             <form id="login-form-wrap" class="login collapse" method="post">
-
 
                                 <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the Billing &amp; Shipping section.</p>
 
@@ -70,24 +64,25 @@ echo $this->element('NormalUsers/header');
                                 <div class="clear"></div>
                             </form>
 
-                            <form enctype="multipart/form-data" action="#" class="checkout" method="post" name="checkout">
+                            <form enctype="multipart/form-data" action="/addorders" class="checkout" method="post" name="checkout">
 
                                 <div id="customer_details" class="col2-set">
                                     <div class="col-3">
                                         <div class="woocommerce-billing-fields">
                                             <h3>Billing Details</h3>
-
+                                            <?php foreach ($dataUser as $User) {?>
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
                                                 <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_first_name" name="billing_first_name" class="input-text ">
+                                                <input type="hidden" name="idUser" value="<?= $User['id'] ?>">
+                                                <input type="text" value="<?= $User['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text ">
                                             </p>
                                             <div class="clear"></div>
 
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="Street address" id="billing_address_1" name="billing_address_1" class="input-text ">
+                                                <input type="text" value="<?= $User['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text ">
                                             </p>
 
                                             <div class="clear"></div>
@@ -95,15 +90,16 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_email" name="billing_email" class="input-text ">
+                                                <input type="text" value="<?= $User['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text ">
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_phone" name="billing_phone" class="input-text ">
+                                                <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text ">
                                             </p>
                                             <div class="clear"></div>
+                                            <?php }?>
                                         </div>
                                     </div>
 
@@ -119,34 +115,31 @@ echo $this->element('NormalUsers/header');
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="cart_item">
-                                                        <td class="product-name">
-                                                            Ship Your Idea <strong class="product-quantity">× 1</strong> </td>
-                                                        <td class="product-total">
-                                                            <span class="amount">£15.00</span> </td>
-                                                    </tr>
+                                                    <?php foreach ($dataProds['cart'] as  $product) {?>
+                                                        <tr class="cart_item">
+                                                            <td class="product-name">
+                                                                <?= $product['name'] ?> <strong class="product-quantity">× <?= $product['quantity'] ?></strong> </td>
+                                                            <td class="product-total">
+                                                                <span class="amount"><?= $product['totalAmount'] ?></span> </td>
+                                                        </tr>
+                                                    <?php }?>
                                                 </tbody>
                                                 <tfoot>
 
-                                                    <tr class="cart-subtotal">
-                                                        <th>Cart Subtotal</th>
-                                                        <td><span class="amount">£15.00</span>
-                                                        </td>
-                                                    </tr>
-
                                                     <tr class="shipping">
-                                                        <th>Shipping and Handling</th>
+                                                        <th>Total Point</th>
                                                         <td>
-
-                                                            Free Shipping
+                                                            <?= $dataProds['totalAllPoint'] ?>
                                                             <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
                                                         </td>
                                                     </tr>
 
-
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
-                                                        <td><strong><span class="amount">£15.00</span></strong> </td>
+                                                        <td><strong><span class="amount"><?= $dataProds['totalAllAmount'] ?></span></strong> </td>
+                                                        <input type="hidden" name="totalAllPoint" value="<?= $dataProds['totalAllPoint'] ?>">
+                                                        <input type="hidden" name="totalAllAmount" value="<?= $dataProds['totalAllPoint'] ?>">
+                                                        <input type="hidden" name="totalQuantity" value="<?= $dataProds['totalquantity'] ?>">
                                                     </tr>
 
                                                 </tfoot>
@@ -166,16 +159,14 @@ echo $this->element('NormalUsers/header');
 
                                             </div>
                                         </div>
-                            
                                     </div>
 
                                 </div>
 
-                                
                             </form>
 
-                        </div>                       
-                    </div>                    
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

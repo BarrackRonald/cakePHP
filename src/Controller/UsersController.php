@@ -105,10 +105,10 @@ class UsersController extends AppController
 
         if($this->request->is('post')){
             $atribute = $this->request->getData();
-            dd($atribute);
+            
             $this->render();
             $sc = $this->Data->createUsers($atribute);
-
+            
             if($sc['result'] == "success")
             {
                 return $this->redirect(['action' => 'index']);

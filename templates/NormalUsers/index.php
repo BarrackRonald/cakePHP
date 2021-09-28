@@ -274,7 +274,7 @@ echo $this->element('NormalUsers/header');
                     console.log(JSON.parse(data));
                     var data = JSON.parse(data);
 				    $('.product-count').html(data.totalquantity);
-                    $('.totalAllAmount').html(data.totalAllAmount);
+                    $('#totalAllAmount').html(data.totalAllAmount);
 
                 },
                 error :function (data, textStatus, jqXHR) {

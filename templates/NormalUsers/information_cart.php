@@ -23,7 +23,7 @@ echo $this->element('NormalUsers/header');
                 <div class="col-md-12">
                     <div class="product-content-right">
                         <div class="woocommerce">
-                            <form method="post" action="/checkout">
+                            <form method="post" action="/billorder">
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
@@ -100,7 +100,7 @@ echo $this->element('NormalUsers/header');
 
                                         <tr>
                                             <td class="actions" colspan="7">
-                                                    <input type="submit" value="Checkout" name="proceed" class="checkout-button button alt wc-forward">
+                                                    <input type="submit" value="Đặt Hàng" name="proceed" class="checkout-button button alt wc-forward">
                                             </td>
                                         </tr>
 
@@ -128,8 +128,7 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('.totalAllAmount').html(datatotal.totalAllAmount);
-                
+                $('#totalAllAmount').html(datatotal.totalAllAmount);
 
                 //total Amount Product_id
                 var totalAmount = JSON.parse(data).cart[product_id]["totalAmount"];
@@ -166,7 +165,7 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('.totalAllAmount').html(datatotal.totalAllAmount);
+                $('#totalAllAmount').html(datatotal.totalAllAmount);
 
                  
 
@@ -206,6 +205,7 @@ echo $this->element('NormalUsers/header');
 				//totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
+                $('#totalAllAmount').html(datatotal.totalAllAmount);
                 //dell item
                 $("#cart_item_"+product_id).remove();
 

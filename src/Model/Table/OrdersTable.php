@@ -69,7 +69,8 @@ class OrdersTable extends Table
             ->scalar('order_name')
             ->maxLength('order_name', 70)
             ->requirePresence('order_name', 'create')
-            ->notEmptyString('order_name');
+            ->notEmptyString('order_name')
+            ;
 
         $validator
             ->email('email')

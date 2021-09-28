@@ -65,7 +65,11 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/dellAllCart',['controller'=>'NormalUsers','action'=>'dellAllCart']);
     $builder->connect('/carts',['controller'=>'NormalUsers','action'=>'informationCart']);
 
-    $builder->connect('/checkout',['controller'=>'NormalUsers','action'=>'checkout']);
+    //Hóa đơn Order
+    $builder->connect('/billorder',['controller'=>'NormalUsers','action'=>'billOrder']);
+
+    //Xác nhận đăt hàng
+    $builder->connect('/addorders',['controller'=>'NormalUsers','action'=>'addorders']);
 
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);

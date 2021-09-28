@@ -42,6 +42,7 @@
   <body>
    
     <div class="header-area">
+    <?= $this->Flash->render() ?>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -113,7 +114,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="/carts">Cart - <span class="cart-amunt">$100</span> <i class="fa fa-shopping-cart"></i> 
+                        <a href="/carts">Giỏ Hàng <i class="fa fa-shopping-cart"></i> 
                         <span class="product-count">
                             <?php
                                 echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? $this->request->getSession()->read('cartData')['totalquantity'] : "0";

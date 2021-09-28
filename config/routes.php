@@ -65,6 +65,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/dellAllCart',['controller'=>'NormalUsers','action'=>'dellAllCart']);
     $builder->connect('/carts',['controller'=>'NormalUsers','action'=>'informationCart']);
 
+    //Test
+    $builder->connect('/sendmail',['controller'=>'NormalUsers','action'=>'sendMail']);
+
+
     //Hóa đơn Order
     $builder->connect('/billorder',['controller'=>'NormalUsers','action'=>'billOrder']);
 

@@ -5,14 +5,7 @@ namespace App\Controller;
 
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
-// use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
-use App\Controller\PHPMailer;
-require 'path/to/PHPMailer/src/Exception.php';
-require 'path/to/PHPMailer/src/PHPMailer.php';
-require 'path/to/PHPMailer/src/SMTP.php';
-require 'vendor/autoload.php';
+use Exception;
 
 /**
  * NormalUsers Controller
@@ -25,6 +18,7 @@ class NormalUsersController extends AppController
     {
         parent::initialize();
         $this->loadComponent('Data');
+        $this->loadComponent('Mail');
     }
     /**
      * Index method
@@ -35,9 +29,13 @@ class NormalUsersController extends AppController
     {
         //Viết ở beforeRender
     }
-    
+
     public function sendMail(){
-        
+        $to = 'phamhoan020501@gmail.com';
+        $subject = 'Test';
+        $message = 'test nhé';
+        $this->{'Mail'}->send_mail($to, $subject, $message);
+
     }
 
     public function billOrder(){

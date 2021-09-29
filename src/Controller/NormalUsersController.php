@@ -44,22 +44,75 @@ class NormalUsersController extends AppController
             if(!$session->check('cartData')){
                 $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
                 return $this->redirect(['controller'=>'/', 'action' => 'index']);
+            }else{
+                $dataProds = $session->read('cartData');
             }
 
             //check user đã đăng nhập chưa
             if(!$session->check('idUser')){
-                $dataSession['flag'] = 0;
+                $dataProds['flag'] = 0;
+                echo '<script> if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
+                    window.location.assign("/login");
+                   } </script>';
             }else{
-                $dataSession['flag'] = 1;
-                $dataProds = $session->read('cartData');
+                $dataProds['flag'] = 1;
                 $idUsers = $session->read('idUser');
                 $dataUser = $this->{'Data'}->getInfoUser($idUsers);
+                $this->set(compact('dataUser'));
             }
 
-            $session->write('cartData', $dataSession);
-            // var_dump($session->read('cart'));
-            $this->set(compact('dataProds', 'dataUser'));
+            $session->write('cartData', $dataProds);
+            $this->set(compact('dataProds'));
         }
+    }
+
+    //Add Order không login
+    public function addordersnonelogin(){
+        if($this->request->is('post')){
+            $atribute = $this->request->getData();
+            $session = $this->request->getSession();
+            $product = null;
+            
+            if($session->check('cartData')){
+                 $dataProds = $session->read('cartData');
+                 $result = $this->{'Data'}->createOrders($atribute, $dataProds);
+ 
+                 //Point user trước khi mua
+                 $pointBF = 0;
+                 $pointAF = $pointBF + $dataProds['totalAllPoint'];
+                 $this->{'Data'}->updatePoint($pointAF, $idUsers);
+ 
+                 if(!$result['result'] == "invalid")
+                 {
+                     // dd($atribute['phonenumber']);
+                     $to = $atribute['email'];
+                     $subject = 'Mail Confirm Order';
+                     $message = '
+                         Thông tin đặt hàng gồm:
+                             + Họ và tên khách hàng: '.$atribute['fullname'].'
+                             + Địa chỉ: '.$atribute['address'].'
+                             + Số điện thoại:'.$atribute['phonenumber'].'';
+ 
+                     foreach($dataProds['cart'] as $key => $value) {
+                        $product .= ' * '.$value['name'].' × '.$value['quantity']." \r\n";
+                     }
+                     $message .= '
+                             + Mặt hàng đã mua:
+                                  '.$product.'
+                             + Tổng số point nhận được:'.$atribute['totalAllPoint'].'
+                             + Tổng số tiền cần thanh toán:'.$atribute['totalAllAmount'].'
+                             ';
+                     //xóa session
+                     $session->delete('cartData');
+                     $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                     if($errSendMail == false){
+                         $this->redirect(['action' => 'successOrder']);
+                     }
+                 }
+ 
+ 
+             }
+         }
     }
 
     public function addorders(){

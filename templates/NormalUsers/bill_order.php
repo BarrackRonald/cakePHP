@@ -64,6 +64,7 @@ echo $this->element('NormalUsers/header');
                                 <div class="clear"></div>
                             </form>
 
+                        <?php if(isset($dataUser)){ ?>
                             <form enctype="multipart/form-data" action="/addorders" class="checkout" method="post" name="checkout">
 
                                 <div id="customer_details" class="col2-set">
@@ -99,7 +100,7 @@ echo $this->element('NormalUsers/header');
                                                 <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text " readonly>
                                             </p>
                                             <div class="clear"></div>
-                                            <?php }?>
+                                            <?php } ?>
                                         </div>
                                     </div>
 
@@ -155,7 +156,7 @@ echo $this->element('NormalUsers/header');
 
                                                 </div>
 
-                                                <div class="clear"></div>
+                                            <div class="clear"></div>
 
                                             </div>
                                         </div>
@@ -164,6 +165,117 @@ echo $this->element('NormalUsers/header');
                                 </div>
 
                             </form>
+                       <?php }else{?>                
+                            <form enctype="multipart/form-data" action="/addordersnonelogin" class="checkout" method="post" name="checkout">
+
+                                <div id="customer_details" class="col2-set">
+                                    <div class="col-3">
+                                        <div class="woocommerce-billing-fields">
+                                            <h3>Billing Details</h3>
+ 
+                                            <p id="billing_first_name_field" class="form-row form-row-first validate-required">
+                                                <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="hidden" name="idUser" value="">
+                                                <input type="text" value="" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
+                                            </p>
+                                            <div class="clear"></div>
+
+                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
+                                                <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="text" value="" placeholder="" id="billing_address_1" name="address" class="input-text " >
+                                            </p>
+
+                                            <div class="clear"></div>
+
+                                            <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
+                                                <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="text" value="" placeholder="" id="billing_email" name="email" class="input-text " >
+                                            </p>
+
+                                            <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
+                                                <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
+                                                </label>
+                                                <input type="text" value="" placeholder="" id="billing_phone" name="phonenumber" class="input-text " >
+                                            </p>
+                                            <div class="clear"></div>
+                                            <div class="create-account">
+                                                <p>Chúng tôi sẽ một tài khoản bằng thông tin của bạn. Nếu bạn là khách hàng cũ, vui lòng Đăng nhập ở trên!!!</p>
+                                                <p id="account_password_field" class="form-row validate-required">
+                                                    <label class="" for="account_password">Account password <abbr title="required" class="required">*</abbr>
+                                                    </label>
+                                                    <input type="password" value="" placeholder="Password" id="account_password" name="account_password" class="input-text">
+                                                </p>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                    <h3 id="order_review_heading">Your order</h3>
+
+                                        <div id="order_review" style="position: relative;">
+                                            <table class="shop_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="product-name">Product</th>
+                                                        <th class="product-total">Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($dataProds['cart'] as  $product) {?>
+                                                        <tr class="cart_item">
+                                                            <td class="product-name">
+                                                                <?= $product['name'] ?> <strong class="product-quantity">× <?= $product['quantity'] ?></strong> </td>
+                                                            <td class="product-total">
+                                                                <span class="amount"><?= $product['totalAmount'] ?></span> </td>
+                                                        </tr>
+                                                    <?php }?>
+                                                </tbody>
+                                                <tfoot>
+
+                                                    <tr class="shipping">
+                                                        <th>Total Point</th>
+                                                        <td>
+                                                            <?= $dataProds['totalAllPoint'] ?>
+                                                            <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="order-total">
+                                                        <th>Order Total</th>
+                                                        <td><strong><span class="amount"><?= $dataProds['totalAllAmount'] ?></span></strong> </td>
+                                                        <input type="hidden" name="totalAllPoint" value="<?= $dataProds['totalAllPoint'] ?>">
+                                                        <input type="hidden" name="totalAllAmount" value="<?= $dataProds['totalAllAmount'] ?>">
+                                                        <input type="hidden" name="totalQuantity" value="<?= $dataProds['totalquantity'] ?>">
+                                                    </tr>
+
+                                                </tfoot>
+                                            </table>
+
+
+                                            <div id="payment">
+
+                                                <div class="form-row place-order">
+
+                                                    <input type="submit" data-value="Place order" value="Place order" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+
+
+                                                </div>
+
+                                            <div class="clear"></div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </form>
+                            
+                        <?php }?>
 
                         </div>
                     </div>

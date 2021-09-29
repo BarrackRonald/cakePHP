@@ -60,15 +60,13 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/preview',['controller'=>'NormalUsers','action'=>'preview']);
     $builder->connect('/about',['controller'=>'NormalUsers','action'=>'about']);
     $builder->connect('/search',['controller'=>'NormalUsers','action'=>'search']);
+
+    //Order
     $builder->connect('/addCart',['controller'=>'NormalUsers','action'=>'addCart']);
     $builder->connect('/dellCart',['controller'=>'NormalUsers','action'=>'dellCart']);
     $builder->connect('/dellAllCart',['controller'=>'NormalUsers','action'=>'dellAllCart']);
     $builder->connect('/carts',['controller'=>'NormalUsers','action'=>'informationCart']);
     $builder->connect('/successorder',['controller'=>'NormalUsers','action'=>'successOrder']);
-
-    //Test
-    $builder->connect('/sendmail',['controller'=>'NormalUsers','action'=>'sendMail']);
-
 
     //Hóa đơn Order
     $builder->connect('/billorder',['controller'=>'NormalUsers','action'=>'billOrder']);
@@ -76,8 +74,15 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Xác nhận đăt hàng
     $builder->connect('/addorders',['controller'=>'NormalUsers','action'=>'addorders']);
 
+    //Xác nhận đặt hàng không login
+
+    $builder->connect('/addordersnonelogin',['controller'=>'NormalUsers','action'=>'addordersnonelogin']);
+
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);
+
+    //Test
+    $builder->connect('/sendmail',['controller'=>'NormalUsers','action'=>'sendMail']);
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);

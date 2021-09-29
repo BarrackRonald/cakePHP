@@ -279,11 +279,11 @@ echo $this->element('NormalUsers/header');
                     console.log(data.flag);
 
                     //Check login để báo đăng nhập
-                    if(data.flag == 0){
-                        if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
-                         window.location.assign("/login");
-                        }
-                    }
+                    // if(data.flag == 0){
+                    //     if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
+                    //      window.location.assign("/login");
+                    //     }
+                    // }
                 },
                 error :function (data, textStatus, jqXHR) {
 

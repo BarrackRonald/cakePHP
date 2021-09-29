@@ -271,11 +271,19 @@ echo $this->element('NormalUsers/header');
                 data: { productId : (product_id) },
 
                 success: function (data) {
-                    console.log(JSON.parse(data));
+                    // console.log(JSON.parse(data));
                     var data = JSON.parse(data);
 				    $('.product-count').html(data.totalquantity);
                     $('#totalAllAmount').html(data.totalAllAmount);
 
+                    console.log(data.flag);
+
+                    //Check login để báo đăng nhập
+                    if(data.flag == 0){
+                        if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
+                         window.location.assign("/login");
+                        }
+                    }
                 },
                 error :function (data, textStatus, jqXHR) {
 

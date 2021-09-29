@@ -27,8 +27,8 @@ echo $this->element('NormalUsers/header');
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
-                                            <th class="product-remove">&nbsp;</th>
-                                            <th class="product-thumbnail">&nbsp;</th>
+                                            <th class="product-remove">Xóa</th>
+                                            <th class="product-thumbnail">Hình Ảnh</th>
                                             <th class="product-name">Product</th>
                                             <th class="product-price">Price</th>
                                             <th class="product-point">Point</th>
@@ -38,7 +38,7 @@ echo $this->element('NormalUsers/header');
                                     </thead>
                                     <tbody>
 
-                                    <?php  foreach ($dataProds['cart'] as $key => $product) {  ?>
+                                    <?php if(isset($dataProds)) foreach ($dataProds['cart'] as $key => $product) {  ?>
                                         <tr class="cart_item" id="cart_item_<?= $key?>">
                                             <td class="product-remove">
                                                 <a  title="Remove this item" class="remove" href="javascript:;" onclick="dellAllCart(<?= $key?>)">x</a>
@@ -81,22 +81,32 @@ echo $this->element('NormalUsers/header');
                                             </td>
                                         </tr>
                                     <?php } ?>
-
-                                        <tr>
-                                            <td class="actions" colspan="6">
-                                                <div class="coupon">
-                                                    <label for="coupon_code">Total Amount:</label>
-                                                </div>
-                                            </td>
-                                            <td class="actions" colspan="1">
-                                            <label for="coupon_code" id="totalAllAmount">
-                                                <?php
-                                                    echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? $this->request->getSession()->read('cartData')['totalAllAmount'] : "0";
-                                                ?>
-                                            </label>
-                                            
-                                            </td>
-                                        </tr>
+                                        <?php if(isset($dataProds)){?>
+                                            <tr>
+                                                <td class="actions" colspan="6">
+                                                    <div class="coupon">
+                                                        <label for="coupon_code">Total Amount:</label>
+                                                    </div>
+                                                </td>
+                                                <td class="actions" colspan="1">
+                                                <label for="coupon_code" id="totalAllAmount">
+                                                    <?php
+                                                        echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? $this->request->getSession()->read('cartData')['totalAllAmount'] : "0";
+                                                    ?>
+                                                </label>
+                                                </td>
+                                            </tr>
+                                        <?php }else{ ?>
+                                            <tr>
+                                                <td class="actions" colspan="7">
+                                                    <div class="coupon">
+                                                        <label for="coupon_code">
+                                                            <!-- <h4>GIỎ HÀNG TRỐNG</h4> -->
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php }?>
 
                                         <tr>
                                             <td class="actions" colspan="7">

@@ -46,24 +46,21 @@ class MailComponent extends Component
         );
 
         $mail->From = $sender;
-        $mail->FromName = "From Me";
+        $mail->FromName = "From Vertu Company";
 
         $mail->AddAddress($to);
 
         $mail->IsHTML(true);
         $mail->CreateHeader($header);
-
         $mail->Subject = $subject;
-        $mail->Body    = nl2br($message);
-        $mail->AltBody = nl2br($message);
+        $mail->Body    =nl2br($message);
+        // $mail->AltBody = nl2br($message);
 
         // return an array with two keys: error & message
         if (!$mail->Send()) {
-            echo 'Đã gửi';
             // return array('error' => true, 'message' => 'Mailer Error: ' . $mail->ErrorInfo);
             return true;
         } else {
-            echo 'Chưa gửi';
             // return array('error' => false, 'message' =>  "Message sent!");
             return false;
         }

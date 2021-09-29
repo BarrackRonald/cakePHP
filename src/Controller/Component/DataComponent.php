@@ -96,6 +96,31 @@ class DataComponent extends CommonComponent
             };
             $this->Orderdetails->save($dataOrderDetails);
         }
+
+    }
+
+    public function getPointByUser($idUser){
+        $query = $this->Users->find()
+            ->select([
+                'Users.id',
+                'Users.point_user',
+            ])
+            ->where([
+                'Users.id' => $idUser,
+            ]);
+        return $query->toArray();
+    }
+
+    public function updatePoint($pointAF, $idUsers){
+        $query = $this->Users->query()
+            ->update()
+            ->set([
+                'Users.point_user' => $pointAF,
+            ])
+            ->where([
+                'Users.id' => $idUsers,
+            ])
+            ->execute();
     }
 
 

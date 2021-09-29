@@ -64,6 +64,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/dellCart',['controller'=>'NormalUsers','action'=>'dellCart']);
     $builder->connect('/dellAllCart',['controller'=>'NormalUsers','action'=>'dellAllCart']);
     $builder->connect('/carts',['controller'=>'NormalUsers','action'=>'informationCart']);
+    $builder->connect('/successorder',['controller'=>'NormalUsers','action'=>'successOrder']);
 
     //Test
     $builder->connect('/sendmail',['controller'=>'NormalUsers','action'=>'sendMail']);
@@ -82,7 +83,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
     $builder->connect('/login',['controller'=>'Users','action'=>'login']);
     $builder->connect('/register',['controller'=>'Users','action'=>'register']);
-    $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
+    $builder->connect('/logout',['controller'=>'Users','action'=>'logout']);
 
     //redirect-controller
     $builder->connect('redirect-controller',['controller'=>'Redirects','action'=>'action1']);

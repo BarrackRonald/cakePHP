@@ -41,16 +41,23 @@ class NormalUsersController extends AppController
     public function billOrder(){
         if($this->request->is('post')){
             $session = $this->request->getSession();
-            if($session->check('idUser') && $session->check('cartData')){
+            if(!$session->check('cartData')){
+                $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
+                return $this->redirect(['controller'=>'/', 'action' => 'index']);
+            }
+
+            //check user đã đăng nhập chưa
+            if(!$session->check('idUser')){
+                $dataSession['flag'] = 0;
+            }else{
+                $dataSession['flag'] = 1;
                 $dataProds = $session->read('cartData');
                 $idUsers = $session->read('idUser');
                 $dataUser = $this->{'Data'}->getInfoUser($idUsers);
-
-
-            }else{
-                $this->Flash->error(__('Giỏ hàng trống hoặc chưa đăng nhập'));
-                return $this->redirect(['controller'=>'/', 'action' => 'index']);
             }
+
+            $session->write('cartData', $dataSession);
+            // var_dump($session->read('cart'));
             $this->set(compact('dataProds', 'dataUser'));
         }
     }
@@ -59,39 +66,58 @@ class NormalUsersController extends AppController
         if($this->request->is('post')){
            $atribute = $this->request->getData();
            $session = $this->request->getSession();
+           $product = null;
+           
            if($session->check('cartData')){
                 $dataProds = $session->read('cartData');
+                $idUsers = $session->read('idUser');
                 $result = $this->{'Data'}->createOrders($atribute, $dataProds);
+                $pointuser = $this->{'Data'}->getPointByUser($idUsers);
+
+                //Point user trước khi mua
+                $pointBF = $pointuser[0]['point_user'];
+                $pointAF = $pointBF + $dataProds['totalAllPoint'];
+                $this->{'Data'}->updatePoint($pointAF, $idUsers);
 
                 if(!$result['result'] == "invalid")
                 {
-                    //Gửi mail
-                    $to = $atribute['email'];;
+                    // dd($atribute['phonenumber']);
+                    $to = $atribute['email'];
                     $subject = 'Mail Confirm Order';
                     $message = '
-                        Thông tin đặt hàng gồm: 
+                        Thông tin đặt hàng gồm:
                             + Họ và tên khách hàng: '.$atribute['fullname'].'
                             + Địa chỉ: '.$atribute['address'].'
-                            + Số điện thoại:'.$atribute['phonenumber'].'
+                            + Số điện thoại:'.$atribute['phonenumber'].'';
+
+                    foreach($dataProds['cart'] as $key => $value) {
+                       $product .= ' * '.$value['name'].' × '.$value['quantity']." \r\n";
+                    }
+                    $message .= '
+                            + Mặt hàng đã mua:
+                                 '.$product.'
+                            + Tổng số point nhận được:'.$atribute['totalAllPoint'].'
                             + Tổng số tiền cần thanh toán:'.$atribute['totalAllAmount'].'
                             ';
-
-                    $this->{'Mail'}->send_mail($to, $subject, $message);
-                    unset($dataProds);
-                    $session->write('cartData',[]);
-                    return $this->redirect(['action' => 'index']);
+                    //xóa session
+                    $session->delete('cartData');
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                    if($errSendMail == false){
+                        $this->redirect(['action' => 'successOrder']);
+                    }
                 }
+
+
             }
         }
+    }
+    public function successOrder(){
+
     }
 
     public function informationCart(){
         $session = $this->request->getSession();
-			if(!$session->check('cartData')){
-                $this->Flash->error(__('Giỏ hàng trống'));
-
-            }
-            else{
+			if($session->check('cartData')){
                 $dataProds = $session->read('cartData');
                 $this->set(compact('dataProds'));
             }
@@ -264,6 +290,7 @@ class NormalUsersController extends AppController
                   'totalPoint' => $totalPoint
                 ],
             ];
+
 
             //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
             $cartData[$product_id] = $productArr[$product_id];

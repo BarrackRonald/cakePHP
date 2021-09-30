@@ -74,6 +74,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Xác nhận đăt hàng
     $builder->connect('/addorders',['controller'=>'NormalUsers','action'=>'addorders']);
 
+    //Add User 
+    $builder->connect('/adduser',['controller'=>'NormalUsers','action'=>'adduser']);
+
     //Xác nhận đặt hàng không login
 
     $builder->connect('/addordersnonelogin',['controller'=>'NormalUsers','action'=>'addordersnonelogin']);

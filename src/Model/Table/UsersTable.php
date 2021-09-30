@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\ORM\Rule\IsUnique;
 
 /**
  * Users Model
@@ -82,6 +83,12 @@ class UsersTable extends Table
             ->notEmptyString('avatar');
 
         $validator
+            ->scalar('address')
+            ->maxLength('address', 200)
+            ->requirePresence('address', 'create')
+            ->notEmptyString('address');
+
+        $validator
             ->scalar('password')
             ->maxLength('password', 90)
             ->requirePresence('password', 'create')
@@ -127,7 +134,6 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['username']), ['errorField' => 'username']);
         $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
         $rules->add($rules->existsIn(['role_id'], 'Roles'), ['errorField' => 'role_id']);
 

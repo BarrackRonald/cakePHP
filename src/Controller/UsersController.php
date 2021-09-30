@@ -38,23 +38,28 @@ class UsersController extends AppController
         if($this->request->is('post')) {
             $con = mysqli_connect("localhost", "root", "", "cakephp");
 
-            $username = $this->request->getData('username');
+            $email = $this->request->getData('email');
+            $hashPswdObj = new DefaultPasswordHasher;
             $password = $this->request->getData('password');
-            $users_table = $this->getTableLocator()->get('users');
-
-            $query = "SELECT* from users where username = '$username' and password = '$password'";
-            $result = mysqli_query($con, $query);
-            $row_user = mysqli_fetch_assoc($result);
-
-            if(mysqli_num_rows($result) > 0){
-               $idUser = $row_user['id'];
-               $username = $row_user['username'];
-               $session = $this->request->getSession();
-               $session->write('idUser', $idUser);
-               $session->write('username', $username);
-               return $this->redirect(['action' => 'index']);
-            } else
-            $this->Flash->error('Your username or password is incorrect.');
+            $this->getTableLocator()->get('users');
+            $passworDB = $this->{'Data'}->getPws($email);
+            $checkPassword =  $hashPswdObj->check($password, $passworDB[0]['password'] );
+            // checkpass bằng mã hash
+            if($checkPassword){
+                $query = "SELECT* from users where email = '$email'";
+                $result = mysqli_query($con, $query);
+                $row_user = mysqli_fetch_assoc($result);
+                if(mysqli_num_rows($result) > 0){
+                    $idUser = $row_user['id'];
+                    $username = $row_user['username'];
+                    $session = $this->request->getSession();
+                    $session->write('idUser', $idUser);
+                    $session->write('username', $username);
+                    return $this->redirect(['action' => 'index']);
+                 } else {
+                 $this->Flash->error('Your username or password is incorrect.');
+                 }
+            }
         }
 
     }
@@ -111,10 +116,9 @@ class UsersController extends AppController
 
         if($this->request->is('post')){
             $atribute = $this->request->getData();
-            
             $this->render();
             $sc = $this->Data->createUsers($atribute);
-            
+
             if($sc['result'] == "success")
             {
                 return $this->redirect(['action' => 'index']);

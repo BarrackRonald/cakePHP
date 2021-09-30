@@ -30,14 +30,6 @@ class NormalUsersController extends AppController
         //Viết ở beforeRender
     }
 
-    public function sendMail(){
-        $to = 'phamhoan020501@gmail.com';
-        $subject = 'Test';
-        $message = 'test nhé';
-        $this->{'Mail'}->send_mail($to, $subject, $message);
-
-    }
-
     public function billOrder(){
         if($this->request->is('post')){
             $session = $this->request->getSession();
@@ -66,25 +58,56 @@ class NormalUsersController extends AppController
         }
     }
 
+    //Add User cho phần không login
+    public function adduser(){
+        if($this->request->is('post')){
+            $atribute = $this->request->getData();
+            $session = $this->request->getSession();
+            $dataUser = $this->{'Data'}->adduser($atribute);
+            if($session->check('cartData')){
+                $dataProds = $session->read('cartData');
+                $dataProds['infoUser'] = $dataUser;
+                $session->write('cartData', $dataProds);
+                $this->set(compact('dataProds'));
+            }
+
+        }
+    }
+
     //Add Order không login
     public function addordersnonelogin(){
         if($this->request->is('post')){
             $atribute = $this->request->getData();
             $session = $this->request->getSession();
             $product = null;
-            
+
             if($session->check('cartData')){
                  $dataProds = $session->read('cartData');
-                 $result = $this->{'Data'}->createOrders($atribute, $dataProds);
- 
+
                  //Point user trước khi mua
                  $pointBF = 0;
                  $pointAF = $pointBF + $dataProds['totalAllPoint'];
-                 $this->{'Data'}->updatePoint($pointAF, $idUsers);
- 
-                 if(!$result['result'] == "invalid")
+
+
+                // Inser User
+                 $insertUser =  $this->{'Data'}->insertUsers($dataProds, $pointAF);
+
+                // Checkmail trùng
+                $checkmail = $this->{'Data'}->checkmail($atribute);
+                if(count($checkmail)> 0){
+                    $text = 'Địa chỉ mail này đã tồn tại.';
+                    $this->set('text');
+                }
+
+                if($insertUser['result'] == "invalid"){
+                    $error = $insertUser['data'];
+                    $this->set(compact('error'));
+                }
+
+                //  Insert Order
+                 $insertOrder = $this->{'Data'}->createOrders($atribute, $dataProds, $insertUser);
+                 if(!$insertOrder['result'] == "invalid")
                  {
-                     // dd($atribute['phonenumber']);
                      $to = $atribute['email'];
                      $subject = 'Mail Confirm Order';
                      $message = '
@@ -92,8 +115,8 @@ class NormalUsersController extends AppController
                              + Họ và tên khách hàng: '.$atribute['fullname'].'
                              + Địa chỉ: '.$atribute['address'].'
                              + Số điện thoại:'.$atribute['phonenumber'].'';
- 
-                     foreach($dataProds['cart'] as $key => $value) {
+
+                     foreach($dataProds['cart'] as $value) {
                         $product .= ' * '.$value['name'].' × '.$value['quantity']." \r\n";
                      }
                      $message .= '
@@ -108,23 +131,23 @@ class NormalUsersController extends AppController
                      if($errSendMail == false){
                          $this->redirect(['action' => 'successOrder']);
                      }
-                 }
- 
- 
+                }
              }
          }
     }
 
     public function addorders(){
+        
         if($this->request->is('post')){
            $atribute = $this->request->getData();
            $session = $this->request->getSession();
            $product = null;
-           
+           $insertUser = null;
+
            if($session->check('cartData')){
                 $dataProds = $session->read('cartData');
                 $idUsers = $session->read('idUser');
-                $result = $this->{'Data'}->createOrders($atribute, $dataProds);
+                $result = $this->{'Data'}->createOrders($atribute, $dataProds, $insertUser);
                 $pointuser = $this->{'Data'}->getPointByUser($idUsers);
 
                 //Point user trước khi mua

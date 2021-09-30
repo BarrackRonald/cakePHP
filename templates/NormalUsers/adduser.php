@@ -2,16 +2,15 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
+    
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
-                    <?php if(isset($dataUser)){ ?>
+
                         <h2>Shopping Cart</h2>
-                    <?php } else{?>
-                        <h2>Thông Tin Khách Hàng</h2>
-                    <?php }?>
+
                     </div>
                 </div>
             </div>
@@ -67,26 +66,24 @@ echo $this->element('NormalUsers/header');
                                 <div class="clear"></div>
                             </form>
 
-                        <?php if(isset($dataUser)){ ?>
-                            <form enctype="multipart/form-data" action="/addorders" class="checkout" method="post" name="checkout">
+                        <?php if(isset($dataProds)){ ?>
+                            <form enctype="multipart/form-data" action="/addordersnonelogin" class="checkout" method="post" name="checkout">
 
                                 <div id="customer_details" class="col2-set">
                                     <div class="col-3">
                                         <div class="woocommerce-billing-fields">
                                             <h3>Billing Details</h3>
-                                            <?php foreach ($dataUser as $User) {?>
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
                                                 <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="hidden" name="idUser" value="<?= $User['id'] ?>">
-                                                <input type="text" value="<?= $User['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " readonly>
+                                                <input type="text" value="<?= $dataProds['infoUser']['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " readonly>
                                             </p>
                                             <div class="clear"></div>
 
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $User['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
+                                                <input type="text" value="<?= $dataProds['infoUser']['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
                                             </p>
 
                                             <div class="clear"></div>
@@ -94,16 +91,15 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $User['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text " readonly>
+                                                <input type="text" value="<?= $dataProds['infoUser']['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text " readonly>
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text " readonly>
+                                                <input type="text" value="<?= $dataProds['infoUser']['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text " readonly>
                                             </p>
                                             <div class="clear"></div>
-                                            <?php } ?>
                                         </div>
                                     </div>
 
@@ -168,84 +164,7 @@ echo $this->element('NormalUsers/header');
                                 </div>
 
                             </form>
-                       <?php }else{?>
-                            <form enctype="multipart/form-data" action="/adduser" class="checkout" method="post" name="checkout">
-
-                                <div id="customer_details" class="col2-set">
-                                    <div class="col-3">
-                                        <div class="woocommerce-billing-fields">
-                                            <h3>Billing Details</h3>
-
-                                            <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                                <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
-                                               <?php  if(isset($error['username'])){
-                                                   foreach ($error['username'] as  $value) {?>
-                                                        <i>
-                                                            <?= $error['_empty'] ?>
-                                                        <i>
-                                                    <?php }
-                                                }?>
-
-                                            </p>
-                                            <div class="clear"></div>
-
-                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="" placeholder="" id="billing_address_1" name="address" class="input-text " >
-                                            </p>
-
-                                            <div class="clear"></div>
-
-                                            <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                                <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="" placeholder="" id="billing_email" name="email" class="input-text " >
-                                            </p>
-
-                                            <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-                                                <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="" placeholder="" id="billing_phone" name="phonenumber" class="input-text " >
-                                            </p>
-                                            <div class="clear"></div>
-                                            <div class="create-account">
-                                                <p>Chúng tôi sẽ một tài khoản bằng thông tin của bạn. Nếu bạn là khách hàng cũ, vui lòng Đăng nhập ở trên!!!</p>
-                                                <p id="account_password_field" class="form-row validate-required">
-                                                    <label class="" for="account_password">Account password <abbr title="required" class="required">*</abbr>
-                                                    </label>
-                                                    <input type="password" value="" placeholder="Password" id="account_password" name="password" class="input-text">
-                                                </p>
-                                                <div class="clear"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-3">
-
-                                        <div id="order_review" style="position: relative;">
-
-                                            <div id="payment">
-
-                                                <div class="form-row place-order">
-
-                                                    <input type="submit" data-value="Place order" value="Next" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
-
-
-                                                </div>
-
-                                            <div class="clear"></div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </form>
-                        <?php }?>
+                       <?php } ?>
 
                         </div>
                     </div>

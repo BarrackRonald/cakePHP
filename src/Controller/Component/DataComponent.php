@@ -53,15 +53,84 @@ class DataComponent extends CommonComponent
         return $query;
 
     }
+    //Lấy password
+    public function getPws($email){
+        $query = $this->Users->find()
+            ->select([
+                'Users.id',
+                'Users.password',
+            ])
+            ->where([
+                'Users.email' => $email,
+            ]);
+    return $query->toArray();
+    }
 
-    public function createOrders($atribute, $dataProds){
+    public function insertUsers($dataProds, $pointAF){
+        // dd($atribute);
+        $user = [];
+        $user['username'] =$dataProds['infoUser']['username'];
+        $user['address'] = $dataProds['infoUser']['address'];
+        $user['email'] = $dataProds['infoUser']['email'];
+        $user['phonenumber'] = $dataProds['infoUser']['phonenumber'];
+        $user['password'] = $dataProds['infoUser']['password'];
+        $user['point_user'] = $pointAF;
+        $user['role_id'] = 1;
+        $user['avatar'] = 'none.jbg';
+        $user['created_date'] = date('Y-m-d h:m:s');
+        $user['updated_date'] = date('Y-m-d h:m:s');
+        $dataUser = $this->Users->newEntity($user);
+
+        if ($dataUser->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataUser->getErrors(),
+            ];
+        };
+        return $this->Users->save($dataUser);
+    }
+
+    public function adduser($atribute){
+        $user = [];
+        $user['username'] = $atribute['fullname'];
+        $user['address'] = $atribute['address'];
+        $user['email'] = $atribute['email'];
+        $user['phonenumber'] = $atribute['phonenumber'];
+        $hashPswdObj = new DefaultPasswordHasher;
+        $user['password'] = $hashPswdObj->hash($atribute['password']);
+        $user['point_user'] = 0;
+        $user['role_id'] = 1;
+        $user['avatar'] = 'none.jbg';
+        $user['created_date'] = date('Y-m-d h:m:s');
+        $user['updated_date'] = date('Y-m-d h:m:s');
+        return $user;
+
+    }
+
+    public function checkmail($atribute){
+        $query = $this->Users->find()
+            ->select([
+                'Users.id',
+                'Users.email',
+            ])
+            ->where([
+                'Users.email' => $atribute['email'],
+            ]);
+        return $query->toArray();
+    }
+
+    public function createOrders($atribute, $dataProds, $insertUser){
         $order = [];
         $order['order_name'] = 'order_'.$atribute['fullname'];
         $order['email'] = $atribute['email'];
         $order['phonenumber'] = $atribute['phonenumber'];
         $order['address'] = $atribute['address'];
         $order['date_order'] = date('Y-m-d h:m:s');
-        $order['user_id'] = $atribute['idUser'];
+        if(isset($atribute['idUser'])){
+            $order['user_id'] = $atribute['idUser'];
+        }else{
+            $order['user_id'] = $insertUser['id'];
+        }
         $order['total_point'] = $atribute['totalAllPoint'];
         $order['total_quantity'] = $atribute['totalQuantity'];
         $order['total_amount'] = $atribute['totalAllAmount'];
@@ -75,6 +144,7 @@ class DataComponent extends CommonComponent
                 'data' => $dataOrder->getErrors(),
             ];
         };
+
         $result = $this->Orders->save($dataOrder);
 
             //Add Orderdetail

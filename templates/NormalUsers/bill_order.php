@@ -181,7 +181,7 @@ echo $this->element('NormalUsers/header');
                                                 </label>
                                                 <input type="text" value="" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
                                                <?php  if(isset($error['username'])){
-                                                   foreach ($error['username'] as  $value) {?>
+                                                   foreach ($error['username'] as  $error) {?>
                                                         <i>
                                                             <?= $error['_empty'] ?>
                                                         <i>

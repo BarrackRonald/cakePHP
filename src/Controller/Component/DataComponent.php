@@ -103,6 +103,13 @@ class DataComponent extends CommonComponent
         $user['avatar'] = 'none.jbg';
         $user['created_date'] = date('Y-m-d h:m:s');
         $user['updated_date'] = date('Y-m-d h:m:s');
+        $dataUser = $this->Users->newEntity($user);
+        if ($dataUser->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataUser->getErrors(),
+            ];
+        };
         return $user;
 
     }

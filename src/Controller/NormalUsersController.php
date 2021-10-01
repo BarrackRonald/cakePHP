@@ -64,6 +64,20 @@ class NormalUsersController extends AppController
             $atribute = $this->request->getData();
             $session = $this->request->getSession();
             $dataUser = $this->{'Data'}->adduser($atribute);
+
+            if($dataUser['result'] == "invalid"){
+                $error = $dataUser['data'];
+                $this->set(compact('error'));
+                $this->redirect(['action' => 'billOrder']);
+            }
+
+            // Checkmail trùng
+            $checkmail = $this->{'Data'}->checkmail($atribute);
+            if(count($checkmail)> 0){
+                $text = 'Địa chỉ mail này đã tồn tại.';
+                $this->set(compact('text'));
+            }
+
             if($session->check('cartData')){
                 $dataProds = $session->read('cartData');
                 $dataProds['infoUser'] = $dataUser;

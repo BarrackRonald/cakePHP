@@ -179,14 +179,12 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
                                                 <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
-                                               <?php  if(isset($error['username'])){
-                                                   foreach ($error['username'] as  $error) {?>
-                                                        <i>
-                                                            <?= $error['_empty'] ?>
-                                                        <i>
-                                                    <?php }
-                                                }?>
+                                                <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
+                                               <?php  if(isset($_SESSION['error']['username'])){?>
+                                                        <i style="color: red;">
+                                                            <?= implode($_SESSION['error']['username'])?>
+                                                        </i>
+                                                <?php }?>
 
                                             </p>
                                             <div class="clear"></div>
@@ -194,7 +192,13 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_address_1" name="address" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?>   type="text" value="" placeholder="" id="billing_address_1" name="address" class="input-text " >
+                                                <?php  if(isset($_SESSION['error']['address'])){?>
+                                                        <i style="color: red;">
+                                                            <?= implode($_SESSION['error']['address'])?>
+                                                        </i>
+                                                    <?php
+                                                }?>
                                             </p>
 
                                             <div class="clear"></div>
@@ -202,13 +206,25 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_email" name="email" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="" placeholder="" id="billing_email" name="email" class="input-text " >
+                                                <?php  if(isset($_SESSION['error']['email'])){?>
+                                                        <i style="color: red;">
+                                                            <?= implode($_SESSION['error']['email'])?>
+                                                        </i>
+                                                    <?php
+                                                }?>
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="" placeholder="" id="billing_phone" name="phonenumber" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="" placeholder="" id="billing_phone" name="phonenumber" class="input-text " >
+                                                <?php  if(isset($_SESSION['error']['phonenumber'])){?>
+                                                        <i style="color: red;">
+                                                            <?= implode($_SESSION['error']['phonenumber'])?>
+                                                        </i>
+                                                    <?php
+                                                }?>
                                             </p>
                                             <div class="clear"></div>
                                             <div class="create-account">
@@ -216,7 +232,13 @@ echo $this->element('NormalUsers/header');
                                                 <p id="account_password_field" class="form-row validate-required">
                                                     <label class="" for="account_password">Account password <abbr title="required" class="required">*</abbr>
                                                     </label>
-                                                    <input type="password" value="" placeholder="Password" id="account_password" name="password" class="input-text">
+                                                    <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" value="" placeholder="Password" id="account_password" name="password" class="input-text">
+                                                    <?php  if(isset($_SESSION['error']['password'])){?>
+                                                                <i style="color: red;">
+                                                                    <?= implode($_SESSION['error']['password'])?>
+                                                                </i>
+                                                            <?php
+                                                        }?>
                                                 </p>
                                                 <div class="clear"></div>
                                             </div>

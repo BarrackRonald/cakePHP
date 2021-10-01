@@ -47,6 +47,10 @@ use Cake\Routing\RouteBuilder;
 $routes->setRouteClass(DashedRoute::class);
 
 
+//Admin
+
+
+
 
 $routes->scope('/', function (RouteBuilder $builder) {
     // $builder->registerMiddleware('csrf', new CsrfProtectionMiddleware([
@@ -74,7 +78,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Xác nhận đăt hàng
     $builder->connect('/addorders',['controller'=>'NormalUsers','action'=>'addorders']);
 
-    //Add User 
+    //Add User
     $builder->connect('/adduser',['controller'=>'NormalUsers','action'=>'adduser']);
 
     //Xác nhận đặt hàng không login
@@ -89,9 +93,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
-    $builder->connect('/login',['controller'=>'Users','action'=>'login']);
+    $builder->connect('/login',['controller'=>'Authexs','action'=>'login']);
     $builder->connect('/register',['controller'=>'Users','action'=>'register']);
-    $builder->connect('/logout',['controller'=>'Users','action'=>'logout']);
+    $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
 
     //redirect-controller
     $builder->connect('redirect-controller',['controller'=>'Redirects','action'=>'action1']);
@@ -113,9 +117,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('users/add', ['controller' => 'Users', 'action' => 'add']);
 
     //View Record
-    $builder->connect('users', ['controller' => 'Users', 'action' => 'index']);
-
-    //Edit
     $builder->connect('users/edit', ['controller' => 'Users', 'action' => 'edit']);
 
     //Delete
@@ -154,8 +155,18 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->fallbacks();
 });
 
+
 $routes->scope('/admin', function (RouteBuilder $builder) {
-    $builder->connect('/',['controller'=>'NormalUsers','action'=>'index']);
+    $builder->connect('/',['controller'=>'Admin','action'=>'index']);
+    $builder->connect('/admin/users',['controller'=>'Users','action'=>'index']);
+
+    //CRUD Users
+    
+    $builder->connect('/admin/add-user', ['controller' => 'Users', 'action' => 'addUser']);
+    $builder->connect('/admin/edit-user/:id', ['controller' => 'Users', 'action' => 'editUser'], ["pass" => ["id"]]);
+    $builder->connect('/admin/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
+    $builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUser']);
+
     $builder->fallbacks();
 });
 

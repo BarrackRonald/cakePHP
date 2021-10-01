@@ -38,7 +38,6 @@ class DataComponent extends CommonComponent
             ->order('created_date DESC')
             ->limit(5)
             ->all();
-        // dd($query);
         return $query;
     }
 
@@ -98,6 +97,9 @@ class DataComponent extends CommonComponent
         $user['phonenumber'] = $atribute['phonenumber'];
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
+        if($atribute['password'] == ''){
+            $user['password'] = '';
+        }
         $user['point_user'] = 0;
         $user['role_id'] = 1;
         $user['avatar'] = 'none.jbg';
@@ -110,7 +112,10 @@ class DataComponent extends CommonComponent
                 'data' => $dataUser->getErrors(),
             ];
         };
-        return $user;
+        return [
+            'result' => 'success',
+            'data' => $user,
+        ];
 
     }
 
@@ -217,6 +222,28 @@ class DataComponent extends CommonComponent
 
     }
 
+    public function getAllUser($key = null){
+        $query = $this->Users->find()
+        ->select([
+            'Users.id',
+            'Users.username',
+            'Users.email',
+            'Users.phonenumber',
+            'Users.address',
+            'Users.point_user',
+            'Users.role_id',
+            'Users.address',
+            'Roles.role_name'
+        ])
+        ->join([
+            'table' => 'roles',
+            'alias' => 'roles' ,
+            'type' => 'left',
+            'conditions' => ['Users.role_id = Roles.id']
+        ]);
+        return $query->toArray();
+    }
+
     public function getProductByID($product_id){
         $query = $this->Products->find()
             ->select([
@@ -264,7 +291,6 @@ class DataComponent extends CommonComponent
     }
 
     public function createUsers($atribute){
-        
         $user = [];
         $user['username'] = $atribute['username'];
         $user['password'] = $atribute['password'];

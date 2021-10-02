@@ -2,35 +2,33 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-use Cake\Auth\DefaultPasswordHasher;
-use Cake\ORM\TableRegistry;
-use Cake\Datasource\ConnectionManager;
+
 /**
- * Users Controller
+ * Categories Controller
  *
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @property \App\Model\Table\CategoriesTable $Categories
+ * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class UsersController extends AppController
+class CategoriesController extends AppController
 {
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    //component
     public function initialize(): void
     {
         parent::initialize();
         $this->loadComponent('Data');
         $this->loadComponent('CRUD');
-        $this->loadModel("Users");
+        $this->loadModel("Categories");
     }
-   
+
     //List User
-    public function listUsers()
+    public function listCategories()
     {
-        $users = $this->{'CRUD'}->getAllUser();
-        $this->set(compact('users', $this->paginate($users, ['limit'=> '3'])));
+        $categories = $this->{'CRUD'}->getAllCategory();
+        $this->set(compact('categories', $this->paginate($categories, ['limit'=> '3'])));
 
     }
 

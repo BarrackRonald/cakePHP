@@ -1,0 +1,31 @@
+/*//////////////////////////////////////////////////////////////////
+[ Flash messages ]*/
+.message {
+    padding: 1rem;
+    /* thêm */
+    background: #eff8ff;
+    color: #2779bd;
+  
+    border-color: #6cb2eb;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    width: 100%;
+    /* position: absolute; */
+  }
+  .message.hidden {
+    display: none;
+  }
+  .message.success {
+    background: #e3fcec;
+    color: #1f9d55;
+    border-color: #51d88a;
+  }
+  .message.error {
+    background: #fcebea;
+    color: #cc1f1a;
+    border-color: #ef5753;
+  }
+  
+  /*//////////////////////////////////////////////////////////////////

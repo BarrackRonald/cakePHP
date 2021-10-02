@@ -2,6 +2,7 @@
 use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
+$n = 1;
 ?>
         <div id="main">
             <nav class="navbar navbar-header navbar-expand navbar-light">
@@ -76,54 +77,47 @@ echo $this->element('Admin/sidebar');
                 <div class="page-title">
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>Quản lý Users</h3>
-                            <button >Thêm</button>
+                            <h3>Quản lý Danh mục sản phẩm</h3>
                         </div>
-                        <div class="col-12 col-md-6 order-md-2 order-first">
-                            <nav aria-label="breadcrumb" class='breadcrumb-header'>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Datatable</li>
-                                </ol>
-                            </nav>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <?= $this->Flash->render() ?>
                         </div>
                     </div>
                 </div>
                 <section class="section">
                     <div class="card">
                         <div class="card-body">
-                            <table class='table table-striped' id="table1">
+                            <table id="tbl-users-list" class='table table-striped' id="table1">
                                 <thead>
                                     <tr>
                                         <th>STT<th>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Phonenumber</th>
-                                        <th>Address</th>
-                                        <th>Point</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
+                                        <th>category name</th>
+                                        <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($users as $user) {?>
+                                    <?php foreach ($categories as $category) {?>
                                         <tr>
-                                            <td>1<td>
-                                            <td><?= $user['username'] ?></td>
-                                            <td><?= $user['email'] ?></td>
-                                            <td><?= $user['phonenumber'] ?></td>
-                                            <td><?= $user['address'] ?></td>
-                                            <td><?= $user['point_user'] ?></td>
-                                            <td><?= $user['Roles']['role_name']?></td>
+                                            <td><?= $n++ ?><td>
+                                            <td> <a href="<?= $this->Url->build('/admin/view-category/' . $category->id, ['fullBase' => true]) ?>"><?= $category['category_name'] ?></a></td>
                                             <td>
-                                                <!-- <span class="badge bg-success">Active</span>
-                                                <span class="badge bg-danger">Inactive</span> -->
-                                                    <a href="<?= $this->Url->build('/admin/edit-user/' . $user->id, ['fullBase' => true]) ?>" class="btn btn-warning">Edit</a>
-                                                    <form id="frm-delete-user-<?= $user->id ?>" action="<?= $this->Url->build('/delete-user/' . $user->id, ['fullBase' => false]) ?>" method="post"><input type="hidden" value="<?= $user->id ?>" name="id" /></form>
-                                                    <a href="javascript:void(0)" onclick="if(confirm('Are you sure want to delete ?')){ $('#frm-delete-student-<?= $user->id ?>').submit() }" class="btn btn-danger">Delete</a>
+                                                <a href="<?= $this->Url->build('/admin/edit-category/' . $category->id, ['fullBase' => true]) ?>">
+                                                    <input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px"/>
+                                                </a>
+                                                <form  action="<?= $this->Url->build('/admin/delete-category/' . $category->id, ['fullBase' => false]) ?>" method="post">
+                                                    <input type="hidden" value="<?= $category->id ?>" name="id" />
+                                                    <input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px"/>
+                                                </form>
                                             </td>
                                         </tr>
                                     <?php } ?>
+                                    <ul class="pagination">
+                                        <?= $this->Paginator->prev("<<") ?>
+                                        <?= $this->Paginator->numbers() ?>
+                                        <?= $this->Paginator->next(">>") ?>
+                                    </ul>
                                 </tbody>
                             </table>
                         </div>

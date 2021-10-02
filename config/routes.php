@@ -156,16 +156,22 @@ $routes->scope('/', function (RouteBuilder $builder) {
 });
 
 
-$routes->scope('/admin', function (RouteBuilder $builder) {
-    $builder->connect('/',['controller'=>'Admin','action'=>'index']);
-    $builder->connect('/admin/users',['controller'=>'Users','action'=>'index']);
+$routes->scope('/', function (RouteBuilder $builder) {
+    $builder->connect('/admin',['controller'=>'Admin','action'=>'index']);
 
     //CRUD Users
-    
     $builder->connect('/admin/add-user', ['controller' => 'Users', 'action' => 'addUser']);
     $builder->connect('/admin/edit-user/:id', ['controller' => 'Users', 'action' => 'editUser'], ["pass" => ["id"]]);
     $builder->connect('/admin/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
-    $builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUser']);
+    $builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUsers']);
+    $builder->connect('/admin/view-user/:id', ['controller' => 'Users', 'action' => 'viewUser'], ["pass" => ["id"]]);
+
+    //CRUD Danh mục sản phẩm
+    $builder->connect('/admin/add-category', ['controller' => 'Categories', 'action' => 'addCategory']);
+    $builder->connect('/admin/edit-category/:id', ['controller' => 'Categories', 'action' => 'editCategory'], ["pass" => ["id"]]);
+    $builder->connect('/admin/delete-category/:id', ['controller' => 'Categories', 'action' => 'deleteCategory'], ["pass" => ["id"]]);
+    $builder->connect('/admin/list-categories', ['controller' => 'Categories', 'action' => 'listCategories']);
+    $builder->connect('/admin/view-category/:id', ['controller' => 'Categories', 'action' => 'viewCategory'], ["pass" => ["id"]]);
 
     $builder->fallbacks();
 });

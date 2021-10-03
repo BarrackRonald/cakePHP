@@ -173,6 +173,20 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/list-categories', ['controller' => 'Categories', 'action' => 'listCategories']);
     $builder->connect('/admin/view-category/:id', ['controller' => 'Categories', 'action' => 'viewCategory'], ["pass" => ["id"]]);
 
+    //CRUD Danh sách sản phẩm
+    $builder->connect('/admin/add-product', ['controller' => 'Products', 'action' => 'addProduct']);
+    $builder->connect('/admin/edit-product/:id', ['controller' => 'Products', 'action' => 'editProduct'], ["pass" => ["id"]]);
+    $builder->connect('/admin/delete-product/:id', ['controller' => 'Products', 'action' => 'deleteProduct'], ["pass" => ["id"]]);
+    $builder->connect('/admin/list-products', ['controller' => 'Products', 'action' => 'listProducts']);
+    $builder->connect('/admin/view-product/:id', ['controller' => 'Products', 'action' => 'viewProduct'], ["pass" => ["id"]]);
+
+    //CRUD Danh sách order
+    $builder->connect('/admin/add-order', ['controller' => 'Orders', 'action' => 'addOrder']);
+    $builder->connect('/admin/edit-order/:id', ['controller' => 'Orders', 'action' => 'editOrder'], ["pass" => ["id"]]);
+    $builder->connect('/admin/delete-order/:id', ['controller' => 'Orders', 'action' => 'deleteOrder'], ["pass" => ["id"]]);
+    $builder->connect('/admin/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
+    $builder->connect('/admin/view-order/:id', ['controller' => 'Orders', 'action' => 'viewOrder'], ["pass" => ["id"]]);
+
     $builder->fallbacks();
 });
 

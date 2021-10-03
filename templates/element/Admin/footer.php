@@ -18,8 +18,11 @@
     <script src="../../vendors/Admin/chartjs/Chart.min.js"></script>
     <script src="../../vendors/Admin/apexcharts/apexcharts.min.js"></script>
     <script src="../../js/Admin/pages/dashboard.js"></script>
+    <script src="../../vendors/Admin/simple-datatables/simple-datatables.js"></script>
 
     <script src="../../js/Admin/main.js"></script>
+    
+    <!-- <script src="{{asset('/AdminUser/js/ckeditor/ckeditor.js')}}"></script> -->
 </body>
 
 </html>

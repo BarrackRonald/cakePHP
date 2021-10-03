@@ -77,6 +77,46 @@
                             
                         </li>
 
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i data-feather="file-text" width="20"></i> 
+                                <span>Quản lý sản phẩm </span>
+                            </a>
+                            
+                            <ul class="submenu ">
+                                
+                                <li>
+                                    <a href="<?= $this->Url->build('admin/list-products', ['fullBase' => true]) ?>">List sản phẩm</a>
+                                </li>
+                                
+                                <li>
+                                    <a href="<?= $this->Url->build('admin/add-product', ['fullBase' => true]) ?>">Add sản phẩm</a>
+                                </li>
+
+                            </ul>
+                            
+                        </li>
+
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i data-feather="file-text" width="20"></i> 
+                                <span>Quản lý Order</span>
+                            </a>
+                            
+                            <ul class="submenu ">
+                                
+                                <li>
+                                    <a href="<?= $this->Url->build('admin/list-orders', ['fullBase' => true]) ?>">List Order</a>
+                                </li>
+                                
+                                <li>
+                                    <a href="<?= $this->Url->build('admin/add-order', ['fullBase' => true]) ?>">Add Order</a>
+                                </li>
+
+                            </ul>
+                            
+                        </li>
+
                         <li class='sidebar-title'>Pages</li>
 
 

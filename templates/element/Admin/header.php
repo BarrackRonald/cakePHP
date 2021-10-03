@@ -19,6 +19,7 @@ $this->disableAutoLayout();
     <link rel="stylesheet" href="../../vendors/Admin/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="../../css/Admin/app.css">
     <link rel="shortcut icon" href="../../images/Admin/favicon.svg" type="image/x-icon">
+    <script src="../../js/Admin/ckeditor/ckeditor.js"></script>
 </head>
 
 <body>

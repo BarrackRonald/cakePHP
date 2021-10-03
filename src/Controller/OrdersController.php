@@ -16,116 +16,95 @@ class OrdersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function initialize(): void
     {
-        $this->paginate = [
-            'contain' => ['Users'],
-        ];
-        $orders = $this->paginate($this->Orders);
-
-        $this->set(compact('orders'));
+        parent::initialize();
+        $this->loadComponent('Data');
+        $this->loadComponent('CRUD');
+        $this->loadModel("Orders");
     }
 
-    public function addCard(){
-        if($this->request->is('get')){
-            $atribute = $this->request->getQueryParams();
-            $session = $this->request->getSession();
-            $session->write('id',$atribute['id']);
-            $session->write('quantity',$atribute['soluong']);
-            if ($session->check('id')) {
-                $soluongOld =0;
-                $soluongNew = $soluongOld + $session->read('quantity');
-                $soluongOld =  $soluongNew;
-                $session->write('quantityCard',$soluongOld);
-             }
-             $this->set('soluong',$soluongOld);
-
-        //    $dataAddCard = $this->{'Data'}->addCard($atribute);
-        //    $this->set(compact('dataAddCard'));
+    //List Products
+    public function listOrders()
+    {
+        $orders = $this->{'CRUD'}->getAllOrder();
+        //Search
+        $key = $this->request->getQuery('key');
+        if($key){
+            $query = $this->{'CRUD'}->getSearchOrder($key);
+        }else{
+            $query = $orders;
         }
+        dd($query);
+        $this->set(compact('query', $this->paginate($query, ['limit'=> '3'])));
+
     }
 
-        
-
-    /**
-     * View method
-     *
-     * @param string|null $id Order id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
+    //Add Product
+    public function addProduct()
     {
-        $order = $this->Orders->get($id, [
-            'contain' => ['Users', 'Orderdetails'],
-        ]);
-
-        $this->set(compact('order'));
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $order = $this->Orders->newEmptyEntity();
+        $dataCategory =  $this->{'CRUD'}->getAllCategory();
+        $product = $this->Products->newEmptyEntity();
         if ($this->request->is('post')) {
-            $order = $this->Orders->patchEntity($order, $this->request->getData());
-            if ($this->Orders->save($order)) {
-                $this->Flash->success(__('The order has been saved.'));
+            $atribute = $this->request->getData();
+            $dataProduct = $this->{'CRUD'}->addproduct($atribute);
 
-                return $this->redirect(['action' => 'index']);
+            // $image = $this->request->getData('uploadfile');
+            // $name = $image->getClientFilename();
+            // $targetPath = WWW_ROOT.'img'.DS.$name;
+            // $image->moveTo($targetPath);
+            // $product->image = $name;
+
+            if($dataProduct['result'] == "invalid"){
+                $this->Flash->error(__('Thêm Sản phẩm thất bại. Vui lòng thử lại.'));
+            }else{
+                $this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
+                return $this->redirect(['action' => 'listProducts']);
             }
-            $this->Flash->error(__('The order could not be saved. Please, try again.'));
         }
-        $users = $this->Orders->Users->find('list', ['limit' => 200]);
-        $this->set(compact('order', 'users'));
+        
+        $this->set(compact('product','dataCategory'));
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Order id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    //Edit Product
+    public function editProduct($id = null)
     {
-        $order = $this->Orders->get($id, [
-            'contain' => [],
-        ]);
+        $dataCategory =  $this->{'CRUD'}->getAllCategory();
+        $dataProduct = $this->{'CRUD'}->getProductByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $order = $this->Orders->patchEntity($order, $this->request->getData());
-            if ($this->Orders->save($order)) {
-                $this->Flash->success(__('The order has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+            $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
+            if ($this->Products->save($product)) {
+                $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
+                return $this->redirect(['action' => 'listProducts']);
             }
-            $this->Flash->error(__('The order could not be saved. Please, try again.'));
+            $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
         }
-        $users = $this->Orders->Users->find('list', ['limit' => 200]);
-        $this->set(compact('order', 'users'));
+        // dd($dataProduct);
+        $this->set(compact('dataProduct', 'dataCategory'));
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Order id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    //Delete Product
+
+    public function deleteProduct($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $order = $this->Orders->get($id);
-        if ($this->Orders->delete($order)) {
-            $this->Flash->success(__('The order has been deleted.'));
+        $dataProduct = $this->{'CRUD'}->getProductByID($id);
+
+        if ($this->Products->delete($dataProduct[0])) {
+            $this->Flash->success(__('Sản phẩm đã được xóa thành công.'));
         } else {
-            $this->Flash->error(__('The order could not be deleted. Please, try again.'));
+            $this->Flash->error(__('Sản phẩm chưa được xóa. Vui lòng thử lại.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['action' => 'listProducts']);
     }
+
+    //View Product
+
+    public function viewProduct($id = null)
+    {
+        $dataCategory =  $this->{'CRUD'}->getAllCategory();
+        $dataProduct = $this->{'CRUD'}->getProductByID($id);
+        $this->set(compact('dataProduct', 'dataCategory'));
+    }   
 }

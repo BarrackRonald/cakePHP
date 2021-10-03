@@ -24,7 +24,7 @@ class CategoriesController extends AppController
         $this->loadModel("Categories");
     }
 
-    //List User
+    //List Categories
     public function listCategories()
     {
         $categories = $this->{'CRUD'}->getAllCategory();
@@ -32,65 +32,59 @@ class CategoriesController extends AppController
 
     }
 
-    //Add Users
-    public function addUser()
+    //Add Categories
+    public function addCategory()
     {
-        $dataRole =  $this->{'CRUD'}->getAllRoles();
         if ($this->request->is('post')) {
             $atribute = $this->request->getData();
-            $dataUser = $this->{'CRUD'}->adduser($atribute);
-            if($dataUser['result'] == "invalid"){
-                $this->Flash->error(__('Thêm User thất bại. Vui lòng thử lại.'));
+            $dataCategory = $this->{'CRUD'}->addcategory($atribute);
+            if($dataCategory['result'] == "invalid"){
+                $this->Flash->error(__('Thêm Danh mục thất bại. Vui lòng thử lại.'));
             }else{
-                $this->Flash->success(__('User đã được thêm thành công.'));
-                return $this->redirect(['action' => 'listUsers']);
+                $this->Flash->success(__('Danh mục đã được thêm thành công.'));
+                return $this->redirect(['action' => 'listCategories']);
             }
         }
-        $this->set(compact('dataRole'));
     }
 
-    //Edit Users
-    public function editUser($id = null)
+    //Edit Categories
+    public function editCategory($id = null)
     {
 
-        $dataUser = $this->{'CRUD'}->getUserByID($id);
-        $dataRole =  $this->{'CRUD'}->getAllRoles();
-        // dd($dataUser);
+        $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('User đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'listUsers']);
+            $category = $this->Categories->patchEntity($dataCategory[0], $this->request->getData());
+            if ($this->Categories->save($category)) {
+                $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
+                return $this->redirect(['action' => 'listCategories']);
             }
-            $this->Flash->error(__('User chưa được cập nhật. Vui lòng thử lại.'));
+            $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
         }
         
-        $this->set(compact('dataUser', 'dataRole'));
+        $this->set(compact('dataCategory'));
     }
 
-    //Delete User
+    //Delete Categories
 
-    public function deleteUser($id = null)
+    public function deleteCategory($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $dataUser = $this->{'CRUD'}->getUserByID($id);
+        $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
 
-        if ($this->Users->delete($dataUser[0])) {
-            $this->Flash->success(__('User đã được xóa thành công.'));
+        if ($this->Categories->delete($dataCategory[0])) {
+            $this->Flash->success(__('Danh mục đã được xóa thành công.'));
         } else {
-            $this->Flash->error(__('User chưa được xóa. Vui lòng thử lại.'));
+            $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
         }
 
-        return $this->redirect(['action' => 'listUsers']);
+        return $this->redirect(['action' => 'listCategories']);
     }
 
-    //View user
+    //View Categories
 
-    public function viewUser($id = null)
+    public function viewCategory($id = null)
     {
-        $dataUser = $this->{'CRUD'}->getUserByID($id);
-        $dataRole =  $this->{'CRUD'}->getAllRoles();
-
-        $this->set(compact('dataUser', 'dataRole'));
+        $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
+        $this->set(compact('dataCategory'));
     }   
 }

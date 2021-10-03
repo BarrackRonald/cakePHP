@@ -156,7 +156,6 @@ class DataComponent extends CommonComponent
                 'data' => $dataOrder->getErrors(),
             ];
         };
-
         $result = $this->Orders->save($dataOrder);
 
             //Add Orderdetail

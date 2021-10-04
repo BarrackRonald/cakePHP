@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * Categories Controller
  *
@@ -24,6 +26,16 @@ class CategoriesController extends AppController
         $this->loadModel("Categories");
     }
 
+    public function beforeFilter(EventInterface $event)
+    {
+        $session = $this->request->getSession();
+        $flag = $session->read('flag');
+        if(!$session->check('flag') || $flag == 1){
+            $this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+            return $this->redirect(['controller'=>'NormalUsers', 'action' => 'index']);
+        }
+    }
+
     //List Categories
     public function listCategories()
     {
@@ -36,11 +48,17 @@ class CategoriesController extends AppController
     public function addCategory()
     {
         if ($this->request->is('post')) {
+            $session = $this->request->getSession();
             $atribute = $this->request->getData();
             $dataCategory = $this->{'CRUD'}->addcategory($atribute);
             if($dataCategory['result'] == "invalid"){
+                $error = $dataCategory['data'];
+                $session->write('error', $error);
                 $this->Flash->error(__('Thêm Danh mục thất bại. Vui lòng thử lại.'));
             }else{
+                if($session->check('error')){
+                    $session->delete('error');
+                }
                 $this->Flash->success(__('Danh mục đã được thêm thành công.'));
                 return $this->redirect(['action' => 'listCategories']);
             }

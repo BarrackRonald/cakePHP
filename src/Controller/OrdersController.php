@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * Orders Controller
  *
@@ -23,88 +25,52 @@ class OrdersController extends AppController
         $this->loadComponent('CRUD');
         $this->loadModel("Orders");
     }
+    public function beforeFilter(EventInterface $event)
+    {
+        $session = $this->request->getSession();
+        $flag = $session->read('flag');
+        if(!$session->check('flag') || $flag == 1){
+            $this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+            return $this->redirect(['controller'=>'NormalUsers', 'action' => 'index']);
+        }
+    }
 
     //List Products
     public function listOrders()
     {
         $orders = $this->{'CRUD'}->getAllOrder();
+        // dd($orders);
         //Search
         $key = $this->request->getQuery('key');
         if($key){
-            $query = $this->{'CRUD'}->getSearchOrder($key);
+            $query1 = $this->{'CRUD'}->getSearchOrder($key);
         }else{
-            $query = $orders;
+            $query1 = $orders;
         }
-        dd($query);
-        $this->set(compact('query', $this->paginate($query, ['limit'=> '3'])));
+        // dd($query);
+        $this->set(compact('query1', $this->paginate($query1, ['limit'=> '3'])));
 
     }
 
-    //Add Product
-    public function addProduct()
+    //Chi tiết đơn hàng
+    public function orderDetails($id = null)
     {
-        $dataCategory =  $this->{'CRUD'}->getAllCategory();
-        $product = $this->Products->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $atribute = $this->request->getData();
-            $dataProduct = $this->{'CRUD'}->addproduct($atribute);
-
-            // $image = $this->request->getData('uploadfile');
-            // $name = $image->getClientFilename();
-            // $targetPath = WWW_ROOT.'img'.DS.$name;
-            // $image->moveTo($targetPath);
-            // $product->image = $name;
-
-            if($dataProduct['result'] == "invalid"){
-                $this->Flash->error(__('Thêm Sản phẩm thất bại. Vui lòng thử lại.'));
-            }else{
-                $this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
-                return $this->redirect(['action' => 'listProducts']);
-            }
-        }
-        
-        $this->set(compact('product','dataCategory'));
+        $dataOrderDetails = $this->{'CRUD'}->getOrderDetailsByID($id);
+        $this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit'=> '3'])));
     }
 
-    //Edit Product
-    public function editProduct($id = null)
-    {
-        $dataCategory =  $this->{'CRUD'}->getAllCategory();
-        $dataProduct = $this->{'CRUD'}->getProductByID($id);
+    // Duyệt đơn hàng
+    public function confirmOrder($id = null){
+        $dataOrder = $this->{'CRUD'}->getOrderByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
-            if ($this->Products->save($product)) {
-                $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'listProducts']);
+            $confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
+            if ($this->Orders->save($confirm)) {
+                $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
+                return $this->redirect(['action' => 'listOrders']);
             }
-            $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
+            $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
         }
-        // dd($dataProduct);
-        $this->set(compact('dataProduct', 'dataCategory'));
+        // dd($dataOrder);
+        $this->set(compact('dataOrder'));
     }
-
-    //Delete Product
-
-    public function deleteProduct($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $dataProduct = $this->{'CRUD'}->getProductByID($id);
-
-        if ($this->Products->delete($dataProduct[0])) {
-            $this->Flash->success(__('Sản phẩm đã được xóa thành công.'));
-        } else {
-            $this->Flash->error(__('Sản phẩm chưa được xóa. Vui lòng thử lại.'));
-        }
-
-        return $this->redirect(['action' => 'listProducts']);
-    }
-
-    //View Product
-
-    public function viewProduct($id = null)
-    {
-        $dataCategory =  $this->{'CRUD'}->getAllCategory();
-        $dataProduct = $this->{'CRUD'}->getProductByID($id);
-        $this->set(compact('dataProduct', 'dataCategory'));
-    }   
 }

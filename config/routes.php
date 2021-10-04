@@ -94,8 +94,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
     $builder->connect('/login',['controller'=>'Authexs','action'=>'login']);
-    $builder->connect('/register',['controller'=>'Users','action'=>'register']);
+    $builder->connect('/register',['controller'=>'Authexs','action'=>'register']);
     $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
+    $builder->connect('/forgot',['controller'=>'Authexs','action'=>'forgotPassword']);
 
     //redirect-controller
     $builder->connect('redirect-controller',['controller'=>'Redirects','action'=>'action1']);
@@ -187,6 +188,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
     $builder->connect('/admin/view-order/:id', ['controller' => 'Orders', 'action' => 'viewOrder'], ["pass" => ["id"]]);
 
+    //Duyệt đơn và Chi tiết đơn 
+    $builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
+    $builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
     $builder->fallbacks();
 });
 

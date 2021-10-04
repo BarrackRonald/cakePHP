@@ -77,7 +77,6 @@ echo $this->element('Admin/sidebar');
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
                             <h3>Chỉnh sửa thông tin User</h3>
-                            
                         </div>
                         <div class="col-12 col-md-6 order-md-2 order-first">
                             <nav aria-label="breadcrumb" class='breadcrumb-header'>
@@ -110,7 +109,7 @@ echo $this->element('Admin/sidebar');
                                 <label for="email">Address:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->address ?>" name="address" >
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="email">Point:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->point_user ?>" name="point" >
@@ -122,11 +121,15 @@ echo $this->element('Admin/sidebar');
                                     <?php foreach ($dataRole as $role) { ?>
                                         <option value="<?= $role->id?>" <?php if($role->id == $dataUser[0]->role_id){?> selected <?php } ?> ><?= $role->role_name ?></option>
                                     <?php } ?>
-                                    
-                                    
+
+
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php if($_SESSION['flag'] == 2){ ?>
+                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php }else{?>
+                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                            <?php }?>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

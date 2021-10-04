@@ -315,8 +315,19 @@ class DataComponent extends CommonComponent
         // dd($usersTable->save($user));
     }
 
-    public function getAllProduct(){
-        
-
+    public function updateUserByID($atribute, $idUser){
+        $query = $this->Users->query()
+        ->update()
+        ->set([
+            'Users.username' => $atribute['username'],
+            'Users.email' => $atribute['email'],
+            'Users.phonenumber' => $atribute['phonenumber'],
+            'Users.address' => $atribute['address'],
+        ])
+        ->where([
+            'Users.id' => $idUser,
+        ])
+        ->execute();
     }
+
 }

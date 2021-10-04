@@ -67,6 +67,12 @@ class NormalUsersController extends AppController
             $checkmail = $this->{'Data'}->checkmail($atribute);
             if(count($checkmail)> 0){
                 $dataUser['data']['email'] = ['Địa chỉ mail này đã tồn tại.'];
+                $session->write('error', $dataUser);
+                $this->redirect(['action' => 'billOrder']);
+            }else{
+                if($session->check('error')){
+                    $session->delete('error');
+                }
             }
 
             if($dataUser['result'] == "invalid"){

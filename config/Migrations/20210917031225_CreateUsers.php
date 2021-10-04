@@ -29,6 +29,9 @@ class CreateUsers extends AbstractMigration
         $table->addColumn('email', 'string', [
             'limit' => 50,
         ]);
+        $table->addColumn('address', 'string', [
+            'limit' => 100,
+        ]);
         $table->addColumn('phonenumber', 'integer', [
             'limit' => 10,
             'default' => null,

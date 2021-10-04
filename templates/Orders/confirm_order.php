@@ -76,7 +76,7 @@ echo $this->element('Admin/sidebar');
                 <div class="page-title">
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>Thêm sản phẩm</h3>
+                            <h3>Xác Nhận Đơn Hàng</h3>
                             
                         </div>
                         <div class="col-12 col-md-6 order-md-2 order-first">
@@ -92,63 +92,42 @@ echo $this->element('Admin/sidebar');
                 <div class="section">
                     <div class="row">
                         <div class="col-12">
-                        <?= $this->Form->create($product, ['type'=>'file']) ?>
+                        <?= $this->Form->create($dataOrder[0]) ?>
                             <div class="form-group">
-                            <label for="email">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" value="" name="product_name" >
-                                <?php  if(isset($_SESSION['error']['product_name'])){?>
-                                        <i style="color: red;">
-                                            <?= implode($_SESSION['error']['product_name'])?>
-                                        </i>
-                                <?php }?>
+                            <label for="email">Họ và tên Khách hàng:</label>
+                                <input type="text" class="form-control" value="<?= $dataOrder[0]['Users']['username'] ?>" name="username" readonly >
 
                             </div>
-                            <!-- <div class="form-group">
-                            <label for="email">Hình ảnh:</label>
-                                <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" >
-                            </div> -->
                             <div class="form-group">
-                                <label style="display: block" for="email">Mô tả:</label>
-                                <!-- <input type="text" class="form-control" value="" name="description" > -->
-                                <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" >
-                                </textarea>
-                                <?php  if(isset($_SESSION['error']['description'])){?>
-                                        <i style="color: red;">
-                                            <?= implode($_SESSION['error']['description'])?>
-                                        </i>
-                                <?php }?>
-                                
-                                <script>
-                                    config = {};
-                                    config.entities_latin = false;
-                                    CKEDITOR.replace( 'editor1', config );
-                                </script>
+                                <label for="email">Email:</label>
+                                    <input type="text" class="form-control" value="<?= $dataOrder[0]->email ?>" name="email" readonly >
                             </div>
                             <div class="form-group">
-                                <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="" name="amount_product" >
-                                    <?php  if(isset($_SESSION['error']['amount_product'])){?>
-                                            <i style="color: red;">
-                                                <?= implode($_SESSION['error']['amount_product'])?>
-                                            </i>
-                                    <?php }?>
+                                <label for="email">Số điện thoại:</label>
+                                    <input type="text" class="form-control" value="<?= $dataOrder[0]->phonenumber ?>" name="phonenumber" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="email">Point sản phẩm:</label>
-                                    <input type="text" class="form-control" value="" name="point_product" >
-                                    <?php  if(isset($_SESSION['error']['point_product'])){?>
-                                            <i style="color: red;">
-                                                <?= implode($_SESSION['error']['point_product'])?>
-                                            </i>
-                                    <?php }?>
+                                <label for="email">Địa chỉ:</label>
+                                    <input type="text" class="form-control" value="<?= $dataOrder[0]->address ?>" name="address" readonly>
                             </div>
-
                             <div class="form-group">
-                                <label for="pwd">Danh mục:</label>
-                                <select name="category_id" id="" class="form-control" >
-                                    <?php foreach ($dataCategory as $category) { ?>
-                                        <option value="<?= $category->id?>"><?= $category->category_name ?></option>
-                                    <?php } ?>
+                                <label for="email">Tổng Point:</label>
+                                    <input type="text" class="form-control" value="<?= $dataOrder[0]->total_point ?>" name="total_point" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Tổng số lượng:</label>
+                                    <input type="text" class="form-control" value="<?= $dataOrder[0]->total_quantity ?>" name="total_quantity" readonly >
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Tổng giá:</label>
+                                    <input type="text" class="form-control" value="<?= $dataOrder[0]->total_amount ?>" name="total_amount" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="pwd">Xác nhận đơn:</label>
+                                <select name="status" id="" class="form-control" >
+                                    <option value="0" <?php if($dataOrder[0]->status == 0){ echo 'selected'; } ?> >Chờ Duyệt</option>
+                                    <option value="1" <?php if($dataOrder[0]->status == 1){ echo 'selected'; } ?> >Đã Duyệt</option>
+                                    <option value="2" <?php if($dataOrder[0]->status == 2){ echo 'selected'; } ?> >Từ chối</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary btn-default">Submit</button>

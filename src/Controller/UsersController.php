@@ -5,6 +5,8 @@ namespace App\Controller;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
+use Cake\Event\EventInterface;
+
 /**
  * Users Controller
  *
@@ -25,7 +27,17 @@ class UsersController extends AppController
         $this->loadComponent('CRUD');
         $this->loadModel("Users");
     }
-   
+
+    public function beforeFilter(EventInterface $event)
+    {
+        $session = $this->request->getSession();
+        $flag = $session->read('flag');
+        if(!$session->check('flag') || $flag == 1){
+            $this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+            return $this->redirect(['controller'=>'NormalUsers', 'action' => 'index']);
+        }
+    }
+
     //List User
     public function listUsers()
     {
@@ -37,13 +49,20 @@ class UsersController extends AppController
     //Add Users
     public function addUser()
     {
+        //Main
         $dataRole =  $this->{'CRUD'}->getAllRoles();
         if ($this->request->is('post')) {
+            $session = $this->request->getSession();
             $atribute = $this->request->getData();
             $dataUser = $this->{'CRUD'}->adduser($atribute);
             if($dataUser['result'] == "invalid"){
+                $error = $dataUser['data'];
+                $session->write('error', $error);
                 $this->Flash->error(__('Thêm User thất bại. Vui lòng thử lại.'));
             }else{
+                if($session->check('error')){
+                    $session->delete('error');
+                }
                 $this->Flash->success(__('User đã được thêm thành công.'));
                 return $this->redirect(['action' => 'listUsers']);
             }
@@ -54,10 +73,8 @@ class UsersController extends AppController
     //Edit Users
     public function editUser($id = null)
     {
-
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $dataRole =  $this->{'CRUD'}->getAllRoles();
-        // dd($dataUser);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
             if ($this->Users->save($user)) {
@@ -66,7 +83,7 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('User chưa được cập nhật. Vui lòng thử lại.'));
         }
-        
+
         $this->set(compact('dataUser', 'dataRole'));
     }
 

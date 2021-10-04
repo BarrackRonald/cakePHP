@@ -223,7 +223,33 @@ class CRUDComponent extends CommonComponent
     }
 
     //Orders
+    // 
     public function getAllOrder($key = null){
+        $query = $this->Orders->find()
+        ->select([
+            'Orders.id',
+            'Orders.email',
+            'Orders.phonenumber',
+            'Orders.address',
+            'Orders.total_point',
+            'Orders.total_quantity',
+            'Orders.total_amount',
+            'Orders.status',
+            'Orders.user_id',
+            'Users.username'
+        ])
+        ->join([
+            'table' => 'users',
+            'alias' => 'users' ,
+            'type' => 'left',
+            'conditions' => ['Orders.user_id = Users.id']
+        ])
+        ->order('Orders.created_date DESC');
+        return $query;
+    }
+
+    //Lấy chi tiết đơn hàng
+    public function getOrderDetailsByID($id){
         $query = $this->Orderdetails->find()
         ->select([
             'Orderdetails.id',
@@ -232,22 +258,7 @@ class CRUDComponent extends CommonComponent
             'Orderdetails.point_orderDetail',
             'Orderdetails.product_id',
             'Products.product_name',
-            'Orderdetails.order_id ',
-            'Orders.email ',
-            'Orders.phonenumber ',
-            'Orders.address ',
-            'Orders.total_point',
-            'Orders.total_quantity',
-            'Orders.total_amount',
-            'Orders.status',
-            'Orders.user_id',
-            'Users.username',
-        ])
-        ->join([
-            'table' => 'products',
-            'alias' => 'products' ,
-            'type' => 'left',
-            'conditions' => ['Orderdetails.product_id = Products.id']
+            'Orderdetails.order_id',
         ])
         ->join([
             'table' => 'orders',
@@ -256,22 +267,46 @@ class CRUDComponent extends CommonComponent
             'conditions' => ['Orderdetails.order_id = Orders.id']
         ])
         ->join([
-            'table' => 'users',
-            'alias' => 'users' ,
+            'table' => 'products',
+            'alias' => 'products' ,
             'type' => 'left',
-            'conditions' => ['Orders.user_id= Users.id']
+            'conditions' => ['Orderdetails.product_id = Products.id']
         ])
-        ->order('Orderdetails.created_date DESC');
+        ->where([
+            'Orderdetails.order_id' => $id,
+        ]);
         return $query;
     }
+
+    //Xác nhận hoặc từ chối đơn hàng
+    
 
     //Search Orders
     public function getSearchOrder($key){
 
         $query = $this->Users->find()
-            ->where([
-                'Users.username like' => '%'. $key .'%',
-            ]);
+        ->select([
+            'Orders.id',
+            'Orders.email',
+            'Orders.phonenumber',
+            'Orders.address',
+            'Orders.total_point',
+            'Orders.total_quantity',
+            'Orders.total_amount',
+            'Orders.status',
+            'Orders.user_id',
+            'Users.username'
+        ])
+        ->join([
+            'table' => 'users',
+            'alias' => 'users' ,
+            'type' => 'left',
+            'conditions' => ['Orders.user_id = Users.id']
+        ])
+        ->order('Orders.created_date DESC')
+        ->where([
+            'Users.username like' => '%'. $key .'%',
+        ]);
         return $query;
     }
 
@@ -300,10 +335,64 @@ class CRUDComponent extends CommonComponent
     }
 
     public function getOrderByID($id){
-        $query = $this->Products->find()
-            ->where([
-                'Products.id' => $id,
-            ]);
+        $query = $this->Orders->find()
+        ->select([
+            'Orders.id',
+            'Orders.email',
+            'Orders.phonenumber',
+            'Orders.address',
+            'Orders.total_point',
+            'Orders.total_quantity',
+            'Orders.total_amount',
+            'Orders.status',
+            'Orders.user_id',
+            'Users.username'
+        ])
+        ->join([
+            'table' => 'users',
+            'alias' => 'users' ,
+            'type' => 'left',
+            'conditions' => ['Orders.user_id = Users.id']
+        ])
+        ->where([
+            'Orders.id' => $id,
+        ]);
+
         return $query->toArray();
     }
+
+    public function register($atribute){
+        $user = [];
+        $user['username'] = $atribute['fullname'];
+        $user['address'] = $atribute['address'];
+        $user['email'] = $atribute['email'];
+        $user['phonenumber'] = $atribute['phonenumber'];
+        $hashPswdObj = new DefaultPasswordHasher;
+        $user['password'] = $hashPswdObj->hash($atribute['password']);
+        if($atribute['password'] == ''){
+            $user['password'] = '';
+        }
+        $user['point_user'] = 0;
+        $user['role_id'] = 1;
+        $user['avatar'] = 'none.jbg';
+        $user['created_date'] = date('Y-m-d h:m:s');
+        $user['updated_date'] = date('Y-m-d h:m:s');
+        $dataUser = $this->Users->newEntity($user);
+        // dd($dataUser);
+        if ($dataUser->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataUser->getErrors(),
+            ];
+        };
+        return [
+            'result' => 'success',
+            'data' => $dataUser,
+        ];
+    }
+
+    
+    
+
+
 }

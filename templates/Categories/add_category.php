@@ -95,7 +95,12 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create() ?>
                         <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
-                                <input type="text" class="form-control" value="" name="category_name" >
+                                <input <?php  if(isset($_SESSION['error']['category_name'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="category_name" >
+                                <?php  if(isset($_SESSION['error']['category_name'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['category_name'])?>
+                                        </i>
+                                <?php }?>
                             </div>
                             <button type="submit" class="btn btn-primary btn-default">Submit</button>
                             <?= $this->Form->end() ?>

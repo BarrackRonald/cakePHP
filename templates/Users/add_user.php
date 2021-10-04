@@ -77,7 +77,6 @@ echo $this->element('Admin/sidebar');
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
                             <h3>Add User</h3>
-                            
                         </div>
                         <div class="col-12 col-md-6 order-md-2 order-first">
                             <nav aria-label="breadcrumb" class='breadcrumb-header'>
@@ -95,30 +94,60 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create() ?>
                             <div class="form-group">
                             <label for="email">Username:</label>
-                                <input type="text" class="form-control" value="" name="username" >
+                                <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="username" >
+                                <?php  if(isset($_SESSION['error']['username'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['username'])?>
+                                        </i>
+                                <?php }?>
 
                             </div>
                             <div class="form-group">
                             <label for="email">Password:</label>
-                                <input type="text" class="form-control" value="" name="password" >
+                                <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" class="form-control" value="" name="password" >
+                                <?php  if(isset($_SESSION['error']['password'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['password'])?>
+                                        </i>
+                                <?php }?>
 
                             </div>
                             <div class="form-group">
                                 <label for="email">Email:</label>
-                                <input type="text" class="form-control" value="" name="email" >
+                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="email" >
+                                <?php  if(isset($_SESSION['error']['email'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['email'])?>
+                                        </i>
+                                <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
-                                    <input type="text" class="form-control" value="" name="phonenumber" >
+                                    <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="phonenumber" >
+                                    <?php  if(isset($_SESSION['error']['phonenumber'])){?>
+                                            <i style="color: red;">
+                                                <?= implode($_SESSION['error']['phonenumber'])?>
+                                            </i>
+                                    <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Address:</label>
-                                    <input type="text" class="form-control" value="" name="address" >
+                                    <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="address" >
+                                    <?php  if(isset($_SESSION['error']['address'])){?>
+                                            <i style="color: red;">
+                                                <?= implode($_SESSION['error']['address'])?>
+                                            </i>
+                                    <?php }?>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="email">Point:</label>
-                                    <input type="text" class="form-control" value="" name="point" >
+                                    <input <?php  if(isset($_SESSION['error']['point'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="point" >
+                                    <?php  if(isset($_SESSION['error']['point'])){?>
+                                            <i style="color: red;">
+                                                <?= implode($_SESSION['error']['point'])?>
+                                            </i>
+                                    <?php }?>
                             </div>
 
                             <div class="form-group">
@@ -127,11 +156,13 @@ echo $this->element('Admin/sidebar');
                                     <?php foreach ($dataRole as $role) { ?>
                                         <option value="<?= $role->id?>"><?= $role->role_name ?></option>
                                     <?php } ?>
-                                    
-                                    
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php if($_SESSION['flag'] == 2){ ?>
+                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php }else{?>
+                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                            <?php }?>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

@@ -35,7 +35,8 @@ class CreateOrders extends AbstractMigration
         $table->addColumn('total_amount', 'integer', [
             'limit' => 20,
         ]);
-        $table->addColumn('status', 'boolean', [
+        $table->addColumn('status', 'integer', [
+            'limit' => 5,
             'default' => 0,
         ]);
         $table->addColumn('user_id', 'integer')->addForeignKey('user_id', 'users', 'id');

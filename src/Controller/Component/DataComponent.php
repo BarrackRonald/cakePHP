@@ -212,7 +212,8 @@ class DataComponent extends CommonComponent
                 'Users.username',
                 'Users.email',
                 'Users.phonenumber',
-                'Users.address'
+                'Users.address',
+                'Users.point_user',
             ])
             ->where([
                 'Users.id' => $idUser,

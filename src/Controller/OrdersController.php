@@ -62,15 +62,34 @@ class OrdersController extends AppController
     // Duyệt đơn hàng
     public function confirmOrder($id = null){
         $dataOrder = $this->{'CRUD'}->getOrderByID($id);
+        $idUser = $dataOrder[0]['user_id'];
+        $dataUser = $this->{'CRUD'}->getUserByID($idUser);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
-            if ($this->Orders->save($confirm)) {
-                $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'listOrders']);
+            $atribute = $this->request->getData();
+            // Check point sau khi duyệt đơn
+            if($atribute['status'] == $dataOrder[0]['status']){
+                $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
+            }else{
+                if($atribute['status'] == $dataOrder[0]['status']){
+                    $pointAF = $dataUser[0]['point_user'];
+                }else if($atribute['status'] == 2){
+                    $pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
+                }else if($dataOrder[0]['status'] == 2){
+                    $pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
+                }else {
+                    $pointAF = $dataUser[0]['point_user'];
+                }
+                $this->{'Data'}->updatePoint($pointAF, $idUser);
+
+                $confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
+                if ($this->Orders->save($confirm)) {
+                    $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
+                }else {
+                    $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
+                }
             }
-            $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
         }
-        // dd($dataOrder);
-        $this->set(compact('dataOrder'));
+
+        $this->set(compact('dataOrder', 'dataUser'));
     }
 }

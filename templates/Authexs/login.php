@@ -6,14 +6,11 @@
 	<div class="limiter">
 	<?= $this->Flash->render() ?>
 		<div class="container-login100">
-		
 			<div class="wrap-login100">
-			
 				<div class="login100-pic js-tilt" data-tilt>
 					<img src="img/Login/img-01.png" alt="IMG">
 				</div>
 
-				<!-- <form class="login100-form validate-form"> -->
 					<?php echo $this->Form->create(null, ['class' => 'login100-form validate-form']); ?>
 
 					<span class="login100-form-title">
@@ -46,7 +43,7 @@
 						<span class="txt1">
 							Forgot
 						</span>
-						<a class="txt2" href="/forgot">
+						<a class="txt2" href="/forgotpassword">
 							Username / Password?
 						</a>
 					</div>
@@ -58,7 +55,7 @@
 						</a>
 					</div>
 					<?php echo $this->Form->end(); ?>
-				<!-- </form> -->
+
 			</div>
 		</div>
 	</div>

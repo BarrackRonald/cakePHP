@@ -96,7 +96,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/login',['controller'=>'Authexs','action'=>'login']);
     $builder->connect('/register',['controller'=>'Authexs','action'=>'register']);
     $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
-    $builder->connect('/forgot',['controller'=>'Authexs','action'=>'forgotPassword']);
+
+    //Quên mật khẩu
+    $builder->connect('/forgotpassword',['controller'=>'Authexs','action'=>'forgotpassword']);
+    $builder->connect('/resetpassword/:id',['controller'=>'Authexs','action'=>'resetpassword'], ["pass" => ["id"]]);
 
     //redirect-controller
     $builder->connect('redirect-controller',['controller'=>'Redirects','action'=>'action1']);

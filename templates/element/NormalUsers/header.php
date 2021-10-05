@@ -21,16 +21,16 @@ $this->disableAutoLayout();
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'> -->
     
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="css/NormalUsers/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/NormalUsers/bootstrap.min.css">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="css/NormalUsers/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/NormalUsers/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/NormalUsers/owl.carousel.css">
-    <link rel="stylesheet" href="css/NormalUsers/style.css">
-    <link rel="stylesheet" href="css/NormalUsers/responsive.css">
+    <link rel="stylesheet" href="../../css/NormalUsers/owl.carousel.css">
+    <link rel="stylesheet" href="../../css/NormalUsers/style.css">
+    <link rel="stylesheet" href="../../css/NormalUsers/responsive.css">
     
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -53,7 +53,7 @@ $this->disableAutoLayout();
                 <div class="col-md-8">
                     <div class="user-menu">
                         <ul>
-                            <li><a href="#"><i class="fa fa-user"></i> My Account</a></li>
+                            <li><a href="/myaccount"><i class="fa fa-user"></i> My Account</a></li>
                             <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
                             <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
                             <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>

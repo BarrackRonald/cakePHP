@@ -53,10 +53,7 @@ $routes->setRouteClass(DashedRoute::class);
 
 
 $routes->scope('/', function (RouteBuilder $builder) {
-    // $builder->registerMiddleware('csrf', new CsrfProtectionMiddleware([
-    //     'httpOnly' => true,
-    //  ]));
-    //  $builder->applyMiddleware('csrf');
+
     //NormalUser
     $builder->connect('/',['controller'=>'NormalUsers','action'=>'index']);
     $builder->connect('/contact',['controller'=>'NormalUsers','action'=>'contact']);
@@ -82,8 +79,13 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/adduser',['controller'=>'NormalUsers','action'=>'adduser']);
 
     //Xác nhận đặt hàng không login
-
     $builder->connect('/addordersnonelogin',['controller'=>'NormalUsers','action'=>'addordersnonelogin']);
+
+    //Thông tin cá nhân show ở trang index
+    $builder->connect('/myaccount',['controller'=>'NormalUsers','action'=>'myaccount']);
+
+    //Edit thông tin cá nhân/edit-account/
+    $builder->connect('/edit-account/:id', ['controller' => 'NormalUsers', 'action' => 'editAccount'], ["pass" => ["id"]]);
 
     //TestComponents
     $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);
@@ -99,63 +101,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     //Quên mật khẩu
     $builder->connect('/forgotpassword',['controller'=>'Authexs','action'=>'forgotpassword']);
-    $builder->connect('/resetpassword/:id',['controller'=>'Authexs','action'=>'resetpassword'], ["pass" => ["id"]]);
-
-    //redirect-controller
-    $builder->connect('redirect-controller',['controller'=>'Redirects','action'=>'action1']);
-    $builder->connect('redirect-controller2',['controller'=>'Redirects','action'=>'action2']);
-
-    //Test
-    $builder->connect('tests', ['controller' => 'Tests', 'action' => 'show']);
-
-    //Views
-    $builder->connect('template',['controller'=>'Products','action'=>'view']);
-
-    //Extending views
-    $builder->connect('extend',['controller'=>'Extends','action'=>'index']);
-
-    //View Elements
-    $builder->connect('element-example',['controller'=>'Elems','action'=>'index']);
-
-    // Add
-    $builder->connect('users/add', ['controller' => 'Users', 'action' => 'add']);
-
-    //View Record
-    $builder->connect('users/edit', ['controller' => 'Users', 'action' => 'edit']);
-
-    //Delete
-    $builder->connect('/users/delete', ['controller' => 'Users', 'action' => 'delete']);
-
-    // $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
     $builder->connect('pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
 
-    /*
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, templates/Pages/home.php)...
-     */
-
-
-    /*
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
-
-
-    /*
-     * Connect catchall routes for all controllers.
-     *
-     * The `fallbacks` method is a shortcut for
-     *
-     * ```
-     * $builder->connect('/:controller', ['action' => 'index']);
-     * $builder->connect('/:controller/:action/*', []);
-     * ```
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
     $builder->fallbacks();
 });
 
@@ -191,9 +140,13 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
     $builder->connect('/admin/view-order/:id', ['controller' => 'Orders', 'action' => 'viewOrder'], ["pass" => ["id"]]);
 
-    //Duyệt đơn và Chi tiết đơn 
+    //Duyệt đơn và Chi tiết đơn
     $builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
     $builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
+
+
+
+
     $builder->fallbacks();
 });
 

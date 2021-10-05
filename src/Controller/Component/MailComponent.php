@@ -16,7 +16,7 @@ require ROOT. '/vendor/phpmailer/phpmailer/src/SMTP.php';
 
 class MailComponent extends Component
 {
-    public function send_mail($to, $subject, $message){
+    public function send_mail($to, $toAdmin, $subject, $message){
         $sender = "phoan434@gmail.com"; // this will be overwritten by GMail
 
         $header = "X-Mailer: PHP/" . phpversion() . "Return-Path: $sender";
@@ -49,7 +49,7 @@ class MailComponent extends Component
         $mail->FromName = "From Vertu Company";
 
         $mail->AddAddress($to);
-
+        $mail->addBCC($toAdmin);
         $mail->IsHTML(true);
         $mail->CreateHeader($header);
         $mail->Subject = $subject;

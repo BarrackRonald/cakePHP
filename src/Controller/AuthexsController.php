@@ -21,15 +21,13 @@ class AuthexsController extends AppController {
 
    public function login(){
         if($this->request->is('post')) {
-          $con = mysqli_connect("localhost", "root", "", "cakephp1");
+          $con = mysqli_connect("localhost", "root", "", "cakephp");
 
           $email = $this->request->getData('email');
           $hashPswdObj = new DefaultPasswordHasher;
           $password = $this->request->getData('password');
-          
           $this->getTableLocator()->get('users');
           $passworDB = $this->{'Data'}->getPws($email);
-          
           $checkPassword =  $hashPswdObj->check($password, $passworDB[0]['password'] );
           // checkpass bằng mã hash
             if($checkPassword){
@@ -43,7 +41,6 @@ class AuthexsController extends AppController {
                   $session->write('idUser', $idUser);
                   $session->write('username', $username);
 
-                  
 
                   //Check quyền gắn cờ
                   if($row_user['role_id'] == 1){
@@ -114,53 +111,71 @@ class AuthexsController extends AppController {
   //Quên mật khẩu
   public function forgotpassword(){
     if($this->request->is('post')){
-        $myemail = $this->request->getData('email');
-        $mytoken = \Cake\Utility\Security::hash(\Cake\Utility\Security::randomBytes(25));
+        $session = $this->request->getSession();
+        $email = $this->request->getData('email');
 
-        $userTable = TableRegistry::get('Users');
-        $user = $userTable->find('all')->where(['email'=>$myemail])->first();
-        // generate random password
-        $string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-';
-        $randompws = substr(str_shuffle($string),0,8);
+        $dataUser = $this->{'CRUD'}->getUsersByEmail($email);
+        $dataUserArr = $this->{'CRUD'}->getUsersByEmailArr($email);
 
-        $hasher = new DefaultPasswordHasher();
-          $mypass = $hasher->hash($randompws);
-
-        $user->password =  $mypass;
-        $user->token = $mytoken;
-        
-        if($this->Users->save($user)){
-            $this->Flash->success('Password link has sent to your email ('.$myemail.'), please open your inbox');
-
-                    $to = $myemail;
-                    $subject = 'Reset Password';
-                    // $message = 'Hello'.$myemail.'<br/>Please click link below to reset your password<br/><br/> <a href="http://test.com:8080/resetpassword/'.$mytoken.'">Reset</a>';
-                     $message = 'Mật khẩu của bạn là:'.$randompws.'';
-            $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
-            if($errSendMail == false){
-                $this->redirect(['action' => 'login']);
-            }
+        //Check rỗng
+        if($email == ""){
+            $error = [];
+            $error['email_null'] = ['Chưa nhập Email, vui lòng kiểm tra lại!'];
+            $session->write('error_forgot', $error);
+            return $this->redirect(['action' => '']);
         }else {
-            $this->Flash->error(__('Vui lòng thử lại.'));
+            if($session->check('error_forgot')){
+                $session->delete('error_forgot');
+            }
+        }
+
+        // Checkemail tồn tài chưa
+        if(count($dataUserArr) < 1){
+            $error = [];
+            $error['email'] = ['Địa chỉ mail chưa tồn tại. Vui lòng kiểm tra lại'];
+            $session->write('error_forgot', $error);
+            return $this->redirect(['action' => '']);
+        }else{
+            // generate random password
+            $string = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-';
+            $randompws = substr(str_shuffle($string),0,8);
+
+            $hasher = new DefaultPasswordHasher();
+            $mypass = $hasher->hash($randompws);
+            $dataUser->password =  $mypass;
+
+            if($session->check('error_forgot')){
+                $session->delete('error_forgot');
+                if($this->Users->save($dataUser)){
+                    $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
+                            $to = $email;
+                            $subject = 'Reset Password';
+                             $message = 'Mật khẩu của bạn là:'.$randompws.'';
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                    if($errSendMail == false){
+                        $this->redirect(['action' => 'login']);
+                    }
+                }else {
+                    $this->Flash->error(__('Vui lòng thử lại.'));
+                }
+            }else {
+                if($this->Users->save($dataUser)){
+                    $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
+                            $to = $email;
+                            $subject = 'Reset Password';
+                             $message = 'Mật khẩu của bạn là:'.$randompws.'';
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                    if($errSendMail == false){
+                        $this->redirect(['action' => 'login']);
+                    }
+                }else {
+                    $this->Flash->error(__('Vui lòng thử lại.'));
+                }
+            }
         }
     }
 
   }
 
-  public function resetpassword($token){
-      if($this->request->is('post')){
-          $hasher = new DefaultPasswordHasher();
-          $mypass = $hasher->hash($this->request->getData('password'));
-
-          $userTable = TableRegistry::get('Users');
-          $user = $userTable->find('all')->where(['token'=>$token])->first();
-          $user->password = $mypass;
-          if($userTable->save($user)){
-              return $this->redirect(['action'=>'login']);
-          }
-
-      }
-
-  }
 }
 ?>

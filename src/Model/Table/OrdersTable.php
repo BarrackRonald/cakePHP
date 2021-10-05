@@ -80,7 +80,9 @@ class OrdersTable extends Table
         $validator
             ->integer('phonenumber')
             ->requirePresence('phonenumber', 'create')
-            ->notEmptyString('phonenumber');
+            ->notEmptyString('phonenumber')
+            ->maxLength('phonenumber', 10)
+            ->minLength('phonenumber', 10);
 
         $validator
             ->scalar('address')
@@ -109,7 +111,7 @@ class OrdersTable extends Table
             ->notEmptyString('total_amount');
 
         $validator
-            ->boolean('status')
+            ->integer('status')
             ->notEmptyString('status');
 
         $validator

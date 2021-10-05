@@ -278,8 +278,6 @@ class CRUDComponent extends CommonComponent
         return $query;
     }
 
-    //Xác nhận hoặc từ chối đơn hàng
-    
 
     //Search Orders
     public function getSearchOrder($key){
@@ -391,8 +389,23 @@ class CRUDComponent extends CommonComponent
         ];
     }
 
-    
-    
+    public function getUsersByEmail($email){
+        $query = $this->Users->find()
+        ->where([
+            'email' => $email,
+        ])
+        ->first();
+        return $query;
+    }
 
+    public function getUsersByEmailArr($email){
+        $query = $this->Users->find()
+        ->where([
+            'email' => $email,
+        ]);
+        return $query->toArray();
+    }
+
+    
 
 }

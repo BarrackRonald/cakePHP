@@ -21,6 +21,17 @@
                                 <div class="form-group">
                                     <label for="first-name-column">Email</label>
                                     <input type="email" id="first-name-column" class="form-control" name="email">
+                                    <?php  if(isset($_SESSION['error_forgot'])){
+                                        if(isset($_SESSION['error_forgot']['email'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error_forgot']['email'])?>
+                                        </i>
+                                        <?php } else{?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error_forgot']['email_null'])?>
+                                        </i>
+                                        <?php }
+                                    }?>
                                 </div>
 
                                 <div class="clearfix">

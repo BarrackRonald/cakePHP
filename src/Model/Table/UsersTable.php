@@ -102,7 +102,9 @@ class UsersTable extends Table
         $validator
             ->integer('phonenumber')
             ->requirePresence('phonenumber', 'create')
-            ->notEmptyString('phonenumber');
+            ->notEmptyString('phonenumber')
+            ->maxLength('phonenumber', 10)
+            ->minLength('phonenumber', 10);
 
         $validator
             ->integer('point_user')

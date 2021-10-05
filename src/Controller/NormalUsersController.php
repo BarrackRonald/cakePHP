@@ -19,6 +19,8 @@ class NormalUsersController extends AppController
         parent::initialize();
         $this->loadComponent('Data');
         $this->loadComponent('Mail');
+        $this->loadComponent('CRUD');
+        $this->loadModel("Users");
     }
     /**
      * Index method
@@ -152,6 +154,7 @@ class NormalUsersController extends AppController
                  if(!$insertOrder['result'] == "invalid")
                  {
                      $to = $atribute['email'];
+                     $toAdmin = 'admin@gmail.com';
                      $subject = 'Mail Confirm Order';
                      $message = '
                          Thông tin đặt hàng gồm:
@@ -170,7 +173,7 @@ class NormalUsersController extends AppController
                              ';
                      //xóa session
                      $session->delete('cartData');
-                     $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                     $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
                      if($errSendMail == false){
                          $this->redirect(['action' => 'successOrder']);
                      }
@@ -180,7 +183,6 @@ class NormalUsersController extends AppController
     }
 
     public function addorders(){
-        
         if($this->request->is('post')){
            $atribute = $this->request->getData();
            $session = $this->request->getSession();
@@ -448,6 +450,36 @@ class NormalUsersController extends AppController
         }
     }
 
+    //Show thông tin cá nhân ở trang người dùng và chỉnh sửa
+
+    public function myaccount(){
+        $session = $this->request->getSession();
+        if($session->check('idUser')){
+            $idUsers = $session->read('idUser');
+            $dataUser = $this->{'Data'}->getInfoUser($idUsers);
+            $this->set(compact('dataUser'));
+        }
+    }
+
+    public function editAccount($id = null){
+        $dataUser = $this->{'CRUD'}->getUserByID($id);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
+                return $this->redirect(['action' => 'myaccount']);
+            }
+            $this->Flash->error(__('Tài khoản chưa được cập nhật. Vui lòng thử lại.'));
+        }
+
+        $this->set(compact('dataUser'));
+    }
+
+
+    //End
+
+
+
     public function contact(){
 
     }
@@ -464,83 +496,4 @@ class NormalUsersController extends AppController
 
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Normal User id.
-     * @return \Cake\Http\Response|null|void Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $normalUser = $this->NormalUsers->get($id, [
-            'contain' => [],
-        ]);
-
-        $this->set(compact('normalUser'));
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $normalUser = $this->NormalUsers->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $normalUser = $this->NormalUsers->patchEntity($normalUser, $this->request->getData());
-            if ($this->NormalUsers->save($normalUser)) {
-                $this->Flash->success(__('The normal user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The normal user could not be saved. Please, try again.'));
-        }
-        $this->set(compact('normalUser'));
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Normal User id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $normalUser = $this->NormalUsers->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $normalUser = $this->NormalUsers->patchEntity($normalUser, $this->request->getData());
-            if ($this->NormalUsers->save($normalUser)) {
-                $this->Flash->success(__('The normal user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The normal user could not be saved. Please, try again.'));
-        }
-        $this->set(compact('normalUser'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Normal User id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $normalUser = $this->NormalUsers->get($id);
-        if ($this->NormalUsers->delete($normalUser)) {
-            $this->Flash->success(__('The normal user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The normal user could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
-    }
 }

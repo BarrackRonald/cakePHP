@@ -31,7 +31,11 @@ echo $this->element('Admin/sidebar');
                                 <input type="text" class="form-control" value="<?= $dataCategory[0]->category_name ?> " name="category_name" >
 
                             </div>
-                            <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php if($_SESSION['flag'] == 2){ ?>
+                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php }else{?>
+                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                            <?php }?>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

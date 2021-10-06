@@ -1,7 +1,13 @@
 <div id="sidebar" class='active'>
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
-                    <img src="../../img/Admin/logo.svg" alt="" srcset="">
+                    <!-- <img src="../../img/Admin/logo.svg" alt="" srcset=""> -->
+                    <?php
+                        echo $this->Html->image("Admin/logo.svg", [
+                            "alt" => "logo",
+                            'url' => '/admin'
+                        ]);
+                    ?>
                 </div>
                 <div class="sidebar-menu">
                     <ul class="menu">
@@ -36,22 +42,23 @@
 
                         <li class='sidebar-title'>Forms &amp; Tables</li>
 
+                        <?php if($_SESSION['flag'] == 2){ ?>
+                            <li class="sidebar-item  has-sub">
+                                <a href="#" class='sidebar-link'>
+                                    <i data-feather="file-text" width="20"></i>
+                                    <span>Quản lý Users</span>
+                                </a>
+                                <ul class="submenu ">
+                                    <li>
+                                        <a href="<?= $this->Url->build('admin/list-user', ['fullBase' => true]) ?>">List User</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= $this->Url->build('admin/add-user', ['fullBase' => true]) ?>">Add User</a>
+                                    </li>
 
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i data-feather="file-text" width="20"></i>
-                                <span>Quản lý Users</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li>
-                                    <a href="<?= $this->Url->build('admin/list-user', ['fullBase' => true]) ?>">List User</a>
-                                </li>
-                                <li>
-                                    <a href="<?= $this->Url->build('admin/add-user', ['fullBase' => true]) ?>">Add User</a>
-                                </li>
-
-                            </ul>
-                        </li>
+                                </ul>
+                            </li>
+                        <?php }?>
 
                         <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>

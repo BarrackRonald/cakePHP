@@ -82,20 +82,21 @@ class CategoriesController extends AppController
         $this->set(compact('dataCategory'));
     }
 
-    //Delete Categories
+    //Delete Soft Categories
 
     public function deleteCategory($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
-
-        if ($this->Categories->delete($dataCategory[0])) {
+        $dataUser = $this->{'CRUD'}->getCategoryByID($id);
+        $atribute = $this->request->getData();
+        $atribute['del_flag'] = 1;
+        $user = $this->Users->patchEntity($dataUser[0], $atribute);
+        if ($this->Users->save($user)) {
             $this->Flash->success(__('Danh mục đã được xóa thành công.'));
-        } else {
-            $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
+            return $this->redirect(['action' => 'listCategories']);
         }
+        $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
 
-        return $this->redirect(['action' => 'listCategories']);
     }
 
     //View Categories

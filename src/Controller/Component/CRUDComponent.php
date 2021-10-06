@@ -76,7 +76,7 @@ class CRUDComponent extends CommonComponent
         ];
     }
 
-    public function getAllUser($key = null){
+    public function getUser($key = null){
         $query = $this->Users->find()
         ->select([
             'Users.id',
@@ -86,6 +86,7 @@ class CRUDComponent extends CommonComponent
             'Users.address',
             'Users.point_user',
             'Users.role_id',
+            'Users.del_flag',
             'Users.address',
             'Roles.role_name'
         ])
@@ -94,6 +95,10 @@ class CRUDComponent extends CommonComponent
             'alias' => 'roles' ,
             'type' => 'left',
             'conditions' => ['Users.role_id = Roles.id']
+        ])
+        ->where([
+            // 'Users.del_flag' => 0,
+            // 'OR' => [['Users.role_id' => 1], ['Users.role_id' => 3]],
         ])
         ->order('Users.created_date DESC')
         ;
@@ -108,8 +113,10 @@ class CRUDComponent extends CommonComponent
             'Categories.category_name',
             'Categories.del_flag',
         ])
-        ->order('Categories.created_date DESC')
-        ;
+        ->where([
+            'Categories.del_flag' => 0,
+        ])
+        ->order('Categories.created_date DESC');
         return $query;
     }
 
@@ -223,7 +230,6 @@ class CRUDComponent extends CommonComponent
     }
 
     //Orders
-    // 
     public function getAllOrder($key = null){
         $query = $this->Orders->find()
         ->select([
@@ -406,6 +412,16 @@ class CRUDComponent extends CommonComponent
         return $query->toArray();
     }
 
-    
+    public function checkDelFlagByEmail($email){
+        $query = $this->Users->find()
+        ->select([
+            'Users.del_flag'
+        ])
+        ->where([
+            'Users.email' => $email,
+            'Users.del_flag' => 1
+        ]);
+        return $query->toArray();
+    }
 
 }

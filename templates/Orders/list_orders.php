@@ -66,14 +66,17 @@ $n = 1;
                                                         echo 'Từ chối';
                                                     } ?>
                                                 </a></td>
-
                                             <td>
                                                 <a href="<?= $this->Url->build('/admin/details-order/' . $order->id, ['fullBase' => true]) ?>">
-                                                    <input type="submit" class="btn btn-info" value="   Chi Tiết " style="margin-bottom: 5px"/>
+                                                    <input type="submit" class="btn btn-info" value="   Chi Tiết Đơn " style="margin-bottom: 5px"/>
                                                 </a>
-                                                <a href="<?= $this->Url->build('/admin/confirm-order/' . $order->id, ['fullBase' => true]) ?>">
-                                                    <input type="submit" class="btn btn-info" value="Xác Nhận" style="margin-bottom: 5px"/>
-                                                </a>
+                                                <?php if($_SESSION['flag'] == 3){ ?>
+                                                    <a href="<?= $this->Url->build('/admin/confirm-order/' . $order->id, ['fullBase' => true]) ?>">
+                                                    <input type="submit" class="btn btn-info" value="Xác Nhận Đơn" style="margin-bottom: 5px"/>
+                                                    </a>
+                                                <?php }else{?>
+                                                    <input   class="btn btn-danger" value="Không Đủ Quyền" style="margin-bottom: 5px" disabled/>
+                                                <?php }?>
                                             </td>
                                         </tr>
                                     <?php } ?>

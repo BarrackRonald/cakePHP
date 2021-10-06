@@ -41,7 +41,7 @@ class UsersController extends AppController
     //List User
     public function listUsers()
     {
-        $users = $this->{'CRUD'}->getAllUser();
+        $users = $this->{'CRUD'}->getUser();
         $this->set(compact('users', $this->paginate($users, ['limit'=> '3'])));
 
     }
@@ -76,7 +76,10 @@ class UsersController extends AppController
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $dataRole =  $this->{'CRUD'}->getAllRoles();
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
+            $atribute = $this->request->getData();
+            $hashPswdObj = new DefaultPasswordHasher;
+            $atribute['password'] = $hashPswdObj->hash($atribute['password']);
+            $user = $this->Users->patchEntity($dataUser[0], $atribute);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('User đã được cập nhật thành công.'));
                 return $this->redirect(['action' => 'listUsers']);
@@ -87,20 +90,34 @@ class UsersController extends AppController
         $this->set(compact('dataUser', 'dataRole'));
     }
 
-    //Delete User
-
+    //Khóa Tài Khoản
     public function deleteUser($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $dataUser = $this->{'CRUD'}->getUserByID($id);
-
-        if ($this->Users->delete($dataUser[0])) {
+        $atribute = $this->request->getData();
+        $atribute['del_flag'] = 1;
+        $user = $this->Users->patchEntity($dataUser[0], $atribute);
+        if ($this->Users->save($user)) {
             $this->Flash->success(__('User đã được xóa thành công.'));
-        } else {
-            $this->Flash->error(__('User chưa được xóa. Vui lòng thử lại.'));
+            return $this->redirect(['action' => 'listUsers']);
         }
+        $this->Flash->error(__('User chưa được xóa. Vui lòng thử lại.'));
+    }
 
-        return $this->redirect(['action' => 'listUsers']);
+    //Mở lại tài khoản
+    public function opentUser($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $dataUser = $this->{'CRUD'}->getUserByID($id);
+        $atribute = $this->request->getData();
+        $atribute['del_flag'] = 0;
+        $user = $this->Users->patchEntity($dataUser[0], $atribute);
+        if ($this->Users->save($user)) {
+            $this->Flash->success(__('User đã được mở thành công.'));
+            return $this->redirect(['action' => 'listUsers']);
+        }
+        $this->Flash->error(__('User chưa được mở. Vui lòng thử lại.'));
     }
 
     //View user
@@ -111,5 +128,5 @@ class UsersController extends AppController
         $dataRole =  $this->{'CRUD'}->getAllRoles();
 
         $this->set(compact('dataUser', 'dataRole'));
-    }   
+    }
 }

@@ -68,7 +68,11 @@ echo $this->element('Admin/sidebar');
                                     <option value="2" <?php if($dataOrder[0]->status == 2){ echo 'selected'; } ?> >Từ chối</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php if($_SESSION['flag'] == 3){ ?>
+                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php }else{?>
+                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                            <?php }?>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

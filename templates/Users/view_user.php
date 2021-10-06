@@ -3,7 +3,7 @@ use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
-
+<?php if($_SESSION['flag'] == 2){ ?>
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
@@ -42,7 +42,6 @@ echo $this->element('Admin/sidebar');
                                 <label for="email">Address:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->address ?>" name="address" readonly >
                             </div>
-                            
                             <div class="form-group">
                                 <label for="email">Point:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->point_user ?>" name="point" readonly>
@@ -54,8 +53,6 @@ echo $this->element('Admin/sidebar');
                                     <?php foreach ($dataRole as $role) { ?>
                                         <option value="<?= $role->id?>" <?php if($role->id == $dataUser[0]->role_id){?> selected <?php } ?> ><?= $role->role_name ?></option>
                                     <?php } ?>
-                                    
-                                    
                                 </select>
                             </div>
                             <?= $this->Form->end() ?>
@@ -63,6 +60,9 @@ echo $this->element('Admin/sidebar');
                     </div>
                 </div>
             </div>
+        <?php } else {?>
+            <h3>Người dùng không đủ quyền để truy cập!!</h3>
+        <?php }?>
 <?php
 echo $this->element('Admin/footer');
 ?>

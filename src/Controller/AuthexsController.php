@@ -21,7 +21,7 @@ class AuthexsController extends AppController {
 
    public function login(){
         if($this->request->is('post')) {
-          $con = mysqli_connect("localhost", "root", "", "cakephp1");
+          $con = mysqli_connect("localhost", "root", "", "cakephp");
 
           $email = $this->request->getData('email');
           $hashPswdObj = new DefaultPasswordHasher;
@@ -29,9 +29,17 @@ class AuthexsController extends AppController {
           $this->getTableLocator()->get('users');
           $passworDB = $this->{'Data'}->getPws($email);
           $checkPassword =  $hashPswdObj->check($password, $passworDB[0]['password'] );
+
+          //Check tài khoản bị khóa
+            $delFlag = $this->{'CRUD'}->checkDelFlagByEmail($email);
+            if(count($delFlag) > 0){
+                $this->Flash->error('Your account has been locked.');
+                return $this->redirect(['action' => '']);
+            }
+
           // checkpass bằng mã hash
             if($checkPassword){
-              $query = "SELECT* from users where email = '$email'";
+              $query = "SELECT* from users where email = '$email' and del_flag = 0";
               $result = mysqli_query($con, $query);
               $row_user = mysqli_fetch_assoc($result);
               if(mysqli_num_rows($result) > 0){
@@ -40,7 +48,6 @@ class AuthexsController extends AppController {
                   $session = $this->request->getSession();
                   $session->write('idUser', $idUser);
                   $session->write('username', $username);
-
 
                   //Check quyền gắn cờ
                   if($row_user['role_id'] == 1){
@@ -51,7 +58,6 @@ class AuthexsController extends AppController {
                         $flag = 3;
                     }
                     $session->write('flag', $flag);
-
                   return $this->redirect(['action' => 'index']);
                } else {
                $this->Flash->error('Your username or password is incorrect.');

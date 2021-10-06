@@ -35,7 +35,11 @@ echo $this->element('Admin/sidebar');
                                         </i>
                                 <?php }?>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php if($_SESSION['flag'] == 2){ ?>
+                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                            <?php }else{?>
+                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                            <?php }?>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

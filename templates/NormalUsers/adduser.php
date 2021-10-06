@@ -97,7 +97,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="number" value="<?= $dataProds['infoUser']['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text " readonly>
+                                                <input type="number" value="<?= $dataProds['infoUser']['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" readonly>
                                             </p>
                                             <div class="clear"></div>
                                         </div>
@@ -146,16 +146,42 @@ echo $this->element('NormalUsers/header');
                                             </table>
 
 
+                                            <div class="col-3">
+
+                                        <div id="order_review" style="position: relative; display: inline-block;">
+
+                                            <div id="payment">
+
+                                                <div class="form-row place-order" >
+                                                    <a href="/billorder">
+                                                        <input type="button"  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
+                                                    </a>
+
+
+                                                </div>
+
+                                            <div class="clear"></div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div id="order_review" style="position: relative; float: right;">
+
                                             <div id="payment">
 
                                                 <div class="form-row place-order">
 
                                                     <input type="submit" data-value="Place order" value="Place order" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
 
-
                                                 </div>
 
                                             <div class="clear"></div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
 
                                             </div>
                                         </div>

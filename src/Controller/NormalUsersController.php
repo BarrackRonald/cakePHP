@@ -114,6 +114,8 @@ class NormalUsersController extends AppController
                     $dataProds['infoUser'] = $dataUser['data'];
                     $session->write('cartData', $dataProds);
                     $this->set(compact('dataProds'));
+
+                    
                 }
             }
         }

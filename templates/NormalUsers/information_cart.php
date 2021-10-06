@@ -66,7 +66,7 @@ echo $this->element('NormalUsers/header');
                                                     <input type="button" class="minus" value="-" >
 
                                                 </a>
-                                                    <input class='valueItem' id="product_<?= $key?>" type="number" size="4" class="input-text qty text" title="Qty" value="<?= isset($this->request->getSession()->read('cartData')['cart']["$key"]) ? $this->request->getSession()->read('cartData')['cart']["$key"]['quantity'] : "0";?>" min="0" step="1">
+                                                    <input class='valueItem' id="product_<?= $key?>" type="number" size="4" class="input-text qty text" title="Qty" value="<?= isset($this->request->getSession()->read('cartData')['cart']["$key"]) ? $this->request->getSession()->read('cartData')['cart']["$key"]['quantity'] : "0";?>" min="0" step="1" readonly>
                                                 <a href="javascript:;" onclick="addCart(<?= $key?>)">
                                                     <input type="button" class="plus" value="+">
                                                 </a>

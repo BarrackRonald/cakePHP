@@ -116,6 +116,8 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/add-user', ['controller' => 'Users', 'action' => 'addUser']);
     $builder->connect('/admin/edit-user/:id', ['controller' => 'Users', 'action' => 'editUser'], ["pass" => ["id"]]);
     $builder->connect('/admin/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
+    $builder->connect('/admin/opent-user/:id', ['controller' => 'Users', 'action' => 'opentUser'], ["pass" => ["id"]]);
+    
     $builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUsers']);
     $builder->connect('/admin/view-user/:id', ['controller' => 'Users', 'action' => 'viewUser'], ["pass" => ["id"]]);
 

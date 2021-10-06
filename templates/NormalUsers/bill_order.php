@@ -100,7 +100,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="number" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text " readonly>
+                                                <input type="number" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " readonly>
                                             </p>
                                             <div class="clear"></div>
                                             <?php } ?>
@@ -150,16 +150,42 @@ echo $this->element('NormalUsers/header');
                                             </table>
 
 
+                                            <div class="col-3">
+
+                                        <div id="order_review" style="position: relative; display: inline-block;">
+
                                             <div id="payment">
 
-                                                <div class="form-row place-order">
-
-                                                    <input type="submit" data-value="Place order" value="Place order" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+                                                <div class="form-row place-order" >
+                                                    <a href="/carts">
+                                                        <input type="button"  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
+                                                    </a>
 
 
                                                 </div>
 
                                             <div class="clear"></div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div id="order_review" style="position: relative; float: right;">
+
+                                            <div id="payment">
+
+                                                <div class="form-row place-order">
+
+                                                    <input type="submit" data-value="Place order" value="Place Order" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+
+                                                </div>
+
+                                            <div class="clear"></div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
 
                                             </div>
                                         </div>
@@ -179,7 +205,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
                                                 <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" value=" <?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['username']; } ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
                                                <?php  if(isset($_SESSION['error']['username'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['username'])?>
@@ -192,8 +218,8 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?>   type="text" value="" placeholder="" id="billing_address_1" name="address" class="input-text " >
-                                                <?php  if(isset($_SESSION['error']['address'])){?>
+                                                <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?>   type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['address']; } ?>" placeholder="" id="billing_address_1" name="address" class="input-text " >
+                                                    <?php  if(isset($_SESSION['error']['address'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['address'])?>
                                                         </i>
@@ -206,7 +232,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="" placeholder="" id="billing_email" name="email" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['email']; } ?>" placeholder="" id="billing_email" name="email" class="input-text " >
                                                 <?php  if(isset($_SESSION['error']['email'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['email'])?>
@@ -218,7 +244,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="number" value="" placeholder="" id="billing_phone" name="phonenumber" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="number" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['phonenumber']; } ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " >
                                                 <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['phonenumber'])?>
@@ -254,7 +280,7 @@ echo $this->element('NormalUsers/header');
 
                                                 <div class="form-row place-order" >
                                                     <a href="/carts">
-                                                        <input  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+                                                        <input type="button"  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
                                                     </a>
 
 
@@ -274,7 +300,6 @@ echo $this->element('NormalUsers/header');
 
                                                     <input type="submit" data-value="Place order" value="Next" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
 
-
                                                 </div>
 
                                             <div class="clear"></div>
@@ -284,12 +309,6 @@ echo $this->element('NormalUsers/header');
                                         </div>
                                     </div>
 
-                                    
-
-                                    <div class="col-3">
-
-                                        
-                                    </div>
 
                                 </div>
 

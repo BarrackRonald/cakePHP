@@ -3,6 +3,7 @@ use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
+<?php if($_SESSION['flag'] == 2){ ?>
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
@@ -99,6 +100,9 @@ echo $this->element('Admin/sidebar');
                     </div>
                 </div>
             </div>
+        <?php } else{?>
+            <h3>Người dùng không đủ quyền để truy cập</h3>
+        <?php }?>
 <?php
 echo $this->element('Admin/footer');
 ?>

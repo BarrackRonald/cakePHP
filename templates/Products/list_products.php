@@ -55,17 +55,26 @@ $n = 1;
                                                 if(isset($product->images[0])){?>
                                                     <img width="60%" src="<?= $product->images[0]->file;?>" alt="">
                                                 <?php }else{ echo 'Chưa cập nhật hình ảnh';}?></a></td>
-                                            <td><a href="<?= $this->Url->build('/admin/view-product/' . $product->id, ['fullBase' => true]) ?>"><?= Text::excerpt($product['description'], 'method', 50, '...');?></a></td>
-                                            <td><a href="<?= $this->Url->build('/admin/view-product/' . $product->id, ['fullBase' => true]) ?>"><?= $product['amount_product'] ?></a></td>
-                                            <td><a href="<?= $this->Url->build('/admin/view-product/' . $product->id, ['fullBase' => true]) ?>"><?= $product['point_product'] ?></a></td>
-                                            <td><a href="<?= $this->Url->build('/admin/view-product/' . $product->id, ['fullBase' => true]) ?>"><?= $product['Categories']['category_name']?></a></td>
+                                            <td><a href=""><?= Text::excerpt($product['description'], 'method', 50, '...');?></a></td>
+                                            <td><a href=""><?= $product['amount_product'] ?></a></td>
+                                            <td><a href=""><?= $product['point_product'] ?></a></td>
+                                            <td><a href=""><?= $product['Categories']['category_name']?></a></td>
                                             <td>
-                                                <a href="<?= $this->Url->build('/admin/edit-product/' . $product->id, ['fullBase' => true]) ?>">
-                                                    <input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px"/>
-                                                </a>
+                                                <?php if($_SESSION['flag'] == 2){ ?>
+                                                    <a href="<?= $this->Url->build('/admin/edit-product/' . $product->id, ['fullBase' => true]) ?>">
+                                                        <input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px"/>
+                                                    </a>
+                                                <?php }else{?>
+                                                    <input type="button" class="btn btn-info" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
+                                                <?php }?>
+
                                                 <form  action="<?= $this->Url->build('/admin/delete-product/' . $product->id, ['fullBase' => false]) ?>" method="post">
                                                     <input type="hidden" value="<?= $product->id ?>" name="id" />
-                                                    <input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px"/>
+                                                    <?php if($_SESSION['flag'] == 2){ ?>
+                                                        <input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px"/>
+                                                    <?php }else{?>
+                                                        <input type="button" class="btn btn-danger" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
+                                                    <?php }?>
                                                 </form>
                                             </td>
                                         </tr>

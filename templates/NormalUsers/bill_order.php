@@ -245,9 +245,28 @@ echo $this->element('NormalUsers/header');
                                         </div>
                                     </div>
 
+
                                     <div class="col-3">
 
-                                        <div id="order_review" style="position: relative;">
+                                        <div id="order_review" style="position: relative; display: inline-block;">
+
+                                            <div id="payment">
+
+                                                <div class="form-row place-order" >
+                                                    <a href="/carts">
+                                                        <input  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+                                                    </a>
+
+
+                                                </div>
+
+                                            <div class="clear"></div>
+
+
+                                            </div>
+                                        </div>
+
+                                        <div id="order_review" style="position: relative; float: right;">
 
                                             <div id="payment">
 
@@ -260,8 +279,16 @@ echo $this->element('NormalUsers/header');
 
                                             <div class="clear"></div>
 
+
                                             </div>
                                         </div>
+                                    </div>
+
+                                    
+
+                                    <div class="col-3">
+
+                                        
                                     </div>
 
                                 </div>

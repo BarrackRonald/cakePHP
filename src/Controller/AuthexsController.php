@@ -21,7 +21,7 @@ class AuthexsController extends AppController {
 
    public function login(){
         if($this->request->is('post')) {
-          $con = mysqli_connect("localhost", "root", "", "cakephp");
+          $con = mysqli_connect("localhost", "root", "", "cakephp1");
 
           $email = $this->request->getData('email');
           $hashPswdObj = new DefaultPasswordHasher;
@@ -96,9 +96,11 @@ class AuthexsController extends AppController {
                 if($session->check('error')){
                     $session->delete('error');
                     $this->Users->save($dataUser['data']);
+                    $this->redirect(['action' => 'login']);
                     $this->Flash->success(__('Đăng ký tài khoản thành công.'));
                 }else {
                     $this->Users->save($dataUser['data']);
+                    $this->redirect(['action' => 'login']);
                 $this->Flash->success(__('Đăng ký tài khoản thành công.'));
                 }
             }

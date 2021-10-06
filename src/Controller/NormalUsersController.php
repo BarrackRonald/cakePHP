@@ -40,6 +40,10 @@ class NormalUsersController extends AppController
                 return $this->redirect(['controller'=>'/', 'action' => 'index']);
             }else{
                 $dataProds = $session->read('cartData');
+                if($dataProds['totalAllAmount'] == 0){
+                    $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
+                    return $this->redirect(['controller'=>'/', 'action' => 'index']);
+                }
             }
 
             //check user đã đăng nhập chưa
@@ -87,17 +91,16 @@ class NormalUsersController extends AppController
                 }
                 // Checkmail trùng
                 $checkmail = $this->{'Data'}->checkmail($atribute);
-
                 //Test Check mail đúng ký tự
-                if (!preg_match("/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z]{2,4}){1,2}$/",$atribute['email'])) {
-                    $error['email'] = ['Địa chỉ mail này không đúng định dạng.'];
-                    $session->write('error', $error);
-                    $this->redirect(['action' => 'billOrder']);
-                } else {
-                    if($session->check('error')){
-                        $session->delete('error');
-                    }
-                }
+                // if (!preg_match("/^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z]{2,4}){1,2}$/",$atribute['email'])) {
+                //     $error['email'] = ['Địa chỉ mail này không đúng định dạng.'];
+                //     $session->write('error', $error);
+                //     $this->redirect(['action' => 'billOrder']);
+                // } else {
+                //     if($session->check('error')){
+                //         $session->delete('error');
+                //     }
+                // }
 
                 if(count($checkmail)> 0){
                     $error['email'] = ['This email address already exists.'];
@@ -110,13 +113,14 @@ class NormalUsersController extends AppController
                 }
 
                 if($session->check('cartData')){
+
                     $dataProds = $session->read('cartData');
                     $dataProds['infoUser'] = $dataUser['data'];
                     $session->write('cartData', $dataProds);
                     $this->set(compact('dataProds'));
 
-                    
                 }
+
             }
         }
     }

@@ -41,6 +41,7 @@ class CategoriesController extends AppController
     {
         $categories = $this->{'CRUD'}->getAllCategory();
         $this->set(compact('categories', $this->paginate($categories, ['limit'=> '3'])));
+        // $this->set(compact('categories'));
 
     }
 
@@ -78,7 +79,6 @@ class CategoriesController extends AppController
             }
             $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
         }
-        
         $this->set(compact('dataCategory'));
     }
 
@@ -87,15 +87,23 @@ class CategoriesController extends AppController
     public function deleteCategory($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $dataUser = $this->{'CRUD'}->getCategoryByID($id);
+        $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $atribute = $this->request->getData();
-        $atribute['del_flag'] = 1;
-        $user = $this->Users->patchEntity($dataUser[0], $atribute);
-        if ($this->Users->save($user)) {
-            $this->Flash->success(__('Danh mục đã được xóa thành công.'));
+        //Kiểm tra Danh mục còn sản phẩm không
+        $checkProduct= $this->{'CRUD'}->checkProductByCategory($atribute);
+        if(count($checkProduct) > 0){
+            $this->Flash->error(__('Danh mục còn sản phẩm. Không thể xóa'));
             return $this->redirect(['action' => 'listCategories']);
         }
-        $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
+        $atribute['del_flag'] = 1;
+        $category = $this->Categories->patchEntity($dataCategory[0], $atribute);
+        if ($this->Categories->save($category)) {
+            $this->Flash->success(__('Danh mục đã được xóa thành công.'));
+            return $this->redirect(['action' => 'listCategories']);
+        }else{
+            $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
+            return $this->redirect(['action' => 'listCategories']);
+        }
 
     }
 
@@ -105,5 +113,5 @@ class CategoriesController extends AppController
     {
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $this->set(compact('dataCategory'));
-    }   
+    }
 }

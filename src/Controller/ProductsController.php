@@ -100,20 +100,22 @@ class ProductsController extends AppController
         $this->set(compact('dataProduct', 'dataCategory'));
     }
 
-    //Delete Product
+    //Delete soft Product
 
     public function deleteProduct($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
-
-        if ($this->Products->delete($dataProduct[0])) {
+        $atribute = $this->request->getData();
+        $atribute['del_flag'] = 1;
+        $product = $this->Products->patchEntity($dataProduct[0], $atribute);
+        if ($this->Products->save($product)) {
             $this->Flash->success(__('Sản phẩm đã được xóa thành công.'));
-        } else {
+            return $this->redirect(['action' => 'listProducts']);
+        }else{
             $this->Flash->error(__('Sản phẩm chưa được xóa. Vui lòng thử lại.'));
+            return $this->redirect(['action' => 'listProducts']);
         }
-
-        return $this->redirect(['action' => 'listProducts']);
     }
 
     //View Product

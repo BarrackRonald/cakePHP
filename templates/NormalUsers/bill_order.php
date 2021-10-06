@@ -232,7 +232,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
                                                 <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['email']; } ?>" placeholder="" id="billing_email" name="email" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser']['email'])){ $_SESSION['cartData']['infoUser']['email']; } ?>" placeholder="" id="billing_email" name="email" class="input-text " >
                                                 <?php  if(isset($_SESSION['error']['email'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['email'])?>
@@ -297,9 +297,7 @@ echo $this->element('NormalUsers/header');
                                             <div id="payment">
 
                                                 <div class="form-row place-order">
-
                                                     <input type="submit" data-value="Place order" value="Next" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
-
                                                 </div>
 
                                             <div class="clear"></div>

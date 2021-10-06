@@ -31,11 +31,11 @@ $n = 1;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($categories as $category) {?>
+                                    <?php foreach ($categories as $category) { ?>
                                         <tr>
                                             <td><?= $n++ ?><td>
                                             <td> <a href="<?= $this->Url->build('/admin/view-category/' . $category->id, ['fullBase' => true]) ?>"><?= $category['category_name'] ?></a></td>
-                                            <td>
+                                            <td style="text-align: center;">
                                                 <?php if($_SESSION['flag'] == 2){ ?>
                                                     <a href="<?= $this->Url->build('/admin/edit-category/' . $category->id, ['fullBase' => true]) ?>">
                                                         <input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px"/>
@@ -46,7 +46,7 @@ $n = 1;
 
                                                 <form  action="<?= $this->Url->build('/admin/delete-category/' . $category->id, ['fullBase' => false]) ?>" method="post">
                                                     <input type="hidden" value="<?= $category->id ?>" name="id" />
-                                                    <input type="hidden" value="<?= $category->del_flag ?>" name="id" />
+                                                    <input type="hidden" value="<?= $category->del_flag ?>" name="del_flag" />
                                                     <?php if($_SESSION['flag'] == 2){ ?>
                                                         <input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px"/>
                                                     <?php }else{?>

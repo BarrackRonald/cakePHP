@@ -45,30 +45,38 @@ $this->disableAutoLayout();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   </head>
   <body>
-   
+
     <div class="header-area">
     <?= $this->Flash->render() ?>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
                     <div class="user-menu">
-                        <ul>
-                            <li><a href="/myaccount"><i class="fa fa-user"></i> My Account</a></li>
-                            <li><a href="#"><i class="fa fa-heart"></i> Wishlist</a></li>
-                            <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li>
-                            <li><a href="checkout.html"><i class="fa fa-user"></i> Checkout</a></li>
-                        </ul>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="user-menu">
                         <ul>
+                            <li><a href="/myaccount">
+                                <?php if(isset($_SESSION['username'])){ ?>
+                                    <i class="fa fa-user"><?= $_SESSION['username'] ?></i>
+                                <?php }else{?>
+                                    <i class="fa fa-user">My Account</i>
+                                <?php } ?>
+                                </a>
+                            </li>
+                            <?php if(isset($_SESSION['flag'])){ if($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3){?>
+                                <li><a href="/admin"><i class="fa fa-heart"></i> Truy cập Admin</a></li>
+                            <?php } }?>
+                        </ul>
+                        <ul>
                             <li>
                                 <?php  $session = $this->request->getSession();
                                     if($session->check('username')){?>
                                         <a href="/logout">
-                                            <i class="fa fa-sign-out"></i>
-                                            Logout
+                                            <i class="fa fa-sign-out">
+                                                Logout
+                                            </i>
                                         </a>
                                     <?php }else{?>
                                         <a href="/login">
@@ -128,12 +136,9 @@ $this->disableAutoLayout();
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/">Home</a></li>
-                        <li><a href="shop.html">Shop page</a></li>
-                        <li><a href="single-product.html">Single product</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                        <li><a href="#">Category</a></li>
-                        <li><a href="#">Others</a></li>
+                        <?php foreach ($dataCategories as $category) { ?>
+                            <li><a href="#"><?= $category['category_name'] ?></a></li>
+                        <?php } ?>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </div>  

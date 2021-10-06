@@ -27,5 +27,9 @@
     color: #cc1f1a;
     border-color: #ef5753;
   }
-  
+
+.list {
+  color: black;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
   /*//////////////////////////////////////////////////////////////////

@@ -48,16 +48,16 @@ $n = 1;
                                 </thead>
                                 <tbody>
                                     <?php   foreach ($query1 as $order) { ?>
-                                        <tr>
+                                        <tr class="list">
                                             <td><?= $n++ ?><td>
-                                            <td> <a href=""><?= $order['Users']['username']?></a></td>
-                                            <td> <a href=""><?= $order['email']?></a></td>
-                                            <td> <a href=""><?= $order['phonenumber']?></a></td>
-                                            <td> <a href=""><?= $order['address']?></a></td>
-                                            <td> <a href=""><?= $order['total_point']?></a></td>
-                                            <td><a href=""><?= $order['total_quantity'] ?></a></td>
-                                            <td> <a href=""><?= $order['total_amount']?></a></td>
-                                            <td><a href="">
+                                            <td><a><?= $order['Users']['username']?></a></td>
+                                            <td><a><?= $order['email']?></a></td>
+                                            <td><a><?= $order['phonenumber']?></a></td>
+                                            <td><a><?= $order['address']?></a></td>
+                                            <td><a><?= $order['total_point']?></a></td>
+                                            <td><a><?= $order['total_quantity'] ?></a></td>
+                                            <td><a><?= $order['total_amount']?></a></td>
+                                            <td><a>
                                                 <?php
                                                     if($order['status'] == 0){
                                                         echo 'Chờ duyệt';
@@ -66,7 +66,7 @@ $n = 1;
                                                         echo 'Từ chối';
                                                     } ?>
                                                 </a></td>
-                                            <td>
+                                            <td style="text-align: center;">
                                                 <a href="<?= $this->Url->build('/admin/details-order/' . $order->id, ['fullBase' => true]) ?>">
                                                     <input type="submit" class="btn btn-info" value="   Chi Tiết Đơn " style="margin-bottom: 5px"/>
                                                 </a>

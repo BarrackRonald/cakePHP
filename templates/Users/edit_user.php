@@ -50,9 +50,7 @@ echo $this->element('Admin/sidebar');
                                     <?php } ?>
                                 </select>
                             </div>
-                            <?php if($dataUser[0]->role_id == 2){ ?>
-                                <button disabled class="btn btn-primary btn-default">Admin</button>
-                            <?php } else if($_SESSION['flag'] == 2){ ?>
+                            <?php if($_SESSION['flag'] == 2){ ?>
                                 <button type="submit" class="btn btn-primary btn-default">Submit</button>
                             <?php }else{?>
                                 <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>

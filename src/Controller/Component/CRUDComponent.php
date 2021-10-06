@@ -115,8 +115,7 @@ class CRUDComponent extends CommonComponent
         ])
         ->where([
             'Categories.del_flag' => 0,
-        ])
-        ->order('Categories.created_date DESC');
+        ]);
         return $query;
     }
 
@@ -147,6 +146,15 @@ class CRUDComponent extends CommonComponent
         ];
     }
 
+    public function checkProductByCategory($atribute){
+        $idCategory = $atribute['id'];
+        $query = $this->Products->find()
+            ->where([
+                'Products.category_id' => $idCategory,
+            ]);
+        return $query->toArray();
+    }
+
     //Products
     public function getAllProduct($key = null){
         $query = $this->Products->find()
@@ -164,6 +172,9 @@ class CRUDComponent extends CommonComponent
             'alias' => 'categories' ,
             'type' => 'left',
             'conditions' => ['Products.category_id = Categories.id']
+        ])
+        ->where([
+            'Products.del_flag' => 0,
         ])
         ->order('Products.created_date DESC')
         ->contain(['Images']);
@@ -288,7 +299,7 @@ class CRUDComponent extends CommonComponent
     //Search Orders
     public function getSearchOrder($key){
 
-        $query = $this->Users->find()
+        $query = $this->Orders->find()
         ->select([
             'Orders.id',
             'Orders.email',
@@ -309,7 +320,7 @@ class CRUDComponent extends CommonComponent
         ])
         ->order('Orders.created_date DESC')
         ->where([
-            'Users.username like' => '%'. $key .'%',
+            'OR' => [['Users.username like' => '%'. $key .'%'], ['Orders.email like' => '%'. $key .'%']],
         ]);
         return $query;
     }

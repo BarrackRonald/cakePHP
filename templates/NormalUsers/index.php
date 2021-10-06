@@ -11,13 +11,13 @@ echo $this->element('NormalUsers/header');
 
                         <li>
                             <img src="<?php echo $slideImage['file']?>" alt="Slide">
-                            <div class="caption-group">
+                            <!-- <div class="caption-group">
                                 <h2 class="caption title">
                                     iPhone <span class="primary">6 <strong>Plus</strong></span>
                                 </h2>
                                 <h4 class="caption subtitle">Dual SIM</h4>
                                 <a class="caption button-radius" href="#"><span class="icon"></span>Shop now</a>
-                            </div>
+                            </div> -->
                         </li>
                     <?php }
                     ?>
@@ -62,7 +62,7 @@ echo $this->element('NormalUsers/header');
             <div class="row">
                 <div class="col-md-12">
                     <div class="latest-product">
-                        <h2 class="section-title">Latest Products</h2>
+                        <h2 class="section-title">Sản phẩm Mới nhất</h2>
                         <div class="product-carousel">
 
                         <?php foreach ($dataNewsProducts as $product) { ?>
@@ -71,14 +71,17 @@ echo $this->element('NormalUsers/header');
                                     <img src="<?php echo $product->images[0]->file ?>" alt="">
                                     <div class="product-hover">
                                         <a href="javascript:;" onclick="addCart(<?php echo $product['id']?>)" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
-                                        <a href="single-product.html" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+                                        <a href="#" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                 </div>
 
-                                <h2><a href="single-product.html"><?php echo $product['product_name']?></a></h2>
+                                <h2><a href="#"><?php echo $product['product_name']?></a></h2>
 
-                                <div class="product-carousel-price">
-                                    <ins><?php echo $product['amount_product']?></ins> <del>$100.00</del>
+                                <div class="product-carousel-price" style="display:inline">
+                                    <ins><?php echo '$'.$product['amount_product']?></ins>
+                                </div>
+                                <div class="product-carousel-price" style="float: right; color: #c58209cc">
+                                    <ins><?php echo $product['point_product'].' point'?></ins>
                                 </div>
                             </div>
                         <?php }?>
@@ -112,7 +115,7 @@ echo $this->element('NormalUsers/header');
     
     <div class="product-widget-area">
         <div class="zigzag-bottom"></div>
-        <div class="container">
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-md-4">
                     <div class="single-product-widget">
@@ -259,7 +262,7 @@ echo $this->element('NormalUsers/header');
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div> <!-- End product widget area -->
 
     <script>
@@ -273,6 +276,7 @@ echo $this->element('NormalUsers/header');
                 success: function (data) {
                     // console.log(JSON.parse(data));
                     var data = JSON.parse(data);
+                    
 				    $('.product-count').html(data.totalquantity);
                     $('#totalAllAmount').html(data.totalAllAmount);
 

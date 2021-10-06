@@ -47,7 +47,6 @@ class OrdersController extends AppController
         }else{
             $query1 = $orders;
         }
-        // dd($query);
         $this->set(compact('query1', $this->paginate($query1, ['limit'=> '3'])));
 
     }

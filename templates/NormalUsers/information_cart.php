@@ -14,8 +14,6 @@ echo $this->element('NormalUsers/header');
             </div>
         </div>
     </div> <!-- End Page title area -->
-    
-    
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -49,15 +47,15 @@ echo $this->element('NormalUsers/header');
                                             </td>
 
                                             <td class="product-name">
-                                                <a href="single-product.html"><?= $product['name']?></a> 
+                                                <a href="single-product.html"><?= $product['name']?></a>
                                             </td>
 
                                             <td class="product-price">
-                                                <span class="amount"><?= $product['amount']?></span> 
+                                                <span class="amount"><?= $product['amount']?></span>
                                             </td>
 
                                             <td class="product-point">
-                                                <span class="amount" id="point_<?= $key?>"><?= $product['totalPoint']?></span> 
+                                                <span class="amount" id="point_<?= $key?>"><?= $product['totalPoint']?></span>
                                             </td>
 
                                             <td class="product-quantity" style="width:auto">

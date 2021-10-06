@@ -96,7 +96,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">PhoneNumber: <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="number" value="<?= $dataUser[0]['phonenumber'] ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text " readonly>
+                                                <input type="number" value="<?= $dataUser[0]['phonenumber'] ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " readonly>
                                             </p>
 
                                             <div class="clear"></div>

@@ -27,8 +27,16 @@ class AuthexsController extends AppController {
           $hashPswdObj = new DefaultPasswordHasher;
           $password = $this->request->getData('password');
           $this->getTableLocator()->get('users');
-          $passworDB = $this->{'Data'}->getPws($email);
-          $checkPassword =  $hashPswdObj->check($password, $passworDB[0]['password'] );
+          $passwordDB = $this->{'Data'}->getPws($email);
+
+          //Check email tồn tại
+          $dataUserArr = $this->{'CRUD'}->getUsersByEmailArr($email);
+
+          if(count($dataUserArr) < 1){
+            $this->Flash->error('Email does not exist.');
+            return $this->redirect(['action' => '']);
+        }else{
+          $checkPassword =  $hashPswdObj->check($password, $passwordDB[0]['password'] );
 
           //Check tài khoản bị khóa
             $delFlag = $this->{'CRUD'}->checkDelFlagByEmail($email);
@@ -60,10 +68,15 @@ class AuthexsController extends AppController {
                     $session->write('flag', $flag);
                   return $this->redirect(['action' => 'index']);
                } else {
-               $this->Flash->error('Your username or password is incorrect.');
+
+                    $this->Flash->error('Your username or password is incorrect.');
                }
+            }else{
+                $this->Flash->error('Your username or password is incorrect.');
             }
+
         }
+    }
 
   }
 
@@ -81,7 +94,7 @@ class AuthexsController extends AppController {
 
         $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->register($atribute);
-        // dd($dataUser['data']);
+        
         $checkmail = $this->{'Data'}->checkmail($atribute);
 
         if($dataUser['result'] == "invalid"){

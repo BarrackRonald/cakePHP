@@ -469,7 +469,7 @@ z-index: 999;}
   background: #000;
   text-decoration: none;border-color: #444;
 }
-.product-carousel-price ins {
+.product-carousel-price  {
   color: #ee5057;
   font-weight: 700;
   margin-right: 5px;

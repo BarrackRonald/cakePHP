@@ -154,7 +154,7 @@ class NormalUsersController extends AppController
                  if(!$insertOrder['result'] == "invalid")
                  {
                      $to = $atribute['email'];
-                     $toAdmin = 'admin@gmail.com';
+                     $toAdmin = 'tienphamvan2005@gmail.com';
                      $subject = 'Mail Confirm Order';
                      $message = '
                          Thông tin đặt hàng gồm:
@@ -204,6 +204,7 @@ class NormalUsersController extends AppController
                 {
                     // dd($atribute['phonenumber']);
                     $to = $atribute['email'];
+                    $toAdmin = 'tienphamvan2005@gmail.com';
                     $subject = 'Mail Confirm Order';
                     $message = '
                         Thông tin đặt hàng gồm:
@@ -222,7 +223,7 @@ class NormalUsersController extends AppController
                             ';
                     //xóa session
                     $session->delete('cartData');
-                    $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
                     if($errSendMail == false){
                         $this->redirect(['action' => 'successOrder']);
                     }

@@ -34,6 +34,9 @@ class DataComponent extends CommonComponent
 
     public function getSlideImage($key = null) {
         $query = $this->Images->find()
+            ->where([
+                'Images.del_flag' => 0,
+            ])
             ->where(['Images.image_type' => 'Slider'])
             ->order('created_date DESC')
             ->limit(5)
@@ -46,9 +49,8 @@ class DataComponent extends CommonComponent
         $query = $this->Products->find()
             ->where([
                 'Products.product_name like' => '%' . $keyword . '%',
-                // 'Products.description like' => '%' . $keyword . '%'
+                'Products.del_flag' => 0,
             ]);
-            // dd($query);
         return $query;
 
     }
@@ -269,6 +271,9 @@ class DataComponent extends CommonComponent
 
     public function getNewsProduct($key = null){
         $query = $this->Products->find()
+        ->where([
+            'Products.del_flag' => 0,
+        ])
         ->order('created_date DESC')
         ->contain(['Images'])
         ->all();
@@ -313,7 +318,6 @@ class DataComponent extends CommonComponent
             'result' => 'success',
             'data' =>  $result
         ];
-        // dd($usersTable->save($user));
     }
 
     public function updateUserByID($atribute, $idUser){

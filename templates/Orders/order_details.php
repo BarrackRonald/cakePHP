@@ -41,9 +41,11 @@ $n = 1;
                                             <td> <a ><?= $orderDetail['amount_orderDetails']?></a></td>
                                         </tr>
                                     <?php } ?>
-                                    <?= $this->element('paginator')?>
                                 </tbody>
                             </table>
+                            <div class="pagination-button">
+                                <?= $this->element('paginator')?>
+                            </div>
                         </div>
                         <div style="margin-left: 25px">
                             <a href="/admin/list-orders">

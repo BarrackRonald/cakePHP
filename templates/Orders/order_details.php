@@ -35,17 +35,13 @@ $n = 1;
                                     <?php   foreach ($dataOrderDetails as $orderDetail) {?>
                                         <tr>
                                             <td><?= $n++ ?><td>
-                                            <td> <a href=""><?= $orderDetail['Products']['product_name']?></a></td>
-                                            <td> <a href=""><?= $orderDetail['quantity_orderDetails']?></a></td>
-                                            <td> <a href=""><?= $orderDetail['point_orderDetail']?></a></td>
-                                            <td> <a href=""><?= $orderDetail['amount_orderDetails']?></a></td>
+                                            <td> <a ><?= $orderDetail['Products']['product_name']?></a></td>
+                                            <td> <a ><?= $orderDetail['quantity_orderDetails']?></a></td>
+                                            <td> <a ><?= $orderDetail['point_orderDetail']?></a></td>
+                                            <td> <a ><?= $orderDetail['amount_orderDetails']?></a></td>
                                         </tr>
                                     <?php } ?>
-                                    <ul class="pagination">
-                                        <?= $this->Paginator->prev("<<") ?>
-                                        <?= $this->Paginator->numbers() ?>
-                                        <?= $this->Paginator->next(">>") ?>
-                                    </ul>
+                                    <?= $this->element('paginator')?>
                                 </tbody>
                             </table>
                         </div>

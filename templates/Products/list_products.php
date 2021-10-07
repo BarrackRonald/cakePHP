@@ -51,9 +51,9 @@ $n = 1;
                                             <td><?= $n++ ?><td>
                                             <td> <a><?= $product['product_name'] ?></a></td>
                                             <td><a >
-                                            <?php 
+                                            <?php
                                                 if(isset($product->images[0])){?>
-                                                    <img width="60%" src="<?= $product->images[0]->file;?>" alt="">
+                                                    <img width="60%" src="<?= $product->images[0]->image;?>" alt="">
                                                 <?php }else{ echo 'Chưa cập nhật hình ảnh';}?></a></td>
                                             <td><a><?= Text::excerpt($product['description'], 'method', 50, '...');?></a></td>
                                             <td><a><?= $product['amount_product'] ?></a></td>
@@ -80,9 +80,11 @@ $n = 1;
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                    <?= $this->element('paginator')?>
                                 </tbody>
                             </table>
+                            <div class="pagination-button">
+                                <?= $this->element('paginator')?>
+                            </div>
                         </div>
                     </div>
 

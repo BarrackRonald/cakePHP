@@ -8,7 +8,7 @@ echo $this->element('NormalUsers/header');
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
-                        <h2>Shopping Cart</h2>
+                        <h2>Giỏ Hàng</h2>
                     </div>
                 </div>
             </div>
@@ -27,11 +27,11 @@ echo $this->element('NormalUsers/header');
                                         <tr>
                                             <th class="product-remove">Xóa</th>
                                             <th class="product-thumbnail">Hình Ảnh</th>
-                                            <th class="product-name">Product</th>
-                                            <th class="product-price">Price</th>
+                                            <th class="product-name">Sản Phẩm</th>
+                                            <th class="product-price">Giá</th>
                                             <th class="product-point">Point</th>
-                                            <th class="product-quantity">Quantity</th>
-                                            <th class="product-subtotal">Total</th>
+                                            <th class="product-quantity">Số Lượng</th>
+                                            <th class="product-subtotal">Tổng Giá</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -43,15 +43,15 @@ echo $this->element('NormalUsers/header');
                                             </td>
 
                                             <td class="product-thumbnail">
-                                                <a href="single-product.html"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="<?= $product['image']?>"></a>
+                                                <a ><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="<?= $product['image']?>"></a>
                                             </td>
 
                                             <td class="product-name">
-                                                <a href="single-product.html"><?= $product['name']?></a>
+                                                <a ><?= $product['name']?></a>
                                             </td>
 
                                             <td class="product-price">
-                                                <span class="amount"><?= $product['amount']?></span>
+                                                <span class="amount"><?= '$'.$product['amount']?></span>
                                             </td>
 
                                             <td class="product-point">
@@ -74,7 +74,7 @@ echo $this->element('NormalUsers/header');
                                             <td class="product-subtotal">
 
                                                 <span class="amount" id="amount_<?= $key?>">
-                                                    <?= $product['totalAmount']?>
+                                                    <?= '$'.$product['totalAmount']?>
                                                 </span>
                                             </td>
                                         </tr>
@@ -83,11 +83,11 @@ echo $this->element('NormalUsers/header');
                                             <tr>
                                                 <td class="actions" colspan="6">
                                                     <div class="coupon">
-                                                        <label for="coupon_code">Total Amount:</label>
+                                                        <label for="coupon_code">Tổng Giá:</label>
                                                     </div>
                                                 </td>
                                                 <td class="actions" colspan="1">
-                                                <label for="coupon_code" id="totalAllAmount">
+                                                <label for="coupon_code" id="totalAllAmount"> $
                                                     <?php
                                                         echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? $this->request->getSession()->read('cartData')['totalAllAmount'] : "0";
                                                     ?>
@@ -99,7 +99,6 @@ echo $this->element('NormalUsers/header');
                                                 <td class="actions" colspan="7">
                                                     <div class="coupon">
                                                         <label for="coupon_code">
-                                                            <!-- <h4>GIỎ HÀNG TRỐNG</h4> -->
                                                         </label>
                                                     </div>
                                                 </td>
@@ -131,7 +130,6 @@ echo $this->element('NormalUsers/header');
 			data: { productId : (product_id) },
 
 			success: function (data) {
-				// console.log(JSON.parse(data).cart[product_id]["totalAmount"]);
 
                 //totalquantity
 				var datatotal = JSON.parse(data);
@@ -160,22 +158,17 @@ echo $this->element('NormalUsers/header');
 	}
 
 	function dellCart(product_id){
-		// console.log(product_id)
 		$.ajax({
 			url: '/dellCart',
 			type: 'post',
 			data: { productId : (product_id) },
 
 			success: function (data) {
-                // console.log(JSON.parse(data).cart);
-				// console.log(JSON.parse(data));
 
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
                 $('#totalAllAmount').html(datatotal.totalAllAmount);
-
-                 
 
                 //quantity and total mount
                 var dataProduct = JSON.parse(data).cart[product_id]
@@ -202,7 +195,6 @@ echo $this->element('NormalUsers/header');
     dellAllCart
 
     function dellAllCart(product_id){
-		// console.log(product_id)
 		$.ajax({
 			url: '/dellAllCart',
 			type: 'post',
@@ -230,4 +222,3 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
-    

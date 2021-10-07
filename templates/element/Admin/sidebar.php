@@ -25,21 +25,6 @@
 
                         </li>
 
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i data-feather="triangle" width="20"></i>
-                                <span>Components</span>
-                            </a>
-
-                            <ul class="submenu ">
-
-                                <li>
-                                    <a href="component-alert.html">Alert</a>
-                                </li>
-                            </ul>
-
-                        </li>
-
                         <li class='sidebar-title'>Forms &amp; Tables</li>
 
                         <?php if($_SESSION['flag'] == 2){ ?>
@@ -108,34 +93,6 @@
                                 </li>
 
 
-
-                            </ul>
-
-                        </li>
-
-                        <li class='sidebar-title'>Pages</li>
-
-
-
-                        <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i data-feather="user" width="20"></i>
-                                <span>Authentication</span>
-                            </a>
-
-                            <ul class="submenu ">
-
-                                <li>
-                                    <a href="auth-login.html">Login</a>
-                                </li>
-
-                                <li>
-                                    <a href="auth-register.html">Register</a>
-                                </li>
-
-                                <li>
-                                    <a href="auth-forgot-password.html">Forgot Password</a>
-                                </li>
 
                             </ul>
 

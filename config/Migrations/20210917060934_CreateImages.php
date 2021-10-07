@@ -23,9 +23,13 @@ class CreateImages extends AbstractMigration
             'limit' => 70,
         ]);
 
-        $table->addColumn('file', 'string', [
+        $table->addColumn('image', 'string', [
             'limit' => 300,
             'default' => null,
+        ]);
+
+        $table->addColumn('del_flag', 'boolean', [
+            'default' => 0,
         ]);
 
         $table->addColumn('user_id', 'integer')->addForeignKey('user_id', 'users', 'id');

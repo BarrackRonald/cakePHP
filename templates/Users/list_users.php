@@ -78,9 +78,13 @@ $n = 1;
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                    <?= $this->element('paginator')?>
                                 </tbody>
                             </table>
+
+                            <div class="pagination-button">
+                                <?= $this->element('paginator')?>
+                            </div>
+
                         </div>
                     </div>
 

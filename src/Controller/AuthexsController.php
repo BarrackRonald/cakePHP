@@ -21,9 +21,8 @@ class AuthexsController extends AppController {
 
    public function login(){
         if($this->request->is('post')) {
-          $con = mysqli_connect("localhost", "root", "", "cakephp1");
-
           $email = $this->request->getData('email');
+          $atribute = $this->request->getData();
           $hashPswdObj = new DefaultPasswordHasher;
           $password = $this->request->getData('password');
           $this->getTableLocator()->get('users');
@@ -47,20 +46,18 @@ class AuthexsController extends AppController {
 
           // checkpass bằng mã hash
             if($checkPassword){
-              $query = "SELECT* from users where email = '$email' and del_flag = 0";
-              $result = mysqli_query($con, $query);
-              $row_user = mysqli_fetch_assoc($result);
-              if(mysqli_num_rows($result) > 0){
-                  $idUser = $row_user['id'];
-                  $username = $row_user['username'];
+              $result = $this->{'Data'}->checklogin($atribute);
+              if(count($result) > 0){
+                  $idUser = $result[0]['id'];
+                  $username = $result[0]['username'];
                   $session = $this->request->getSession();
                   $session->write('idUser', $idUser);
                   $session->write('username', $username);
 
                   //Check quyền gắn cờ
-                  if($row_user['role_id'] == 1){
+                  if($result[0]['role_id'] == 1){
                         $flag = 1;
-                  }elseif ($row_user['role_id'] == 2) {
+                  }elseif ($result[0]['role_id'] == 2) {
                         $flag = 2;
                     }else{
                         $flag = 3;
@@ -94,7 +91,6 @@ class AuthexsController extends AppController {
 
         $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->register($atribute);
-        
         $checkmail = $this->{'Data'}->checkmail($atribute);
 
         if($dataUser['result'] == "invalid"){
@@ -170,9 +166,10 @@ class AuthexsController extends AppController {
                 if($this->Users->save($dataUser)){
                     $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
                             $to = $email;
+                            $toAdmin= 'Admin@gmail.com';
                             $subject = 'Reset Password';
                              $message = 'Mật khẩu của bạn là:'.$randompws.'';
-                    $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
                     if($errSendMail == false){
                         $this->redirect(['action' => 'login']);
                     }
@@ -183,9 +180,10 @@ class AuthexsController extends AppController {
                 if($this->Users->save($dataUser)){
                     $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
                             $to = $email;
+                            $toAdmin= 'Admin@gmail.com';
                             $subject = 'Reset Password';
                              $message = 'Mật khẩu của bạn là:'.$randompws.'';
-                    $errSendMail = $this->{'Mail'}->send_mail($to, $subject, $message);
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
                     if($errSendMail == false){
                         $this->redirect(['action' => 'login']);
                     }

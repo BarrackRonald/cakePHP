@@ -29,7 +29,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
 
-    <?= $this->Html->css(['NormalUsers/bootstrap.min.css', 'NormalUsers/font-awesome.min.css', 'NormalUsers/owl.carousel.css', 'NormalUsers/style.css', 'NormalUsers/responsive.css'
+    <?= $this->Html->css(['cake.css', 'NormalUsers/bootstrap.min.css', 'NormalUsers/font-awesome.min.css', 'NormalUsers/owl.carousel.css', 'NormalUsers/style.css', 'NormalUsers/responsive.css'
      ]) ?>
 
     <?= $this->fetch('meta') ?>

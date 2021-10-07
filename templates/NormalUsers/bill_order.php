@@ -8,7 +8,7 @@ echo $this->element('NormalUsers/header');
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
                     <?php if(isset($dataUser)){ ?>
-                        <h2>Shopping Cart</h2>
+                        <h2>Xác Nhận Đơn Hàng</h2>
                     <?php } else{?>
                         <h2>Thông Tin Khách Hàng</h2>
                     <?php }?>
@@ -73,10 +73,10 @@ echo $this->element('NormalUsers/header');
                                 <div id="customer_details" class="col2-set">
                                     <div class="col-3">
                                         <div class="woocommerce-billing-fields">
-                                            <h3>Billing Details</h3>
+                                            <h3>Thông tin khách hàng</h3>
                                             <?php foreach ($dataUser as $User) {?>
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                                <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_first_name">Họ và tên <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input type="hidden" name="idUser" value="<?= $User['id'] ?>">
                                                 <input type="text" value="<?= $User['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " readonly>
@@ -84,7 +84,7 @@ echo $this->element('NormalUsers/header');
                                             <div class="clear"></div>
 
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_address_1">Địa chỉ <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input type="text" value="<?= $User['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
                                             </p>
@@ -92,13 +92,13 @@ echo $this->element('NormalUsers/header');
                                             <div class="clear"></div>
 
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                                <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_email">Địa chỉ Email <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input type="text" value="<?= $User['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text " readonly>
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-                                                <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input type="number" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " readonly>
                                             </p>
@@ -108,14 +108,14 @@ echo $this->element('NormalUsers/header');
                                     </div>
 
                                     <div class="col-3">
-                                    <h3 id="order_review_heading">Your order</h3>
+                                    <h3 id="order_review_heading"> Thông Tin Đơn Hàng</h3>
 
                                         <div id="order_review" style="position: relative;">
                                             <table class="shop_table">
                                                 <thead>
                                                     <tr>
-                                                        <th class="product-name">Product</th>
-                                                        <th class="product-total">Total</th>
+                                                        <th class="product-name">Sản phẩm</th>
+                                                        <th class="product-total">Tổng</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -131,7 +131,7 @@ echo $this->element('NormalUsers/header');
                                                 <tfoot>
 
                                                     <tr class="shipping">
-                                                        <th>Total Point</th>
+                                                        <th>Tổng Point</th>
                                                         <td>
                                                             <?= $dataProds['totalAllPoint'] ?>
                                                             <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
@@ -139,7 +139,7 @@ echo $this->element('NormalUsers/header');
                                                     </tr>
 
                                                     <tr class="order-total">
-                                                        <th>Order Total</th>
+                                                        <th>Tổng Đơn Hàng</th>
                                                         <td><strong><span class="amount"><?= $dataProds['totalAllAmount'] ?></span></strong> </td>
                                                         <input type="hidden" name="totalAllPoint" value="<?= $dataProds['totalAllPoint'] ?>">
                                                         <input type="hidden" name="totalAllAmount" value="<?= $dataProds['totalAllAmount'] ?>">
@@ -176,7 +176,7 @@ echo $this->element('NormalUsers/header');
 
                                                 <div class="form-row place-order">
 
-                                                    <input type="submit" data-value="Place order" value="Place Order" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+                                                    <input type="submit" data-value="Place order" value="Xác nhận" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
 
                                                 </div>
 
@@ -200,10 +200,10 @@ echo $this->element('NormalUsers/header');
                                 <div id="customer_details" class="col2-set">
                                     <div class="col-3">
                                         <div class="woocommerce-billing-fields">
-                                            <h3>Billing Details</h3>
+                                            <h3>Thông tin khách hàng</h3>
 
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                                <label class="" for="billing_first_name">FullName <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_first_name">Họ và tên <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" value=" <?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['username']; } ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " >
                                                <?php  if(isset($_SESSION['error']['username'])){?>
@@ -216,7 +216,7 @@ echo $this->element('NormalUsers/header');
                                             <div class="clear"></div>
 
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Address <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_address_1">Địa chỉ <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?>   type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['address']; } ?>" placeholder="" id="billing_address_1" name="address" class="input-text " >
                                                     <?php  if(isset($_SESSION['error']['address'])){?>
@@ -230,9 +230,9 @@ echo $this->element('NormalUsers/header');
                                             <div class="clear"></div>
 
                                             <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                                <label class="" for="billing_email">Email Address <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_email">Địa chỉ Email <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser']['email'])){ $_SESSION['cartData']['infoUser']['email']; } ?>" placeholder="" id="billing_email" name="email" class="input-text " >
+                                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser']['email'])){ echo $_SESSION['cartData']['infoUser']['email']; } ?>" placeholder="" id="billing_email" name="email" class="input-text " >
                                                 <?php  if(isset($_SESSION['error']['email'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['email'])?>
@@ -242,7 +242,7 @@ echo $this->element('NormalUsers/header');
                                             </p>
 
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-                                                <label class="" for="billing_phone">Phone <abbr title="required" class="required">*</abbr>
+                                                <label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
                                                 </label>
                                                 <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="number" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['phonenumber']; } ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " >
                                                 <?php  if(isset($_SESSION['error']['phonenumber'])){?>
@@ -256,9 +256,9 @@ echo $this->element('NormalUsers/header');
                                             <div class="create-account">
                                                 <p>Chúng tôi sẽ một tài khoản bằng thông tin của bạn. Nếu bạn là khách hàng cũ, vui lòng Đăng nhập ở trên!!!</p>
                                                 <p id="account_password_field" class="form-row validate-required">
-                                                    <label class="" for="account_password">Account password <abbr title="required" class="required">*</abbr>
+                                                    <label class="" for="account_password">Mật khẩu <abbr title="required" class="required">*</abbr>
                                                     </label>
-                                                    <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" value="" placeholder="Password" id="account_password" name="password" class="input-text">
+                                                    <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" value="<?php if(isset($_SESSION['cartData']['infoUser']['password'])){ echo $_SESSION['cartData']['infoUser']['password']; } ?>" placeholder="Password" id="account_password" name="password" class="input-text">
                                                     <?php  if(isset($_SESSION['error']['password'])){?>
                                                                 <i style="color: red;">
                                                                     <?= implode($_SESSION['error']['password'])?>

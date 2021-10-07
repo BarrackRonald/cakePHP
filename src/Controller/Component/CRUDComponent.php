@@ -209,7 +209,7 @@ class CRUDComponent extends CommonComponent
 
         if($name){
             $image->moveTo($targetPath);
-            $images->image = '../../img/'.$name;
+            $images->image = '../../img/'.$name.date('Y-m-d h:m:s');
         }
 
         $images->image_name = 'img'.$atribute['product_name'] ;

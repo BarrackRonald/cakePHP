@@ -55,7 +55,8 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
-                                    <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="number" class="form-control" value="" name="phonenumber" >
+                                <!-- <input class='valueItem'  type="number" size="4" class="input-text qty text" title="Qty" value="" min="0" step="1" readonly> -->
+                                    <input min="0" max="10" size="4" <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="number" class="form-control" value="" name="phonenumber" >
                                     <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                             <i style="color: red;">
                                                 <?= implode($_SESSION['error']['phonenumber'])?>

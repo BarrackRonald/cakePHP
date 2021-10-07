@@ -97,7 +97,6 @@ class ProductsController extends AppController
     }
 
     //Delete soft Product
-
     public function deleteProduct($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);

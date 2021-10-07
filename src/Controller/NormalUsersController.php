@@ -232,7 +232,6 @@ class NormalUsersController extends AppController
     public function successOrder(){
 
     }
-
     public function informationCart(){
         $session = $this->request->getSession();
 			if($session->check('cartData')){
@@ -321,7 +320,6 @@ class NormalUsersController extends AppController
             $totalAmount = $quantity * $amount;
             $totalPoint = $quantity * $point;
 
-            
 
             $productArr = [
                 $product_id => [

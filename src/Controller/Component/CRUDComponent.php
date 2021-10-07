@@ -435,4 +435,63 @@ class CRUDComponent extends CommonComponent
         return $query->toArray();
     }
 
+    //Images
+    public function getAllImage($key = null){
+        $query = $this->Images->find()
+        ->select([
+            'Images.id',
+            'Images.image_name',
+            'Images.image_type',
+            'Images.image_type',
+            'Images.file',
+            'Images.user_id',
+            'Images.del_flag',
+            'Images.product_id',
+            'Products.product_name'
+        ])
+        ->join([
+            'table' => 'products',
+            'alias' => 'products' ,
+            'type' => 'left',
+            'conditions' => ['Images.product_id = Products.id']
+        ])
+        ->where([
+            'Images.del_flag' => 0,
+        ])
+        ->order('Images.created_date DESC');
+        return $query;
+    }
+
+    public function addimage($atribute){
+        $image = [];
+        $image['image_name'] = $atribute['product_name'];
+        $image['description'] = $atribute['description'];
+        $image['amount_product'] = $atribute['amount_product'];
+        $image['point_product'] = $atribute['point_product'];
+        $image['category_id'] = $atribute['category_id'];
+        $image['created_date'] = date('Y-m-d h:m:s');
+        $image['updated_date'] = date('Y-m-d h:m:s');
+        $dataImage = $this->Images->newEntity($image);
+        // dd($dataProduct);
+
+        if ($dataProduct->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataProduct->getErrors(),
+            ];
+        };
+        return [
+            'result' => 'success',
+            'data' => $this->Products->save($dataProduct),
+        ];
+    }
+
+    public function getimageByID($id){
+        $query = $this->Products->find()
+            ->where([
+                'Products.id' => $id,
+            ]);
+        return $query->toArray();
+    }
+
 }

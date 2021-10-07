@@ -81,8 +81,10 @@ class OrdersController extends AppController
                 $this->{'Data'}->updatePoint($pointAF, $idUser);
 
                 $confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
+                
                 if ($this->Orders->save($confirm)) {
                     $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
+                    return $this->redirect(['action' => 'listOrders']);
                 }else {
                     $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
                 }

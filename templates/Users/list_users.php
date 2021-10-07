@@ -26,13 +26,13 @@ $n = 1;
                                 <thead>
                                     <tr>
                                         <th>STT<th>
-                                        <th>Username</th>
+                                        <th>Họ và tên</th>
                                         <th>Email</th>
-                                        <th>Phonenumber</th>
-                                        <th>Address</th>
+                                        <th>Số Điện thoại</th>
+                                        <th>Địa chỉ</th>
                                         <th>Point</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
+                                        <th>Quyền</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,11 +78,7 @@ $n = 1;
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                    <ul class="pagination">
-                                        <?= $this->Paginator->prev("<<") ?>
-                                        <?= $this->Paginator->numbers() ?>
-                                        <?= $this->Paginator->next(">>") ?>
-                                    </ul>
+                                    <?= $this->element('paginator')?>
                                 </tbody>
                             </table>
                         </div>

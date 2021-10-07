@@ -42,7 +42,7 @@ $n = 1;
                                         <th>Tổng Point</th>
                                         <th>Tổng Số Lượng</th>
                                         <th>Tổng giá</th>
-                                        <th>Status</th>
+                                        <th>Trạng Thái</th>
                                         <th>Chức năng</th>
                                     </tr>
                                 </thead>
@@ -72,7 +72,7 @@ $n = 1;
                                                 </a>
                                                 <?php if($_SESSION['flag'] == 3){ ?>
                                                     <a href="<?= $this->Url->build('/admin/confirm-order/' . $order->id, ['fullBase' => true]) ?>">
-                                                    <input type="submit" class="btn btn-info" value="Xác Nhận Đơn" style="margin-bottom: 5px"/>
+                                                    <input type="submit" class="btn btn-info" value="Cập Nhật Đơn" style="margin-bottom: 5px"/>
                                                     </a>
                                                 <?php }else{?>
                                                     <input   class="btn btn-danger" value="Không Đủ Quyền" style="margin-bottom: 5px" disabled/>

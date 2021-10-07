@@ -59,13 +59,8 @@ class ProductsController extends AppController
         if ($this->request->is('post')) {
             $session = $this->request->getSession();
             $atribute = $this->request->getData();
-            $dataProduct = $this->{'CRUD'}->addproduct($atribute);
 
-            // $image = $this->request->getData('uploadfile');
-            // $name = $image->getClientFilename();
-            // $targetPath = WWW_ROOT.'img'.DS.$name;
-            // $image->moveTo($targetPath);
-            // $product->image = $name;
+            $dataProduct = $this->{'CRUD'}->addproduct($atribute);
 
             if($dataProduct['result'] == "invalid"){
                 $error = $dataProduct['data'];
@@ -75,6 +70,7 @@ class ProductsController extends AppController
                 if($session->check('error')){
                     $session->delete('error');
                 }
+
                 $this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
                 return $this->redirect(['action' => 'listProducts']);
             }
@@ -88,6 +84,7 @@ class ProductsController extends AppController
     {
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
             if ($this->Products->save($product)) {
@@ -96,7 +93,6 @@ class ProductsController extends AppController
             }
             $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
         }
-        // dd($dataProduct);
         $this->set(compact('dataProduct', 'dataCategory'));
     }
 

@@ -191,7 +191,6 @@ class CRUDComponent extends CommonComponent
         $product['created_date'] = date('Y-m-d h:m:s');
         $product['updated_date'] = date('Y-m-d h:m:s');
         $dataProduct = $this->Products->newEntity($product);
-        // dd($dataProduct);
 
         if ($dataProduct->hasErrors()) {
             return [
@@ -199,17 +198,42 @@ class CRUDComponent extends CommonComponent
                 'data' => $dataProduct->getErrors(),
             ];
         };
+
+        //Add Image vào Table Image
+        $result = $this->Products->save($dataProduct);
+        $images = $this->Images->newEmptyEntity();
+
+        $image = $atribute['uploadfile'];
+        $name = $image->getClientFilename();
+        $targetPath = WWW_ROOT.'img'.DS.$name;
+
+        if($name){
+            $image->moveTo($targetPath);
+            $images->image = '../../img/'.$name;
+        }
+
+        $images->image_name = 'img'.$atribute['product_name'] ;
+        $images->image_type = 'Banner';
+        $images->user_id = 1;
+        $images->product_id = $result['id'];
+        $images->created_date = date('Y-m-d h:m:s');
+        $images->updated_date = date('Y-m-d h:m:s');
+
+        $this->Images->save($images);
+
         return [
             'result' => 'success',
             'data' => $this->Products->save($dataProduct),
         ];
+
     }
 
     public function getProductByID($id){
         $query = $this->Products->find()
             ->where([
                 'Products.id' => $id,
-            ]);
+            ])
+            ->contain(['Images']);
         return $query->toArray();
     }
 
@@ -443,7 +467,7 @@ class CRUDComponent extends CommonComponent
             'Images.image_name',
             'Images.image_type',
             'Images.image_type',
-            'Images.file',
+            'Images.image',
             'Images.user_id',
             'Images.del_flag',
             'Images.product_id',
@@ -474,15 +498,15 @@ class CRUDComponent extends CommonComponent
         $dataImage = $this->Images->newEntity($image);
         // dd($dataProduct);
 
-        if ($dataProduct->hasErrors()) {
+        if ($dataImage->hasErrors()) {
             return [
                 'result' => 'invalid',
-                'data' => $dataProduct->getErrors(),
+                'data' => $dataImage->getErrors(),
             ];
         };
         return [
             'result' => 'success',
-            'data' => $this->Products->save($dataProduct),
+            'data' => $this->Products->save($dataImage),
         ];
     }
 

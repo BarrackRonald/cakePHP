@@ -158,12 +158,12 @@ class DataComponent extends CommonComponent
         };
         $result = $this->Orders->save($dataOrder);
 
-            //Add Orderdetail
+        //Add Orderdetail
         foreach ($dataProds['cart'] as $key => $product) {
             $orderDetail = [];
             $orderDetail['quantity_orderDetails'] = $product['quantity'];
             $orderDetail['amount_orderDetails'] = $product['totalAmount'];
-            $orderDetail['point_orderDetails'] = $product['totalPoint'];
+            $orderDetail['point_orderDetail'] = $product['totalPoint'];
             $orderDetail['product_id'] = $key;
             $orderDetail['order_id'] = $result['id'];
             $orderDetail['created_date'] = date('Y-m-d h:m:s');
@@ -251,7 +251,7 @@ class DataComponent extends CommonComponent
                 'Products.product_name',
                 'Products.amount_product',
                 'Products.point_product',
-                'Images.file'
+                'Images.image'
             ])
             ->join([
                 'table' => 'images',
@@ -329,6 +329,16 @@ class DataComponent extends CommonComponent
             'Users.id' => $idUser,
         ])
         ->execute();
+    }
+
+    public function checklogin($atribute){
+        $query = $this->Users->query()
+        ->Where([
+            'Users.email'=> $atribute['email'],
+            'Users.del_flag'=> 0,
+
+        ]);
+        return $query->toArray();
     }
 
 }

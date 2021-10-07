@@ -18,6 +18,7 @@ $this->disableAutoLayout();
 
     <link rel="stylesheet" href="../../vendors/Admin/perfect-scrollbar/perfect-scrollbar.css">
     <link rel="stylesheet" href="../../css/Admin/app.css">
+    <link rel="stylesheet" href="../../css/Admin/cake.css">
     <link rel="shortcut icon" href="../../images/Admin/favicon.svg" type="image/x-icon">
     <script src="../../js/Admin/ckeditor/ckeditor.js"></script>
 </head>
@@ -34,45 +35,6 @@ $this->disableAutoLayout();
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav d-flex align-items-center navbar-light ms-auto">
-                        <li class="dropdown nav-icon">
-                            <a href="#" data-bs-toggle="dropdown"
-                                class="nav-link  dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="d-lg-inline-block">
-                                    <i data-feather="bell"></i>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-large">
-                                <h6 class='py-2 px-4'>Notifications</h6>
-                                <ul class="list-group rounded-none">
-                                    <li class="list-group-item border-0 align-items-start">
-                                        <div class="avatar bg-success me-3">
-                                            <span class="avatar-content"><i data-feather="shopping-cart"></i></span>
-                                        </div>
-                                        <div>
-                                            <h6 class='text-bold'>New Order</h6>
-                                            <p class='text-xs'>
-                                                An order made by Ahmad Saugi for product Samsung Galaxy S69
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="dropdown nav-icon me-2">
-                            <a href="#" data-bs-toggle="dropdown"
-                                class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                                <div class="d-lg-inline-block">
-                                    <i data-feather="mail"></i>
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i data-feather="user"></i> Account</a>
-                                <a class="dropdown-item active" href="#"><i data-feather="mail"></i> Messages</a>
-                                <a class="dropdown-item" href="#"><i data-feather="settings"></i> Settings</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><i data-feather="log-out"></i> Logout</a>
-                            </div>
-                        </li>
                         <li class="dropdown">
                             <a href="#" data-bs-toggle="dropdown"
                                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
@@ -89,8 +51,6 @@ $this->disableAutoLayout();
                             <?php if(isset($_SESSION['flag'])){ if($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3){?>
                                 <a class="dropdown-item" href="/"><i data-feather="user"></i> NormalUsers</a>
                             <?php } }?>
-                                
-                                
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/logout"><i data-feather="log-out"></i> Logout</a>
                             </div>

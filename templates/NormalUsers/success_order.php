@@ -21,4 +21,3 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
-    

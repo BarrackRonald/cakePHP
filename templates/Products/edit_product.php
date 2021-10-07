@@ -29,13 +29,11 @@ echo $this->element('Admin/sidebar');
                                 <input type="text" class="form-control" value="<?= $dataProduct[0]->product_name ?>" name="product_name" >
 
                             </div>
-                            <!-- <div class="form-group">
                             <label for="email">Hình ảnh:</label>
-                                <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" >
-                            </div> -->
+                                <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" value="<?= $dataProduct[0]['images'][0]['image'] ?>" >
+                            </div>
                             <div class="form-group">
                                 <label style="display: block" for="email">Mô tả:</label>
-                                <!-- <input type="text" class="form-control" value="" name="description" > -->
                                 <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" ><?= $dataProduct[0]->description ?>
                                 </textarea>
                                 <script>

@@ -46,12 +46,6 @@ use Cake\Routing\RouteBuilder;
 /** @var \Cake\Routing\RouteBuilder $routes */
 $routes->setRouteClass(DashedRoute::class);
 
-
-//Admin
-
-
-
-
 $routes->scope('/', function (RouteBuilder $builder) {
 
     //NormalUser
@@ -87,11 +81,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Edit thông tin cá nhân/edit-account/
     $builder->connect('/edit-account/:id', ['controller' => 'NormalUsers', 'action' => 'editAccount'], ["pass" => ["id"]]);
 
-    //TestComponents
-    $builder->connect('/testcomponents',['controller'=>'Testcomponents','action'=>'initialize']);
-
-    //Test
-    $builder->connect('/sendmail',['controller'=>'NormalUsers','action'=>'sendMail']);
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
@@ -117,7 +106,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/edit-user/:id', ['controller' => 'Users', 'action' => 'editUser'], ["pass" => ["id"]]);
     $builder->connect('/admin/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
     $builder->connect('/admin/opent-user/:id', ['controller' => 'Users', 'action' => 'opentUser'], ["pass" => ["id"]]);
-    
     $builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUsers']);
     $builder->connect('/admin/view-user/:id', ['controller' => 'Users', 'action' => 'viewUser'], ["pass" => ["id"]]);
 
@@ -152,28 +140,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
     $builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
 
-
-
-
     $builder->fallbacks();
 });
 
 
-
-
-
-/*
- * If you need a different set of middleware or none at all,
- * open new scope and define routes there.
- *
- * ```
- * $routes->scope('/api', function (RouteBuilder $builder) {
- *     // No $builder->applyMiddleware() here.
- *
- *     // Parse specified extensions from URLs
- *     // $builder->setExtensions(['json', 'xml']);
- *
- *     // Connect API actions here.
- * });
- * ```
- */

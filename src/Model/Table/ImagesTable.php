@@ -79,10 +79,10 @@ class ImagesTable extends Table
             ->notEmptyFile('image_type');
 
         $validator
-            ->scalar('file')
-            ->maxLength('file', 300)
-            ->requirePresence('file', 'create')
-            ->notEmptyFile('file');
+            ->scalar('image')
+            ->maxLength('image', 300)
+            ->requirePresence('image', 'create')
+            ->notEmptyFile('image');
 
         $validator
             ->dateTime('created_date')

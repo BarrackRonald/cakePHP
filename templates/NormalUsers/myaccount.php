@@ -2,7 +2,7 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-    
+
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">

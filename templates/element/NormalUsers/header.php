@@ -106,22 +106,22 @@ $this->disableAutoLayout();
                         </h1>
                     </div>
                 </div>
-                
-                
                 <div class="col-sm-6">
+                <a href="/carts">
                     <div class="shopping-item">
-                        <a href="/carts">Giỏ Hàng <i class="fa fa-shopping-cart"></i> 
+                        Giỏ Hàng <i class="fa fa-shopping-cart"></i>
                         <span class="product-count">
                             <?php
                                 echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? $this->request->getSession()->read('cartData')['totalquantity'] : "0";
                             ?>
-                        </span></a>
+                        </span>
                     </div>
+                </a>
                 </div>
             </div>
         </div>
     </div> <!-- End site branding area -->
-    
+
     <div class="mainmenu-area">
         <div class="container">
             <div class="row">
@@ -132,7 +132,7 @@ $this->disableAutoLayout();
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                </div> 
+                </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/">Home</a></li>
@@ -141,8 +141,7 @@ $this->disableAutoLayout();
                         <?php } ?>
                         <li><a href="#">Contact</a></li>
                     </ul>
-                </div>  
+                </div>
             </div>
         </div>
     </div> <!-- End mainmenu area -->
-    

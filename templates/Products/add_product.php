@@ -34,10 +34,12 @@ echo $this->element('Admin/sidebar');
                                 <?php }?>
 
                             </div>
-                            <!-- <div class="form-group">
+
+                            <div class="form-group">
                             <label for="email">Hình ảnh:</label>
                                 <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" >
-                            </div> -->
+                            </div>
+
                             <div class="form-group">
                                 <label style="display: block" for="email">Mô tả:</label>
                                 <!-- <input type="text" class="form-control" value="" name="description" > -->

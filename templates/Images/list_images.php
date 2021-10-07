@@ -5,12 +5,22 @@ echo $this->element('Admin/sidebar');
 $n = 1;
 ?>
 
-
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
                         <div class="col-12 col-md-6 order-md-1 order-last">
-                            <h3>Quản lý Danh mục sản phẩm</h3>
+                            <h3>Quản Lý Hình Ảnh</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <form action="/admin/list-products" method="get">
+                                <div class="form-group" style="display: inline-block">
+                                    <label for="key">Search:</label>
+                                        <input type="text" class="form-control" name="key" id="key" value="" >
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-default">Search</button>
+                            </form>
                         </div>
                     </div>
                     <div class="row">
@@ -26,31 +36,40 @@ $n = 1;
                                 <thead>
                                     <tr>
                                         <th>STT<th>
-                                        <th>Tên Danh mục</th>
-                                        <th>Chức năng</th>
+                                        <th>Tên Hình ảnh</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Loại Hình ảnh</th>
+                                        <th>Sản phẩm</th>
+                                        
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($categories as $category) { ?>
+                                    <?php foreach ($query as $image) { ?>
                                         <tr>
                                             <td><?= $n++ ?><td>
-                                            <td> <a ><?= $category['category_name'] ?></a></td>
+                                            <td> <a><?= $image['image_name'] ?></a></td>
+                                            <td>
+                                                <img width="60%" src="<?= $image['file']?>" alt="">
+                                            </td>
+                                            <td><a><?= $image['image_type'] ?></a></td>
+                                            <td><a><?= $image['Products']['product_name']?></a></td>
                                             <td style="text-align: center;">
                                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                                    <a href="<?= $this->Url->build('/admin/edit-category/' . $category->id, ['fullBase' => true]) ?>">
+                                                    <a href="<?= $this->Url->build('/admin/edit-image/' . $image->id, ['fullBase' => true]) ?>">
                                                         <input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px"/>
                                                     </a>
                                                 <?php }else{?>
-                                                    <input  class="btn btn-info" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
+                                                    <input type="button" class="btn btn-info" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
                                                 <?php }?>
 
-                                                <form  action="<?= $this->Url->build('/admin/delete-category/' . $category->id, ['fullBase' => false]) ?>" method="post">
-                                                    <input type="hidden" value="<?= $category->id ?>" name="id" />
-                                                    <input type="hidden" value="<?= $category->del_flag ?>" name="del_flag" />
+                                                <form  action="<?= $this->Url->build('/admin/delete-image/' . $image->id, ['fullBase' => false]) ?>" method="post">
+                                                    <input type="hidden" value="<?= $image->id ?>" name="id" />
+                                                    <input type="hidden" value="<?= $image->del_flag ?>" name="del_flag"/>
                                                     <?php if($_SESSION['flag'] == 2){ ?>
                                                         <input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px"/>
                                                     <?php }else{?>
-                                                        <input  class="btn btn-danger" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
+                                                        <input type="button" class="btn btn-danger" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
                                                     <?php }?>
                                                 </form>
                                             </td>

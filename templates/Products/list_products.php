@@ -42,15 +42,15 @@ $n = 1;
                                         <th>Giá sản phẩm</th>
                                         <th>Point sản phẩm</th>
                                         <th>Danh mục</th>
-                                        <th>Status</th>
+                                        <th>Trạng thái</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($query as $product) { ?>
                                         <tr>
                                             <td><?= $n++ ?><td>
-                                            <td> <a href="<?= $this->Url->build('/admin/view-product/' . $product->id, ['fullBase' => true]) ?>"><?= $product['product_name'] ?></a></td>
-                                            <td><a href="<?= $this->Url->build('/admin/view-product/' . $product->id, ['fullBase' => true]) ?>">
+                                            <td> <a><?= $product['product_name'] ?></a></td>
+                                            <td><a >
                                             <?php 
                                                 if(isset($product->images[0])){?>
                                                     <img width="60%" src="<?= $product->images[0]->file;?>" alt="">

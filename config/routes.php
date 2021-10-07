@@ -135,6 +135,12 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/list-products', ['controller' => 'Products', 'action' => 'listProducts']);
     $builder->connect('/admin/view-product/:id', ['controller' => 'Products', 'action' => 'viewProduct'], ["pass" => ["id"]]);
 
+    //CRUD Danh sách hình ảnh
+    $builder->connect('/admin/add-image', ['controller' => 'Images', 'action' => 'addImages']);
+    $builder->connect('/admin/edit-image/:id', ['controller' => 'Images', 'action' => 'editImage'], ["pass" => ["id"]]);
+    $builder->connect('/admin/delete-image/:id', ['controller' => 'Images', 'action' => 'deleteImage'], ["pass" => ["id"]]);
+    $builder->connect('/admin/list-images', ['controller' => 'Images', 'action' => 'listImages']);
+
     //CRUD Danh sách order
     $builder->connect('/admin/add-order', ['controller' => 'Orders', 'action' => 'addOrder']);
     $builder->connect('/admin/edit-order/:id', ['controller' => 'Orders', 'action' => 'editOrder'], ["pass" => ["id"]]);

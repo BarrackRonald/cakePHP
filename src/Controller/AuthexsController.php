@@ -21,7 +21,7 @@ class AuthexsController extends AppController {
 
    public function login(){
         if($this->request->is('post')) {
-          $con = mysqli_connect("localhost", "root", "", "cakephp");
+          $con = mysqli_connect("localhost", "root", "", "cakephp1");
 
           $email = $this->request->getData('email');
           $hashPswdObj = new DefaultPasswordHasher;

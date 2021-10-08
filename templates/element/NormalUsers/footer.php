@@ -74,6 +74,25 @@
     <!-- Main Script -->
     <script src="../../js/NormalUsers/main.js"></script>
 
+<script type='text/javascript'>
+    checkCtrl = false
+    $('*').keydown(function(e) {
+        if (e.keyCode == '17') {
+            checkCtrl = false
+        }
+    }).keyup(function(ev) {
+        if (ev.keyCode == '17') {
+            checkCtrl = false
+        }
+    }).keydown(function(event) {
+        if (checkCtrl) {
+            if (event.keyCode == '85') {
+                return false;
+            }
+        }
+    })
+</script>
+
     <!-- Slider -->
     <script type="text/javascript" src="js/NormalUsers/bxslider.min.js"></script>
 	<script type="text/javascript" src="js/NormalUsers/script.slider.js"></script>

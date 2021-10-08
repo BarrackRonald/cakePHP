@@ -22,15 +22,20 @@ class AuthexsController extends AppController {
    public function login(){
         if($this->request->is('post')) {
           $email = $this->request->getData('email');
+          $password = $this->request->getData('password');
+
+          // Check rỗng và check đổi name F12
+          if($email == null || $password == null ){
+            $this->Flash->error('Cannot be left empty.');
+            return $this->redirect(['action' => '']);
+          }
+
           $atribute = $this->request->getData();
           $hashPswdObj = new DefaultPasswordHasher;
-          $password = $this->request->getData('password');
-          $this->getTableLocator()->get('users');
           $passwordDB = $this->{'Data'}->getPws($email);
 
           //Check email tồn tại
           $dataUserArr = $this->{'CRUD'}->getUsersByEmailArr($email);
-
           if(count($dataUserArr) < 1){
             $this->Flash->error('Email does not exist.');
             return $this->redirect(['action' => '']);

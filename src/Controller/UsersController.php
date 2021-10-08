@@ -77,8 +77,13 @@ class UsersController extends AppController
         $dataRole =  $this->{'CRUD'}->getAllRoles();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-            $hashPswdObj = new DefaultPasswordHasher;
-            $atribute['password'] = $hashPswdObj->hash($atribute['password']);
+
+            if($atribute['password'] == $dataUser[0]['password']){
+                $atribute['password'] = $dataUser[0]['password'];
+            }else {
+                $hashPswdObj = new DefaultPasswordHasher;
+                $atribute['password'] = $hashPswdObj->hash($atribute['password']);
+            }
             $user = $this->Users->patchEntity($dataUser[0], $atribute);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('User đã được cập nhật thành công.'));
@@ -126,7 +131,6 @@ class UsersController extends AppController
     {
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $dataRole =  $this->{'CRUD'}->getAllRoles();
-
         $this->set(compact('dataUser', 'dataRole'));
     }
 }

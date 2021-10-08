@@ -37,12 +37,12 @@ class NormalUsersController extends AppController
             $session = $this->request->getSession();
             if(!$session->check('cartData')){
                 $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
-                return $this->redirect(['controller'=>'/', 'action' => 'index']);
+                return $this->redirect(['action' => 'informationCart']);
             }else{
                 $dataProds = $session->read('cartData');
                 if($dataProds['totalAllAmount'] == 0){
                     $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
-                    return $this->redirect(['controller'=>'/', 'action' => 'index']);
+                    return $this->redirect(['action' => 'informationCart']);
                 }
             }
 
@@ -64,16 +64,18 @@ class NormalUsersController extends AppController
         }
     }
 
+
     //Add User cho phần không login
     public function adduser(){
+        $session = $this->request->getSession();
         if($this->request->is('post')){
             $atribute = $this->request->getData();
-            $session = $this->request->getSession();
-            $dataUser = $this->{'Data'}->adduser($atribute);
+
+            //checkmail tồn tại
             $checkmail = $this->{'Data'}->checkmail($atribute);
             if(count($checkmail)> 0){
-                $dataUser['data']['email'] = ['Địa chỉ mail này đã tồn tại.'];
-                $session->write('error', $dataUser);
+                $error['email'] = ['Địa chỉ mail này đã tồn tại.'];
+                $session->write('error', $error);
                 $this->redirect(['action' => 'billOrder']);
             }else{
                 if($session->check('error')){
@@ -81,6 +83,22 @@ class NormalUsersController extends AppController
                 }
             }
 
+            //check Back
+            if($session->check('cartData')){
+                $dataProds = $session->read('cartData');
+                if(isset($dataProds['infoUser'])){
+                    if($dataProds['infoUser']['password'] == $atribute['password']){
+                        $dataUser = $this->{'Data'}->adduserNoHash($atribute);
+                    }else{
+                        $dataUser = $this->{'Data'}->adduser($atribute);
+                    }
+                } else {
+                    $dataUser = $this->{'Data'}->adduser($atribute);
+                }
+            } else{
+                $dataUser = $this->{'Data'}->adduser($atribute);
+            }
+            // dd($dataUser['data']);
             if($dataUser['result'] == "invalid"){
                 $error = $dataUser['data'];
                 $session->write('error', $error);
@@ -113,6 +131,10 @@ class NormalUsersController extends AppController
 
             }
         }
+        if($session->check('cartData')){
+            $dataProds = $session->read('cartData');
+            $this->set(compact('dataProds'));
+        }
     }
 
     //Add Order không login
@@ -121,6 +143,27 @@ class NormalUsersController extends AppController
             $atribute = $this->request->getData();
             $session = $this->request->getSession();
             $product = null;
+
+
+            //Check Dữ liệu bắt buộc không đổi
+            if($session->check('cartData')){
+               $cartData = $session->read('cartData');
+               $infoUser = $cartData['infoUser'];
+            //    dd($cartData);
+               if(!(
+                   $cartData['totalAllAmount'] == $atribute['totalAllAmount'] &&
+                   $cartData['totalAllPoint'] == $atribute['totalAllPoint'] &&
+                   $cartData['totalquantity'] == $atribute['totalQuantity'] &&
+                   $infoUser['username'] == $atribute['fullname'] &&
+                   $infoUser['address'] == $atribute['address'] &&
+                   $infoUser['email'] == $atribute['email'] &&
+                   $infoUser['phonenumber'] == $atribute['phonenumber']
+               )){
+                $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận Đặt Hàng!!!'));
+                return $this->redirect(['action' => 'adduser']);
+
+               }
+            }
 
             if($session->check('cartData')){
                  $dataProds = $session->read('cartData');

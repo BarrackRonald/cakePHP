@@ -82,14 +82,21 @@ class ProductsController extends AppController
     //Edit Product
     public function editProduct($id = null)
     {
+
+        // if(isset($_POST)){
+        //     $urlPageList = $_SERVER['HTTP_REFERER'];
+        //     dd($urlPageList);
+        // }
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
-
+        // dd($urlPageList);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            // dd($this->referer());
             $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'listProducts']);
+                // dd($urlPageList);
+                // return $this->redirect("$urlPageList");
             }
             $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
         }
@@ -99,6 +106,7 @@ class ProductsController extends AppController
     //Delete soft Product
     public function deleteProduct($id = null)
     {
+        $urlPageList = $_SERVER['HTTP_REFERER'];
         $this->request->allowMethod(['post', 'delete']);
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
         $atribute = $this->request->getData();
@@ -106,10 +114,10 @@ class ProductsController extends AppController
         $product = $this->Products->patchEntity($dataProduct[0], $atribute);
         if ($this->Products->save($product)) {
             $this->Flash->success(__('Sản phẩm đã được xóa thành công.'));
-            return $this->redirect(['action' => 'listProducts']);
+            return $this->redirect("$urlPageList");
         }else{
             $this->Flash->error(__('Sản phẩm chưa được xóa. Vui lòng thử lại.'));
-            return $this->redirect(['action' => 'listProducts']);
+            return $this->redirect("$urlPageList");
         }
     }
 

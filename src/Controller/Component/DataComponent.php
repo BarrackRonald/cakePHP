@@ -91,17 +91,48 @@ class DataComponent extends CommonComponent
         return $this->Users->save($dataUser);
     }
 
+    //Check Validate cho User
     public function adduser($atribute){
         $user = [];
-        $user['username'] = $atribute['fullname'];
-        $user['address'] = $atribute['address'];
-        $user['email'] = $atribute['email'];
-        $user['phonenumber'] = $atribute['phonenumber'];
+        $user['username'] = trim($atribute['fullname']);
+        $user['address'] = trim($atribute['address']);
+        $user['email'] = trim($atribute['email']);
+        $user['phonenumber'] = trim($atribute['phonenumber']);
+
+
+
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
         if($atribute['password'] == ''){
             $user['password'] = '';
         }
+        $user['point_user'] = 0;
+        $user['role_id'] = 1;
+        $user['avatar'] = 'none.jbg';
+        $user['created_date'] = date('Y-m-d h:m:s');
+        $user['updated_date'] = date('Y-m-d h:m:s');
+        $dataUser = $this->Users->newEntity($user);
+        if ($dataUser->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataUser->getErrors(),
+            ];
+        };
+        return [
+            'result' => 'success',
+            'data' => $user,
+        ];
+
+    }
+
+    //Check Validate cho User không hash
+    public function adduserNoHash($atribute){
+        $user = [];
+        $user['username'] = trim($atribute['fullname']);
+        $user['address'] = trim($atribute['address']);
+        $user['email'] = trim($atribute['email']);
+        $user['phonenumber'] = trim($atribute['phonenumber']);
+        $user['password'] = $atribute['password'];
         $user['point_user'] = 0;
         $user['role_id'] = 1;
         $user['avatar'] = 'none.jbg';

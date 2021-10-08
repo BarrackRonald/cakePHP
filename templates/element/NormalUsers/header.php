@@ -46,8 +46,8 @@ $this->disableAutoLayout();
   </head>
   <body>
 
-    <div class="header-area">
-    <?= $this->Flash->render() ?>
+    <div class="header-area" >
+        <?= $this->Flash->render() ?>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">

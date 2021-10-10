@@ -57,7 +57,7 @@ $n = 1;
                                                 <?php if($user->del_flag == 0){ ?>
                                                     <form  action="<?= $this->Url->build('/admin/delete-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
                                                         <input type="hidden" value="<?= $user->id ?>" name="id" />
-                                                        <input type="hidden" value="<?= $user->del_flag ?>" name="id" />
+                                                        <input type="hidden" value="<?= $user->del_flag ?>" name="del_flag" />
                                                         <?php if($_SESSION['flag'] == 2){?>
                                                                 <input type="submit" class="btn btn-danger" value="Khóa TK" style="margin-bottom: 5px"/>
                                                         <?php }else{?>

@@ -2,6 +2,7 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
+
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -100,7 +101,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="number" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " readonly>
+                                                <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " readonly>
                                             </p>
                                             <div class="clear"></div>
                                             <?php } ?>
@@ -244,7 +245,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="number" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['phonenumber']; } ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " >
+                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['phonenumber']; } ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" >
                                                 <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['phonenumber'])?>
@@ -322,3 +323,26 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
+<?php if(!isset($_SESSION['idUser'])){?>
+    <script>
+        const href = "https://google.com";
+    swal({
+        title: "Bạn có muốn Đăng nhập?",
+        icon: "warning",
+        buttons: true,
+        // buttons: ["a", "b"],
+        dangerMode: true,
+        })
+        .then((willDelete) => {
+        if (willDelete) {
+            swal("Xác nhận đến Login!", {
+            icon: "success",
+            },
+            window.location.assign("/login"),
+            );
+        } else {
+            swal("Tiếp tục đăng ký mua hàng!");
+        }
+    });
+    </script>
+<?php }?>

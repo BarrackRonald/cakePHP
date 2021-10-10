@@ -82,23 +82,18 @@ class ProductsController extends AppController
     //Edit Product
     public function editProduct($id = null)
     {
-
-        // if(isset($_POST)){
-        //     $urlPageList = $_SERVER['HTTP_REFERER'];
-        //     dd($urlPageList);
-        // }
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
-        // dd($urlPageList);
         if ($this->request->is(['patch', 'post', 'put'])) {
             // dd($this->referer());
+            $referer = $this->request->getData('referer');
             $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
-                // dd($urlPageList);
-                // return $this->redirect("$urlPageList");
+                return $this->redirect("$referer");
             }
             $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
+            return $this->redirect("$referer");
         }
         $this->set(compact('dataProduct', 'dataCategory'));
     }

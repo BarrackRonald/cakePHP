@@ -56,6 +56,7 @@ echo $this->element('Admin/sidebar');
                                 <label for="email">Tổng số lượng:</label>
                                     <input type="text" class="form-control" value="<?= $dataOrder[0]->total_quantity ?>" name="total_quantity" readonly >
                             </div>
+                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
                             <div class="form-group">
                                 <label for="email">Tổng giá:</label>
                                     <input type="text" class="form-control" value="<?= $dataOrder[0]->total_amount ?>" name="total_amount" readonly>

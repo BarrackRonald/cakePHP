@@ -48,8 +48,10 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Point sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?= $dataProduct[0]->point_product ?>" name="point_product" >
+                                    <input type="text" class="form-control" value="<?= $dataProduct[0]->point_product ?>"
+                                     name="point_product" >
                             </div>
+                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
 
                             <div class="form-group">
                                 <label for="pwd">Danh mục:</label>

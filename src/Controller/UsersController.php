@@ -77,6 +77,7 @@ class UsersController extends AppController
         $dataRole =  $this->{'CRUD'}->getAllRoles();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
+            $referer = $this->request->getData('referer');
 
             if($atribute['password'] == $dataUser[0]['password']){
                 $atribute['password'] = $dataUser[0]['password'];
@@ -87,9 +88,10 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($dataUser[0], $atribute);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('User đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'listUsers']);
+                return $this->redirect("$referer");
             }
             $this->Flash->error(__('User chưa được cập nhật. Vui lòng thử lại.'));
+            return $this->redirect("$referer");
         }
 
         $this->set(compact('dataUser', 'dataRole'));
@@ -98,16 +100,19 @@ class UsersController extends AppController
     //Khóa Tài Khoản
     public function deleteUser($id = null)
     {
+        $urlPageList = $_SERVER['HTTP_REFERER'];
         $this->request->allowMethod(['post', 'delete']);
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $atribute = $this->request->getData();
         $atribute['del_flag'] = 1;
         $user = $this->Users->patchEntity($dataUser[0], $atribute);
+        
         if ($this->Users->save($user)) {
             $this->Flash->success(__('User đã được xóa thành công.'));
-            return $this->redirect(['action' => 'listUsers']);
+            return $this->redirect("$urlPageList");
         }
         $this->Flash->error(__('User chưa được xóa. Vui lòng thử lại.'));
+        return $this->redirect("$urlPageList");
     }
 
     //Mở lại tài khoản

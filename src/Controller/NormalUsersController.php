@@ -49,9 +49,9 @@ class NormalUsersController extends AppController
             //check user đã đăng nhập chưa
             if(!$session->check('idUser')){
                 $dataProds['flag'] = 0;
-                echo '<script> if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
-                    window.location.assign("/login");
-                   } </script>';
+                // echo '<script> if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
+                //     window.location.assign("/login");
+                //    } </script>';
             }else{
                 $dataProds['flag'] = 1;
                 $idUsers = $session->read('idUser');

@@ -72,12 +72,14 @@ class CategoriesController extends AppController
 
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $referer = $this->request->getData('referer');
             $category = $this->Categories->patchEntity($dataCategory[0], $this->request->getData());
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'listCategories']);
+                return $this->redirect("$referer");
             }
             $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
+            return $this->redirect("$referer");
         }
         $this->set(compact('dataCategory'));
     }
@@ -86,6 +88,7 @@ class CategoriesController extends AppController
 
     public function deleteCategory($id = null)
     {
+        $urlPageList = $_SERVER['HTTP_REFERER'];
         $this->request->allowMethod(['post', 'delete']);
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $atribute = $this->request->getData();
@@ -99,10 +102,10 @@ class CategoriesController extends AppController
         $category = $this->Categories->patchEntity($dataCategory[0], $atribute);
         if ($this->Categories->save($category)) {
             $this->Flash->success(__('Danh mục đã được xóa thành công.'));
-            return $this->redirect(['action' => 'listCategories']);
+            return $this->redirect("$urlPageList");
         }else{
             $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
-            return $this->redirect(['action' => 'listCategories']);
+            return $this->redirect("$urlPageList");
         }
 
     }

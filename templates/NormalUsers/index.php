@@ -2,6 +2,7 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
+    
     <div class="slider-area">
         	<!-- Slider -->
 			<div class="block-slider block-slider4">
@@ -63,7 +64,7 @@ echo $this->element('NormalUsers/header');
                                 <div class="product-f-image">
                                     <img src="<?php echo $product->images[0]->image ?>" alt="">
                                     <div class="product-hover">
-                                        <a href="javascript:;" onclick="addCart(<?php echo $product['id']?>)" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        <a href="javascript:;" onclick="addCart(<?php echo $product['id']?>), showSuccessToast()"  class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to cart</a>
                                         <a href="#" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                 </div>

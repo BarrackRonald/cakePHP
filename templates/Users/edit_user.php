@@ -41,6 +41,7 @@ echo $this->element('Admin/sidebar');
                                 <label for="email">Address:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->address ?>" name="address" >
                             </div>
+                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
 
                             <div class="form-group">
                                 <label for="pwd">Role:</label>

@@ -2,6 +2,7 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
+            
                 <div class="col-md-4 col-sm-6">
                     <div class="footer-about-us">
                         <h2>V<span>erTuree</span></h2>
@@ -73,6 +74,10 @@
 
     <!-- Main Script -->
     <script src="../../js/NormalUsers/main.js"></script>
+    <!-- Toast Script -->
+    <script src="../../js/NormalUsers/toast.js"></script>
+    <!-- Sweet Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type='text/javascript'>
     checkCtrl = false

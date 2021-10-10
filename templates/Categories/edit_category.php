@@ -29,8 +29,8 @@ echo $this->element('Admin/sidebar');
                             <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
                                 <input type="text" class="form-control" value="<?= $dataCategory[0]->category_name ?> " name="category_name" >
-
                             </div>
+                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
                             <?php if($_SESSION['flag'] == 2){ ?>
                                 <button type="submit" class="btn btn-primary btn-default">Submit</button>
                             <?php }else{?>

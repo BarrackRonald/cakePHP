@@ -64,6 +64,7 @@ class OrdersController extends AppController
         $idUser = $dataOrder[0]['user_id'];
         $dataUser = $this->{'CRUD'}->getUserByID($idUser);
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $referer = $this->request->getData('referer');
             $atribute = $this->request->getData();
             // Check point sau khi duyệt đơn
             if($atribute['status'] == $dataOrder[0]['status']){
@@ -84,9 +85,10 @@ class OrdersController extends AppController
 
                 if ($this->Orders->save($confirm)) {
                     $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
-                    return $this->redirect(['action' => 'listOrders']);
+                    return $this->redirect("$referer");
                 }else {
                     $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
+                    return $this->redirect("$referer");
                 }
             }
         }

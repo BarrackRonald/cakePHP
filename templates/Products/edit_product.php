@@ -27,8 +27,14 @@ echo $this->element('Admin/sidebar');
                             <div class="form-group">
                             <label for="email">Tên sản phẩm:</label>
                                 <input type="text" class="form-control" value="<?= $dataProduct[0]->product_name ?>" name="product_name" >
+                                <?php  if(isset($_SESSION['error']['product_name'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['product_name'])?>
+                                        </i>
+                                    <?php }?>
 
                             </div>
+                            <div class="form-group">
                             <label for="email">Hình ảnh:</label>
                                 <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" value="<?= $dataProduct[0]['images'][0]['image'] ?>" >
                             </div>
@@ -36,6 +42,11 @@ echo $this->element('Admin/sidebar');
                                 <label style="display: block" for="email">Mô tả:</label>
                                 <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" ><?= $dataProduct[0]->description ?>
                                 </textarea>
+                                    <?php  if(isset($_SESSION['error']['description'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['description'])?>
+                                        </i>
+                                    <?php }?>
                                 <script>
                                     config = {};
                                     config.entities_latin = false;
@@ -45,11 +56,21 @@ echo $this->element('Admin/sidebar');
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
                                     <input type="text" class="form-control" value="<?= $dataProduct[0]->amount_product ?>" name="amount_product" >
+                                    <?php  if(isset($_SESSION['error']['amount_product'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['amount_product'])?>
+                                        </i>
+                                    <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Point sản phẩm:</label>
                                     <input type="text" class="form-control" value="<?= $dataProduct[0]->point_product ?>"
                                      name="point_product" >
+                                     <?php  if(isset($_SESSION['error']['point_product'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['point_product'])?>
+                                        </i>
+                                    <?php }?>
                             </div>
                             <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
 
@@ -61,11 +82,23 @@ echo $this->element('Admin/sidebar');
                                     <?php } ?>
                                 </select>
                             </div>
-                            <?php if($_SESSION['flag'] == 2){ ?>
-                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                            <?php }else{?>
-                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                            <?php }?>
+                            <div class="button_back">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <a href="/admin/list-products">
+                                        <button type="button" class="btn btn-primary btn-default">Back</button>
+                                    </a>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
+
+                            <div class="button_submit">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

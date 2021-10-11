@@ -25,15 +25,15 @@ $n = 1;
                             <table id="tbl-users-list" class='table table-striped' id="table1">
                                 <thead>
                                     <tr>
-                                        <th>STT<th>
+                                        <th>STT</th>
                                         <th>Tên Danh mục</th>
-                                        <th>Chức năng</th>
+                                        <th class="center">Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($categories as $category) { ?>
                                         <tr>
-                                            <td><?= $n++ ?><td>
+                                            <td><?= $n++ ?></td>
                                             <td> <a ><?= $category['category_name'] ?></a></td>
                                             <td style="text-align: center;">
                                                 <?php if($_SESSION['flag'] == 2){ ?>

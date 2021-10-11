@@ -71,14 +71,12 @@ class ProductsTable extends Table
 
         $validator
             ->scalar('product_name')
-            ->alphaNumeric('product_name')
             ->maxLength('product_name', 70)
             ->requirePresence('product_name', 'create')
             ->notEmptyString('product_name');
 
         $validator
             ->scalar('description')
-            ->alphaNumeric('description')
             ->maxLength('description', 1000)
             ->requirePresence('description', 'create')
             ->notEmptyString('description');

@@ -54,12 +54,6 @@ class CategoriesTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public $validate = array(
-        'category_name' => array(
-            'rule'    => '/^[a-z0-9]{3,}$/i',
-            'message' => 'Only letters and integers, min 3 characters'
-        )
-    );
 
     public function validationDefault(Validator $validator): Validator
     {
@@ -69,14 +63,8 @@ class CategoriesTable extends Table
 
         $validator
             ->scalar('category_name')
-            ->maxLength('category_name', 70)
+            ->maxLength('category_name', 100)
             ->requirePresence('category_name', 'create')
-            // ->add('category_name', [
-            //     'length' => [
-            //         'rule' => ['minLength', 10],
-            //         'message' => 'Titles need to be at least 10 characters long',
-            //     ]
-            // ])
             ->notEmptyString('category_name');
 
         $validator

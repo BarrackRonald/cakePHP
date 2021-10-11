@@ -93,10 +93,13 @@ class AuthexsController extends AppController {
   public function register(){
     if($this->request->is('post')) {
         $atribute = $this->request->getData();
-
+        // dd($atribute);
         $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->register($atribute);
         $checkmail = $this->{'Data'}->checkmail($atribute);
+
+        $session->write('infoUser', $atribute);
+        $session->write('email', $atribute['email']);
 
         if($dataUser['result'] == "invalid"){
             $error = $dataUser['data'];
@@ -118,10 +121,16 @@ class AuthexsController extends AppController {
                     $this->Users->save($dataUser['data']);
                     $this->redirect(['action' => 'login']);
                     $this->Flash->success(__('Đăng ký tài khoản thành công.'));
+                    if($session->check('infoUser')){
+                        $session->delete('infoUser');
+                    }
                 }else {
                     $this->Users->save($dataUser['data']);
                     $this->redirect(['action' => 'login']);
-                $this->Flash->success(__('Đăng ký tài khoản thành công.'));
+                    $this->Flash->success(__('Đăng ký tài khoản thành công.'));
+                    if($session->check('infoUser')){
+                        $session->delete('infoUser');
+                    }
                 }
             }
         }
@@ -171,7 +180,7 @@ class AuthexsController extends AppController {
                 if($this->Users->save($dataUser)){
                     $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
                             $to = $email;
-                            $toAdmin= 'Admin@gmail.com';
+                            $toAdmin= 'tienphamvan2005@gmail.com';
                             $subject = 'Reset Password';
                              $message = 'Mật khẩu của bạn là:'.$randompws.'';
                     $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
@@ -185,7 +194,7 @@ class AuthexsController extends AppController {
                 if($this->Users->save($dataUser)){
                     $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
                             $to = $email;
-                            $toAdmin= 'Admin@gmail.com';
+                            $toAdmin= 'tienphamvan2005@gmail.com';
                             $subject = 'Reset Password';
                              $message = 'Mật khẩu của bạn là:'.$randompws.'';
                     $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);

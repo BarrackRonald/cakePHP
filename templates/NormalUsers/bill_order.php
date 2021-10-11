@@ -323,14 +323,12 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
-<?php if(!isset($_SESSION['idUser'])){?>
+<?php if(!isset($_SESSION['idUser']) && !isset($_SESSION['hasBack'])){?>
     <script>
-        const href = "https://google.com";
     swal({
         title: "Bạn có muốn Đăng nhập?",
         icon: "warning",
         buttons: true,
-        // buttons: ["a", "b"],
         dangerMode: true,
         })
         .then((willDelete) => {
@@ -340,9 +338,8 @@ echo $this->element('NormalUsers/footer');
             },
             window.location.assign("/login"),
             );
-        } else {
-            swal("Tiếp tục đăng ký mua hàng!");
         }
     });
     </script>
 <?php }?>
+

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 use Cake\View\Helper\FormHelper;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Products Controller
@@ -42,19 +43,24 @@ class ProductsController extends AppController
         $products = $this->{'CRUD'}->getAllProduct();
         //Search
         $key = $this->request->getQuery('key');
-
         if($key){
-            if($key == ''){
-                $this->Flash->error(__('Không có dữ liệu Search!!!'));
-    
-            }else{
-                $query = $this->{'CRUD'}->getSearch($key);
-            }
-            
+            $query = $this->{'CRUD'}->getSearch($key);
         }else{
             $query = $products;
         }
-        $this->set(compact('query', $this->paginate($query, ['limit'=> '3'])));
+
+        //Pagination
+        try{
+            $this->set(compact('query', $this->paginate($query, ['limit'=> '3'])));
+        } catch (NotFoundException $e) {
+            $atribute = $this->request->getAttribute('paging');
+            $requestedPage = $atribute['Products']['requestedPage'];
+            $pageCount = $atribute['Products']['pageCount'];
+            if($requestedPage > $pageCount) {
+                return $this->redirect("https://test.com/admin/list-products?page=".$pageCount."");
+            }
+
+        }
 
     }
 
@@ -66,13 +72,14 @@ class ProductsController extends AppController
         if ($this->request->is('post')) {
             $session = $this->request->getSession();
             $atribute = $this->request->getData();
-
             $dataProduct = $this->{'CRUD'}->addproduct($atribute);
+
 
             if($dataProduct['result'] == "invalid"){
                 $error = $dataProduct['data'];
                 $session->write('error', $error);
                 $this->Flash->error(__('Thêm Sản phẩm thất bại. Vui lòng thử lại.'));
+
             }else{
                 if($session->check('error')){
                     $session->delete('error');
@@ -89,18 +96,30 @@ class ProductsController extends AppController
     //Edit Product
     public function editProduct($id = null)
     {
+        //Check ID User
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
+        $session = $this->request->getSession();
         if ($this->request->is(['patch', 'post', 'put'])) {
-            // dd($this->referer());
             $referer = $this->request->getData('referer');
             $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
+
+            if ($product->hasErrors()) {
+                $error = $product->getErrors();
+                $session->write('error', $error);
+                return $this->redirect("");
+            }else {
+                if($session->check('error')){
+                    $session->delete('error');
+                }
+
+            }
+
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
                 return $this->redirect("$referer");
             }
             $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
-            return $this->redirect("$referer");
         }
         $this->set(compact('dataProduct', 'dataCategory'));
     }

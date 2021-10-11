@@ -107,7 +107,7 @@ echo $this->element('NormalUsers/header');
 
                                         <tr>
                                             <td class="actions" colspan="7">
-                                                    <input type="submit" value="Đặt Hàng" name="proceed" class="checkout-button button alt wc-forward">
+                                                    <input type="submit"  value="Đặt Hàng" name="proceed" class="checkout-button button alt wc-forward">
                                             </td>
                                         </tr>
 
@@ -181,12 +181,8 @@ echo $this->element('NormalUsers/header');
                     $("#product_"+product_id).val(dataProduct["quantity"]);
                 }
 
-
-
 			},
 			error :function (data, textStatus, jqXHR) {
-
-
 				console.log("error");
 			 }
 		});
@@ -216,6 +212,8 @@ echo $this->element('NormalUsers/header');
 			 }
 		});
 	}
+
+
 
 </script>
 

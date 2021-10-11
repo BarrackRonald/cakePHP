@@ -68,14 +68,12 @@ class ImagesTable extends Table
 
         $validator
             ->scalar('image_name')
-            ->alphaNumeric('image_name')
             ->maxLength('image_name', 70)
             ->requirePresence('image_name', 'create')
             ->notEmptyFile('image_name');
 
         $validator
             ->scalar('image_type')
-            ->alphaNumeric('image_type')
             ->maxLength('image_type', 70)
             ->requirePresence('image_type', 'create')
             ->notEmptyFile('image_type');

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
-
+use Cake\Http\Exception\NotFoundException;
 /**
  * Categories Controller
  *
@@ -40,8 +40,17 @@ class CategoriesController extends AppController
     public function listCategories()
     {
         $categories = $this->{'CRUD'}->getAllCategory();
-        $this->set(compact('categories', $this->paginate($categories, ['limit'=> '3'])));
-        // $this->set(compact('categories'));
+        try{
+            $this->set(compact('categories', $this->paginate($categories, ['limit'=> '3'])));
+        } catch (NotFoundException $e) {
+            $atribute = $this->request->getAttribute('paging');
+            $requestedPage = $atribute['Categories']['requestedPage'];
+            $pageCount = $atribute['Categories']['pageCount'];
+            if($requestedPage > $pageCount) {
+                return $this->redirect("https://test.com/admin/list-categories?page=".$pageCount."");
+            }
+
+        }
 
     }
 
@@ -70,18 +79,37 @@ class CategoriesController extends AppController
     public function editCategory($id = null)
     {
 
+        $checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
+        if(count($checkCategoryID) < 1){
+            $this->Flash->error(__('Danh mục không tồn tại.'));
+                return $this->redirect(['action' => 'listCategories']);
+        }
+        $session = $this->request->getSession();
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $referer = $this->request->getData('referer');
+            
             $category = $this->Categories->patchEntity($dataCategory[0], $this->request->getData());
+
+            if ($category->hasErrors()) {
+                $error = $category->getErrors();
+                $session->write('error', $error);
+                return $this->redirect("");
+            }else {
+                if($session->check('error')){
+                    $session->delete('error');
+                }
+
+            }
+
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
                 return $this->redirect("$referer");
             }
             $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
-            return $this->redirect("$referer");
         }
-        $this->set(compact('dataCategory'));
+        $this->set('referer', compact('dataCategory'));
     }
 
     //Delete Soft Categories
@@ -92,20 +120,25 @@ class CategoriesController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $atribute = $this->request->getData();
+
         //Kiểm tra Danh mục còn sản phẩm không
         $checkProduct= $this->{'CRUD'}->checkProductByCategory($atribute);
         if(count($checkProduct) > 0){
             $this->Flash->error(__('Danh mục còn sản phẩm. Không thể xóa'));
             return $this->redirect(['action' => 'listCategories']);
         }
+
+
+
         $atribute['del_flag'] = 1;
         $category = $this->Categories->patchEntity($dataCategory[0], $atribute);
+
         if ($this->Categories->save($category)) {
             $this->Flash->success(__('Danh mục đã được xóa thành công.'));
             return $this->redirect("$urlPageList");
         }else{
             $this->Flash->error(__('Danh mục chưa được xóa. Vui lòng thử lại.'));
-            return $this->redirect("$urlPageList");
+
         }
 
     }

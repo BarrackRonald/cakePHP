@@ -1,5 +1,22 @@
+.button_back {
+  display: inline-block;
+
+
+}
+
+.button_submit {
+  display: inline-block;
+  float: right;
+
+}
+
+
 /*//////////////////////////////////////////////////////////////////
 [ Flash messages ]*/
+.center {
+  text-align: center;
+}
+
 .message {
     padding: 1rem;
     /* thêm */

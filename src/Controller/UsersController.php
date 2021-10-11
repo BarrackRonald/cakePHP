@@ -54,6 +54,17 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $session = $this->request->getSession();
             $atribute = $this->request->getData();
+
+            // Check dữ liệu
+            if(!(
+                $dataRole[0]['id'] == h($atribute['role_id']) ||
+                $dataRole[1]['id'] == h($atribute['role_id']) ||
+                $dataRole[2]['id'] == h($atribute['role_id'])
+            )){
+            $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận thêm Người dùng!!!'));
+            return $this->redirect(['action' => 'listUsers']);
+            }
+
             $dataUser = $this->{'CRUD'}->adduser($atribute);
             if($dataUser['result'] == "invalid"){
                 $error = $dataUser['data'];
@@ -73,11 +84,28 @@ class UsersController extends AppController
     //Edit Users
     public function editUser($id = null)
     {
+        //Check ID User
+        $checkUserID = $this->{'CRUD'}->checkIDUser($id);
+        if(count($checkUserID) < 1){
+            $this->Flash->error(__('Người dùng không tồn tại.'));
+                return $this->redirect(['action' => 'listUsers']);
+        }
+        $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $dataRole =  $this->{'CRUD'}->getAllRoles();
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
             $referer = $this->request->getData('referer');
+
+            // Check dữ liệu
+            if(!(
+                $dataRole[0]['id'] == h($atribute['role_id']) ||
+                $dataRole[1]['id'] == h($atribute['role_id']) ||
+                $dataRole[2]['id'] == h($atribute['role_id'])
+            )){
+            $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
+            return $this->redirect(['action' => 'listUsers']);
+            }
 
             if($atribute['password'] == $dataUser[0]['password']){
                 $atribute['password'] = $dataUser[0]['password'];
@@ -86,6 +114,19 @@ class UsersController extends AppController
                 $atribute['password'] = $hashPswdObj->hash($atribute['password']);
             }
             $user = $this->Users->patchEntity($dataUser[0], $atribute);
+
+            if ($user->hasErrors()) {
+                $error = $user->getErrors();
+                $session->write('error', $error);
+                return $this->redirect("");
+            }else {
+                if($session->check('error')){
+                    $session->delete('error');
+                }
+
+            }
+
+
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('User đã được cập nhật thành công.'));
                 return $this->redirect("$referer");
@@ -93,7 +134,6 @@ class UsersController extends AppController
             $this->Flash->error(__('User chưa được cập nhật. Vui lòng thử lại.'));
             return $this->redirect("$referer");
         }
-
         $this->set(compact('dataUser', 'dataRole'));
     }
 
@@ -106,7 +146,7 @@ class UsersController extends AppController
         $atribute = $this->request->getData();
         $atribute['del_flag'] = 1;
         $user = $this->Users->patchEntity($dataUser[0], $atribute);
-        
+
         if ($this->Users->save($user)) {
             $this->Flash->success(__('User đã được xóa thành công.'));
             return $this->redirect("$urlPageList");
@@ -118,6 +158,7 @@ class UsersController extends AppController
     //Mở lại tài khoản
     public function opentUser($id = null)
     {
+        $urlPageList = $_SERVER['HTTP_REFERER'];
         $this->request->allowMethod(['post', 'delete']);
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $atribute = $this->request->getData();
@@ -125,7 +166,7 @@ class UsersController extends AppController
         $user = $this->Users->patchEntity($dataUser[0], $atribute);
         if ($this->Users->save($user)) {
             $this->Flash->success(__('User đã được mở thành công.'));
-            return $this->redirect(['action' => 'listUsers']);
+            return $this->redirect("$urlPageList");
         }
         $this->Flash->error(__('User chưa được mở. Vui lòng thử lại.'));
     }

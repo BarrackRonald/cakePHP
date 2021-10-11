@@ -35,11 +35,23 @@ echo $this->element('Admin/sidebar');
                                         </i>
                                 <?php }?>
                             </div>
-                            <?php if($_SESSION['flag'] == 2){ ?>
-                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                            <?php }else{?>
-                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                            <?php }?>
+                            <div class="button_back">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <a href="/admin/list-categories">
+                                        <button type="button" class="btn btn-primary btn-default">Back</button>
+                                    </a>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
+
+                            <div class="button_submit">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

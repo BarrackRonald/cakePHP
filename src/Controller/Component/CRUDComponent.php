@@ -48,9 +48,9 @@ class CRUDComponent extends CommonComponent
 
     public function adduser($atribute){
         $user = [];
-        $user['username'] = $atribute['username'];
-        $user['address'] = $atribute['address'];
-        $user['email'] = $atribute['email'];
+        $user['username'] = h($atribute['username']);
+        $user['address'] = h($atribute['address']);
+        $user['email'] = h($atribute['email']);
         $user['phonenumber'] = $atribute['phonenumber'];
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
@@ -119,6 +119,54 @@ class CRUDComponent extends CommonComponent
         return $query;
     }
 
+    //Check Category ID
+    public function checkIDCategory($id){
+        $query = $this->Categories->find()
+        ->where([
+            'Categories.id' => $id,
+            'Categories.del_flag' => 0,
+        ]);
+        return $query->toArray();
+    }
+
+    //Check Order ID
+    public function checkIDOrder($id){
+        $query = $this->Orders->find()
+        ->where([
+            'Orders.id' => $id
+        ]);
+        return $query->toArray();
+    }
+
+    //Check User ID
+    public function checkIDUser($id){
+        $query = $this->Users->find()
+        ->where([
+            'Users.id' => $id,
+            'Users.del_flag' => 0,
+        ]);
+        return $query->toArray();
+    }
+
+    //Check Product ID
+    public function checkIDProduct($id){
+        $query = $this->Products->find()
+        ->where([
+            'Products.id' => $id,
+            'Products.del_flag' => 0,
+        ]);
+        return $query->toArray();
+    }
+
+    //Check Order Details ID
+    public function checkIDOrderDetails($id){
+        $query = $this->Orderdetails->find()
+        ->where([
+            'Orderdetails.id' => $id,
+        ]);
+        return $query->toArray();
+    }
+
     public function getCategoryByID($id){
         $query = $this->Categories->find()
             ->where([
@@ -129,7 +177,7 @@ class CRUDComponent extends CommonComponent
 
     public function addCategory($atribute){
         $category = [];
-        $category['category_name'] = $atribute['category_name'];
+        $category['category_name'] = h($atribute['category_name']);
         $category['created_date'] = date('Y-m-d h:m:s');
         $category['updated_date'] = date('Y-m-d h:m:s');
         $dataCategory = $this->Categories->newEntity($category);
@@ -183,11 +231,11 @@ class CRUDComponent extends CommonComponent
 
     public function addproduct($atribute){
         $product = [];
-        $product['product_name'] = $atribute['product_name'];
-        $product['description'] = $atribute['description'];
-        $product['amount_product'] = $atribute['amount_product'];
-        $product['point_product'] = $atribute['point_product'];
-        $product['category_id'] = $atribute['category_id'];
+        $product['product_name'] = h($atribute['product_name']);
+        $product['description'] = h($atribute['description']);
+        $product['amount_product'] = h($atribute['amount_product']);
+        $product['point_product'] = h($atribute['point_product']);
+        $product['category_id'] = h($atribute['category_id']);
         $product['created_date'] = date('Y-m-d h:m:s');
         $product['updated_date'] = date('Y-m-d h:m:s');
         $dataProduct = $this->Products->newEntity($product);
@@ -209,7 +257,7 @@ class CRUDComponent extends CommonComponent
 
         if($name){
             $image->moveTo($targetPath);
-            $images->image = '../../img/'.$name.date('Y-m-d h:m:s');
+            $images->image = '../../img/'.$name;
         }
 
         $images->image_name = 'img'.$atribute['product_name'] ;
@@ -260,6 +308,7 @@ class CRUDComponent extends CommonComponent
         ->contain(['Images'])
         ->where([
                 'Products.product_name like' => '%'. $key .'%',
+                'Products.del_flag' => 0
         ]);
         return $query;
     }
@@ -344,18 +393,18 @@ class CRUDComponent extends CommonComponent
         ])
         ->order('Orders.created_date DESC')
         ->where([
-            'OR' => [['Users.username like' => '%'. $key .'%'], ['Orders.email like' => '%'. $key .'%']],
+            'OR' => [['Users.username like' => '%'. $key .'%'], ['Orders.email like' => '%'. $key .'%']]
         ]);
         return $query;
     }
 
     public function addorder($atribute){
         $product = [];
-        $product['product_name'] = $atribute['product_name'];
-        $product['description'] = $atribute['description'];
-        $product['amount_product'] = $atribute['amount_product'];
-        $product['point_product'] = $atribute['point_product'];
-        $product['category_id'] = $atribute['category_id'];
+        $product['product_name'] = h($atribute['product_name']);
+        $product['description'] = h($atribute['description']);
+        $product['amount_product'] = h($atribute['amount_product']);
+        $product['point_product'] = h($atribute['point_product']);
+        $product['category_id'] = h($atribute['category_id']);
         $product['created_date'] = date('Y-m-d h:m:s');
         $product['updated_date'] = date('Y-m-d h:m:s');
         $dataProduct = $this->Products->newEntity($product);
@@ -402,10 +451,10 @@ class CRUDComponent extends CommonComponent
 
     public function register($atribute){
         $user = [];
-        $user['username'] = $atribute['fullname'];
-        $user['address'] = $atribute['address'];
-        $user['email'] = $atribute['email'];
-        $user['phonenumber'] = $atribute['phonenumber'];
+        $user['username'] = h($atribute['fullname']);
+        $user['address'] = h($atribute['address']);
+        $user['email'] = h($atribute['email']);
+        $user['phonenumber'] = h($atribute['phonenumber']);
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
         if($atribute['password'] == ''){
@@ -488,11 +537,11 @@ class CRUDComponent extends CommonComponent
 
     public function addimage($atribute){
         $image = [];
-        $image['image_name'] = $atribute['product_name'];
-        $image['description'] = $atribute['description'];
-        $image['amount_product'] = $atribute['amount_product'];
-        $image['point_product'] = $atribute['point_product'];
-        $image['category_id'] = $atribute['category_id'];
+        $image['image_name'] = h($atribute['product_name']);
+        $image['description'] = h($atribute['description']);
+        $image['amount_product'] = h($atribute['amount_product']);
+        $image['point_product'] = h($atribute['point_product']);
+        $image['category_id'] = h($atribute['category_id']);
         $image['created_date'] = date('Y-m-d h:m:s');
         $image['updated_date'] = date('Y-m-d h:m:s');
         $dataImage = $this->Images->newEntity($image);

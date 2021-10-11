@@ -67,7 +67,6 @@ class OrdersTable extends Table
 
         $validator
             ->scalar('order_name')
-            ->alphaNumeric('order_name')
             ->maxLength('order_name', 70)
             ->requirePresence('order_name', 'create')
             ->notEmptyString('order_name')
@@ -80,7 +79,6 @@ class OrdersTable extends Table
 
         $validator
             ->integer('phonenumber')
-            ->alphaNumeric('phonenumber')
             ->requirePresence('phonenumber', 'create')
             ->notEmptyString('phonenumber')
             ->maxLength('phonenumber', 10)
@@ -88,7 +86,6 @@ class OrdersTable extends Table
 
         $validator
             ->scalar('address')
-            ->alphaNumeric('address')
             ->maxLength('address', 100)
             ->requirePresence('address', 'create')
             ->notEmptyString('address');

@@ -6,7 +6,7 @@ namespace App\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use Exception;
-
+use Cake\Event\EventInterface;
 /**
  * NormalUsers Controller
  *
@@ -22,14 +22,9 @@ class NormalUsersController extends AppController
         $this->loadComponent('CRUD');
         $this->loadModel("Users");
     }
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|null|void Renders view
-     */
-    public function index()
+
+    public function beforeRender(EventInterface $event)
     {
-        //Viết ở beforeRender
         $dataCategories = $this->{'Data'}->getCategory();
         $dataProducts = $this->{'Data'}->getAllProducts();
         $dataSlideImages = $this->{'Data'}->getSlideImage();
@@ -38,9 +33,24 @@ class NormalUsersController extends AppController
         $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts', 'dataCategories'));
     }
 
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|null|void Renders view
+     */
+    public function index()
+    {
+        //Viết ở beforeRender
+    }
+
     public function billOrder(){
+
+
         if($this->request->is('post')){
             $session = $this->request->getSession();
+            if($session->check('hasBack')){
+                $session->delete('hasBack');
+            }
             if(!$session->check('cartData')){
                 $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
                 return $this->redirect(['action' => 'informationCart']);
@@ -55,9 +65,7 @@ class NormalUsersController extends AppController
             //check user đã đăng nhập chưa
             if(!$session->check('idUser')){
                 $dataProds['flag'] = 0;
-                // echo '<script> if (confirm("Bạn có muốn đăng nhập để đặt hàng không: ")) {
-                //     window.location.assign("/login");
-                //    } </script>';
+                echo "";
             }else{
                 $dataProds['flag'] = 1;
                 $idUsers = $session->read('idUser');
@@ -74,8 +82,12 @@ class NormalUsersController extends AppController
     //Add User cho phần không login
     public function adduser(){
         $session = $this->request->getSession();
+        $hasBack = 1;
+        $session->write('hasBack', $hasBack);
+
         if($this->request->is('post')){
             $atribute = $this->request->getData();
+
 
             //checkmail tồn tại
             $checkmail = $this->{'Data'}->checkmail($atribute);
@@ -104,7 +116,7 @@ class NormalUsersController extends AppController
             } else{
                 $dataUser = $this->{'Data'}->adduser($atribute);
             }
-            // dd($dataUser['data']);
+
             if($dataUser['result'] == "invalid"){
                 $error = $dataUser['data'];
                 $session->write('error', $error);
@@ -155,15 +167,14 @@ class NormalUsersController extends AppController
             if($session->check('cartData')){
                $cartData = $session->read('cartData');
                $infoUser = $cartData['infoUser'];
-            //    dd($cartData);
                if(!(
-                   $cartData['totalAllAmount'] == $atribute['totalAllAmount'] &&
-                   $cartData['totalAllPoint'] == $atribute['totalAllPoint'] &&
-                   $cartData['totalquantity'] == $atribute['totalQuantity'] &&
-                   $infoUser['username'] == $atribute['fullname'] &&
-                   $infoUser['address'] == $atribute['address'] &&
-                   $infoUser['email'] == $atribute['email'] &&
-                   $infoUser['phonenumber'] == $atribute['phonenumber']
+                   $cartData['totalAllAmount'] == h($atribute['totalAllAmount']) &&
+                   $cartData['totalAllPoint'] == h($atribute['totalAllPoint']) &&
+                   $cartData['totalquantity'] == h($atribute['totalQuantity']) &&
+                   $infoUser['username'] == h($atribute['fullname']) &&
+                   $infoUser['address'] == h($atribute['address']) &&
+                   $infoUser['email'] == h($atribute['email']) &&
+                   $infoUser['phonenumber'] == h($atribute['phonenumber'])
                )){
                 $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận Đặt Hàng!!!'));
                 return $this->redirect(['action' => 'adduser']);

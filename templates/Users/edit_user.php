@@ -27,19 +27,39 @@ echo $this->element('Admin/sidebar');
                             <div class="form-group">
                             <label for="email">Username:</label>
                                 <input type="text" class="form-control" value="<?= $dataUser[0]->username ?> " name="username" >
+                                <?php  if(isset($_SESSION['error']['username'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['username'])?>
+                                        </i>
+                                <?php }?>
 
                             </div>
                             <div class="form-group">
                                 <label for="email">Password:</label>
                                 <input type="password" class="form-control" value="<?= $dataUser[0]->password ?>" name="password" >
+                                <?php  if(isset($_SESSION['error']['password'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['password'])?>
+                                        </i>
+                                <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->phonenumber ?>" name="phonenumber" >
+                                    <?php  if(isset($_SESSION['error']['phonenumber'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['phonenumber'])?>
+                                        </i>
+                                    <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Address:</label>
                                     <input type="text" class="form-control" value="<?= $dataUser[0]->address ?>" name="address" >
+                                    <?php  if(isset($_SESSION['error']['address'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['address'])?>
+                                        </i>
+                                    <?php }?>
                             </div>
                             <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
 
@@ -51,11 +71,25 @@ echo $this->element('Admin/sidebar');
                                     <?php } ?>
                                 </select>
                             </div>
-                            <?php if($_SESSION['flag'] == 2){ ?>
-                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                            <?php }else{?>
-                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                            <?php }?>
+
+                            <div class="button_back">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <a href="/admin/list-user">
+                                        <button type="button" class="btn btn-primary btn-default">Back</button>
+                                    </a>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+
+                            </div>
+
+                            <div class="button_submit">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

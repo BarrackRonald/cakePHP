@@ -69,7 +69,7 @@ $n = 1;
                                                         <input type="hidden" value="<?= $user->id ?>" name="id" />
                                                         <input type="hidden" value="<?= $user->del_flag ?>" name="del_flag" />
                                                         <?php  if($_SESSION['flag'] == 2){?>
-                                                                <input type="submit" class="btn btn-danger" value="  Mở TK " style="margin-bottom: 5px"/>
+                                                                <input type="submit" class="btn btn-success" value="  Mở TK " style="margin-bottom: 5px"/>
                                                         <?php }else{?>
                                                             <input type="button"  class="btn btn-danger" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
                                                         <?php } ?>

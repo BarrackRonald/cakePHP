@@ -29,13 +29,30 @@ echo $this->element('Admin/sidebar');
                             <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
                                 <input type="text" class="form-control" value="<?= $dataCategory[0]->category_name ?> " name="category_name" >
+                                <?php  if(isset($_SESSION['error']['category_name'])){?>
+                                        <i style="color: red;">
+                                            <?= implode($_SESSION['error']['category_name'])?>
+                                        </i>
+                                    <?php }?>
                             </div>
                             <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
-                            <?php if($_SESSION['flag'] == 2){ ?>
-                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                            <?php }else{?>
-                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                            <?php }?>
+                            <div class="button_back">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <a href="/admin/list-categories">
+                                        <button type="button" class="btn btn-primary btn-default">Back</button>
+                                    </a>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
+
+                            <div class="button_submit">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

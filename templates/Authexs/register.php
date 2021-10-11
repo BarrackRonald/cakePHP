@@ -26,7 +26,8 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="first-name-column">FullName</label>
-                                            <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" id="first-name-column" class="form-control" name="fullname">
+                                            <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" id="first-name-column" class="form-control" name="fullname" 
+                                            value="<?php if(isset($_SESSION['infoUser']['fullname'])){ echo $_SESSION['infoUser']['fullname']; }?>">
                                             <?php  if(isset($_SESSION['error']['username'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['username'])?>
@@ -37,7 +38,8 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="username-column">Email</label>
-                                            <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" id="username-column" class="form-control" name="email">
+                                            <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" id="username-column" class="form-control" name="email"
+                                            value="<?php if(isset($_SESSION['infoUser']['email'])){ echo $_SESSION['infoUser']['email']; }?>">
                                             <?php  if(isset($_SESSION['error']['email'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['email'])?>
@@ -48,7 +50,8 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="country-floating">Phonenumber</label>
-                                            <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?>type="textbox" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  maxlength = "6" id="country-floating" class="form-control" name="phonenumber">
+                                            <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?>type="textbox" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  maxlength = "10" id="country-floating" class="form-control" name="phonenumber"
+                                            value="<?php if(isset($_SESSION['infoUser']['phonenumber'])){ echo $_SESSION['infoUser']['phonenumber']; }?>">
                                             <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['phonenumber'])?>
@@ -59,7 +62,8 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="last-name-column">Address</label>
-                                            <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?> type="text" id="last-name-column" class="form-control" name="address">
+                                            <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?> type="text" id="last-name-column" class="form-control" name="address"
+                                            value="<?php if(isset($_SESSION['infoUser']['address'])){ echo $_SESSION['infoUser']['address']; }?>">
                                             <?php  if(isset($_SESSION['error']['address'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['address'])?>
@@ -70,7 +74,8 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="company-column">Password</label>
-                                            <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" id="company-column" class="form-control" name="password">
+                                            <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" id="company-column" class="form-control" name="password"
+                                            value="<?php if(isset($_SESSION['infoUser']['password'])){ echo $_SESSION['infoUser']['password']; }?>">
                                             <?php  if(isset($_SESSION['error']['password'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['password'])?>

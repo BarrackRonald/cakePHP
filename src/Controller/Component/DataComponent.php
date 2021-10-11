@@ -94,10 +94,10 @@ class DataComponent extends CommonComponent
     //Check Validate cho User
     public function adduser($atribute){
         $user = [];
-        $user['username'] = trim($atribute['fullname']);
-        $user['address'] = trim($atribute['address']);
-        $user['email'] = trim($atribute['email']);
-        $user['phonenumber'] = trim($atribute['phonenumber']);
+        $user['username'] = h(trim($atribute['fullname']));
+        $user['address'] = h(trim($atribute['address']));
+        $user['email'] = h(trim($atribute['email']));
+        $user['phonenumber'] = h(trim($atribute['phonenumber']));
 
 
 
@@ -128,10 +128,10 @@ class DataComponent extends CommonComponent
     //Check Validate cho User không hash
     public function adduserNoHash($atribute){
         $user = [];
-        $user['username'] = trim($atribute['fullname']);
-        $user['address'] = trim($atribute['address']);
-        $user['email'] = trim($atribute['email']);
-        $user['phonenumber'] = trim($atribute['phonenumber']);
+        $user['username'] = h(trim($atribute['fullname']));
+        $user['address'] = h(trim($atribute['address']));
+        $user['email'] = h(trim($atribute['email']));
+        $user['phonenumber'] = h(trim($atribute['phonenumber']));
         $user['password'] = $atribute['password'];
         $user['point_user'] = 0;
         $user['role_id'] = 1;
@@ -313,7 +313,10 @@ class DataComponent extends CommonComponent
 
     public function getCategory($key = null){
         $query = $this->Categories->find()
-            ->all();
+        ->where([
+            'Categories.del_flag' => 0,
+        ])
+        ->all();
         return $query;
     }
 

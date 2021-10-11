@@ -55,7 +55,6 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
-                                <!-- <input class='valueItem'  type="number" size="4" class="input-text qty text" title="Qty" value="" min="0" step="1" readonly> -->
                                     <input  <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="phonenumber" >
                                     <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                             <i style="color: red;">
@@ -91,11 +90,24 @@ echo $this->element('Admin/sidebar');
                                     <?php } ?>
                                 </select>
                             </div>
-                            <?php if($_SESSION['flag'] == 2){ ?>
-                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                            <?php }else{?>
-                                <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                            <?php }?>
+                            <div class="button_back">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <a href="/admin/list-user">
+                                        <button type="button" class="btn btn-primary btn-default">Back</button>
+                                    </a>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+
+                            </div>
+
+                            <div class="button_submit">
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                <?php }else{?>
+                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
+                                <?php }?>
+                            </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>

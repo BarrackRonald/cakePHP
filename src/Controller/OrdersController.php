@@ -39,18 +39,15 @@ class OrdersController extends AppController
     public function listOrders()
     {
         $orders = $this->{'CRUD'}->getAllOrder();
-        // dd($orders);
+
         //Search
         $key = $this->request->getQuery('key');
-    
         if($key){
             if($key == ''){
                 $this->Flash->error(__('Không có dữ liệu Search!!!'));
-    
             }else{
                 $query1 = $this->{'CRUD'}->getSearchOrder($key);
             }
-           
         }else{
             $query1 = $orders;
         }
@@ -67,6 +64,13 @@ class OrdersController extends AppController
 
     // Duyệt đơn hàng
     public function confirmOrder($id = null){
+        //Check ID Order
+        $checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+        if(count($checkOrderID) < 1){
+            $this->Flash->error(__('Đơn hàng không tồn tại.'));
+                return $this->redirect(['action' => 'listOrders']);
+        }
+
         $dataOrder = $this->{'CRUD'}->getOrderByID($id);
         $idUser = $dataOrder[0]['user_id'];
         $dataUser = $this->{'CRUD'}->getUserByID($idUser);

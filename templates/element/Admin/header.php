@@ -49,7 +49,7 @@ $this->disableAutoLayout();
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                             <?php if(isset($_SESSION['flag'])){ if($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3){?>
-                                <a class="dropdown-item" href="/"><i data-feather="user"></i> NormalUsers</a>
+                                <a class="dropdown-item" href="/"><i data-feather="user"></i> Trang Home</a>
                             <?php } }?>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/logout"><i data-feather="log-out"></i> Logout</a>

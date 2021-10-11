@@ -42,8 +42,15 @@ class ProductsController extends AppController
         $products = $this->{'CRUD'}->getAllProduct();
         //Search
         $key = $this->request->getQuery('key');
+
         if($key){
-            $query = $this->{'CRUD'}->getSearch($key);
+            if($key == ''){
+                $this->Flash->error(__('Không có dữ liệu Search!!!'));
+    
+            }else{
+                $query = $this->{'CRUD'}->getSearch($key);
+            }
+            
         }else{
             $query = $products;
         }

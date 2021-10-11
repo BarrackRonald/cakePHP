@@ -35,7 +35,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
-                                    <input type="number" class="form-control" value="<?= $dataUser[0]->phonenumber ?>" name="phonenumber" >
+                                    <input type="text" class="form-control" value="<?= $dataUser[0]->phonenumber ?>" name="phonenumber" >
                             </div>
                             <div class="form-group">
                                 <label for="email">Address:</label>

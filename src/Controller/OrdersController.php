@@ -42,8 +42,15 @@ class OrdersController extends AppController
         // dd($orders);
         //Search
         $key = $this->request->getQuery('key');
+    
         if($key){
-            $query1 = $this->{'CRUD'}->getSearchOrder($key);
+            if($key == ''){
+                $this->Flash->error(__('Không có dữ liệu Search!!!'));
+    
+            }else{
+                $query1 = $this->{'CRUD'}->getSearchOrder($key);
+            }
+           
         }else{
             $query1 = $orders;
         }

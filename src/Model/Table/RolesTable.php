@@ -62,6 +62,7 @@ class RolesTable extends Table
 
         $validator
             ->scalar('role_name')
+            ->alphaNumeric('role_name')
             ->maxLength('role_name', 50)
             ->requirePresence('role_name', 'create')
             ->notEmptyString('role_name');

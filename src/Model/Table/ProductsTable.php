@@ -71,12 +71,14 @@ class ProductsTable extends Table
 
         $validator
             ->scalar('product_name')
+            ->alphaNumeric('product_name')
             ->maxLength('product_name', 70)
             ->requirePresence('product_name', 'create')
             ->notEmptyString('product_name');
 
         $validator
             ->scalar('description')
+            ->alphaNumeric('description')
             ->maxLength('description', 1000)
             ->requirePresence('description', 'create')
             ->notEmptyString('description');
@@ -90,11 +92,11 @@ class ProductsTable extends Table
             ->notEmptyString('point_product');
 
         $validator
-            ->boolean('del_flag')
+            ->integer('del_flag')
             ->notEmptyString('del_flag');
 
         $validator
-            ->boolean('status')
+            ->integer('status')
             ->notEmptyString('status');
 
         $validator

@@ -74,24 +74,28 @@ class UsersTable extends Table
             ->scalar('username')
             ->maxLength('username', 100)
             ->requirePresence('username', 'create')
-            ->notEmptyString('username');
+            ->notEmptyString('username')
+            ->alphaNumeric('username');
 
         $validator
             ->scalar('avatar')
             ->maxLength('avatar', 200)
             ->requirePresence('avatar', 'create')
-            ->notEmptyString('avatar');
+            ->notEmptyString('avatar')
+            ->alphaNumeric('avatar');
 
         $validator
             ->scalar('address')
             ->maxLength('address', 200)
             ->requirePresence('address', 'create')
+            ->alphaNumeric('address')
             ->notEmptyString('address');
 
         $validator
             ->scalar('password')
             ->maxLength('password', 90)
             ->requirePresence('password', 'create')
+            ->alphaNumeric('password')
             ->notEmptyString('password');
 
         $validator
@@ -111,7 +115,7 @@ class UsersTable extends Table
             ->notEmptyString('point_user');
 
         $validator
-            ->boolean('del_flag')
+            ->integer('del_flag')
             ->notEmptyString('del_flag');
 
         $validator

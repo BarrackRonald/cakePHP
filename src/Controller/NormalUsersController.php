@@ -30,6 +30,12 @@ class NormalUsersController extends AppController
     public function index()
     {
         //Viết ở beforeRender
+        $dataCategories = $this->{'Data'}->getCategory();
+        $dataProducts = $this->{'Data'}->getAllProducts();
+        $dataSlideImages = $this->{'Data'}->getSlideImage();
+        $dataNewsProducts = $this->{'Data'}->getNewsProduct();
+
+        $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts', 'dataCategories'));
     }
 
     public function billOrder(){

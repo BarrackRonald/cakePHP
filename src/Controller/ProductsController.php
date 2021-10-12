@@ -41,7 +41,21 @@ class ProductsController extends AppController
     //List Products
     public function listProducts()
     {
+        $session = $this->request->getSession();
+        if($session->check('hasReferer')){
+            $session->delete('hasReferer');
+        }
+
+        if($session->check('referer')){
+            $session->delete('referer');
+        }
+
+        if($session->check('error')){
+            $session->delete('error');
+        }
+
         $products = $this->{'CRUD'}->getAllProduct();
+
         //Search
         $key = $this->request->getQuery('key');
         if($key){
@@ -97,14 +111,41 @@ class ProductsController extends AppController
     //Edit Product
     public function editProduct($id = null)
     {
+        $checkProductID = $this->{'CRUD'}->checkIDProduct($id);
+        if(count($checkProductID) < 1){
+            $this->Flash->error(__('Sản phẩm không tồn tại.'));
+                return $this->redirect(['action' => 'listProducts']);
+        }
+
         //Check ID User
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
         $session = $this->request->getSession();
+
+        //check Referer
+        if(!$session->check('referer')){
+            $referer = $_SERVER['HTTP_REFERER'];
+            $session->write('referer', $referer);
+        }
+
+        $getReferer = $session->read('referer');
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-            $referer = $this->request->getData('referer');
-            $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
+
+            //Check thay đổi
+            if(trim($atribute['product_name']) == trim($dataProduct[0]['product_name']) &&
+            trim($atribute['description']) == trim($dataProduct[0]['description']) &&
+            trim($atribute['amount_product']) == $dataProduct[0]['amount_product'] &&
+            trim($atribute['point_product']) == $dataProduct[0]['point_product'] &&
+            trim($atribute['category_id']) == $dataProduct[0]['category_id']
+             ){
+                $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
+                return $this->redirect("$getReferer");
+            }
+
+            $atribute = $this->request->getData();
+            $product = $this->Products->patchEntity($dataProduct[0], $atribute);
 
             if ($product->hasErrors()) {
                 $error = $product->getErrors();
@@ -117,7 +158,7 @@ class ProductsController extends AppController
 
             }
 
-            //Add Image vào Table Image
+        //Add Image vào Table Image
         $result = $this->Products->save($product);
         $images = $this->Images->newEmptyEntity();
 
@@ -140,8 +181,16 @@ class ProductsController extends AppController
         $this->Images->save($images);
 
             if ($this->Products->save($product)) {
+                if($session->check('hasReferer')){
+                    $session->delete('hasReferer');
+                }
+
+                if($session->check('referer')){
+                    $session->delete('referer');
+                }
+
                 $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
-                return $this->redirect("$referer");
+                return $this->redirect("$getReferer");
             }
             $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
         }

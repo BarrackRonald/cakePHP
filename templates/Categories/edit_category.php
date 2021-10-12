@@ -12,14 +12,7 @@ echo $this->element('Admin/sidebar');
                             <h3>Chỉnh sửa Danh mục sản phẩm</h3>
 
                         </div>
-                        <div class="col-12 col-md-6 order-md-2 order-first">
-                            <nav aria-label="breadcrumb" class='breadcrumb-header'>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Datatable</li>
-                                </ol>
-                            </nav>
-                        </div>
+
                     </div>
                 </div>
                 <div class="section">
@@ -36,11 +29,11 @@ echo $this->element('Admin/sidebar');
                                     <?php }?>
                             </div>
                             <?php if(!isset($_SESSION['hasReferer'])){?>
-                            <input type="text" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
+                            <input type="hidden" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
                             <?php }?>
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="/admin/list-categories">
+                                    <a href="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>">
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                                 <?php }else{?>

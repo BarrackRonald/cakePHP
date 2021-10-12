@@ -41,6 +41,20 @@ class UsersController extends AppController
     //List User
     public function listUsers()
     {
+        //Check Referer
+        $session = $this->request->getSession();
+        if($session->check('hasReferer')){
+            $session->delete('hasReferer');
+        }
+
+        if($session->check('referer')){
+            $session->delete('referer');
+        }
+
+        if($session->check('error')){
+            $session->delete('error');
+        }
+
         $users = $this->{'CRUD'}->getUser();
         $this->set(compact('users', $this->paginate($users, ['limit'=> '3'])));
 
@@ -74,8 +88,26 @@ class UsersController extends AppController
                 if($session->check('error')){
                     $session->delete('error');
                 }
-                $this->Flash->success(__('User đã được thêm thành công.'));
-                return $this->redirect(['action' => 'listUsers']);
+                // Checkmail trùng
+                $checkmail = $this->{'Data'}->checkmail($atribute);
+
+                if(count($checkmail)> 0){
+                    $error['email'] = ['This email address already exists.'];
+                    $session->write('error', $error);
+                    $this->redirect(['action' => '']);
+                }else{
+                    if($session->check('error')){
+                        $session->delete('error');
+                        $this->Users->save($dataUser['data']);
+                        $this->Flash->success(__('User đã được thêm thành công.'));
+                        return $this->redirect(['action' => 'listUsers']);
+                    }else {
+                        $this->Users->save($dataUser['data']);
+                        $this->Flash->success(__('User đã được thêm thành công.'));
+                        return $this->redirect(['action' => 'listUsers']);
+                    }
+                }
+
             }
         }
         $this->set(compact('dataRole'));
@@ -93,11 +125,30 @@ class UsersController extends AppController
         $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $dataRole =  $this->{'CRUD'}->getAllRoles();
+
+        //check Referer
+        if(!$session->check('referer')){
+            $referer = $_SERVER['HTTP_REFERER'];
+            $session->write('referer', $referer);
+        }
+
+        $getReferer = $session->read('referer');
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-            $referer = $this->request->getData('referer');
 
-            // Check dữ liệu
+            //Check thay đổi
+            if(trim($atribute['username']) == trim($checkUserID[0]['username']) &&
+            trim($atribute['password']) == trim($checkUserID[0]['password']) &&
+            trim($atribute['phonenumber']) == trim($checkUserID[0]['phonenumber']) &&
+            trim($atribute['address']) == trim($checkUserID[0]['address']) &&
+            $atribute['role_id'] == $checkUserID[0]['role_id']
+             ){
+                $this->Flash->error(__('Dữ liệu không có sự thay đổi.'));
+                return $this->redirect("$getReferer");
+            }
+
+            // Check dữ liệu F12
             if(!(
                 $dataRole[0]['id'] == h($atribute['role_id']) ||
                 $dataRole[1]['id'] == h($atribute['role_id']) ||
@@ -113,7 +164,7 @@ class UsersController extends AppController
                 $hashPswdObj = new DefaultPasswordHasher;
                 $atribute['password'] = $hashPswdObj->hash($atribute['password']);
             }
-            $user = $this->Users->patchEntity($dataUser[0], $atribute);
+            $user = $this->Users->patchEntity($dataUser[0], h($atribute));
 
             if ($user->hasErrors()) {
                 $error = $user->getErrors();
@@ -123,16 +174,22 @@ class UsersController extends AppController
                 if($session->check('error')){
                     $session->delete('error');
                 }
-
             }
-
 
             if ($this->Users->save($user)) {
+                if($session->check('hasReferer')){
+                    $session->delete('hasReferer');
+                }
+
+                if($session->check('referer')){
+                    $session->delete('referer');
+                }
+
                 $this->Flash->success(__('User đã được cập nhật thành công.'));
-                return $this->redirect("$referer");
+                return $this->redirect("$getReferer");
             }
             $this->Flash->error(__('User chưa được cập nhật. Vui lòng thử lại.'));
-            return $this->redirect("$referer");
+
         }
         $this->set(compact('dataUser', 'dataRole'));
     }

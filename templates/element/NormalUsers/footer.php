@@ -2,17 +2,12 @@
         <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
-            
+
                 <div class="col-md-4 col-sm-6">
                     <div class="footer-about-us">
                         <h2>V<span>erTuree</span></h2>
                         <p>Hệ thống bán lẻ điện thoại di động, smartphone, máy tính bảng, tablet, laptop, phụ kiện, smartwatch, đồng hồ chính hãng mới nhất, giá tốt!!!</p>
-                        <div class="footer-social">
-                            <a  target="_blank"><i class="fa fa-facebook"></i></a>
-                            <a  target="_blank"><i class="fa fa-twitter"></i></a>
-                            <a  target="_blank"><i class="fa fa-youtube"></i></a>
-                            <a  target="_blank"><i class="fa fa-linkedin"></i></a>
-                        </div>
+
                     </div>
                 </div>
 
@@ -20,11 +15,11 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">User Navigation </h2>
                         <ul>
-                            <li><a >My account</a></li>
-                            <li><a >Order history</a></li>
-                            <li><a >Wishlist</a></li>
-                            <li><a >Vendor contact</a></li>
-                            <li><a >Front page</a></li>
+                            <li>My account</li>
+                            <li>Order history</li>
+                            <li>Wishlist</li>
+                            <li>Vendor contact</li>
+                            <li>Front page</li>
                         </ul>
                     </div>
                 </div>
@@ -33,11 +28,11 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Categories</h2>
                         <ul>
-                            <li><a >Mobile Phone</a></li>
-                            <li><a >Home accesseries</a></li>
-                            <li><a >LED TV</a></li>
-                            <li><a >Computer</a></li>
-                            <li><a >Gadets</a></li>
+                            <li>Mobile Phone</li>
+                            <li>Home accesseries</li>
+                            <li>LED TV</li>
+                            <li>Computer</li>
+                            <li>Gadets</li>
                         </ul>
                     </div>
                 </div>

@@ -258,7 +258,6 @@ class NormalUsersController extends AppController
 
                 if(!$result['result'] == "invalid")
                 {
-                    // dd($atribute['phonenumber']);
                     $to = $atribute['email'];
                     $toAdmin = 'tienphamvan2005@gmail.com';
                     $subject = 'Mail Confirm Order';
@@ -292,6 +291,7 @@ class NormalUsersController extends AppController
     public function successOrder(){
 
     }
+
     public function informationCart(){
         $session = $this->request->getSession();
 			if($session->check('cartData')){
@@ -489,8 +489,6 @@ class NormalUsersController extends AppController
 
             $dataSession['totalquantity'] = $totalquantity + 1;
             $dataSession['cart'] = $cartData;
-
-
             $session->write('cartData', $dataSession);
 
            return  $this->response->withStringBody(json_encode($dataSession));

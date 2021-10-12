@@ -22,8 +22,8 @@ class MailComponent extends Component
         $header = "X-Mailer: PHP/" . phpversion() . "Return-Path: $sender";
 
         $mail = new PHPMailer(true);
-
-        $mail->SMTPDebug  = 2; // turn it off in production
+        $mail->CharSet = 'UTF-8';
+        // $mail->SMTPDebug  = 2; // turn it off in production
         $mail->IsSMTP();
         $mail->Host = "smtp.gmail.com";
         $mail->SMTPAuth = true;

@@ -309,10 +309,13 @@ width: 100%;
 z-index: 999;}
 
 
-
+.logo {
+    margin-left:170px;
+}
 .logo h1 {
     font-size: 40px;
-    margin: 30px 0;font-weight: 400;
+    margin: 10px 0;
+    font-weight: 400;
 }
 .logo h1 a {
     color: #999;
@@ -325,7 +328,8 @@ z-index: 999;}
     border: 1px solid #ddd;
     float: right;
     font-size: 18px;
-    margin-top: 40px;
+    margin: 15px;
+    margin-right: 170px;
     padding: 10px;
     position: relative;
 }

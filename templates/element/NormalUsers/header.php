@@ -98,36 +98,14 @@ $this->disableAutoLayout();
     <div class="site-branding-area">
         <div class="container">
             <div class="row">
-                <div class="col-sm-6">
-                    <div class="logo">
-                        <h1>
-                            <?php
-                                echo $this->Html->image("NormalUsers/vertu.jpg", [
-                                    "alt" => "logo",
-                                    'url' => '/'
-                                ]);
-                            ?>
-                        </h1>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                <a href="/carts">
-                    <div class="shopping-item">
-                        Giỏ Hàng <i class="fa fa-shopping-cart"></i>
-                        <span class="product-count">
-                            <?php
-                                echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? $this->request->getSession()->read('cartData')['totalquantity'] : "0";
-                            ?>
-                        </span>
-                    </div>
-                </a>
-                </div>
+                <!-- Old Logo -->
+                <!-- Old Cart -->
             </div>
         </div>
     </div> <!-- End site branding area -->
 
     <div class="mainmenu-area">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -138,13 +116,39 @@ $this->disableAutoLayout();
                     </button>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/">Home</a></li>
-                        <?php foreach ($dataCategories as $category) { ?>
-                            <li><a href="#"><?= $category['category_name'] ?></a></li>
-                        <?php } ?>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
+                    <div class="col-sm-3">
+                        <div class="logo">
+                            <h1>
+                                <?php
+                                    echo $this->Html->image("NormalUsers/vertu.jpg", [
+                                        "alt" => "logo",
+                                        'url' => '/'
+                                    ]);
+                                ?>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="/">Home</a></li>
+                            <?php foreach ($dataCategories as $category) { ?>
+                                <li><a href="#"><?= $category['category_name'] ?></a></li>
+                            <?php } ?>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="/carts">
+                            <div class="shopping-item">
+                                Giỏ Hàng <i class="fa fa-shopping-cart"></i>
+                                <span class="product-count">
+                                    <?php
+                                        echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? $this->request->getSession()->read('cartData')['totalquantity'] : "0";
+                                    ?>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

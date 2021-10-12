@@ -46,7 +46,7 @@ $n = 1;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($query as $product) { ?>
+                                    <?php foreach ($query as $product) {?>
                                         <tr>
                                             <td><?= $n++ ?><td>
                                             <td> <a><?= $product['product_name'] ?></a></td>

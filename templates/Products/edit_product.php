@@ -23,7 +23,7 @@ echo $this->element('Admin/sidebar');
                 <div class="section">
                     <div class="row">
                         <div class="col-12">
-                        <?= $this->Form->create($dataProduct[0]) ?>
+                        <?= $this->Form->create($dataProduct[0], ['type'=>'file']) ?>
                             <div class="form-group">
                             <label for="email">Tên sản phẩm:</label>
                                 <input type="text" class="form-control" value="<?= $dataProduct[0]->product_name ?>" name="product_name" >

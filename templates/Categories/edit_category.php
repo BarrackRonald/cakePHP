@@ -35,7 +35,7 @@ echo $this->element('Admin/sidebar');
                                         </i>
                                     <?php }?>
                             </div>
-                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
+                            <input type="text" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 2){ ?>
                                     <a href="/admin/list-categories">

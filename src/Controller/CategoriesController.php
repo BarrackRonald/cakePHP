@@ -86,9 +86,12 @@ class CategoriesController extends AppController
         }
         $session = $this->request->getSession();
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
+        $referer = $_SERVER['HTTP_REFERER'];
+            $session->write('referer', $referer);
+            $getReferer = $session->read('referer');
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            $referer = $this->request->getData('referer');
+            
             
             $category = $this->Categories->patchEntity($dataCategory[0], $this->request->getData());
 
@@ -104,12 +107,17 @@ class CategoriesController extends AppController
             }
 
             if ($this->Categories->save($category)) {
+                if($session->check('hasReferer')){
+                    $session->delete('hasReferer');
+                }
                 $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
-                return $this->redirect("$referer");
-            }
+                return $this->redirect("$getReferer");
+            }else{
+                $session->write('hasReferer', 1);
             $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
+            }
         }
-        $this->set('referer', compact('dataCategory'));
+        $this->set(compact('dataCategory'));
     }
 
     //Delete Soft Categories

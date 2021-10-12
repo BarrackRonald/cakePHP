@@ -25,6 +25,7 @@ class ProductsController extends AppController
         $this->loadComponent('Data');
         $this->loadComponent('CRUD');
         $this->loadModel("Products");
+        $this->loadModel("Images");
     }
 
     public function beforeFilter(EventInterface $event)
@@ -101,6 +102,7 @@ class ProductsController extends AppController
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
         $session = $this->request->getSession();
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $atribute = $this->request->getData();
             $referer = $this->request->getData('referer');
             $product = $this->Products->patchEntity($dataProduct[0], $this->request->getData());
 
@@ -114,6 +116,28 @@ class ProductsController extends AppController
                 }
 
             }
+
+            //Add Image vào Table Image
+        $result = $this->Products->save($product);
+        $images = $this->Images->newEmptyEntity();
+
+        $image = $atribute['uploadfile'];
+        $name = $image->getClientFilename();
+        $targetPath = WWW_ROOT.'img'.DS.$name;
+
+        if($name){
+            $image->moveTo($targetPath);
+            $images->image = '../../img/'.$name;
+        }
+
+        $images->image_name = 'img'.$atribute['product_name'] ;
+        $images->image_type = 'Banner';
+        $images->user_id = 1;
+        $images->product_id = $result['id'];
+        $images->created_date = date('Y-m-d h:m:s');
+        $images->updated_date = date('Y-m-d h:m:s');
+
+        $this->Images->save($images);
 
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));

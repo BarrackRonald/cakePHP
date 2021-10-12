@@ -225,7 +225,9 @@ class CRUDComponent extends CommonComponent
             'Products.del_flag' => 0,
         ])
         ->order('Products.created_date DESC')
-        ->contain(['Images']);
+        ->contain(['Images'=> function ($q) {                                
+            return $q->order('Images.created_date DESC');
+            }]);
         return $query;
     }
 

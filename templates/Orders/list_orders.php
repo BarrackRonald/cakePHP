@@ -34,7 +34,7 @@ $n = 1;
                             <table id="tbl-users-list" class='table table-striped' id="table1">
                                 <thead>
                                     <tr>
-                                        <th>STT<th>
+                                        <th>STT</th>
                                         <th>Họ và tên</th>
                                         <th>Email</th>
                                         <th>Số điện thoại</th>
@@ -49,7 +49,7 @@ $n = 1;
                                 <tbody>
                                     <?php   foreach ($query1 as $order) { ?>
                                         <tr class="list">
-                                            <td><?= $n++ ?><td>
+                                            <td><?= $n++ ?></td>
                                             <td><a><?= $order['Users']['username']?></a></td>
                                             <td><a><?= $order['email']?></a></td>
                                             <td><a><?= $order['phonenumber']?></a></td>
@@ -65,7 +65,8 @@ $n = 1;
                                                     }else{
                                                         echo 'Từ chối';
                                                     } ?>
-                                                </a></td>
+                                                </a>
+                                            </td>
                                             <td style="text-align: center;">
                                                 <a href="<?= $this->Url->build('/admin/details-order/' . $order->id, ['fullBase' => true]) ?>">
                                                     <input type="submit" class="btn btn-info" value="   Chi Tiết Đơn " style="margin-bottom: 5px"/>
@@ -87,7 +88,6 @@ $n = 1;
                             </div>
                         </div>
                     </div>
-
                 </section>
             </div>
 <?php

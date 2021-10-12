@@ -11,14 +11,7 @@ echo $this->element('Admin/sidebar');
                             <h3>Xác Nhận Đơn Hàng</h3>
 
                         </div>
-                        <div class="col-12 col-md-6 order-md-2 order-first">
-                            <nav aria-label="breadcrumb" class='breadcrumb-header'>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Datatable</li>
-                                </ol>
-                            </nav>
-                        </div>
+
                     </div>
 
                     <div class="row">
@@ -56,7 +49,9 @@ echo $this->element('Admin/sidebar');
                                 <label for="email">Tổng số lượng:</label>
                                     <input type="text" class="form-control" value="<?= $dataOrder[0]->total_quantity ?>" name="total_quantity" readonly >
                             </div>
-                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
+                            <?php if(!isset($_SESSION['hasReferer'])){?>
+                            <input type="hidden" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
+                            <?php }?>
                             <div class="form-group">
                                 <label for="email">Tổng giá:</label>
                                     <input type="text" class="form-control" value="<?= $dataOrder[0]->total_amount ?>" name="total_amount" readonly>
@@ -71,7 +66,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 3){ ?>
-                                    <a href="/admin/list-orders">
+                                    <a href="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>">
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                                 <?php }else{?>

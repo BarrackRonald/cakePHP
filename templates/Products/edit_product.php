@@ -12,10 +12,6 @@ echo $this->element('Admin/sidebar');
                         </div>
                         <div class="col-12 col-md-6 order-md-2 order-first">
                             <nav aria-label="breadcrumb" class='breadcrumb-header'>
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Datatable</li>
-                                </ol>
                             </nav>
                         </div>
                     </div>
@@ -26,7 +22,7 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create($dataProduct[0], ['type'=>'file']) ?>
                             <div class="form-group">
                             <label for="email">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" value="<?= $dataProduct[0]->product_name ?>" name="product_name" >
+                                <input type="text" class="form-control" value="<?= h($dataProduct[0]->product_name )?>" name="product_name" >
                                 <?php  if(isset($_SESSION['error']['product_name'])){?>
                                         <i style="color: red;">
                                             <?= implode($_SESSION['error']['product_name'])?>
@@ -40,7 +36,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label style="display: block" for="email">Mô tả:</label>
-                                <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" ><?= $dataProduct[0]->description ?>
+                                <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" ><?= h($dataProduct[0]->description) ?>
                                 </textarea>
                                     <?php  if(isset($_SESSION['error']['description'])){?>
                                         <i style="color: red;">
@@ -55,7 +51,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?= $dataProduct[0]->amount_product ?>" name="amount_product" >
+                                    <input type="text" class="form-control" value="<?= h($dataProduct[0]->amount_product) ?>" name="amount_product" >
                                     <?php  if(isset($_SESSION['error']['amount_product'])){?>
                                         <i style="color: red;">
                                             <?= implode($_SESSION['error']['amount_product'])?>
@@ -64,7 +60,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Point sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?= $dataProduct[0]->point_product ?>"
+                                    <input type="text" class="form-control" value="<?= h($dataProduct[0]->point_product) ?>"
                                      name="point_product" >
                                      <?php  if(isset($_SESSION['error']['point_product'])){?>
                                         <i style="color: red;">
@@ -72,7 +68,9 @@ echo $this->element('Admin/sidebar');
                                         </i>
                                     <?php }?>
                             </div>
-                            <input type="hidden" class="form-control" value="<?= $_SERVER['HTTP_REFERER'] ?>" name="referer" >
+                            <?php if(!isset($_SESSION['hasReferer'])){?>
+                            <input type="hidden" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
+                            <?php }?>
 
                             <div class="form-group">
                                 <label for="pwd">Danh mục:</label>
@@ -84,7 +82,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="/admin/list-products">
+                                    <a href="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>">
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                                 <?php }else{?>

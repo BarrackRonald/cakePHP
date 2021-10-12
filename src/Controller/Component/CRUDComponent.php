@@ -48,16 +48,16 @@ class CRUDComponent extends CommonComponent
 
     public function adduser($atribute){
         $user = [];
-        $user['username'] = h($atribute['username']);
-        $user['address'] = h($atribute['address']);
-        $user['email'] = h($atribute['email']);
-        $user['phonenumber'] = $atribute['phonenumber'];
+        $user['username'] = h(trim($atribute['username']));
+        $user['address'] = h(trim($atribute['address']));
+        $user['email'] = h(trim($atribute['email']));
+        $user['phonenumber'] = trim($atribute['phonenumber']);
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
         if($atribute['password'] == ''){
             $user['password'] = '';
         }
-        $user['point_user'] = 0;
+        $user['point_user'] = trim($atribute['point']);
         $user['role_id'] = $atribute['role_id'];
         $user['avatar'] = 'none.jbg';
         $user['created_date'] = date('Y-m-d h:m:s');
@@ -72,7 +72,7 @@ class CRUDComponent extends CommonComponent
         };
         return [
             'result' => 'success',
-            'data' => $this->Users->save($dataUser),
+            'data' => $dataUser,
         ];
     }
 
@@ -177,11 +177,10 @@ class CRUDComponent extends CommonComponent
 
     public function addCategory($atribute){
         $category = [];
-        $category['category_name'] = h($atribute['category_name']);
+        $category['category_name'] = h(trim($atribute['category_name']));
         $category['created_date'] = date('Y-m-d h:m:s');
         $category['updated_date'] = date('Y-m-d h:m:s');
         $dataCategory = $this->Categories->newEntity($category);
-
         if ($dataCategory->hasErrors()) {
             return [
                 'result' => 'invalid',
@@ -225,7 +224,7 @@ class CRUDComponent extends CommonComponent
             'Products.del_flag' => 0,
         ])
         ->order('Products.created_date DESC')
-        ->contain(['Images'=> function ($q) {                                
+        ->contain(['Images'=> function ($q) {
             return $q->order('Images.created_date DESC');
             }]);
         return $query;
@@ -233,8 +232,8 @@ class CRUDComponent extends CommonComponent
 
     public function addproduct($atribute){
         $product = [];
-        $product['product_name'] = h($atribute['product_name']);
-        $product['description'] = h($atribute['description']);
+        $product['product_name'] = h(trim($atribute['product_name']));
+        $product['description'] = trim($atribute['description']);
         $product['amount_product'] = h($atribute['amount_product']);
         $product['point_product'] = h($atribute['point_product']);
         $product['category_id'] = h($atribute['category_id']);
@@ -283,7 +282,9 @@ class CRUDComponent extends CommonComponent
             ->where([
                 'Products.id' => $id,
             ])
-            ->contain(['Images']);
+            ->contain(['Images'=> function ($q) {
+                return $q->order('Images.created_date DESC');
+                }]);
         return $query->toArray();
     }
 
@@ -307,7 +308,9 @@ class CRUDComponent extends CommonComponent
             'conditions' => ['Products.category_id = Categories.id']
         ])
         ->order('Products.created_date DESC')
-        ->contain(['Images'])
+        ->contain(['Images'=> function ($q) {
+            return $q->order('Images.created_date DESC');
+            }])
         ->where([
                 'Products.product_name like' => '%'. $key .'%',
                 'Products.del_flag' => 0
@@ -402,15 +405,14 @@ class CRUDComponent extends CommonComponent
 
     public function addorder($atribute){
         $product = [];
-        $product['product_name'] = h($atribute['product_name']);
-        $product['description'] = h($atribute['description']);
+        $product['product_name'] = h(trim($atribute['product_name']));
+        $product['description'] = h(trim($atribute['description']));
         $product['amount_product'] = h($atribute['amount_product']);
         $product['point_product'] = h($atribute['point_product']);
         $product['category_id'] = h($atribute['category_id']);
         $product['created_date'] = date('Y-m-d h:m:s');
         $product['updated_date'] = date('Y-m-d h:m:s');
         $dataProduct = $this->Products->newEntity($product);
-        // dd($dataProduct);
 
         if ($dataProduct->hasErrors()) {
             return [
@@ -453,9 +455,9 @@ class CRUDComponent extends CommonComponent
 
     public function register($atribute){
         $user = [];
-        $user['username'] = h($atribute['fullname']);
-        $user['address'] = h($atribute['address']);
-        $user['email'] = h($atribute['email']);
+        $user['username'] = h(trim($atribute['fullname']));
+        $user['address'] = h(trim($atribute['address']));
+        $user['email'] = h(trim($atribute['email']));
         $user['phonenumber'] = h($atribute['phonenumber']);
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
@@ -468,7 +470,7 @@ class CRUDComponent extends CommonComponent
         $user['created_date'] = date('Y-m-d h:m:s');
         $user['updated_date'] = date('Y-m-d h:m:s');
         $dataUser = $this->Users->newEntity($user);
-        // dd($dataUser);
+
         if ($dataUser->hasErrors()) {
             return [
                 'result' => 'invalid',

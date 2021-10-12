@@ -38,6 +38,21 @@ class OrdersController extends AppController
     //List Products
     public function listOrders()
     {
+
+        //Check Referer
+        $session = $this->request->getSession();
+        if($session->check('hasReferer')){
+            $session->delete('hasReferer');
+        }
+
+        if($session->check('referer')){
+            $session->delete('referer');
+        }
+
+        if($session->check('error')){
+            $session->delete('error');
+        }
+
         $orders = $this->{'CRUD'}->getAllOrder();
 
         //Search
@@ -74,8 +89,17 @@ class OrdersController extends AppController
         $dataOrder = $this->{'CRUD'}->getOrderByID($id);
         $idUser = $dataOrder[0]['user_id'];
         $dataUser = $this->{'CRUD'}->getUserByID($idUser);
+
+        //check Referer
+        $session = $this->request->getSession();
+        if(!$session->check('referer')){
+            $referer = $_SERVER['HTTP_REFERER'];
+            $session->write('referer', $referer);
+        }
+
+        $getReferer = $session->read('referer');
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $referer = $this->request->getData('referer');
             $atribute = $this->request->getData();
             // Check point sau khi duyệt đơn
             if($atribute['status'] == $dataOrder[0]['status']){
@@ -95,11 +119,18 @@ class OrdersController extends AppController
                 $confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
 
                 if ($this->Orders->save($confirm)) {
+                    if($session->check('hasReferer')){
+                        $session->delete('hasReferer');
+                    }
+
+                    if($session->check('referer')){
+                        $session->delete('referer');
+                    }
+
                     $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
-                    return $this->redirect("$referer");
+                    return $this->redirect("$getReferer");
                 }else {
                     $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
-                    return $this->redirect("$referer");
                 }
             }
         }

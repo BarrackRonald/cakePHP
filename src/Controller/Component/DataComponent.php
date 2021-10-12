@@ -306,7 +306,9 @@ class DataComponent extends CommonComponent
             'Products.del_flag' => 0,
         ])
         ->order('created_date DESC')
-        ->contain(['Images'])
+        ->contain(['Images'=> function ($q) {
+            return $q->order('Images.created_date DESC');
+            }])
         ->all();
         return $query;
     }
@@ -324,7 +326,9 @@ class DataComponent extends CommonComponent
         $query = $this->Products->find()
             ->order('created_date DESC')
             ->limit(2)
-            ->contain(['Images'])
+            ->contain(['Images'=> function ($q) {
+                return $q->order('Images.created_date DESC');
+                }])
             ->all();
         return $query;
     }

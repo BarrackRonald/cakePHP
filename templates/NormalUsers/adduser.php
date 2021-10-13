@@ -70,38 +70,54 @@ echo $this->element('NormalUsers/header');
                             <form enctype="multipart/form-data" action="/addordersnonelogin" class="checkout" method="post" name="checkout">
 
                                 <div id="customer_details" class="col2-set">
+
+                                    <!-- Test -->
                                     <div class="col-3">
-                                        <div class="woocommerce-billing-fields">
-                                            <h3>Thông Tin Khách Hàng</h3>
-                                            <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                                <label class="" for="billing_first_name">Họ Và Tên <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataProds['infoUser']['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " readonly>
-                                            </p>
-                                            <div class="clear"></div>
+                                    <h3 id="order_review_heading">Thông Tin Khách hàng</h3>
+                                    <table class="shop_table">
+                                                <tbody>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Họ Và Tên
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataProds['infoUser']['username'] ?></span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Địa chỉ <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataProds['infoUser']['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
-                                            </p>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Số Điện Thoại
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataProds['infoUser']['phonenumber'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <div class="clear"></div>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Địa chỉ Email
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataProds['infoUser']['email'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                                <label class="" for="billing_email">Địa chỉ Email <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataProds['infoUser']['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text " readonly>
-                                            </p>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Địa chỉ
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataProds['infoUser']['address'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-                                                <label class="" for="billing_phone">Số Điện Thoại <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataProds['infoUser']['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" readonly>
-                                            </p>
-                                            <div class="clear"></div>
-                                        </div>
+                                                </tbody>
+                                                
+                                            </table>
+
                                     </div>
+                                    <!-- End Test -->
 
                                     <div class="col-3">
                                     <h3 id="order_review_heading">Thông Tin Đơn Hàng</h3>

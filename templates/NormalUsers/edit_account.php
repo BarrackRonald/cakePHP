@@ -83,7 +83,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">PhoneNumber: <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $dataUser[0]['phonenumber'] ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " >
+                                                <input type="text" value="<?= $dataUser[0]['phonenumber'] ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " onkeypress='validate(event)'  maxlength = "10"  >
                                             </p>
 
                                             <div class="clear"></div>
@@ -130,3 +130,22 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>

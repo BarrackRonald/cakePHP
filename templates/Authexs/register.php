@@ -50,7 +50,7 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="country-floating">Phonenumber</label>
-                                            <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?>type="textbox" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  maxlength = "10" id="country-floating" class="form-control" name="phonenumber"
+                                            <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?>type="textbox" onkeypress='validate(event)'  maxlength = "10" id="country-floating" class="form-control" name="phonenumber"
                                             value="<?php if(isset($_SESSION['infoUser']['phonenumber'])){ echo $_SESSION['infoUser']['phonenumber']; }?>">
                                             <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                                         <i style="color: red;">
@@ -99,3 +99,22 @@
 <?php
 	echo $this->element('Register/footer');
 ?>
+<script>
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+</script>

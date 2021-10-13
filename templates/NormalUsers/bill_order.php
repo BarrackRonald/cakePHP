@@ -72,41 +72,56 @@ echo $this->element('NormalUsers/header');
                             <form enctype="multipart/form-data" action="/addorders" class="checkout" method="post" name="checkout">
 
                                 <div id="customer_details" class="col2-set">
+
+                                    <!-- Test -->
                                     <div class="col-3">
-                                        <div class="woocommerce-billing-fields">
-                                            <h3>Thông tin khách hàng</h3>
-                                            <?php foreach ($dataUser as $User) {?>
-                                            <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                                <label class="" for="billing_first_name">Họ và tên <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="hidden" name="idUser" value="<?= $User['id'] ?>">
-                                                <input type="text" value="<?= $User['username'] ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text " readonly>
-                                            </p>
-                                            <div class="clear"></div>
+                                    <h3 id="order_review_heading">Thông Tin Khách hàng</h3>
+                                    <table class="shop_table">
+                                    <?php foreach ($dataUser as $User) {?>
+                                                <tbody>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Họ Và Tên
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $User['username'] ?></span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Địa chỉ <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $User['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
-                                            </p>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Số Điện Thoại
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $User['phonenumber'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <div class="clear"></div>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Địa chỉ Email
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $User['email'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                                <label class="" for="billing_email">Địa chỉ Email <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $User['email'] ?>" placeholder="" id="billing_email" name="email" class="input-text " readonly>
-                                            </p>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Địa chỉ
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $User['address'] ?></span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-                                                <label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $User['phonenumber'] ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number " readonly>
-                                            </p>
-                                            <div class="clear"></div>
-                                            <?php } ?>
-                                        </div>
+                                                </tbody>
+                                        <?php } ?>
+                                                
+                                            </table>
+
                                     </div>
+                                    <!-- End Test -->
 
                                     <div class="col-3">
                                     <h3 id="order_review_heading"> Thông Tin Đơn Hàng</h3>
@@ -245,7 +260,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
                                                 <label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['phonenumber']; } ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" >
+                                                <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" value="<?php if(isset($_SESSION['cartData']['infoUser'])){ echo $_SESSION['cartData']['infoUser']['phonenumber']; } ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" onkeypress='validate(event)'  maxlength = "10" >
                                                 <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                                         <i style="color: red;">
                                                             <?= implode($_SESSION['error']['phonenumber'])?>
@@ -340,6 +355,25 @@ echo $this->element('NormalUsers/footer');
             );
         }
     });
+
+    function validate(evt) {
+        var theEvent = evt || window.event;
+
+        // Handle paste
+        if (theEvent.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]|\./;
+        if (!regex.test(key)) {
+            theEvent.returnValue = false;
+            if (theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
+
     </script>
 <?php }?>
 

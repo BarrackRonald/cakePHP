@@ -75,48 +75,64 @@ echo $this->element('NormalUsers/header');
                             <form enctype="multipart/form-data" action="" class="checkout" method="post" name="checkout">
 
                                 <div id="customer_details" class="col2-set">
+
+                                    <!-- Test -->
                                     <div class="col-3">
-                                        <div class="woocommerce-billing-fields">
-                                            <h3>Thông tin tài khoản</h3>
-                                            <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                                <label class="" for="billing_first_name">FullName: <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataUser[0]['username'] ?>" placeholder="" id="billing_first_name" name="username" class="input-text " readonly>
-                                            </p>
-                                            <div class="clear"></div>
+                                    <h3 id="order_review_heading">Thông Tin Tài khoản</h3>
+                                    <table class="shop_table">
+                                                <tbody>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Họ Và Tên
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataUser[0]['username'] ?></span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Email: <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataUser[0]['email'] ?>" placeholder="" id="billing_address_1" name="email" class="input-text " readonly>
-                                            </p>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Số Điện Thoại
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataUser[0]['phonenumber'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <div class="clear"></div>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Địa chỉ Email
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataUser[0]['email'] ?> </span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">PhoneNumber: <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataUser[0]['phonenumber'] ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " readonly>
-                                            </p>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Địa chỉ
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataUser[0]['address'] ?></span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <div class="clear"></div>
+                                                    <tr class="cart_item">
+                                                        <th class="product-name">
+                                                            Point Của Bạn
+                                                        </th>
+                                                        <td class="product-total">
+                                                            <span class="amount"><?= $dataUser[0]['point_user'] ?></span> 
+                                                        </td>
+                                                    </tr>
 
-                                            <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                                <label class="" for="billing_address_1">Address: <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataUser[0]['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " readonly>
-                                            </p>
+                                                </tbody>
+                                                
+                                            </table>
 
-                                            <div class="clear"></div>
-
-                                            <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                                <label class="" for="billing_email">Point: <abbr title="required" class="required">*</abbr>
-                                                </label>
-                                                <input type="text" value="<?= $dataUser[0]['point_user'] ?>" placeholder="" id="billing_email" name="point_user" class="input-text " readonly>
-                                            </p>
-
-                                        </div>
                                     </div>
+                                    <!-- End Test -->
+
                                     </div>
                                 </div>
                             </form>

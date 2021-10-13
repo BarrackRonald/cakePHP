@@ -100,6 +100,7 @@ class AuthexsController extends AppController {
 
         $session->write('infoUser', $atribute);
         $session->write('email', $atribute['email']);
+        $session->write('password', $atribute['password']);
 
         if($dataUser['result'] == "invalid"){
             $error = $dataUser['data'];

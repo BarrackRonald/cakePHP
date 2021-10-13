@@ -100,23 +100,24 @@ class CategoriesController extends AppController
         }
         $session = $this->request->getSession();
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
-        $atribute = $this->request->getData();
 
 
-        //check Referer
-        if(!$session->check('referer')){
-            $referer = $_SERVER['HTTP_REFERER'];
-            $session->write('referer', $referer);
-        }
+        // //check Referer
+        // if(!$session->check('referer')){
+        //     $referer = $_SERVER['HTTP_REFERER'];
+        //     $session->write('referer', $referer);
+        // }
 
         $getReferer = $session->read('referer');
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+
+            $atribute = $this->request->getData();
             //Check thay đổi
             if(trim($atribute['category_name']) == trim($dataCategory[0]['category_name'])
              ){
                 $this->Flash->error(__('Danh mục không có sự thay đổi.'));
-                return $this->redirect("$getReferer");
+                // return $this->redirect("$getReferer");
             }
 
             $category = $this->Categories->patchEntity($dataCategory[0], h($atribute));
@@ -124,31 +125,37 @@ class CategoriesController extends AppController
             if ($category->hasErrors()) {
                 $error = $category->getErrors();
                 $session->write('error', $error);
-                return $this->redirect("");
+                $data = $atribute;
             }else {
                 if($session->check('error')){
                     $session->delete('error');
                 }
 
-            }
+                if ($this->Categories->save($category)) {
+                    if($session->check('hasReferer')){
+                        $session->delete('hasReferer');
+                    }
 
-            if ($this->Categories->save($category)) {
-                if($session->check('hasReferer')){
-                    $session->delete('hasReferer');
+                    if($session->check('referer')){
+                        $session->delete('referer');
+                    }
+
+                    $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
+                    return $this->redirect("$getReferer");
+                }else{
+                    $session->write('hasReferer', 1);
+                $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
                 }
-
-                if($session->check('referer')){
-                    $session->delete('referer');
-                }
-
-                $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
-                return $this->redirect("$getReferer");
-            }else{
-                $session->write('hasReferer', 1);
-            $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
             }
         }
-        $this->set(compact('dataCategory'));
+        else
+        {
+            $data = $dataCategory[0];
+        }
+
+        // dd($data);
+        $this->set('dataCategory', $data);
+
     }
 
     //Delete Soft Categories

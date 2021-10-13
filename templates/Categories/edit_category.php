@@ -18,10 +18,10 @@ echo $this->element('Admin/sidebar');
                 <div class="section">
                     <div class="row">
                         <div class="col-12">
-                        <?= $this->Form->create($dataCategory[0]) ?>
+                        <?= $this->Form->create() ?>
                             <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
-                                <input type="text" class="form-control" value="<?= $dataCategory[0]->category_name ?> " name="category_name" >
+                                <input type="text" class="form-control" value="<?= $dataCategory["category_name"]?>" name="category_name" >
                                 <?php  if(isset($_SESSION['error']['category_name'])){?>
                                         <i style="color: red;">
                                             <?= implode($_SESSION['error']['category_name'])?>

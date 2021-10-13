@@ -191,6 +191,10 @@ class UsersController extends AppController
             $this->Flash->error(__('User chưa được cập nhật. Vui lòng thử lại.'));
 
         }
+        else
+        {
+            
+        }
         $this->set(compact('dataUser', 'dataRole'));
     }
 

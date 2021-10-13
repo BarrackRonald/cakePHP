@@ -1,4 +1,25 @@
+.symbol-input200 {
+  font-size: 15px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  border-radius: 25px;
+  bottom: 0;
+  right: 20px;
+  height: 100%;
+  padding-left: 35px;
+  pointer-events: none;
+  color: #666666;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
 
+}
 /*//////////////////////////////////////////////////////////////////
 [ Flash messages ]*/
 .message {

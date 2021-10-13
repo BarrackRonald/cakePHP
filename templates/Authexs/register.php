@@ -50,7 +50,7 @@
                                     <div class="col-md-12 col-12">
                                         <div class="form-group">
                                             <label for="country-floating">Phonenumber</label>
-                                            <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?>type="textbox" onkeypress='validate(event)'  maxlength = "10" id="country-floating" class="form-control" name="phonenumber"
+                                            <input <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?>type="textbox" onkeypress="validate(event)"  maxlength = "10" id="country-floating" class="form-control" name="phonenumber"
                                             value="<?php if(isset($_SESSION['infoUser']['phonenumber'])){ echo $_SESSION['infoUser']['phonenumber']; }?>">
                                             <?php  if(isset($_SESSION['error']['phonenumber'])){?>
                                                         <i style="color: red;">

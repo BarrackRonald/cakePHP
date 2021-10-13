@@ -22,7 +22,7 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create($dataUser[0]) ?>
                             <div class="form-group">
                             <label for="email">Username:</label>
-                                <input type="text" class="form-control" value="<?= $dataUser[0]->username ?> " name="username" >
+                                <input type="text" class="form-control" value="<?= trim($dataUser[0]->username) ?>" name="username" >
                                 <?php  if(isset($_SESSION['error']['username'])){?>
                                         <i style="color: red;">
                                             <?= implode($_SESSION['error']['username'])?>

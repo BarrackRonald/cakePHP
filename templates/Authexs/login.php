@@ -26,11 +26,20 @@
 					</div>
 
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="password" placeholder="Password">
+						<input id="myInput" class="input100" type="password" name="password" placeholder="Password" value="<?php if(isset($_SESSION['password'])){ echo $_SESSION['password']; }?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
+						<span class="symbol-input200">
+							<!-- <input type="button" value="abc" onclick="myFunction()"><i class='far fa-eye'></i> -->
+						</span>
+						<!-- <input type="checkbox" onclick="myFunction()">Show Password -->
+					</div>
+					<div class="text-left p-t-1 m-l-25">
+						<a class="txt2" href="/">
+							<input type="checkbox" onclick="myFunction()"><span class="m-l-5">Hiện mật khẩu</span>
+						</a>
 					</div>
 
 					<div class="container-login100-form-btn">
@@ -68,3 +77,13 @@
 <?php
 echo $this->element('Login/footer');
 ?>
+<script>
+	function myFunction() {
+	var x = document.getElementById("myInput");
+	if (x.type === "password") {
+		x.type = "text";
+	} else {
+		x.type = "password";
+	}
+}
+</script>

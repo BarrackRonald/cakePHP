@@ -68,7 +68,6 @@ class DataComponent extends CommonComponent
     }
 
     public function insertUsers($dataProds, $pointAF){
-        // dd($atribute);
         $user = [];
         $user['username'] =$dataProds['infoUser']['username'];
         $user['address'] = $dataProds['infoUser']['address'];
@@ -164,21 +163,62 @@ class DataComponent extends CommonComponent
         return $query->toArray();
     }
 
-    public function createOrders($atribute, $dataProds, $insertUser){
+    public function createOrders($dataProds, $insertUser){
         $order = [];
-        $order['order_name'] = 'order_'.$atribute['fullname'];
-        $order['email'] = $atribute['email'];
-        $order['phonenumber'] = $atribute['phonenumber'];
-        $order['address'] = $atribute['address'];
+        $order['order_name'] = 'order_'.$insertUser[0]['username'];
+        $order['email'] = $insertUser[0]['email'];
+        $order['phonenumber'] = $insertUser[0]['phonenumber'];
+        $order['address'] = $insertUser[0]['address'];
         $order['date_order'] = date('Y-m-d h:m:s');
-        if(isset($atribute['idUser'])){
-            $order['user_id'] = $atribute['idUser'];
-        }else{
-            $order['user_id'] = $insertUser['id'];
+        $order['user_id'] = $insertUser[0]['id'];
+        $order['total_point'] = $dataProds['totalAllPoint'];
+        $order['total_quantity'] = $dataProds['totalquantity'];
+        $order['total_amount'] = $dataProds['totalAllAmount'];
+        $order['created_date'] = date('Y-m-d h:m:s');
+        $order['updated_date'] = date('Y-m-d h:m:s');
+        $dataOrder = $this->Orders->newEntity($order);
+
+        if ($dataOrder->hasErrors()) {
+            return [
+                'result' => 'invalid',
+                'data' => $dataOrder->getErrors(),
+            ];
+        };
+        $result = $this->Orders->save($dataOrder);
+
+        //Add Orderdetail
+        foreach ($dataProds['cart'] as $key => $product) {
+            $orderDetail = [];
+            $orderDetail['quantity_orderDetails'] = $product['quantity'];
+            $orderDetail['amount_orderDetails'] = $product['totalAmount'];
+            $orderDetail['point_orderDetail'] = $product['totalPoint'];
+            $orderDetail['product_id'] = $key;
+            $orderDetail['order_id'] = $result['id'];
+            $orderDetail['created_date'] = date('Y-m-d h:m:s');
+            $orderDetail['updated_date'] = date('Y-m-d h:m:s');
+            $dataOrderDetails = $this->Orderdetails->newEntity($orderDetail);
+            if ($dataOrderDetails->hasErrors()) {
+                return [
+                    'result' => 'invalid',
+                    'data' => $dataOrderDetails->getErrors(),
+                ];
+            };
+            $this->Orderdetails->save($dataOrderDetails);
         }
-        $order['total_point'] = $atribute['totalAllPoint'];
-        $order['total_quantity'] = $atribute['totalQuantity'];
-        $order['total_amount'] = $atribute['totalAllAmount'];
+
+    }
+
+    public function createOrdersNone($infoUser, $dataProds, $insertUser){
+        $order = [];
+        $order['order_name'] = 'order_'.$infoUser['username'];
+        $order['email'] = $infoUser['email'];
+        $order['phonenumber'] = $infoUser['phonenumber'];
+        $order['address'] = $infoUser['address'];
+        $order['date_order'] = date('Y-m-d h:m:s');
+        $order['user_id'] = $insertUser['id'];
+        $order['total_point'] = $dataProds['totalAllPoint'];
+        $order['total_quantity'] = $dataProds['totalquantity'];
+        $order['total_amount'] = $dataProds['totalAllAmount'];
         $order['created_date'] = date('Y-m-d h:m:s');
         $order['updated_date'] = date('Y-m-d h:m:s');
         $dataOrder = $this->Orders->newEntity($order);
@@ -307,7 +347,7 @@ class DataComponent extends CommonComponent
         ])
         ->order('created_date DESC')
         ->contain(['Images'=> function ($q) {
-            return $q->order('Images.created_date DESC');
+            return $q->order('Images.updated_date DESC');
             }])
         ->all();
         return $query;
@@ -327,7 +367,7 @@ class DataComponent extends CommonComponent
             ->order('created_date DESC')
             ->limit(2)
             ->contain(['Images'=> function ($q) {
-                return $q->order('Images.created_date DESC');
+                return $q->order('Images.updated_date DESC');
                 }])
             ->all();
         return $query;

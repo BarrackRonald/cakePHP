@@ -23,58 +23,58 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create() ?>
                             <div class="form-group">
                             <label for="email">Username:</label>
-                                <input <?php  if(isset($_SESSION['error']['username'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="username" >
-                                <?php  if(isset($_SESSION['error']['username'])){?>
+                                <input type="text" class="form-control" value="<?php if(isset($dataUser['username'])){?><?=trim($dataUser['username'])?><?php }?>" name="username" >
+                                <?php  if(isset($error['username'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['username'])?>
+                                            <?= implode($error['username'])?>
                                         </i>
                                 <?php }?>
 
                             </div>
                             <div class="form-group">
                             <label for="email">Password:</label>
-                                <input <?php  if(isset($_SESSION['error']['password'])){?> style="border-color: red; color: red;" <?php }?> type="password" class="form-control" value="" name="password" >
-                                <?php  if(isset($_SESSION['error']['password'])){?>
+                                <input type="password" class="form-control" value="<?php if(isset($dataUser['password'])){?><?=trim($dataUser['password'])?><?php }?>" name="password" >
+                                <?php  if(isset($error['password'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['password'])?>
+                                            <?= implode($error['password'])?>
                                         </i>
                                 <?php }?>
 
                             </div>
                             <div class="form-group">
                                 <label for="email">Email:</label>
-                                <input <?php  if(isset($_SESSION['error']['email'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="email" >
-                                <?php  if(isset($_SESSION['error']['email'])){?>
+                                <input type="text" class="form-control" value="<?php if(isset($dataUser['email'])){?><?=trim($dataUser['email'])?><?php }?>" name="email" >
+                                <?php  if(isset($error['email'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['email'])?>
+                                            <?= implode($error['email'])?>
                                         </i>
                                 <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
-                                    <input  <?php  if(isset($_SESSION['error']['phonenumber'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="phonenumber" onkeypress='validate(event)'  maxlength = "10" >
-                                    <?php  if(isset($_SESSION['error']['phonenumber'])){?>
+                                    <input type="text" class="form-control" value="<?php if(isset($dataUser['phonenumber'])){?><?=trim($dataUser['phonenumber'])?><?php }?>" name="phonenumber" onkeypress='validate(event)'  maxlength = "10" >
+                                    <?php  if(isset($error['phonenumber'])){?>
                                             <i style="color: red;">
-                                                <?= implode($_SESSION['error']['phonenumber'])?>
+                                                <?= implode($error['phonenumber'])?>
                                             </i>
                                     <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Address:</label>
-                                    <input <?php  if(isset($_SESSION['error']['address'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="address" >
-                                    <?php  if(isset($_SESSION['error']['address'])){?>
+                                    <input type="text" class="form-control" value="<?php if(isset($dataUser['address'])){?><?=trim($dataUser['address'])?><?php }?>" name="address" >
+                                    <?php  if(isset($error['address'])){?>
                                             <i style="color: red;">
-                                                <?= implode($_SESSION['error']['address'])?>
+                                                <?= implode($error['address'])?>
                                             </i>
                                     <?php }?>
                             </div>
 
                             <div class="form-group">
                                 <label for="email">Point:</label>
-                                    <input <?php  if(isset($_SESSION['error']['point'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="point" >
-                                    <?php  if(isset($_SESSION['error']['point'])){?>
+                                    <input type="text" class="form-control" value="<?php if(isset($dataUser['point_user'])){?><?=trim($dataUser['point_user'])?><?php }?>" name="point_user" >
+                                    <?php  if(isset($error['point_user'])){?>
                                             <i style="color: red;">
-                                                <?= implode($_SESSION['error']['point'])?>
+                                                <?= implode($error['point_user'])?>
                                             </i>
                                     <?php }?>
                             </div>

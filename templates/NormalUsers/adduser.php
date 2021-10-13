@@ -81,7 +81,7 @@ echo $this->element('NormalUsers/header');
                                                             Họ Và Tên
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataProds['infoUser']['username'] ?></span> 
+                                                            <span class="amount"><?= $dataProds['infoUser']['username'] ?></span>
                                                         </td>
                                                     </tr>
 
@@ -90,7 +90,7 @@ echo $this->element('NormalUsers/header');
                                                             Số Điện Thoại
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataProds['infoUser']['phonenumber'] ?> </span> 
+                                                            <span class="amount"><?= $dataProds['infoUser']['phonenumber'] ?> </span>
                                                         </td>
                                                     </tr>
 
@@ -99,7 +99,7 @@ echo $this->element('NormalUsers/header');
                                                             Địa chỉ Email
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataProds['infoUser']['email'] ?> </span> 
+                                                            <span class="amount"><?= $dataProds['infoUser']['email'] ?> </span>
                                                         </td>
                                                     </tr>
 
@@ -108,12 +108,11 @@ echo $this->element('NormalUsers/header');
                                                             Địa chỉ
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataProds['infoUser']['address'] ?> </span> 
+                                                            <span class="amount"><?= $dataProds['infoUser']['address'] ?> </span>
                                                         </td>
                                                     </tr>
 
                                                 </tbody>
-                                                
                                             </table>
 
                                     </div>

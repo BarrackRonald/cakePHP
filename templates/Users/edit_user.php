@@ -19,71 +19,67 @@ echo $this->element('Admin/sidebar');
                 <div class="section">
                     <div class="row">
                         <div class="col-12">
-                        <?= $this->Form->create($dataUser[0]) ?>
+                        <?= $this->Form->create() ?>
                             <div class="form-group">
                             <label for="email">Username:</label>
-                                <input type="text" class="form-control" value="<?= trim($dataUser[0]->username) ?>" name="username" >
-                                <?php  if(isset($_SESSION['error']['username'])){?>
+                                <input type="text" class="form-control" value="<?=trim($dataUser['username'])?>" name="username" >
+                                <?php  if(isset($error['username'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['username'])?>
+                                            <?= implode($error['username'])?>
                                         </i>
                                 <?php }?>
 
                             </div>
                             <div class="form-group">
                                 <label for="email">Password:</label>
-                                <input type="password" class="form-control" value="<?= $dataUser[0]->password ?>" name="password" >
-                                <?php  if(isset($_SESSION['error']['password'])){?>
+                                <input type="password" class="form-control" value="<?=trim($dataUser['password'])?>" name="password" >
+                                <?php  if(isset($error['password'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['password'])?>
+                                            <?= implode($error['password'])?>
                                         </i>
                                 <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
-                                    <input type="text" class="form-control" value="<?= $dataUser[0]->phonenumber ?>" name="phonenumber" onkeypress='validate(event)'  maxlength = "10" >
-                                    <?php  if(isset($_SESSION['error']['phonenumber'])){?>
+                                    <input type="text" class="form-control" value="<?=trim($dataUser['phonenumber'])?>" name="phonenumber" onkeypress='validate(event)'  maxlength = "10" >
+                                    <?php  if(isset($error['phonenumber'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['phonenumber'])?>
+                                            <?= implode($error['phonenumber'])?>
                                         </i>
                                     <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Address:</label>
-                                    <input type="text" class="form-control" value="<?= $dataUser[0]->address ?>" name="address" >
-                                    <?php  if(isset($_SESSION['error']['address'])){?>
+                                    <input type="text" class="form-control" value="<?=trim($dataUser['address'])?>" name="address" >
+                                    <?php  if(isset($error['address'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['address'])?>
+                                            <?= implode($error['address'])?>
                                         </i>
                                     <?php }?>
                             </div>
-                            <?php if(!isset($_SESSION['hasReferer'])){?>
-                            <input type="hidden" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
-                            <?php }?>
 
                             <div class="form-group">
                                 <label for="pwd">Role:</label>
                                 <select name="role_id" id="" class="form-control" >
                                     <?php foreach ($dataRole as $role) { ?>
-                                        <option value="<?= $role->id?>" <?php if($role->id == $dataUser[0]->role_id){?> selected <?php } ?> ><?= $role->role_name ?></option>
+                                        <option value="<?= $role->id?>" <?php if($role->id == $dataUser['role_id']){?> selected <?php } ?> ><?= $role->role_name ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
 
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>">
+                                    <a href="<?=$dataUser["referer"];?>">
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                                 <?php }else{?>
                                     <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
                                 <?php }?>
-
                             </div>
 
                             <div class="button_submit">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                    <button type="submit" value="<?= $dataUser["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
                                 <?php }else{?>
                                     <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
                                 <?php }?>

@@ -19,28 +19,28 @@ echo $this->element('Admin/sidebar');
                 <div class="section">
                     <div class="row">
                         <div class="col-12">
-                        <?= $this->Form->create($dataProduct[0], ['type'=>'file']) ?>
+                        <?= $this->Form->create(null, ['type'=>'file']) ?>
                             <div class="form-group">
                             <label for="email">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" value="<?= h($dataProduct[0]->product_name )?>" name="product_name" >
-                                <?php  if(isset($_SESSION['error']['product_name'])){?>
+                                <input type="text" class="form-control" value="<?=h(trim($dataProduct['product_name']))?>" name="product_name" >
+                                <?php  if(isset($error['product_name'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['product_name'])?>
+                                            <?= implode($error['product_name'])?>
                                         </i>
                                     <?php }?>
 
                             </div>
                             <div class="form-group">
                             <label for="email">Hình ảnh:</label>
-                                <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" value="<?= $dataProduct[0]['images'][0]['image'] ?>" >
+                                <input type="file" class="form-control input-file" id='uploadfile' name="uploadfile" value="<?php if(isset($dataProduct['images'])){?><?=trim($dataProduct['images'][0]['image'])?><?php }?>" >
                             </div>
                             <div class="form-group">
                                 <label style="display: block" for="email">Mô tả:</label>
-                                <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" ><?= h($dataProduct[0]->description) ?>
+                                <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" ><?=trim($dataProduct['description'])?>
                                 </textarea>
-                                    <?php  if(isset($_SESSION['error']['description'])){?>
+                                    <?php  if(isset($error['description'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['description'])?>
+                                            <?= implode($error['description'])?>
                                         </i>
                                     <?php }?>
                                 <script>
@@ -51,38 +51,35 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?= h($dataProduct[0]->amount_product) ?>" name="amount_product" >
-                                    <?php  if(isset($_SESSION['error']['amount_product'])){?>
+                                    <input type="text" class="form-control" value="<?=h(trim($dataProduct['amount_product']))?>" name="amount_product" >
+                                    <?php  if(isset($error['amount_product'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['amount_product'])?>
+                                            <?= implode($error['amount_product'])?>
                                         </i>
                                     <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Point sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?= h($dataProduct[0]->point_product) ?>"
+                                    <input type="text" class="form-control" value="<?=h(trim($dataProduct['point_product']))?>"
                                      name="point_product" >
-                                     <?php  if(isset($_SESSION['error']['point_product'])){?>
+                                     <?php  if(isset($error['point_product'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['point_product'])?>
+                                            <?= implode($error['point_product'])?>
                                         </i>
                                     <?php }?>
                             </div>
-                            <?php if(!isset($_SESSION['hasReferer'])){?>
-                            <input type="hidden" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
-                            <?php }?>
 
                             <div class="form-group">
                                 <label for="pwd">Danh mục:</label>
                                 <select name="category_id" id="" class="form-control" >
                                     <?php foreach ($dataCategory as $category) { ?>
-                                        <option value="<?= $category->id?>" <?php if($category->id == $dataProduct[0]->category_id){?> selected <?php } ?>><?= $category->category_name ?></option>
+                                        <option value="<?= $category->id?>" <?php if($category->id == $dataProduct['category_id']){?> selected <?php } ?>><?= $category->category_name ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>">
+                                    <a href="<?=$dataProduct["referer"];?>">
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                                 <?php }else{?>
@@ -92,7 +89,7 @@ echo $this->element('Admin/sidebar');
 
                             <div class="button_submit">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                    <button type="submit" value="<?= $dataProduct["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
                                 <?php }else{?>
                                     <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
                                 <?php }?>

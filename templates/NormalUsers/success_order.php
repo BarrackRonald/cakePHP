@@ -3,7 +3,7 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-    <div class="product-big-title-area">
+    <div class="product-big-title-area successs">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">

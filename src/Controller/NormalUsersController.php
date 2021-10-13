@@ -158,32 +158,18 @@ class NormalUsersController extends AppController
     //Add Order không login
     public function addordersnonelogin(){
         if($this->request->is('post')){
-            $atribute = $this->request->getData();
             $session = $this->request->getSession();
             $product = null;
-
 
             //Check Dữ liệu bắt buộc không đổi
             if($session->check('cartData')){
                $cartData = $session->read('cartData');
                $infoUser = $cartData['infoUser'];
-               if(!(
-                   $cartData['totalAllAmount'] == h($atribute['totalAllAmount']) &&
-                   $cartData['totalAllPoint'] == h($atribute['totalAllPoint']) &&
-                   $cartData['totalquantity'] == h($atribute['totalQuantity']) &&
-                   $infoUser['username'] == h($atribute['fullname']) &&
-                   $infoUser['address'] == h($atribute['address']) &&
-                   $infoUser['email'] == h($atribute['email']) &&
-                   $infoUser['phonenumber'] == h($atribute['phonenumber'])
-               )){
-                $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận Đặt Hàng!!!'));
-                return $this->redirect(['action' => 'adduser']);
 
-               }
             }
-
             if($session->check('cartData')){
                  $dataProds = $session->read('cartData');
+
 
                  //Point user trước khi mua
                  $pointBF = 0;
@@ -192,31 +178,23 @@ class NormalUsersController extends AppController
 
                 // Inser User
                  $insertUser =  $this->{'Data'}->insertUsers($dataProds, $pointAF);
-
-                // Checkmail trùng
-                $checkmail = $this->{'Data'}->checkmail($atribute);
-                if(count($checkmail)> 0){
-                    $text = 'Địa chỉ mail này đã tồn tại.';
-                    $this->set('text');
-                }
-
                 if($insertUser['result'] == "invalid"){
                     $error = $insertUser['data'];
                     $this->set(compact('error'));
                 }
 
                 //  Insert Order
-                 $insertOrder = $this->{'Data'}->createOrders($atribute, $dataProds, $insertUser);
+                 $insertOrder = $this->{'Data'}->createOrdersNone($infoUser, $dataProds, $insertUser);
                  if(!$insertOrder['result'] == "invalid")
                  {
-                     $to = $atribute['email'];
+                     $to = $infoUser['email'];
                      $toAdmin = 'tienphamvan2005@gmail.com';
                      $subject = 'Mail Confirm Order';
                      $message = '
                          Thông tin đặt hàng gồm:
-                             + Họ và tên khách hàng: '.$atribute['fullname'].'
-                             + Địa chỉ: '.$atribute['address'].'
-                             + Số điện thoại:'.$atribute['phonenumber'].'';
+                             + Họ và tên khách hàng: '.$infoUser['username'].'
+                             + Địa chỉ: '.$infoUser['address'].'
+                             + Số điện thoại:'.$infoUser['phonenumber'].'';
 
                      foreach($dataProds['cart'] as $value) {
                         $product .= ' * '.$value['name'].' × '.$value['quantity']." \r\n";
@@ -224,8 +202,8 @@ class NormalUsersController extends AppController
                      $message .= '
                              + Mặt hàng đã mua:
                                   '.$product.'
-                             + Tổng số point nhận được:'.$atribute['totalAllPoint'].'
-                             + Tổng số tiền cần thanh toán:'.$atribute['totalAllAmount'].'
+                             + Tổng số point nhận được:'.$dataProds['totalAllPoint'].'
+                             + Tổng số tiền cần thanh toán:'.$dataProds['totalAllAmount'].'
                              ';
                      //xóa session
                      $session->delete('cartData');
@@ -248,7 +226,8 @@ class NormalUsersController extends AppController
            if($session->check('cartData')){
                 $dataProds = $session->read('cartData');
                 $idUsers = $session->read('idUser');
-                $result = $this->{'Data'}->createOrders($atribute, $dataProds, $insertUser);
+                $dataUser = $this->{'Data'}->getInfoUser($idUsers);
+                $result = $this->{'Data'}->createOrders($dataProds, $dataUser);
                 $pointuser = $this->{'Data'}->getPointByUser($idUsers);
 
                 //Point user trước khi mua
@@ -258,14 +237,14 @@ class NormalUsersController extends AppController
 
                 if(!$result['result'] == "invalid")
                 {
-                    $to = $atribute['email'];
+                    $to = $dataUser[0]['email'];
                     $toAdmin = 'tienphamvan2005@gmail.com';
                     $subject = 'Mail Confirm Order';
                     $message = '
                         Thông tin đặt hàng gồm:
-                            + Họ và tên khách hàng: '.$atribute['fullname'].'
-                            + Địa chỉ: '.$atribute['address'].'
-                            + Số điện thoại:'.$atribute['phonenumber'].'';
+                            + Họ và tên khách hàng: '.$dataUser[0]['username'].'
+                            + Địa chỉ: '.$dataUser[0]['address'].'
+                            + Số điện thoại:'.$dataUser[0]['phonenumber'].'';
 
                     foreach($dataProds['cart'] as $key => $value) {
                        $product .= ' * '.$value['name'].' × '.$value['quantity']." \r\n";
@@ -273,8 +252,8 @@ class NormalUsersController extends AppController
                     $message .= '
                             + Mặt hàng đã mua:
                                  '.$product.'
-                            + Tổng số point nhận được:'.$atribute['totalAllPoint'].'
-                            + Tổng số tiền cần thanh toán:'.$atribute['totalAllAmount'].'
+                            + Tổng số point nhận được:'.$dataUser[0]['totalAllPoint'].'
+                            + Tổng số tiền cần thanh toán:'.$dataUser[0]['totalAllAmount'].'
                             ';
                     //xóa session
                     $session->delete('cartData');
@@ -283,7 +262,6 @@ class NormalUsersController extends AppController
                         $this->redirect(['action' => 'successOrder']);
                     }
                 }
-
 
             }
         }
@@ -517,7 +495,7 @@ class NormalUsersController extends AppController
     public function editAccount($id = null){
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
+            $user = $this->Users->patchEntity($dataUser[0], h($this->request->getData()));
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
                 return $this->redirect(['action' => 'myaccount']);

@@ -84,7 +84,7 @@ echo $this->element('NormalUsers/header');
                                                             Họ Và Tên
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $User['username'] ?></span> 
+                                                            <span class="amount"><?= $User['username'] ?></span>
                                                         </td>
                                                     </tr>
 
@@ -93,7 +93,7 @@ echo $this->element('NormalUsers/header');
                                                             Số Điện Thoại
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $User['phonenumber'] ?> </span> 
+                                                            <span class="amount"><?= $User['phonenumber'] ?> </span>
                                                         </td>
                                                     </tr>
 
@@ -102,7 +102,7 @@ echo $this->element('NormalUsers/header');
                                                             Địa chỉ Email
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $User['email'] ?> </span> 
+                                                            <span class="amount"><?= $User['email'] ?> </span>
                                                         </td>
                                                     </tr>
 
@@ -111,13 +111,13 @@ echo $this->element('NormalUsers/header');
                                                             Địa chỉ
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $User['address'] ?></span> 
+                                                            <span class="amount"><?= $User['address'] ?></span>
                                                         </td>
                                                     </tr>
 
                                                 </tbody>
                                         <?php } ?>
-                                                
+
                                             </table>
 
                                     </div>
@@ -150,16 +150,12 @@ echo $this->element('NormalUsers/header');
                                                         <th>Tổng Point</th>
                                                         <td>
                                                             <?= $dataProds['totalAllPoint'] ?>
-                                                            <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
                                                         </td>
                                                     </tr>
 
                                                     <tr class="order-total">
                                                         <th>Tổng Đơn Hàng</th>
                                                         <td><strong><span class="amount"><?= $dataProds['totalAllAmount'] ?></span></strong> </td>
-                                                        <input type="hidden" name="totalAllPoint" value="<?= $dataProds['totalAllPoint'] ?>">
-                                                        <input type="hidden" name="totalAllAmount" value="<?= $dataProds['totalAllAmount'] ?>">
-                                                        <input type="hidden" name="totalQuantity" value="<?= $dataProds['totalquantity'] ?>">
                                                     </tr>
 
                                                 </tfoot>

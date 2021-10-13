@@ -5,6 +5,7 @@ namespace App\Controller;
 use Cake\View\Helper\FormHelper;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * Products Controller
@@ -41,19 +42,6 @@ class ProductsController extends AppController
     //List Products
     public function listProducts()
     {
-        $session = $this->request->getSession();
-        if($session->check('hasReferer')){
-            $session->delete('hasReferer');
-        }
-
-        if($session->check('referer')){
-            $session->delete('referer');
-        }
-
-        if($session->check('error')){
-            $session->delete('error');
-        }
-
         $products = $this->{'CRUD'}->getAllProduct();
 
         //Search
@@ -85,27 +73,20 @@ class ProductsController extends AppController
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $product = $this->Products->newEmptyEntity();
         if ($this->request->is('post')) {
-            $session = $this->request->getSession();
             $atribute = $this->request->getData();
             $dataProduct = $this->{'CRUD'}->addproduct($atribute);
 
-
             if($dataProduct['result'] == "invalid"){
                 $error = $dataProduct['data'];
-                $session->write('error', $error);
-                $this->Flash->error(__('Thêm Sản phẩm thất bại. Vui lòng thử lại.'));
-
+                $this->set('error', $error);
+                $data = $atribute;
+                $this->set('dataProduct', $data);
             }else{
-                if($session->check('error')){
-                    $session->delete('error');
-                }
-
                 $this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
                 return $this->redirect(['action' => 'listProducts']);
             }
         }
-
-        $this->set(compact('product','dataCategory'));
+        $this->set(compact('dataCategory'));
     }
 
     //Edit Product
@@ -120,28 +101,20 @@ class ProductsController extends AppController
         //Check ID User
         $dataCategory =  $this->{'CRUD'}->getAllCategory();
         $dataProduct = $this->{'CRUD'}->getProductByID($id);
-        $session = $this->request->getSession();
-
-        //check Referer
-        if(!$session->check('referer')){
-            $referer = $_SERVER['HTTP_REFERER'];
-            $session->write('referer', $referer);
-        }
-
-        $getReferer = $session->read('referer');
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-
+            // dd($atribute['uploadfile']->getClientFilename());
             //Check thay đổi
             if(trim($atribute['product_name']) == trim($dataProduct[0]['product_name']) &&
-            trim($atribute['description']) == trim($dataProduct[0]['description']) &&
-            trim($atribute['amount_product']) == $dataProduct[0]['amount_product'] &&
-            trim($atribute['point_product']) == $dataProduct[0]['point_product'] &&
-            trim($atribute['category_id']) == $dataProduct[0]['category_id']
+                trim($atribute['description']) == trim($dataProduct[0]['description']) &&
+                trim($atribute['amount_product']) == $dataProduct[0]['amount_product'] &&
+                trim($atribute['point_product']) == $dataProduct[0]['point_product'] &&
+                trim($atribute['category_id']) == $dataProduct[0]['category_id'] && 
+                $atribute['uploadfile']->getClientFilename() == ""
              ){
                 $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
-                return $this->redirect("$getReferer");
+                return $this->redirect($atribute['referer']);
             }
 
             $atribute = $this->request->getData();
@@ -149,52 +122,42 @@ class ProductsController extends AppController
 
             if ($product->hasErrors()) {
                 $error = $product->getErrors();
-                $session->write('error', $error);
-                return $this->redirect("");
-            }else {
-                if($session->check('error')){
-                    $session->delete('error');
-                }
-
+                $this->set('error', $error);
+                $data = $atribute;
             }
 
-        //Add Image vào Table Image
-        $result = $this->Products->save($product);
-        $images = $this->Images->newEmptyEntity();
+            //Add Image vào Table Image
+            $result = $this->Products->save($product);
+            $images = $this->Images->newEmptyEntity();
 
-        $image = $atribute['uploadfile'];
-        $name = $image->getClientFilename();
-        $targetPath = WWW_ROOT.'img'.DS.$name;
+            $image = $atribute['uploadfile'];
+            $name = $image->getClientFilename();
+            $targetPath = WWW_ROOT.'img'.DS.time().$name;
 
-        if($name){
-            $image->moveTo($targetPath);
-            $images->image = '../../img/'.$name;
-        }
-
-        $images->image_name = 'img'.$atribute['product_name'] ;
-        $images->image_type = 'Banner';
-        $images->user_id = 1;
-        $images->product_id = $result['id'];
-        $images->created_date = date('Y-m-d h:m:s');
-        $images->updated_date = date('Y-m-d h:m:s');
-
-        $this->Images->save($images);
-
-            if ($this->Products->save($product)) {
-                if($session->check('hasReferer')){
-                    $session->delete('hasReferer');
-                }
-
-                if($session->check('referer')){
-                    $session->delete('referer');
-                }
-
-                $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
-                return $this->redirect("$getReferer");
+            if($name){
+                $image->moveTo($targetPath);
+                $images->image = '../../img/'.time().$name;
             }
-            $this->Flash->error(__('Sản phẩm chưa được cập nhật. Vui lòng thử lại.'));
+
+            $images->image_name = 'img'.$atribute['product_name'] ;
+            $images->image_type = 'Banner';
+            $images->user_id = 1;
+            $images->product_id = $result['id'];
+            $images->updated_date = date('Y-m-d h:i:s');
+
+            $this->Images->save($images);
+
+                if ($this->Products->save($product)) {
+                    $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
+                    return $this->redirect($atribute['referer']);
+                }
+        }else{
+            $data = $dataProduct[0];
+            $data["referer"] = $this->referer();
+
         }
-        $this->set(compact('dataProduct', 'dataCategory'));
+        $this->set('dataProduct', $data);
+        $this->set(compact('dataCategory'));
     }
 
     //Delete soft Product

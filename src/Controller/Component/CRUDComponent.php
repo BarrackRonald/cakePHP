@@ -57,7 +57,7 @@ class CRUDComponent extends CommonComponent
         if($atribute['password'] == ''){
             $user['password'] = '';
         }
-        $user['point_user'] = trim($atribute['point']);
+        $user['point_user'] = trim($atribute['point_user']);
         $user['role_id'] = $atribute['role_id'];
         $user['avatar'] = 'none.jbg';
         $user['created_date'] = date('Y-m-d h:m:s');
@@ -225,7 +225,7 @@ class CRUDComponent extends CommonComponent
         ])
         ->order('Products.created_date DESC')
         ->contain(['Images'=> function ($q) {
-            return $q->order('Images.created_date DESC');
+            return $q->order('Images.updated_date DESC');
             }]);
         return $query;
     }
@@ -283,7 +283,7 @@ class CRUDComponent extends CommonComponent
                 'Products.id' => $id,
             ])
             ->contain(['Images'=> function ($q) {
-                return $q->order('Images.created_date DESC');
+                return $q->order('Images.updated_date DESC');
                 }]);
         return $query->toArray();
     }
@@ -309,7 +309,7 @@ class CRUDComponent extends CommonComponent
         ])
         ->order('Products.created_date DESC')
         ->contain(['Images'=> function ($q) {
-            return $q->order('Images.created_date DESC');
+            return $q->order('Images.updated_date DESC');
             }])
         ->where([
                 'Products.product_name like' => '%'. $key .'%',

@@ -76,14 +76,14 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_first_name_field" class="form-row form-row-first validate-required">
                                                 <label class="" for="billing_first_name">FullName: <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $dataUser[0]['username'] ?>" placeholder="" id="billing_first_name" name="username" class="input-text " >
+                                                <input type="text" value="<?=h(trim($dataUser[0]['username']))?>" placeholder="" id="billing_first_name" name="username" class="input-text " >
                                             </p>
                                             <div class="clear"></div>
 
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">PhoneNumber: <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $dataUser[0]['phonenumber'] ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " onkeypress='validate(event)'  maxlength = "10"  >
+                                                <input type="text" value="<?=h(trim($dataUser[0]['phonenumber']))?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " onkeypress='validate(event)'  maxlength = "10"  >
                                             </p>
 
                                             <div class="clear"></div>
@@ -91,7 +91,7 @@ echo $this->element('NormalUsers/header');
                                             <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
                                                 <label class="" for="billing_address_1">Address: <abbr title="required" class="required">*</abbr>
                                                 </label>
-                                                <input type="text" value="<?= $dataUser[0]['address'] ?>" placeholder="" id="billing_address_1" name="address" class="input-text " >
+                                                <input type="text" value="<?=h(trim($dataUser[0]['address']))?>" placeholder="" id="billing_address_1" name="address" class="input-text " >
                                             </p>
 
                                             <div class="clear"></div>

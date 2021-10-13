@@ -784,7 +784,7 @@ z-index: 999;}
 .footer-top-area .zigzag-bottom{background: #f4f4f4}
 .footer-top-area {background: none repeat scroll 0 0 #333;
 color: #999;
-padding: 35px 0 35px;}
+padding: 35px 0 100px;}
 
 
 .footer-bottom-area {background: #000;color: #fff}
@@ -914,7 +914,13 @@ width: 10px;
   margin: 10px 0 0;
 }
 
-.product-big-title-area {background: url(img/crossword.png) repeat scroll 0 0 #ee5057}
+.product-big-title-area {
+    background: url(img/crossword.png) repeat scroll 0 0 #ee5057;
+}
+
+.successs {
+    padding: 106px 0;
+}
 
 .product-bit-title h2 {
   font-family: raleway;

@@ -37,7 +37,7 @@
 						<!-- <input type="checkbox" onclick="myFunction()">Show Password -->
 					</div>
 					<div class="text-left p-t-1 m-l-25">
-						<a class="txt2" href="/">
+						<a class="txt2">
 							<input type="checkbox" onclick="myFunction()"><span class="m-l-5">Hiện mật khẩu</span>
 						</a>
 					</div>

@@ -20,10 +20,10 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create() ?>
                         <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
-                                <input <?php  if(isset($_SESSION['error']['category_name'])){?> style="border-color: red; color: red;" <?php }?> type="text" class="form-control" value="" name="category_name" >
-                                <?php  if(isset($_SESSION['error']['category_name'])){?>
+                                <input type="text" class="form-control" value="<?php if(isset($dataCategory['category_name'])){?><?=trim($dataCategory['category_name'])?><?php }?>" name="category_name" >
+                                <?php  if(isset($error)){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['category_name'])?>
+                                            <?= implode($error['category_name'])?>
                                         </i>
                                 <?php }?>
                             </div>

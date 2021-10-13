@@ -21,19 +21,16 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create() ?>
                             <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
-                                <input type="text" class="form-control" value="<?= $dataCategory["category_name"]?>" name="category_name" >
-                                <?php  if(isset($_SESSION['error']['category_name'])){?>
+                                <input type="text" class="form-control" value="<?=trim($dataCategory["category_name"])?>" name="category_name" >
+                                <?php  if(isset($error)){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['category_name'])?>
+                                            <?= implode($error['category_name'])?>
                                         </i>
                                     <?php }?>
                             </div>
-                            <?php if(!isset($_SESSION['hasReferer'])){?>
-                            <input type="hidden" class="form-control" value="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>" name="referer" >
-                            <?php }?>
                             <div class="button_back">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="<?php if(isset($_SESSION['referer'])){ echo $_SESSION['referer']; }?>">
+                                    <a href='<?= $dataCategory["referer"];?>'>
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                                 <?php }else{?>
@@ -43,7 +40,7 @@ echo $this->element('Admin/sidebar');
 
                             <div class="button_submit">
                                 <?php if($_SESSION['flag'] == 2){ ?>
-                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
+                                    <button type="submit" class="btn btn-primary btn-default" value="<?= $dataCategory["referer"] ?>" name="referer">Submit</button>
                                 <?php }else{?>
                                     <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
                                 <?php }?>

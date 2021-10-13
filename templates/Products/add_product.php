@@ -16,13 +16,13 @@ echo $this->element('Admin/sidebar');
                 <div class="section">
                     <div class="row">
                         <div class="col-12">
-                        <?= $this->Form->create($product, ['type'=>'file']) ?>
+                        <?= $this->Form->create(null, ['type'=>'file']) ?>
                             <div class="form-group">
                             <label for="email">Tên sản phẩm:</label>
-                                <input type="text" class="form-control" value="" name="product_name" >
-                                <?php  if(isset($_SESSION['error']['product_name'])){?>
+                                <input type="text" class="form-control" value="<?php if(isset($dataProduct['product_name'])){?><?=trim($dataProduct['product_name'])?><?php }?>" name="product_name" >
+                                <?php  if(isset($error['product_name'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['product_name'])?>
+                                            <?= implode($error['product_name'])?>
                                         </i>
                                 <?php }?>
 
@@ -35,12 +35,12 @@ echo $this->element('Admin/sidebar');
 
                             <div class="form-group">
                                 <label style="display: block" for="email">Mô tả:</label>
-                                <!-- <input type="text" class="form-control" value="" name="description" > -->
                                 <textarea rows="14" cols="165" class="editor1" id="editor1" type="text" class="form-control "  name="description" >
-                                </textarea>
-                                <?php  if(isset($_SESSION['error']['description'])){?>
+                                <?php if(isset($dataProduct['description'])){?><?=trim($dataProduct['description'])?><?php }?>
+                            </textarea>
+                                <?php  if(isset($error['description'])){?>
                                         <i style="color: red;">
-                                            <?= implode($_SESSION['error']['description'])?>
+                                            <?= implode($error['description'])?>
                                         </i>
                                 <?php }?>
 
@@ -52,19 +52,19 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="" name="amount_product" >
-                                    <?php  if(isset($_SESSION['error']['amount_product'])){?>
+                                    <input type="text" class="form-control" value="<?php if(isset($dataProduct['amount_product'])){?><?=trim($dataProduct['amount_product'])?><?php }?>" name="amount_product" >
+                                    <?php  if(isset($error['amount_product'])){?>
                                             <i style="color: red;">
-                                                <?= implode($_SESSION['error']['amount_product'])?>
+                                                <?= implode($error['amount_product'])?>
                                             </i>
                                     <?php }?>
                             </div>
                             <div class="form-group">
                                 <label for="email">Point sản phẩm:</label>
-                                    <input type="text" class="form-control" value="" name="point_product" >
-                                    <?php  if(isset($_SESSION['error']['point_product'])){?>
+                                    <input type="text" class="form-control" value="<?php if(isset($dataProduct['point_product'])){?><?=trim($dataProduct['point_product'])?><?php }?>" name="point_product" >
+                                    <?php  if(isset($error['point_product'])){?>
                                             <i style="color: red;">
-                                                <?= implode($_SESSION['error']['point_product'])?>
+                                                <?= implode($error['point_product'])?>
                                             </i>
                                     <?php }?>
                             </div>

@@ -38,21 +38,6 @@ class OrdersController extends AppController
     //List Products
     public function listOrders()
     {
-
-        //Check Referer
-        $session = $this->request->getSession();
-        if($session->check('hasReferer')){
-            $session->delete('hasReferer');
-        }
-
-        if($session->check('referer')){
-            $session->delete('referer');
-        }
-
-        if($session->check('error')){
-            $session->delete('error');
-        }
-
         $orders = $this->{'CRUD'}->getAllOrder();
 
         //Search
@@ -90,20 +75,12 @@ class OrdersController extends AppController
         $idUser = $dataOrder[0]['user_id'];
         $dataUser = $this->{'CRUD'}->getUserByID($idUser);
 
-        //check Referer
-        $session = $this->request->getSession();
-        if(!$session->check('referer')){
-            $referer = $_SERVER['HTTP_REFERER'];
-            $session->write('referer', $referer);
-        }
-
-        $getReferer = $session->read('referer');
-
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
             // Check point sau khi duyệt đơn
             if($atribute['status'] == $dataOrder[0]['status']){
                 $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
+                return $this->redirect($atribute['referer']);
             }else{
                 if($atribute['status'] == $dataOrder[0]['status']){
                     $pointAF = $dataUser[0]['point_user'];
@@ -117,24 +94,22 @@ class OrdersController extends AppController
                 $this->{'Data'}->updatePoint($pointAF, $idUser);
 
                 $confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
-
-                if ($this->Orders->save($confirm)) {
-                    if($session->check('hasReferer')){
-                        $session->delete('hasReferer');
+                if ($confirm->hasErrors()) {
+                    $error = $confirm->getErrors();
+                    $this->set('error', $error);
+                    $data = $atribute;
+                }else{
+                    if ($this->Orders->save($confirm)) {
+                        $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
+                        return $this->redirect($atribute['referer']);
                     }
-
-                    if($session->check('referer')){
-                        $session->delete('referer');
-                    }
-
-                    $this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
-                    return $this->redirect("$getReferer");
-                }else {
-                    $this->Flash->error(__('Đơn hàng chưa được cập nhật. Vui lòng thử lại.'));
                 }
             }
+        }else {
+            $data = $dataOrder[0];
+            $data["referer"] = $this->referer();
         }
-
-        $this->set(compact('dataOrder', 'dataUser'));
+        $this->set(compact('dataUser'));
+        $this->set('dataOrder', $data);
     }
 }

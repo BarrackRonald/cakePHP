@@ -48,9 +48,11 @@ $n = 1;
                                             <td style="text-align: center;">
 
                                                 <?php if($_SESSION['flag'] == 2){?>
-                                                        <a href="<?= $this->Url->build('/admin/edit-user/' . $user->id, ['fullBase' => true]) ?>">
-                                                        <input type="submit" class="btn btn-info" value="    Sửa    " style="margin-bottom: 5px"/>
-                                                        </a>
+                                                        <?php if($user['del_flag'] == 0){?>
+                                                            <a href="<?= $this->Url->build('/admin/edit-user/' . $user->id, ['fullBase' => true]) ?>">
+                                                                <input type="submit" class="btn btn-info" value="    Sửa    " style="margin-bottom: 5px"/>
+                                                            </a>
+                                                        <?php }?>
                                                     <?php }else{?>
                                                         <input type="button"  class="btn btn-info" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
                                                     <?php } ?>

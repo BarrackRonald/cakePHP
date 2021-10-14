@@ -31,11 +31,11 @@ class CreateOrderDetails extends AbstractMigration
         $table->addColumn('order_id', 'integer')->addForeignKey('order_id', 'orders', 'id');
 
 
-        $table->addColumn('created_date', 'datetime', [
-            'default' => null,
+        $table->addColumn('created_date', 'timestamp', [
+            'default' => 'CURRENT_TIMESTAMP'
         ]);
-        $table->addColumn('updated_date', 'datetime', [
-            'default' => null,
+        $table->addColumn('updated_date', 'timestamp', [
+            'default' => 'CURRENT_TIMESTAMP'
         ]);
         $table->create();
     }

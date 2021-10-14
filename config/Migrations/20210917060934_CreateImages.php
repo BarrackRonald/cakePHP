@@ -36,11 +36,11 @@ class CreateImages extends AbstractMigration
 
         $table->addColumn('product_id', 'integer')->addForeignKey('product_id', 'products', 'id');
 
-        $table->addColumn('created_date', 'datetime', [
-            'default' => null,
+        $table->addColumn('created_date', 'timestamp', [
+            'default' => 'CURRENT_TIMESTAMP'
         ]);
-        $table->addColumn('updated_date', 'datetime', [
-            'default' => null,
+        $table->addColumn('updated_date', 'timestamp', [
+            'default' => 'CURRENT_TIMESTAMP'
         ]);
         $table->create();
     }

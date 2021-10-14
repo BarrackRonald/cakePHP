@@ -4,7 +4,6 @@ echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
 
-
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
@@ -12,7 +11,11 @@ echo $this->element('Admin/sidebar');
                             <h3>Chỉnh sửa Danh mục sản phẩm</h3>
 
                         </div>
-
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <?= $this->Flash->render() ?>
+                        </div>
                     </div>
                 </div>
                 <div class="section">

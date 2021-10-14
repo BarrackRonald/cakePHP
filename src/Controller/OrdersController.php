@@ -80,7 +80,7 @@ class OrdersController extends AppController
             // Check point sau khi duyệt đơn
             if($atribute['status'] == $dataOrder[0]['status']){
                 $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
-                return $this->redirect($atribute['referer']);
+                return $this->redirect("");
             }else{
                 if($atribute['status'] == $dataOrder[0]['status']){
                     $pointAF = $dataUser[0]['point_user'];

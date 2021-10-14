@@ -114,7 +114,7 @@ class UsersController extends AppController
             $atribute['role_id'] == $checkUserID[0]['role_id']
              ){
                 $this->Flash->error(__('Dữ liệu không có sự thay đổi.'));
-                return $this->redirect($atribute['referer']);
+                return $this->redirect("");
             }
 
             // Check dữ liệu F12

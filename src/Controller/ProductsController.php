@@ -110,11 +110,11 @@ class ProductsController extends AppController
                 trim($atribute['description']) == trim($dataProduct[0]['description']) &&
                 trim($atribute['amount_product']) == $dataProduct[0]['amount_product'] &&
                 trim($atribute['point_product']) == $dataProduct[0]['point_product'] &&
-                trim($atribute['category_id']) == $dataProduct[0]['category_id'] && 
+                trim($atribute['category_id']) == $dataProduct[0]['category_id'] &&
                 $atribute['uploadfile']->getClientFilename() == ""
              ){
-                $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
-                return $this->redirect($atribute['referer']);
+                $this->Flash->error(__('Sản phẩm không có sự thay đổi.'));
+                return $this->redirect("");
             }
 
             $atribute = $this->request->getData();

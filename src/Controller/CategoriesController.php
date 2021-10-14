@@ -92,7 +92,7 @@ class CategoriesController extends AppController
             if(trim($atribute['category_name']) == trim($dataCategory[0]['category_name'])
              ){
                 $this->Flash->error(__('Danh mục không có sự thay đổi.'));
-                return $this->redirect($atribute['referer']);
+                return $this->redirect("");
             }
 
             $category = $this->Categories->patchEntity($dataCategory[0], h($atribute));

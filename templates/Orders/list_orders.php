@@ -75,8 +75,6 @@ $n = 1;
                                                     <a href="<?= $this->Url->build('/admin/confirm-order/' . $order->id, ['fullBase' => true]) ?>">
                                                     <input type="submit" class="btn btn-info" value="Cập Nhật Đơn" style="margin-bottom: 5px"/>
                                                     </a>
-                                                <?php }else{?>
-                                                    <input   class="btn btn-danger" value="Không Đủ Quyền" style="margin-bottom: 5px" disabled/>
                                                 <?php }?>
                                             </td>
                                         </tr>

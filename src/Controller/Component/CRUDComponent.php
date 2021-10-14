@@ -60,8 +60,8 @@ class CRUDComponent extends CommonComponent
         $user['point_user'] = trim($atribute['point_user']);
         $user['role_id'] = $atribute['role_id'];
         $user['avatar'] = 'none.jbg';
-        $user['created_date'] = date('Y-m-d h:m:s');
-        $user['updated_date'] = date('Y-m-d h:m:s');
+        $user['created_date'] = date('Y-m-d h:i:s');
+        $user['updated_date'] = date('Y-m-d h:i:s');
         $dataUser = $this->Users->newEntity($user);
 
         if ($dataUser->hasErrors()) {
@@ -178,8 +178,8 @@ class CRUDComponent extends CommonComponent
     public function addCategory($atribute){
         $category = [];
         $category['category_name'] = h(trim($atribute['category_name']));
-        $category['created_date'] = date('Y-m-d h:m:s');
-        $category['updated_date'] = date('Y-m-d h:m:s');
+        $category['created_date'] = date('Y-m-d h:i:s');
+        $category['updated_date'] = date('Y-m-d h:i:s');
         $dataCategory = $this->Categories->newEntity($category);
         if ($dataCategory->hasErrors()) {
             return [
@@ -237,8 +237,8 @@ class CRUDComponent extends CommonComponent
         $product['amount_product'] = h($atribute['amount_product']);
         $product['point_product'] = h($atribute['point_product']);
         $product['category_id'] = h($atribute['category_id']);
-        $product['created_date'] = date('Y-m-d h:m:s');
-        $product['updated_date'] = date('Y-m-d h:m:s');
+        $product['created_date'] = date('Y-m-d h:i:s');
+        $product['updated_date'] = date('Y-m-d h:i:s');
         $dataProduct = $this->Products->newEntity($product);
 
         if ($dataProduct->hasErrors()) {
@@ -265,8 +265,8 @@ class CRUDComponent extends CommonComponent
         $images->image_type = 'Banner';
         $images->user_id = 1;
         $images->product_id = $result['id'];
-        $images->created_date = date('Y-m-d h:m:s');
-        $images->updated_date = date('Y-m-d h:m:s');
+        $images->created_date = date('Y-m-d h:i:s');
+        $images->updated_date = date('Y-m-d h:i:s');
 
         $this->Images->save($images);
 
@@ -410,8 +410,8 @@ class CRUDComponent extends CommonComponent
         $product['amount_product'] = h($atribute['amount_product']);
         $product['point_product'] = h($atribute['point_product']);
         $product['category_id'] = h($atribute['category_id']);
-        $product['created_date'] = date('Y-m-d h:m:s');
-        $product['updated_date'] = date('Y-m-d h:m:s');
+        $product['created_date'] = date('Y-m-d h:i:s');
+        $product['updated_date'] = date('Y-m-d h:i:s');
         $dataProduct = $this->Products->newEntity($product);
 
         if ($dataProduct->hasErrors()) {
@@ -467,8 +467,8 @@ class CRUDComponent extends CommonComponent
         $user['point_user'] = 0;
         $user['role_id'] = 1;
         $user['avatar'] = 'none.jbg';
-        $user['created_date'] = date('Y-m-d h:m:s');
-        $user['updated_date'] = date('Y-m-d h:m:s');
+        $user['created_date'] = date('Y-m-d h:i:s');
+        $user['updated_date'] = date('Y-m-d h:i:s');
         $dataUser = $this->Users->newEntity($user);
 
         if ($dataUser->hasErrors()) {
@@ -546,8 +546,8 @@ class CRUDComponent extends CommonComponent
         $image['amount_product'] = h($atribute['amount_product']);
         $image['point_product'] = h($atribute['point_product']);
         $image['category_id'] = h($atribute['category_id']);
-        $image['created_date'] = date('Y-m-d h:m:s');
-        $image['updated_date'] = date('Y-m-d h:m:s');
+        $image['created_date'] = date('Y-m-d h:i:s');
+        $image['updated_date'] = date('Y-m-d h:i:s');
         $dataImage = $this->Images->newEntity($image);
         // dd($dataProduct);
 

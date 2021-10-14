@@ -134,12 +134,12 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('#totalAllAmount').html(datatotal.totalAllAmount);
+                $('#totalAllAmount').html('$'+datatotal.totalAllAmount);
 
                 //total Amount Product_id
                 var totalAmount = JSON.parse(data).cart[product_id]["totalAmount"];
                 console.log(totalAmount);
-                $('#amount_'+product_id).html(totalAmount);
+                $('#amount_'+product_id).html('$'+totalAmount);
 
                 //total Point
                 var totalPoint = JSON.parse(data).cart[product_id]["totalPoint"];
@@ -168,7 +168,7 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('#totalAllAmount').html(datatotal.totalAllAmount);
+                $('#totalAllAmount').html('$'+datatotal.totalAllAmount);
 
                 //quantity and total mount
                 var dataProduct = JSON.parse(data).cart[product_id]
@@ -177,7 +177,7 @@ echo $this->element('NormalUsers/header');
                     $("#cart_item_"+product_id).remove();
                 }else{
                     $('#point_'+product_id).html(dataProduct["totalPoint"]);
-                    $('#amount_'+product_id).html(dataProduct["totalAmount"]);
+                    $('#amount_'+product_id).html('$'+dataProduct["totalAmount"]);
                     $("#product_"+product_id).val(dataProduct["quantity"]);
                 }
 
@@ -201,7 +201,7 @@ echo $this->element('NormalUsers/header');
 				//totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('#totalAllAmount').html(datatotal.totalAllAmount);
+                $('#totalAllAmount').html('$'+datatotal.totalAllAmount);
                 //dell item
                 $("#cart_item_"+product_id).remove();
 

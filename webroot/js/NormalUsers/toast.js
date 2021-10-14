@@ -1,7 +1,7 @@
 function toast({
-    title = '', 
-    message = '', 
-    type = 'info', 
+    title = '',
+    message = '',
+    type = 'info',
     duration = 3000}){
         const main = document.getElementById('toast');
         if(main){
@@ -19,7 +19,6 @@ function toast({
             // Auto remove toast
             const autoRemove =  setTimeout(function () {
                 main.removeChild(toast)
-                
             }, timeRemove);
 
             // Remove by button close
@@ -27,7 +26,6 @@ function toast({
                 if(event.target.closest('.toast__close')) {
                     main.removeChild(toast);
                     clearTimeout(autoRemove);
-                    
                 }
             }
             toast.style.animation = `showToast linear 0.3s, hidenToast linear 1s ${delay}s forwards `;
@@ -45,10 +43,8 @@ function toast({
                 <div class="toast__close">
                     <i class="fas fa-times"></i>
                 </div>
-            
             `;
             main.appendChild(toast);
-            
 
         }
 
@@ -63,8 +59,6 @@ function showSuccessToast(){
         type: 'success',
         duration: 1000
     });
-    
-    
 }
 // Warning
 function showWarningToast(){

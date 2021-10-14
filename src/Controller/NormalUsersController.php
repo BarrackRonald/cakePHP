@@ -412,6 +412,7 @@ class NormalUsersController extends AppController
 
             $data = $this->{'Data'}->getProductByID($product_id);
 
+
             $session = $this->request->getSession();
 
             if($session->check('cartData')){
@@ -436,7 +437,7 @@ class NormalUsersController extends AppController
             $productArr = [
                 $product_id => [
                   'name' => $data[0]['product_name'],
-                  'image'=> $data[0]['Images']["image"],
+                  'image'=> $data[0]['images'][0]["image"],
                   'amount' => $data[0]['amount_product'],
                   'point' => $data[0]['point_product'],
                   'quantity'=> $quantity,
@@ -506,10 +507,7 @@ class NormalUsersController extends AppController
         $this->set(compact('dataUser'));
     }
 
-
     //End
-
-
 
     public function contact(){
 
@@ -525,6 +523,21 @@ class NormalUsersController extends AppController
 
     public function about(){
 
+    }
+
+    //View product by Category
+    public function viewProductByCategory($id = null){
+        $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
+        $dataProduct = $this->{'Data'}->getProductByCategory($id);
+        $this->set(compact('dataCategory'));
+        $this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit'=> '3'])));
+    }
+
+    //Details Product
+    public function detailsProduct($id = null){
+        $dataProduct = $this->{'Data'}->getDetailsProductByID($id);
+        $dataImage = $this->{'Data'}->getImageByProduct($id);
+        $this->set(compact('dataProduct', 'dataImage'));
     }
 
 }

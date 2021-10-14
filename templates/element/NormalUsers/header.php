@@ -14,24 +14,23 @@ $this->disableAutoLayout();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ustora Demo</title>
-    
-    <!-- Google Fonts
+
+    <!-- Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'> -->
-    
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="../../css/NormalUsers/bootstrap.min.css">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../../css/NormalUsers/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/NormalUsers/owl.carousel.css">
     <link rel="stylesheet" href="../../css/NormalUsers/style.css">
     <link rel="stylesheet" href="../../css/NormalUsers/responsive.css">
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -132,7 +131,7 @@ $this->disableAutoLayout();
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="/">Home</a></li>
                             <?php foreach ($dataCategories as $category) { ?>
-                                <li><a href="#"><?= $category['category_name'] ?></a></li>
+                                <li><a href="<?= $this->Url->build('/view-category/' . $category->id, ['fullBase' => true]) ?>"><?= $category['category_name'] ?></a></li>
                             <?php } ?>
                             <li><a href="#">Contact</a></li>
                         </ul>

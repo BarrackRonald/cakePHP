@@ -6,6 +6,7 @@ use Cake\Datasource\ConnectionManager;
 use Cake\Event\Event;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\Event\EventInterface;
 class AuthexsController extends AppController {
     public function initialize(): void
     {
@@ -15,11 +16,19 @@ class AuthexsController extends AppController {
         $this->loadComponent('Mail');
         $this->loadModel("Users");
     }
+    public function beforeFilter(EventInterface $event)
+    {
+    }
+
    public function index(){
       return $this->redirect(['controller'=>'/', 'action' => 'index']);
    }
 
    public function login(){
+    $session = $this->request->getSession();
+    if($session->check('flag')){
+        return $this->redirect(['controller'=>'NormalUsers', 'action' => 'index']);
+    }
         if($this->request->is('post')) {
           $email = $this->request->getData('email');
           $password = $this->request->getData('password');
@@ -83,11 +92,11 @@ class AuthexsController extends AppController {
   }
 
     //Logout
-  public function logout(){
-      $session = $this->request->getSession();
-      $session->destroy();
-      return $this->redirect(['action' => 'index']);
-  }
+    public function logout(){
+        $session = $this->request->getSession();
+        $session->destroy();
+        return $this->redirect(['action' => 'index']);
+    }
 
     //Đăng ký
   public function register(){

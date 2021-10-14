@@ -53,11 +53,11 @@ class CreateUsers extends AbstractMigration
             'default' => 0,
         ])->addForeignKey('role_id', 'roles', 'id');
 
-        $table->addColumn('created_date', 'datetime', [
-            'default' => null,
+        $table->addColumn('created_date', 'timestamp', [
+            'default' => 'CURRENT_TIMESTAMP'
         ]);
-        $table->addColumn('updated_date', 'datetime', [
-            'default' => null,
+        $table->addColumn('updated_date', 'timestamp', [
+            'default' => 'CURRENT_TIMESTAMP'
         ]);
         $table->create();
     }

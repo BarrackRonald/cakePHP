@@ -1,3 +1,37 @@
+/*///////////////////////////////////////////////////////////////////
+[ Pagination ]*/
+.section-custom {
+    font-family: "Raleway",sans-serif;
+    font-size: 40px;
+    font-weight: 100;
+    margin-top: 50px;
+    text-align: center;
+}
+.m-t {
+    margin-top: 12PX;
+}
+.point {
+    color: cornflowerblue !important;
+    margin-left: 15px;
+}
+
+.pagination-button {
+    /* float: right; */
+}
+.pagination-button a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.pagination-button a.active {
+    background-color: #ee5057;
+    color: white;
+    border-radius: 5px;
+}
+.pagination-button a:hover:not(.active) {
+    background-color: #ddd;
+    border-radius: 5px;
+}
 /*//////////////////////////////////////////////////////////////////
 [ Toast ]*/
 .center {
@@ -31,7 +65,7 @@
 .btn--success {
     background-color: #71be34;
   }
-   
+
 .btn--danger {
     background-color: #ff623d;
 }
@@ -47,7 +81,7 @@
 .btn--size-l {
     padding: 16px 56px;
 }
-  
+
   .btn--size-s {
     padding: 8px 32px;
 }
@@ -78,21 +112,16 @@
     min-width: 400px;
     max-width: 500px;
     transition: all linear 0.3s;
-    
-
-
 }
 
 @keyframes showToast {
     from{
         opacity: 0;
         transform: translateX(calc(100% + 32px));
-
     }
     to {
         opacity: 1;
         transform: translateX(0);
-
     }
 }
 
@@ -680,8 +709,8 @@ z-index: 999;}
   overflow: hidden;
 }
 .single-product:hover {}
-.single-product:hover .product-hover a.add-to-cart-link {top: 32%;}
-.single-product:hover .product-hover a.view-details-link {bottom: 32%;}
+.single-product:hover .product-hover a.add-to-cart-link {top: 28%;}
+.single-product:hover .product-hover a.view-details-link {bottom: 28%;}
 .single-product:hover .product-hover:after{left: 0}
 
 

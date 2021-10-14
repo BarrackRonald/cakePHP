@@ -81,6 +81,12 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Edit thông tin cá nhân/edit-account/
     $builder->connect('/edit-account/:id', ['controller' => 'NormalUsers', 'action' => 'editAccount'], ["pass" => ["id"]]);
 
+    //Show Danh mục sản phẩm
+    $builder->connect('/view-category/:id', ['controller' => 'NormalUsers', 'action' => 'viewProductByCategory'], ["pass" => ["id"]]);
+
+    //Show chi tiết sản phẩm
+    $builder->connect('/details-product/:id', ['controller' => 'NormalUsers', 'action' => 'detailsProduct'], ["pass" => ["id"]]);
+
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);

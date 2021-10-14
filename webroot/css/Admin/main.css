@@ -36,7 +36,7 @@
   }
   .message.success {
     background: #e3fcec;
-    color: #1f9d55;
+    color:lightpink;
     border-color: #51d88a;
   }
   .message.error {

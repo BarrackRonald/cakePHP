@@ -17,6 +17,12 @@ echo $this->element('Admin/sidebar');
                             <?= $this->Flash->render() ?>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <?= $this->Flash->render() ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="section">
                     <div class="row">

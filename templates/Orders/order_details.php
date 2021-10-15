@@ -38,7 +38,7 @@ $n = 1;
                                             <td> <a ><?= $orderDetail['Products']['product_name']?></a></td>
                                             <td> <a ><?= $orderDetail['quantity_orderDetails']?></a></td>
                                             <td> <a ><?= $orderDetail['point_orderDetail']?></a></td>
-                                            <td> <a ><?= $orderDetail['amount_orderDetails']?></a></td>
+                                            <td> <a ><?= number_format($orderDetail['amount_orderDetails'])?></a></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

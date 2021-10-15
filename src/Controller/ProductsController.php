@@ -104,7 +104,6 @@ class ProductsController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-            // dd($atribute['uploadfile']->getClientFilename());
             //Check thay đổi
             if(trim($atribute['product_name']) == trim($dataProduct[0]['product_name']) &&
                 trim($atribute['description']) == trim($dataProduct[0]['description']) &&
@@ -114,47 +113,71 @@ class ProductsController extends AppController
                 $atribute['uploadfile']->getClientFilename() == ""
              ){
                 $this->Flash->error(__('Sản phẩm không có sự thay đổi.'));
-                return $this->redirect("");
-            }
-
-            $atribute = $this->request->getData();
-            $product = $this->Products->patchEntity($dataProduct[0], $atribute);
-
-            if ($product->hasErrors()) {
-                $error = $product->getErrors();
-                $this->set('error', $error);
                 $data = $atribute;
-            }
-
-            //Add Image vào Table Image
-            $result = $this->Products->save($product);
-            $images = $this->Images->newEmptyEntity();
-
-            $image = $atribute['uploadfile'];
-            $name = $image->getClientFilename();
-            $targetPath = WWW_ROOT.'img'.DS.time().$name;
-
-            if($name){
-                $image->moveTo($targetPath);
-                $images->image = '../../img/'.time().$name;
-            }
-
-            $images->image_name = 'img'.$atribute['product_name'] ;
-            $images->image_type = 'Banner';
-            $images->user_id = 1;
-            $images->product_id = $result['id'];
-            $images->updated_date = date('Y-m-d h:i:s');
-
-            $this->Images->save($images);
-
-                if ($this->Products->save($product)) {
-                    $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
-                    return $this->redirect($atribute['referer']);
+            }else{
+                //Check F12
+                $idCategory = $atribute['category_id'];
+                $checkIDCategory = $this->{'CRUD'}->checkIDCategory($idCategory);
+                if(count($checkIDCategory)<1){
+                    $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
+                    return $this->redirect(['action' => 'listProducts']);
                 }
+
+                //Chỉnh sửa nếu có sự thay đổi ảnh
+                if($atribute['uploadfile']->getClientFilename() != "") {
+                    $atribute = $this->request->getData();
+                    $product = $this->Products->patchEntity($dataProduct[0], $atribute);
+
+                    if ($product->hasErrors()) {
+                        $error = $product->getErrors();
+                        $this->set('error', $error);
+                        $data = $atribute;
+                    }
+
+                    //Add Image vào Table Image
+                    $result = $this->Products->save($product);
+                    $images = $this->Images->newEmptyEntity();
+
+                    $image = $atribute['uploadfile'];
+                    $name = $image->getClientFilename();
+                    $targetPath = WWW_ROOT.'img'.DS.time().$name;
+
+                    if($name){
+                        $image->moveTo($targetPath);
+                        $images->image = '../../img/'.time().$name;
+                    }
+
+                    $images->image_name = 'img'.$atribute['product_name'] ;
+                    $images->image_type = 'Banner';
+                    $images->user_id = 1;
+                    $images->product_id = $result['id'];
+                    $images->updated_date = date('Y-m-d h:i:s');
+
+                    $this->Images->save($images);
+
+                    if ($this->Products->save($product)) {
+                        $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
+                        return $this->redirect($atribute['referer']);
+                    }
+                }else {
+                    $atribute = $this->request->getData();
+                    $product = $this->Products->patchEntity($dataProduct[0], $atribute);
+
+                    if ($product->hasErrors()) {
+                        $error = $product->getErrors();
+                        $this->set('error', $error);
+                        $data = $atribute;
+                    }else{
+                        if ($this->Products->save($product)) {
+                            $this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
+                            return $this->redirect($atribute['referer']);
+                        }
+                    }
+                }
+            }
         }else{
             $data = $dataProduct[0];
             $data["referer"] = $this->referer();
-
         }
         $this->set('dataProduct', $data);
         $this->set(compact('dataCategory'));

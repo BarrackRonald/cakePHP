@@ -47,34 +47,23 @@ $n = 1;
                                             <td><a><?= $user['Roles']['role_name']?></a></td>
                                             <td style="text-align: center;">
 
-                                                <?php if($_SESSION['flag'] == 2){?>
-                                                        <?php if($user['del_flag'] == 0){?>
-                                                            <a href="<?= $this->Url->build('/admin/edit-user/' . $user->id, ['fullBase' => true]) ?>">
-                                                                <input type="submit" class="btn btn-info" value="    Sửa    " style="margin-bottom: 5px"/>
-                                                            </a>
-                                                        <?php }?>
-                                                    <?php }else{?>
-                                                        <input type="button"  class="btn btn-info" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
-                                                    <?php } ?>
+                                                <?php if($user['del_flag'] == 0){?>
+                                                    <a href="<?= $this->Url->build('/admin/edit-user/' . $user->id, ['fullBase' => true]) ?>">
+                                                        <input type="submit" class="btn btn-info" value="    Sửa    " style="margin-bottom: 5px"/>
+                                                    </a>
+                                                <?php }?>
+
                                                 <?php if($user->del_flag == 0){ ?>
                                                     <form  action="<?= $this->Url->build('/admin/delete-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
                                                         <input type="hidden" value="<?= $user->id ?>" name="id" />
                                                         <input type="hidden" value="<?= $user->del_flag ?>" name="del_flag" />
-                                                        <?php if($_SESSION['flag'] == 2){?>
                                                                 <input type="submit" class="btn btn-danger" value="Khóa TK" style="margin-bottom: 5px"/>
-                                                        <?php }else{?>
-                                                            <input type="button"  class="btn btn-danger" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
-                                                        <?php } ?>
                                                     </form>
                                                 <?php } else{?>
                                                     <form  action="<?= $this->Url->build('/admin/opent-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
                                                         <input type="hidden" value="<?= $user->id ?>" name="id" />
                                                         <input type="hidden" value="<?= $user->del_flag ?>" name="del_flag" />
-                                                        <?php  if($_SESSION['flag'] == 2){?>
                                                                 <input type="submit" class="btn btn-success" value="  Mở TK " style="margin-bottom: 5px"/>
-                                                        <?php }else{?>
-                                                            <input type="button"  class="btn btn-danger" value="Không đủ quyền" style="margin-bottom: 5px" disabled/>
-                                                        <?php } ?>
                                                     </form>
                                                 <?php } ?>
                                             </td>

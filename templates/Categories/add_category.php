@@ -3,8 +3,7 @@ use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
-
-
+<?php if($_SESSION['flag'] == 2){ ?>
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
@@ -28,27 +27,22 @@ echo $this->element('Admin/sidebar');
                                 <?php }?>
                             </div>
                             <div class="button_back">
-                                <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="/admin/list-categories">
-                                        <button type="button" class="btn btn-primary btn-default">Back</button>
-                                    </a>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <a href="/admin/list-categories">
+                                    <button type="button" class="btn btn-primary btn-default">Back</button>
+                                </a>
                             </div>
 
                             <div class="button_submit">
-                                <?php if($_SESSION['flag'] == 2){ ?>
                                     <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
                             </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>
                 </div>
             </div>
+<?php } else{?>
+    <h3>Người dùng không đủ quyền để truy cập</h3>
+<?php }?>
 <?php
 echo $this->element('Admin/footer');
 ?>

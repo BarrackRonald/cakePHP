@@ -54,9 +54,11 @@
                                 <li>
                                     <a href="<?= $this->Url->build('admin/list-categories', ['fullBase' => true]) ?>">List danh mục</a>
                                 </li>
-                                <li>
-                                    <a href="<?= $this->Url->build('admin/add-category', ['fullBase' => true]) ?>">Add danh mục</a>
-                                </li>
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <li>
+                                        <a href="<?= $this->Url->build('admin/add-category', ['fullBase' => true]) ?>">Add danh mục</a>
+                                    </li>
+                                <?php } ?>
 
                             </ul>
                         </li>
@@ -72,9 +74,11 @@
                                 <li>
                                     <a href="<?= $this->Url->build('admin/list-products', ['fullBase' => true]) ?>">List sản phẩm</a>
                                 </li>
-                                <li>
-                                    <a href="<?= $this->Url->build('admin/add-product', ['fullBase' => true]) ?>">Add sản phẩm</a>
-                                </li>
+                                <?php if($_SESSION['flag'] == 2){ ?>
+                                    <li>
+                                        <a href="<?= $this->Url->build('admin/add-product', ['fullBase' => true]) ?>">Add sản phẩm</a>
+                                    </li>
+                                <?php } ?>
 
                             </ul>
 
@@ -87,17 +91,11 @@
                             </a>
 
                             <ul class="submenu ">
-
                                 <li>
                                     <a href="<?= $this->Url->build('admin/list-orders', ['fullBase' => true]) ?>">List Order</a>
                                 </li>
-
-
-
                             </ul>
-
                         </li>
-
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

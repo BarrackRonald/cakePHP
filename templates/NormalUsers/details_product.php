@@ -40,7 +40,7 @@ echo $this->element('NormalUsers/header');
                                 <div class="product-inner">
                                     <h2 class="product-name"><?= $product['product_name'] ?></h2>
                                     <div class="product-inner-price">
-                                        <ins><?= '$'.$product['amount_product']?></ins> <ins class="point"><?=  $product['point_product'].' point'?></ins>
+                                        <ins><?= '$'. number_format($product['amount_product'])?></ins> <ins class="point"><?=  $product['point_product'].' point'?></ins>
                                     </div>
 
                                     <div class="product-option-shop">
@@ -72,7 +72,7 @@ echo $this->element('NormalUsers/header');
                         <h4 class="section-custom">Sản Phẩm Tương Tự</h4>
                         <div class="product-carousel">
 
-                        <?php foreach ($dataNewsProducts as $product) { ?>
+                        <?php foreach ($dataProductByCategory as $product) { ?>
                             <div class="single-product">
                                 <div class="product-f-image">
                                     <img src="<?php echo $product->images[0]->image ?>" alt="">
@@ -82,10 +82,10 @@ echo $this->element('NormalUsers/header');
                                     </div>
                                 </div>
 
-                                <h2><a href="#"><?php echo $product['product_name']?></a></h2>
+                                <h2><a href="<?= $this->Url->build('/details-product/' . $product['id'], ['fullBase' => true]) ?>"><?php echo $product['product_name']?></a></h2>
 
                                 <div class="product-carousel-price" style="display:inline">
-                                    <ins><?php echo '$'.$product['amount_product']?></ins>
+                                    <ins><?php echo '$'. number_format($product['amount_product'])?></ins>
                                 </div>
                                 <div class="product-carousel-price" style="float: right; color: #c58209cc">
                                     <ins><?php echo $product['point_product'].' point'?></ins>

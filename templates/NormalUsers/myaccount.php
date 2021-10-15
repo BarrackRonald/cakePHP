@@ -86,7 +86,7 @@ echo $this->element('NormalUsers/header');
                                                             Họ Và Tên
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataUser[0]['username'] ?></span> 
+                                                            <span class="amount"><?=h(trim($dataUser[0]['username']))?></span>
                                                         </td>
                                                     </tr>
 
@@ -95,7 +95,7 @@ echo $this->element('NormalUsers/header');
                                                             Số Điện Thoại
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataUser[0]['phonenumber'] ?> </span> 
+                                                            <span class="amount"><?=h(trim($dataUser[0]['phonenumber']))?></span>
                                                         </td>
                                                     </tr>
 
@@ -104,7 +104,7 @@ echo $this->element('NormalUsers/header');
                                                             Địa chỉ Email
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataUser[0]['email'] ?> </span> 
+                                                            <span class="amount"><?=h(trim($dataUser[0]['email']))?></span>
                                                         </td>
                                                     </tr>
 
@@ -113,7 +113,7 @@ echo $this->element('NormalUsers/header');
                                                             Địa chỉ
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataUser[0]['address'] ?></span> 
+                                                            <span class="amount"><?=h(trim($dataUser[0]['address']))?></span>
                                                         </td>
                                                     </tr>
 
@@ -122,14 +122,11 @@ echo $this->element('NormalUsers/header');
                                                             Point Của Bạn
                                                         </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?= $dataUser[0]['point_user'] ?></span> 
+                                                            <span class="amount"><?=h(trim($dataUser[0]['point_user']))?></span>
                                                         </td>
                                                     </tr>
-
                                                 </tbody>
-                                                
                                             </table>
-
                                     </div>
                                     <!-- End Test -->
 
@@ -154,7 +151,7 @@ echo $this->element('NormalUsers/header');
                             <div id="customer_details" class="col2-set">
                                 <div style="text-align: center;" class="col-4">
                                     <div class="woocommerce-billing-fields">
-                                        <h3>tài khoản chưa đăng nhập</h3>
+                                        <h3>Tài khoản chưa đăng nhập</h3>
                                         <div class="clear"></div>
                                     </div>
                                 </div>

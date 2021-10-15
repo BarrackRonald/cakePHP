@@ -25,6 +25,7 @@ class NormalUsersController extends AppController
 
     public function beforeRender(EventInterface $event)
     {
+
         $dataCategories = $this->{'Data'}->getCategory();
         $dataProducts = $this->{'Data'}->getAllProducts();
         $dataSlideImages = $this->{'Data'}->getSlideImage();
@@ -40,11 +41,15 @@ class NormalUsersController extends AppController
      */
     public function index()
     {
+        $session = $this->request->getSession();
+        if($session->check('error')){
+            $session->delete('error');
+        }
         //Viết ở beforeRender
+
     }
 
     public function billOrder(){
-
 
         if($this->request->is('post')){
             $session = $this->request->getSession();
@@ -87,7 +92,6 @@ class NormalUsersController extends AppController
 
         if($this->request->is('post')){
             $atribute = $this->request->getData();
-
 
             //checkmail tồn tại
             $checkmail = $this->{'Data'}->checkmail($atribute);
@@ -139,16 +143,15 @@ class NormalUsersController extends AppController
                 }
 
                 if($session->check('cartData')){
-
                     $dataProds = $session->read('cartData');
                     $dataProds['infoUser'] = $dataUser['data'];
                     $session->write('cartData', $dataProds);
                     $this->set(compact('dataProds'));
-
                 }
 
             }
         }
+
         if($session->check('cartData')){
             $dataProds = $session->read('cartData');
             $this->set(compact('dataProds'));
@@ -181,8 +184,29 @@ class NormalUsersController extends AppController
                 if($insertUser['result'] == "invalid"){
                     $error = $insertUser['data'];
                     $this->set(compact('error'));
-                }
+                }else {
+                    $result = $this->{'Data'}->checklogin($insertUser);
+                    if(count($result) > 0){
+                        $idUser = $result[0]['id'];
+                        $username = $result[0]['username'];
+                        $session = $this->request->getSession();
+                        $session->write('idUser', $idUser);
+                        $session->write('username', $username);
 
+                        //Check quyền gắn cờ
+                        if($result[0]['role_id'] == 1){
+                                $flag = 1;
+                        }elseif ($result[0]['role_id'] == 2) {
+                                $flag = 2;
+                            }else{
+                                $flag = 3;
+                            }
+                            $session->write('flag', $flag);
+                    } else {
+                            $this->Flash->error('Hệ thống đăng ký tài khoản thất bại. Vui lòng đặt hàng lại.');
+                            $this->redirect(['action' => 'index']);
+                    }
+                }
                 //  Insert Order
                  $insertOrder = $this->{'Data'}->createOrdersNone($infoUser, $dataProds, $insertUser);
                  if(!$insertOrder['result'] == "invalid")
@@ -194,7 +218,7 @@ class NormalUsersController extends AppController
                          Thông tin đặt hàng gồm:
                              + Họ và tên khách hàng: '.$infoUser['username'].'
                              + Địa chỉ: '.$infoUser['address'].'
-                             + Số điện thoại:'.$infoUser['phonenumber'].'';
+                             + Số điện thoại: '.$infoUser['phonenumber'].'';
 
                      foreach($dataProds['cart'] as $value) {
                         $product .= ' * '.$value['name'].' × '.$value['quantity']." \r\n";
@@ -202,8 +226,8 @@ class NormalUsersController extends AppController
                      $message .= '
                              + Mặt hàng đã mua:
                                   '.$product.'
-                             + Tổng số point nhận được:'.$dataProds['totalAllPoint'].'
-                             + Tổng số tiền cần thanh toán:'.$dataProds['totalAllAmount'].'
+                             + Tổng số point nhận được: '.$dataProds['totalAllPoint'].'
+                             + Tổng số tiền cần thanh toán: '.$dataProds['totalAllAmount'].'
                              ';
                      //xóa session
                      $session->delete('cartData');
@@ -275,6 +299,9 @@ class NormalUsersController extends AppController
 			if($session->check('cartData')){
                 $dataProds = $session->read('cartData');
                 $this->set(compact('dataProds'));
+            }
+            if($session->check('error')){
+                $session->delete('error');
             }
 
     }
@@ -496,7 +523,7 @@ class NormalUsersController extends AppController
     public function editAccount($id = null){
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($dataUser[0], h($this->request->getData()));
+            $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
                 return $this->redirect(['action' => 'myaccount']);
@@ -537,7 +564,10 @@ class NormalUsersController extends AppController
     public function detailsProduct($id = null){
         $dataProduct = $this->{'Data'}->getDetailsProductByID($id);
         $dataImage = $this->{'Data'}->getImageByProduct($id);
-        $this->set(compact('dataProduct', 'dataImage'));
+        $idCategory = $dataProduct[0]['category_id'];
+        $idProduct = $dataProduct[0]['id'];
+        $dataProductByCategory = $this->{'Data'}->similarProduct($idCategory, $idProduct);
+        $this->set(compact('dataProduct', 'dataImage', 'dataProductByCategory'));
     }
 
 }

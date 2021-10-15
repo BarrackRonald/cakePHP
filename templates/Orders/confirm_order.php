@@ -3,7 +3,7 @@ use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
-
+<?php if($_SESSION['flag'] == 3){ ?>
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
@@ -30,8 +30,7 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create() ?>
                             <div class="form-group">
                             <label for="email">Họ và tên Khách hàng:</label>
-                                <input type="text" class="form-control" value="<?=trim($dataOrder['Users']['username'])?>" name="username" readonly >
-
+                                <input type="text" class="form-control" value="<?php if(isset($dataOrder['Users']['username'])){?> <?= trim($dataOrder['Users']['username'])?> <?php }else{?> <?=trim($dataOrder['username'])?> <?php }?>" name="username" readonly >
                             </div>
                             <div class="form-group">
                                 <label for="email">Email:</label>
@@ -55,7 +54,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Tổng giá:</label>
-                                    <input type="text" class="form-control" value="<?=trim($dataOrder['total_amount'])?>" name="total_amount" readonly>
+                                    <input type="text" class="form-control" value="<?= number_format(trim($dataOrder['total_amount']))?>" name="total_amount" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="pwd">Xác nhận đơn:</label>
@@ -66,27 +65,22 @@ echo $this->element('Admin/sidebar');
                                 </select>
                             </div>
                             <div class="button_back">
-                                <?php if($_SESSION['flag'] == 3){ ?>
-                                    <a href="<?=$dataOrder["referer"];?>">
-                                        <button type="button" class="btn btn-primary btn-default">Back</button>
-                                    </a>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <a href="<?=$dataOrder["referer"];?>">
+                                    <button type="button" class="btn btn-primary btn-default">Back</button>
+                                </a>
                             </div>
-
                             <div class="button_submit">
-                                <?php if($_SESSION['flag'] == 3){ ?>
-                                    <button type="submit" value="<?= $dataOrder["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <input type="hidden" class="form-control" value="<?=trim($dataOrder['id'])?>" name="id" readonly >
+                                <button type="submit" value="<?= $dataOrder["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
                             </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>
                 </div>
             </div>
+<?php } else{?>
+    <h3>Người dùng không đủ quyền để truy cập</h3>
+<?php }?>
 <?php
 echo $this->element('Admin/footer');
 ?>

@@ -114,35 +114,35 @@ class UsersController extends AppController
             $atribute['role_id'] == $checkUserID[0]['role_id']
              ){
                 $this->Flash->error(__('Dữ liệu không có sự thay đổi.'));
-                return $this->redirect("");
-            }
-
-            // Check dữ liệu F12
-            if(!(
-                $dataRole[0]['id'] == h($atribute['role_id']) ||
-                $dataRole[1]['id'] == h($atribute['role_id']) ||
-                $dataRole[2]['id'] == h($atribute['role_id'])
-            )){
-            $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
-            return $this->redirect(['action' => 'listUsers']);
-            }
-
-            if($atribute['password'] == $dataUser[0]['password']){
-                $atribute['password'] = $dataUser[0]['password'];
-            }else {
-                $hashPswdObj = new DefaultPasswordHasher;
-                $atribute['password'] = $hashPswdObj->hash($atribute['password']);
-            }
-            $user = $this->Users->patchEntity($dataUser[0], h($atribute));
-
-            if ($user->hasErrors()) {
-                $error = $user->getErrors();
-                $this->set('error', $error);
                 $data = $atribute;
-            }else {
-                if ($this->Users->save($user)) {
-                    $this->Flash->success(__('User đã được cập nhật thành công.'));
-                    return $this->redirect($atribute['referer']);
+            }else{
+                // Check dữ liệu F12
+                if(!(
+                    $dataRole[0]['id'] == h($atribute['role_id']) ||
+                    $dataRole[1]['id'] == h($atribute['role_id']) ||
+                    $dataRole[2]['id'] == h($atribute['role_id'])
+                )){
+                $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
+                return $this->redirect(['action' => 'listUsers']);
+                }
+
+                if($atribute['password'] == $dataUser[0]['password']){
+                    $atribute['password'] = $dataUser[0]['password'];
+                }else {
+                    $hashPswdObj = new DefaultPasswordHasher;
+                    $atribute['password'] = $hashPswdObj->hash($atribute['password']);
+                }
+                $user = $this->Users->patchEntity($dataUser[0], h($atribute));
+
+                if ($user->hasErrors()) {
+                    $error = $user->getErrors();
+                    $this->set('error', $error);
+                    $data = $atribute;
+                }else {
+                    if ($this->Users->save($user)) {
+                        $this->Flash->success(__('User đã được cập nhật thành công.'));
+                        return $this->redirect($atribute['referer']);
+                    }
                 }
             }
         }else

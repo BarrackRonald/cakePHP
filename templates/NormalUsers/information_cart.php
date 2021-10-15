@@ -51,7 +51,7 @@ echo $this->element('NormalUsers/header');
                                             </td>
 
                                             <td class="product-price">
-                                                <span class="amount"><?= '$'.$product['amount']?></span>
+                                                <span class="amount"><?= '$'. number_format($product['amount'])?></span>
                                             </td>
 
                                             <td class="product-point">
@@ -74,7 +74,7 @@ echo $this->element('NormalUsers/header');
                                             <td class="product-subtotal">
 
                                                 <span class="amount" id="amount_<?= $key?>">
-                                                    <?= '$'.$product['totalAmount']?>
+                                                    <?= '$'. number_format($product['totalAmount'])?>
                                                 </span>
                                             </td>
                                         </tr>

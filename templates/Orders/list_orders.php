@@ -56,7 +56,7 @@ $n = 1;
                                             <td><a><?= $order['address']?></a></td>
                                             <td><a><?= $order['total_point']?></a></td>
                                             <td><a><?= $order['total_quantity'] ?></a></td>
-                                            <td><a><?= $order['total_amount']?></a></td>
+                                            <td><a><?= number_format($order['total_amount'])?></a></td>
                                             <td><a>
                                                 <?php
                                                     if($order['status'] == 0){

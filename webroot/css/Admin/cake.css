@@ -120,7 +120,7 @@ th {
     border-style: solid;
     border-radius: 4px;
     margin-bottom: 2rem;
-    /* animation: showToast linear 0.3s; */
+    animation: showToast linear 0.3s, hidenToast linear 1s 3s forwards;
 
 }
 
@@ -135,6 +135,11 @@ th {
     }
 }
 
+@keyframes hidenToast {
+    to {
+        opacity: 0;
+    }
+}
 
 .message.hidden {
     display: none;

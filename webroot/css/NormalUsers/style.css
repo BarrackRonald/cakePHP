@@ -1,3 +1,14 @@
+/*/////////////////////////////////
+[custom]*/
+.button-back {
+    position: relative;
+    display: inline-block;
+    margin-left: -30px;
+}
+.button-next {
+    position: relative;
+    float: right;
+}
 /*///////////////////////////////////////////////////////////////////
 [ Pagination ]*/
 .section-custom {

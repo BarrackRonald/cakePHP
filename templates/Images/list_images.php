@@ -40,7 +40,6 @@ $n = 1;
                                         <th>Hình ảnh</th>
                                         <th>Loại Hình ảnh</th>
                                         <th>Sản phẩm</th>
-                                        
                                         <th>Trạng thái</th>
                                     </tr>
                                 </thead>
@@ -52,8 +51,8 @@ $n = 1;
                                             <td>
                                                 <img width="60%" src="<?= $image['file']?>" alt="">
                                             </td>
-                                            <td><a><?= $image['image_type'] ?></a></td>
-                                            <td><a><?= $image['Products']['product_name']?></a></td>
+                                            <td><a><?=h($image['image_type'])?></a></td>
+                                            <td><a><?=h($image['Products']['product_name'])?></a></td>
                                             <td style="text-align: center;">
                                                 <?php if($_SESSION['flag'] == 2){ ?>
                                                     <a href="<?= $this->Url->build('/admin/edit-image/' . $image->id, ['fullBase' => true]) ?>">

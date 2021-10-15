@@ -140,7 +140,7 @@ echo $this->element('NormalUsers/header');
                                                             <td class="product-name">
                                                                 <?= $product['name'] ?> <strong class="product-quantity">× <?= $product['quantity'] ?></strong> </td>
                                                             <td class="product-total">
-                                                                <span class="amount"><?= $product['totalAmount'] ?></span> </td>
+                                                                <span class="amount"><?=number_format($product['totalAmount'])?></span> </td>
                                                         </tr>
                                                     <?php }?>
                                                 </tbody>
@@ -155,7 +155,7 @@ echo $this->element('NormalUsers/header');
 
                                                     <tr class="order-total">
                                                         <th>Tổng Đơn Hàng</th>
-                                                        <td><strong><span class="amount"><?= $dataProds['totalAllAmount'] ?></span></strong> </td>
+                                                        <td><strong><span class="amount"><?=number_format($dataProds['totalAllAmount'])?></span></strong> </td>
                                                     </tr>
 
                                                 </tfoot>
@@ -172,8 +172,6 @@ echo $this->element('NormalUsers/header');
                                                     <a href="/carts">
                                                         <input type="button"  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
                                                     </a>
-
-
                                                 </div>
 
                                             <div class="clear"></div>

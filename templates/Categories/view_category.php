@@ -22,7 +22,7 @@ echo $this->element('Admin/sidebar');
                         <?= $this->Form->create($dataCategory[0]) ?>
                         <div class="form-group">
                             <label for="email">Tên Danh mục sản phẩm:</label>
-                                <input type="text" class="form-control" value="<?= $dataCategory[0]->category_name ?> " name="category_name" >
+                                <input type="text" class="form-control" value="<?=h($dataCategory[0]->category_name)?> " name="category_name" >
                             </div>
                             <?= $this->Form->end() ?>
                         </div>

@@ -50,7 +50,7 @@ $this->disableAutoLayout();
 
     <div class="header-area" >
     <div style="z-index: 10000" id="toast"></div>
-        <?= $this->Flash->render() ?>
+            <?= $this->Flash->render() ?>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -62,7 +62,7 @@ $this->disableAutoLayout();
                         <ul>
                             <li><a href="/myaccount">
                                 <?php if(isset($_SESSION['username'])){ ?>
-                                    <i class="fa fa-user"><?= $_SESSION['username'] ?></i>
+                                    <i class="fa fa-user"><b style="margin-left: 7px;"><?=trim($_SESSION['username'])?></b></i>
                                 <?php }else{?>
                                     <i class="fa fa-user">My Account</i>
                                 <?php } ?>
@@ -131,7 +131,7 @@ $this->disableAutoLayout();
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="/">Home</a></li>
                             <?php foreach ($dataCategories as $category) { ?>
-                                <li><a href="<?= $this->Url->build('/view-category/' . $category->id, ['fullBase' => true]) ?>"><?= $category['category_name'] ?></a></li>
+                                <li><a href="<?= $this->Url->build('/view-category/' . $category->id, ['fullBase' => true]) ?>"><?=h($category['category_name'])?></a></li>
                             <?php } ?>
                             <li><a href="#">Contact</a></li>
                         </ul>

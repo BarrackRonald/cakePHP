@@ -77,11 +77,23 @@ class OrdersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
+
             // Check point sau khi duyệt đơn
             if($atribute['status'] == $dataOrder[0]['status']){
                 $this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
-                return $this->redirect("");
+                $data = $atribute;
             }else{
+                //Check F12
+                if(!(
+                    $atribute['status'] == 0 ||
+                    $atribute['status'] == 1 ||
+                    $atribute['status'] == 2
+                )){
+                    $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận Đơn hàng!!!'));
+                    return $this->redirect(['action' => 'listOrders']);
+                }
+
+                //Tính toán Xóa Point Khi Từ chối đơn
                 if($atribute['status'] == $dataOrder[0]['status']){
                     $pointAF = $dataUser[0]['point_user'];
                 }else if($atribute['status'] == 2){
@@ -107,9 +119,9 @@ class OrdersController extends AppController
             }
         }else {
             $data = $dataOrder[0];
+            $data["Users"] = $dataUser[0];
             $data["referer"] = $this->referer();
         }
-        $this->set(compact('dataUser'));
         $this->set('dataOrder', $data);
     }
 }

@@ -3,7 +3,7 @@ use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
-
+<?php if($_SESSION['flag'] == 2){ ?>
             <div class="main-content container-fluid">
                 <div class="page-title">
                     <div class="row">
@@ -52,7 +52,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?php if(isset($dataProduct['amount_product'])){?><?=trim($dataProduct['amount_product'])?><?php }?>" name="amount_product" >
+                                    <input type="text" class="form-control" value="<?php if(isset($dataProduct['amount_product'])){?><?= number_format(trim($dataProduct['amount_product']))?><?php }?>" name="amount_product" >
                                     <?php  if(isset($error['amount_product'])){?>
                                             <i style="color: red;">
                                                 <?= implode($error['amount_product'])?>
@@ -78,28 +78,23 @@ echo $this->element('Admin/sidebar');
                                 </select>
                             </div>
                             <div class="button_back">
-                                <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="/admin/list-products">
-                                        <button type="button" class="btn btn-primary btn-default">Back</button>
-                                    </a>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <a href="/admin/list-products">
+                                    <button type="button" class="btn btn-primary btn-default">Back</button>
+                                </a>
 
                             </div>
 
                             <div class="button_submit">
-                                <?php if($_SESSION['flag'] == 2){ ?>
-                                    <button type="submit" class="btn btn-primary btn-default">Submit</button>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <button type="submit" class="btn btn-primary btn-default">Submit</button>
                             </div>
                             <?= $this->Form->end() ?>
                         </div>
                     </div>
                 </div>
             </div>
+<?php } else{?>
+    <h3>Người dùng không đủ quyền để truy cập</h3>
+<?php }?>
 <?php
 echo $this->element('Admin/footer');
 ?>

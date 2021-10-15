@@ -470,4 +470,17 @@ class DataComponent extends CommonComponent
         ->limit(5);
         return $query->toArray();
     }
+
+    public function similarProduct($idCategory, $idProduct){
+        $query = $this->Products->query()
+        ->Where([
+            'Products.id NOT IN' => $idProduct,
+            'Products.category_id'=> $idCategory,
+            'Products.del_flag'=> 0,
+        ])
+        ->contain(['Images'=> function ($q) {
+            return $q->order('Images.updated_date DESC');
+        }]);
+        return $query;
+    }
 }

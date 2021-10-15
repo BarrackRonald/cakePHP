@@ -50,7 +50,7 @@ echo $this->element('Admin/sidebar');
                                 <label for="pwd">Sản phẩm:</label>
                                 <select name="category_id" id="" class="form-control" >
                                     <?php foreach ($dataProduct as $product) { ?>
-                                        <option value="<?= $product->id?>"><?= $product->product_name ?></option>
+                                        <option value="<?= $product->id?>"><?=h($product->product_name)?></option>
                                     <?php } ?>
                                 </select>
                             </div>

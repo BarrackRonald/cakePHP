@@ -26,7 +26,7 @@ echo $this->element('NormalUsers/header');
                             </div>
                             <h2><a href="<?= $this->Url->build('/details-product/' . $product['id'], ['fullBase' => true]) ?>"><?=$product['product_name']?></a></h2>
                                 <div class="product-carousel-price" style="display:inline">
-                                    <ins><?= '$'.$product['amount_product']?></ins>
+                                    <ins><?= '$'. number_format($product['amount_product'])?></ins>
                                 </div>
                                 <div class="product-carousel-price" style="float: right; color: #c58209cc">
                                     <ins><?= $product['point_product'].' point'?></ins>

@@ -36,7 +36,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?= $dataProduct[0]->amount_product ?>" name="amount_product" readonly>
+                                    <input type="text" class="form-control" value="<?= number_format($dataProduct[0]->amount_product)?>" name="amount_product" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="email">Point sản phẩm:</label>

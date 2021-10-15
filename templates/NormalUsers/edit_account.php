@@ -100,15 +100,23 @@ echo $this->element('NormalUsers/header');
                                     </div>
                                     </div>
                                     <div class="col-3">
+                                        <div id="order_review" class="button-back">
+                                            <div id="payment">
+                                                <div class="form-row place-order" >
+                                                    <a href="/myaccount">
+                                                        <input type="button"  data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
+                                                    </a>
+                                                </div>
+                                            <div class="clear"></div>
+                                            </div>
+                                        </div>
 
-                                        <div id="order_review" style="position: relative;">
+                                        <div id="order_review" class="button-next">
 
                                             <div id="payment">
 
                                                 <div class="form-row place-order">
-
                                                     <input type="submit" data-value="Place order" value="Xác nhận" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
-
 
                                                 </div>
 

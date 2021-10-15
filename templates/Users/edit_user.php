@@ -73,21 +73,13 @@ echo $this->element('Admin/sidebar');
                             </div>
 
                             <div class="button_back">
-                                <?php if($_SESSION['flag'] == 2){ ?>
-                                    <a href="<?=$dataUser["referer"];?>">
-                                        <button type="button" class="btn btn-primary btn-default">Back</button>
-                                    </a>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <a href="<?=$dataUser["referer"];?>">
+                                    <button type="button" class="btn btn-primary btn-default">Back</button>
+                                </a>
                             </div>
 
                             <div class="button_submit">
-                                <?php if($_SESSION['flag'] == 2){ ?>
-                                    <button type="submit" value="<?= $dataUser["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
-                                <?php }else{?>
-                                    <button disabled class="btn btn-primary btn-default">Không đủ quyền</button>
-                                <?php }?>
+                                <button type="submit" value="<?= $dataUser["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
                             </div>
                             <?= $this->Form->end() ?>
                         </div>

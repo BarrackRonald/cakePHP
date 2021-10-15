@@ -92,21 +92,20 @@ class CategoriesController extends AppController
             if(trim($atribute['category_name']) == trim($dataCategory[0]['category_name'])
              ){
                 $this->Flash->error(__('Danh mục không có sự thay đổi.'));
-                return $this->redirect("");
-            }
-
-            $category = $this->Categories->patchEntity($dataCategory[0], h($atribute));
-
-            if ($category->hasErrors()) {
-                $error = $category->getErrors();
-                $this->set('error', $error);
                 $data = $atribute;
-            }else {
-                if ($this->Categories->save($category)) {
-                    $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
-                    return $this->redirect($atribute['referer']);
-                }else{
-                $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
+            }else{
+                $category = $this->Categories->patchEntity($dataCategory[0], h($atribute));
+                if ($category->hasErrors()) {
+                    $error = $category->getErrors();
+                    $this->set('error', $error);
+                    $data = $atribute;
+                }else {
+                    if ($this->Categories->save($category)) {
+                        $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
+                        return $this->redirect($atribute['referer']);
+                    }else{
+                    $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
+                    }
                 }
             }
         }

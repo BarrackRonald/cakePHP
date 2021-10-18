@@ -206,6 +206,8 @@ class DataComponent extends CommonComponent
             $this->Orderdetails->save($dataOrderDetails);
         }
 
+        return $result;
+
     }
 
     public function createOrdersNone($infoUser, $dataProds, $insertUser){
@@ -250,6 +252,8 @@ class DataComponent extends CommonComponent
             };
             $this->Orderdetails->save($dataOrderDetails);
         }
+
+        return $result;
 
     }
 

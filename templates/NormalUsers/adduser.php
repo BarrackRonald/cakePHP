@@ -135,23 +135,33 @@ echo $this->element('NormalUsers/header');
                                                             <td class="product-name">
                                                                 <?=h(trim($product['name']))?> <strong class="product-quantity">× <?=h(trim($product['quantity']))?></strong> </td>
                                                             <td class="product-total">
-                                                                <span class="amount"><?=number_format(h(trim($product['totalAmount'])))?></span> </td>
+                                                                <span class="amount"><?='$'.number_format(h(trim($product['totalAmount'])))?></span> </td>
                                                         </tr>
                                                     <?php }?>
                                                 </tbody>
                                                 <tfoot>
-
                                                     <tr class="shipping">
-                                                        <th>Tổng Point</th>
+                                                        <th>Point Đơn hàng </th>
                                                         <td>
-                                                            <?=number_format(h(trim($dataProds['totalAllPoint'])))?>
-                                                            <input type="hidden" class="shipping_method" value="free_shipping" id="shipping_method_0" data-index="0" name="shipping_method[0]">
+                                                            <?=number_format(h(trim($dataProds['totalAllPoint']))).' point'?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="shipping">
+                                                        <th>Point Hiện có</th>
+                                                        <td>
+                                                            <?='0 point'?>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="shipping">
+                                                        <th>Point Sau khi mua</th>
+                                                        <td>
+                                                        <?=number_format(h(trim($dataProds['totalAllPoint']))).' point'?>
                                                         </td>
                                                     </tr>
 
                                                     <tr class="order-total">
                                                         <th>Tổng Đơn Hàng</th>
-                                                        <td><strong><span class="amount"><?= number_format(h(trim($dataProds['totalAllAmount'])))?></span></strong> </td>
+                                                        <td><strong><span class="amount"><?= '$'.number_format(h(trim($dataProds['totalAllAmount'])))?></span></strong> </td>
                                                     </tr>
 
                                                 </tfoot>

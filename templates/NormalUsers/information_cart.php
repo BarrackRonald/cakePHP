@@ -89,7 +89,7 @@ echo $this->element('NormalUsers/header');
                                                 <td class="actions" colspan="1">
                                                 <label for="coupon_code" id="totalAllAmount"> $
                                                     <?php
-                                                        echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? $this->request->getSession()->read('cartData')['totalAllAmount'] : "0";
+                                                        echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? number_format($this->request->getSession()->read('cartData')['totalAllAmount']) : "0";
                                                     ?>
                                                 </label>
                                                 </td>
@@ -134,12 +134,13 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('#totalAllAmount').html('$'+datatotal.totalAllAmount);
+                $('#totalAllAmount').html('$'+ Intl.NumberFormat().format(datatotal.totalAllAmount));
+                
 
                 //total Amount Product_id
                 var totalAmount = JSON.parse(data).cart[product_id]["totalAmount"];
                 console.log(totalAmount);
-                $('#amount_'+product_id).html('$'+totalAmount);
+                $('#amount_'+product_id).html('$'+ Intl.NumberFormat().format(totalAmount));
 
                 //total Point
                 var totalPoint = JSON.parse(data).cart[product_id]["totalPoint"];
@@ -168,7 +169,7 @@ echo $this->element('NormalUsers/header');
                 //totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('#totalAllAmount').html('$'+datatotal.totalAllAmount);
+                $('#totalAllAmount').html('$'+ Intl.NumberFormat().format(datatotal.totalAllAmount));
 
                 //quantity and total mount
                 var dataProduct = JSON.parse(data).cart[product_id]
@@ -177,7 +178,7 @@ echo $this->element('NormalUsers/header');
                     $("#cart_item_"+product_id).remove();
                 }else{
                     $('#point_'+product_id).html(dataProduct["totalPoint"]);
-                    $('#amount_'+product_id).html('$'+dataProduct["totalAmount"]);
+                    $('#amount_'+product_id).html('$'+ Intl.NumberFormat().format(dataProduct["totalAmount"]));
                     $("#product_"+product_id).val(dataProduct["quantity"]);
                 }
 
@@ -201,10 +202,9 @@ echo $this->element('NormalUsers/header');
 				//totalquantity
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
-                $('#totalAllAmount').html('$'+datatotal.totalAllAmount);
+                $('#totalAllAmount').html('$'+Intl.NumberFormat().format(datatotal.totalAllAmount));
                 //dell item
                 $("#cart_item_"+product_id).remove();
-
 			},
 			error :function (data, textStatus, jqXHR) {
 

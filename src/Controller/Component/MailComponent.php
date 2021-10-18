@@ -53,8 +53,8 @@ class MailComponent extends Component
         $mail->IsHTML(true);
         $mail->CreateHeader($header);
         $mail->Subject = $subject;
-        $mail->Body    =nl2br($message);
-        // $mail->AltBody = nl2br($message);
+        $mail->Body    =  $message;
+        // $mail->AltBody = nl2br($message); nl2br là tự động xuống dòng
 
         // return an array with two keys: error & message
         if (!$mail->Send()) {

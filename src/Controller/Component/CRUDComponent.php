@@ -339,7 +339,7 @@ class CRUDComponent extends CommonComponent
             'type' => 'left',
             'conditions' => ['Orders.user_id = Users.id']
         ])
-        ->order('Orders.created_date DESC');
+        ->order('Orders.id DESC');
         return $query;
     }
 

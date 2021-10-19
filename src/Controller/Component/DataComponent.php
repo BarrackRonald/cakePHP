@@ -64,7 +64,21 @@ class DataComponent extends CommonComponent
             ->where([
                 'Users.email' => $email,
             ]);
-    return $query->toArray();
+        return $query->toArray();
+    }
+
+    //Lấy Pws By ID
+    public function getPwsByID($idUser){
+        $query = $this->Users->find()
+            ->select([
+                'Users.id',
+                'Users.password',
+            ])
+            ->where([
+                'Users.id' => $idUser,
+            ]);
+        return $query->toArray();
+
     }
 
     public function insertUsers($dataProds, $pointAF){

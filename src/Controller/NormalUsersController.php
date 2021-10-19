@@ -942,12 +942,21 @@ class NormalUsersController extends AppController
     public function editAccount($id = null){
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
-                return $this->redirect(['action' => 'myaccount']);
+            $atribute = $this->request->getData();
+            if(
+                $atribute['username'] == $dataUser[0]['username'] &&
+                $atribute['phonenumber'] == $dataUser[0]['phonenumber'] &&
+                $atribute['address'] == $dataUser[0]['address']
+            ){
+                $this->Flash->error(__('Tài khoản không có sự thay đổi.'));
+            }else {
+                $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
+                if ($this->Users->save($user)) {
+                    $this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
+                    return $this->redirect(['action' => 'myaccount']);
+                }
+                $this->Flash->error(__('Tài khoản chưa được cập nhật. Vui lòng thử lại.'));
             }
-            $this->Flash->error(__('Tài khoản chưa được cập nhật. Vui lòng thử lại.'));
         }
 
         $this->set(compact('dataUser'));

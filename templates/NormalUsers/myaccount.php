@@ -133,13 +133,27 @@ echo $this->element('NormalUsers/header');
                                     </div>
                                 </div>
                             </form>
-                            <div class="col-3">
+                            <div class="col-3" style="display: inline-block">
                                 <div id="order_review" style="position: relative;">
                                     <div id="payment">
                                     <?php  if(isset($_SESSION['idUser'])){?>
                                         <div class="form-row place-order">
                                             <a href="<?= $this->Url->build('/edit-account/' . $_SESSION['idUser'], ['fullBase' => true]) ?>">
                                                 <input type="submit" data-value="Place order" value="Sửa thông tin" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+                                            </a>
+                                        </div>
+                                    <?php }?>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-3" style="display: inline-block">
+                                <div id="order_review" style="position: relative;">
+                                    <div id="payment">
+                                    <?php  if(isset($_SESSION['idUser'])){?>
+                                        <div class="form-row place-order">
+                                            <a href="/change-password">
+                                                <input type="submit" data-value="Place order" value="Đổi mật khẩu" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
                                             </a>
                                         </div>
                                     <?php }?>

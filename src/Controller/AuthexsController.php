@@ -16,8 +16,15 @@ class AuthexsController extends AppController {
         $this->loadComponent('Mail');
         $this->loadModel("Users");
     }
-    public function beforeFilter(EventInterface $event)
+    public function beforeRender(EventInterface $event)
     {
+
+        $dataCategories = $this->{'Data'}->getCategory();
+        $dataProducts = $this->{'Data'}->getAllProducts();
+        $dataSlideImages = $this->{'Data'}->getSlideImage();
+        $dataNewsProducts = $this->{'Data'}->getNewsProduct();
+
+        $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts', 'dataCategories'));
     }
 
    public function index(){
@@ -102,7 +109,7 @@ class AuthexsController extends AppController {
   public function register(){
     if($this->request->is('post')) {
         $atribute = $this->request->getData();
-        // dd($atribute);
+
         $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->register($atribute);
         $checkmail = $this->{'Data'}->checkmail($atribute);
@@ -110,6 +117,13 @@ class AuthexsController extends AppController {
         $session->write('infoUser', $atribute);
         $session->write('email', $atribute['email']);
         $session->write('password', $atribute['password']);
+
+        // check retype Password
+        if(!($atribute['password'] == $atribute['retypePassword'])){
+            $error['retypePassword'] = ['Password incorrect. Please re-enter!!!'];
+                $session->write('error', $error);
+                $this->redirect(['action' => '']);
+        }
 
         if($dataUser['result'] == "invalid"){
             $error = $dataUser['data'];
@@ -147,6 +161,46 @@ class AuthexsController extends AppController {
 
     }
 
+  }
+
+  //Thay đổi mật khẩu
+  public function changePassword(){
+    $session = $this->request->getSession();
+    if(!$session->check('flag')){
+        return $this->redirect(['controller'=>'NormalUsers', 'action' => 'index']);
+    }
+    if($this->request->is('post')){
+        $atribute = $this->request->getData();
+        if(($atribute['newpassword'] == '') || ($atribute['newpassword'] == '') || ($atribute['newretypepassword'] == '')){
+            $this->Flash->error(__('Vui lòng Điền đầy đủ các trường và thử lại.'));
+            $this->redirect(['action' => '']);
+        }else{
+            // check retype Password
+            if(!($atribute['newpassword'] == $atribute['newretypepassword'])){
+                $this->Flash->error(__('Password incorrect. Please re-enter!!!'));
+                $this->redirect(['action' => '']);
+            }else{
+                $idUser = $session->read('idUser');
+                $dataUser = $this->{'CRUD'}->getUsersByID($idUser);
+                $hashPswdObj = new DefaultPasswordHasher;
+                $checkPassword =  $hashPswdObj->check($atribute['oldpassword'], $dataUser['password']);
+                if($checkPassword){
+                    $newpass = $hashPswdObj->hash($atribute['newpassword']);
+                    $dataUser->password = $newpass;
+                    if($this->Users->save($dataUser)){
+                        $this->Flash->success('Mật khẩu của bạn đã được thay đổi!!!');
+                    }else{
+                        $this->Flash->error(__('Vui lòng thử lại.'));
+                        $this->redirect(['action' => '']);
+                    }
+                }else {
+                    $this->Flash->error(__('Mật khẩu sai. Vui lòng thử lại.'));
+                    $this->redirect(['action' => '']);
+                }
+            }
+
+        }
+    }
   }
 
   //Quên mật khẩu
@@ -202,11 +256,12 @@ class AuthexsController extends AppController {
                 }
             }else {
                 if($this->Users->save($dataUser)){
+                    $session->write('email', $email);
                     $this->Flash->success('Mật khẩu của bạn đã được gửi về email ('.$email.'), vui lòng kiểm tra');
                             $to = $email;
                             $toAdmin= 'tienphamvan2005@gmail.com';
                             $subject = 'Reset Password';
-                             $message = 'Mật khẩu của bạn là:'.$randompws.'';
+                             $message = 'Mật khẩu của bạn là: '.$randompws.'';
                     $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
                     if($errSendMail == false){
                         $this->redirect(['action' => 'login']);

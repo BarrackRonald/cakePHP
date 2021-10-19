@@ -12,20 +12,28 @@ echo $this->element('NormalUsers/header');
 					<?php echo $this->Form->create(null, ['class' => 'login100-form validate-form']); ?>
 
 					<span class="login100-form-title">
-						<h3><b>Đăng Nhập</b></h3>
+						<h3><b>Thay đổi Mật khẩu</b></h3>
 					</span>
 
-                    <label for="email">Email:</label>
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" id="email" type="text" name="email" style="padding: 0 30px 0 50px; border: 1px solid;" placeholder="Email" value="<?php if(isset($_SESSION['email'])){ echo $_SESSION['email']; }?>">
+                    <label class="m-t-15" for="myInput1">Mật khẩu cũ:</label>
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input id="myInput1" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="oldpassword" placeholder="Mật khẩu cũ" value="">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
-							<i class="fa fa-envelope" aria-hidden="true"></i>
+							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
 					</div>
-                    <label class="m-t-15" for="password">Password:</label>
+                    <label class="m-t-2" for="myInput2">Mật khẩu mới:</label>
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input id="myInput" class="input100" id="password" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="password" placeholder="Password" value="<?php if(isset($_SESSION['password'])){ echo $_SESSION['password']; }?>">
+						<input id="myInput2" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="newpassword" placeholder="Mật khẩu mới" value="">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-lock" aria-hidden="true"></i>
+						</span>
+					</div>
+                    <label class="m-t-2" for="myInput3">Nhập lại mật khẩu:</label>
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<input id="myInput3" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="newretypepassword" placeholder="Nhập lại mật khẩu" value="">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -39,7 +47,7 @@ echo $this->element('NormalUsers/header');
 
 					<div class="container-login100-form-btn">
 						<button type="submit" class="login100-form-btn">
-							Login
+							Xác nhận
 						</button>
 					</div>
 
@@ -53,8 +61,8 @@ echo $this->element('NormalUsers/header');
 					</div>
 
 					<div class="text-center p-t-12">
-						<a class="txt2" href="/register">
-							Tạo tài khoản mới
+						<a class="txt2" href="/myaccount">
+							Quay lại
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -77,11 +85,26 @@ echo $this->element('NormalUsers/footer');
 ?>
 <script>
 	function myFunction() {
-	var x = document.getElementById("myInput");
+	var x = document.getElementById("myInput1");
+    var y = document.getElementById("myInput2");
+    var z = document.getElementById("myInput3");
+
 	if (x.type === "password") {
 		x.type = "text";
 	} else {
 		x.type = "password";
+	}
+
+    if (y.type === "password") {
+		y.type = "text";
+	} else {
+		y.type = "password";
+	}
+
+    if (z.type === "password") {
+		z.type = "text";
+	} else {
+		z.type = "password";
 	}
 }
 </script>

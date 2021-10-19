@@ -1,50 +1,66 @@
 <?php
-	echo $this->element('Register/header');
+use Cake\Utility\Text;
+echo $this->element('NormalUsers/header');
 ?>
-<body>
-    <div id="auth">
 
+    <div style="background-color: #f5f5f5;">
+        <div class="zigzag-bottom"></div>
         <div class="container">
-            <div class="row">
-                <div class="col-md-5 col-sm-12 mx-auto">
-                    <div class="card py-4">
-                        <div class="card-body">
-                            <div class="text-center mb-5">
-                                <img src="../../img/Admin/favicon.svg" height="48" class='mb-4'>
-                                <h3>Forgot Password</h3>
-                                <p>Please enter your email to receive password reset link.</p>
-                            </div>
-                            <div class="row">
-                                <?= $this->Flash->render() ?>
-                            </div>
-                            <form enctype="multipart/form-data" action="/forgotpassword" method="post">
-                                <div class="form-group">
-                                    <label for="first-name-column">Email</label>
-                                    <input type="email" id="first-name-column" class="form-control" name="email">
-                                    <?php  if(isset($_SESSION['error_forgot'])){
-                                        if(isset($_SESSION['error_forgot']['email'])){?>
-                                        <i style="color: red;">
-                                            <?= implode($_SESSION['error_forgot']['email'])?>
-                                        </i>
-                                        <?php } else{?>
-                                        <i style="color: red;">
-                                            <?= implode($_SESSION['error_forgot']['email_null'])?>
-                                        </i>
-                                        <?php }
-                                    }?>
-                                </div>
+            <div class="row" style="margin: 0 200px;">
+            <div class="wrap-login100">
 
-                                <div class="clearfix">
-                                    <button class="btn btn-primary float-end">Submit</button>
-                                </div>
-                            </form>
-                        </div>
+                <form enctype="multipart/form-data" action="/forgotpassword" method="POST" style="width: 90%">
+					<span class="login100-form-title">
+						<h3><b>Lấy Lại Mật Khẩu</b></h3>
+					</span>
+
+                    <label for="email">Email:</label>
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<input class="input100" id="email" type="text" name="email" style="padding: 0 30px 0 50px; border: 1px solid;" placeholder="Email">
+                        <span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+                    <div style="margin-top: -8px;">
+                        <?php  if(isset($_SESSION['error_forgot'])){
+                            if(isset($_SESSION['error_forgot']['email'])){?>
+                            <i style="color: red;">
+                                <?= implode($_SESSION['error_forgot']['email'])?>
+                            </i>
+                            <?php } else{?>
+                            <i style="color: red;">
+                                <?= implode($_SESSION['error_forgot']['email_null'])?>
+                            </i>
+                            <?php }
+                        }?>
+                    </div>
+
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn">
+							Xác nhận
+						</button>
+					</div>
+
+					<div class="text-center p-t-12">
+						<a class="txt2" href="/login">
+							Đăng nhập
+							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+						</a>
+					</div>
+                </form>
+
+			</div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="product-pagination text-center pagination-button">
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
 <?php
-	echo $this->element('Register/footer');
+echo $this->element('NormalUsers/footer');
 ?>

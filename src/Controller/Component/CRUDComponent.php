@@ -483,6 +483,15 @@ class CRUDComponent extends CommonComponent
         ];
     }
 
+    public function getUsersByID($idUser){
+        $query = $this->Users->find()
+        ->where([
+            'id' => $idUser,
+        ])
+        ->first();
+        return $query;
+    }
+
     public function getUsersByEmail($email){
         $query = $this->Users->find()
         ->where([

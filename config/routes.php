@@ -94,6 +94,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/register',['controller'=>'Authexs','action'=>'register']);
     $builder->connect('/logout',['controller'=>'Authexs','action'=>'logout']);
 
+    //Thay đổi mật khẩu
+    $builder->connect('/change-password',['controller'=>'Authexs','action'=>'changePassword']);
+
     //Quên mật khẩu
     $builder->connect('/forgotpassword',['controller'=>'Authexs','action'=>'forgotpassword']);
 
@@ -145,6 +148,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Duyệt đơn và Chi tiết đơn
     $builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
     $builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
+
 
     $builder->fallbacks();
 });

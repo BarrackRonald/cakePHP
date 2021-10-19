@@ -165,10 +165,10 @@ class UsersController extends AppController
         $user = $this->Users->patchEntity($dataUser[0], $atribute);
 
         if ($this->Users->save($user)) {
-            $this->Flash->success(__('User đã được xóa thành công.'));
+            $this->Flash->success(__('User đã được khóa thành công.'));
             return $this->redirect("$urlPageList");
         }
-        $this->Flash->error(__('User chưa được xóa. Vui lòng thử lại.'));
+        $this->Flash->error(__('User chưa được khóa. Vui lòng thử lại.'));
         return $this->redirect("$urlPageList");
     }
 

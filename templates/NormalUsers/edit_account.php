@@ -2,7 +2,6 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -15,6 +14,9 @@ echo $this->element('NormalUsers/header');
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row" style="margin: 10px 0 0 5px" >
+        <?= $this->Flash->render() ?>
     </div>
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
@@ -49,7 +51,6 @@ echo $this->element('NormalUsers/header');
                                                 </label>
                                                 <input type="text" value="<?=h(trim($dataUser[0]['address']))?>" placeholder="" id="billing_address_1" name="address" class="input-text " >
                                             </p>
-
                                             <div class="clear"></div>
 
                                         </div>
@@ -75,7 +76,6 @@ echo $this->element('NormalUsers/header');
                                                     <input type="submit" data-value="Place order" value="Xác nhận" id="place_order" class="button alt">
 
                                                 </div>
-
                                             <div class="clear"></div>
 
                                             </div>

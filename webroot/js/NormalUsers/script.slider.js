@@ -11,23 +11,23 @@
                         $(this).show().addClass('animated fadeInRight').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
                             $(this).removeClass('fadeInRight animated');
                         });
-                    })                      
+                    })
                 },
                 onSlideBefore:function(slideElement, oldIndex, newIndex){
                     //slideElement.find('.sl-description').hide();
-                    slideElement.find('.caption').each(function(){                    
-                       $(this).hide().removeClass('animated fadeInRight'); 
-                    });                
+                    slideElement.find('.caption').each(function(){
+                       $(this).hide().removeClass('animated fadeInRight');
+                    });
                 },
-                onSlideAfter: function(slideElement, oldIndex, newIndex){  
+                onSlideAfter: function(slideElement, oldIndex, newIndex){
                     //slideElement.find('.sl-description').show();
                     setTimeout(function(){
-                        slideElement.find('.caption').each(function(){                    
+                        slideElement.find('.caption').each(function(){
                            $(this).show().addClass('animated fadeInRight').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
                                 $(this).removeClass('fadeInRight animated');
-                            }); 
+                            });
                         });
-                    }, 500);                                
+                    }, 500);
                 }
             });
             //slider.reloadSlider();

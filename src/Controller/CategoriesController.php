@@ -39,7 +39,9 @@ class CategoriesController extends AppController
     //List Categories
     public function listCategories()
     {
+        //Check Referer
         $session = $this->request->getSession();
+
         if($session->check('error')){
             $session->delete('error');
         }
@@ -79,15 +81,22 @@ class CategoriesController extends AppController
     //Edit Categories
     public function editCategory($id = null)
     {
-        $checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
-        if(count($checkCategoryID) < 1){
+        $session = $this->request->getSession();
+        //Check URL_ID
+        if(!is_numeric($id)){
             $this->Flash->error(__('Danh mục không tồn tại.'));
+            return $this->redirect(['action' => 'listCategories']);
+        }else{
+            $checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
+            if(count($checkCategoryID) < 1){
+                $this->Flash->error(__('Danh mục không tồn tại.'));
                 return $this->redirect(['action' => 'listCategories']);
+            }
         }
+
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-
             //Check thay đổi
             if(trim($atribute['category_name']) == trim($dataCategory[0]['category_name'])
              ){
@@ -104,6 +113,7 @@ class CategoriesController extends AppController
                         $this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
                         return $this->redirect($atribute['referer']);
                     }else{
+                        $session->write('hasReferer', 1);
                         $this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
                     }
                 }
@@ -112,6 +122,9 @@ class CategoriesController extends AppController
         else{
             $data = $dataCategory[0];
             $data["referer"] = $this->referer();
+            if($data["referer"] =="/"){
+                return $this->redirect(['action' => 'listCategories']);
+            }
         }
         $this->set('dataCategory', $data);
     }

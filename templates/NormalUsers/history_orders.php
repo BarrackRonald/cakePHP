@@ -7,7 +7,7 @@ echo $this->element('NormalUsers/header');
             <div class="row">
                 <div class="col-md-12">
                     <div class="product-bit-title text-center">
-                        <h2>My Account</h2>
+                        <h2>Lịch sử Đơn hàng</h2>
                     </div>
                 </div>
             </div>
@@ -29,51 +29,41 @@ echo $this->element('NormalUsers/header');
                                 <div id="customer_details" class="col2-set">
 
                                     <div class="col-3">
-                                    <h3 id="order_review_heading">Thông Tin Tài khoản</h3>
+                                    <h3 id="order_review_heading">Thông Tin Đơn Hàng</h3>
                                     <table class="shop_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th >Mã Đơn hàng</th>
+                                                        <th >Sản phẩm</th>
+                                                        <th >Số Lượng</th>
+                                                        <th >Point</th>
+                                                        <th >Tổng Giá</th>
+                                                        <th >Giá Đơn hàng</th>
+                                                        <th >Trạng Thái</th>
+                                                    </tr>
+                                                </thead>
                                                 <tbody>
                                                     <tr class="cart_item">
-                                                        <th class="product-name">
-                                                            Họ Và Tên
-                                                        </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?=h(trim($dataUser[0]['username']))?></span>
+                                                            <span class="amount">123</span>
                                                         </td>
-                                                    </tr>
-
-                                                    <tr class="cart_item">
-                                                        <th class="product-name">
-                                                            Số Điện Thoại
-                                                        </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?=h(trim($dataUser[0]['phonenumber']))?></span>
+                                                            <span class="amount">123</span>
                                                         </td>
-                                                    </tr>
-
-                                                    <tr class="cart_item">
-                                                        <th class="product-name">
-                                                            Địa chỉ Email
-                                                        </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?=h(trim($dataUser[0]['email']))?></span>
+                                                            <span class="amount">123</span>
                                                         </td>
-                                                    </tr>
-
-                                                    <tr class="cart_item">
-                                                        <th class="product-name">
-                                                            Địa chỉ
-                                                        </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?=h(trim($dataUser[0]['address']))?></span>
+                                                            <span class="amount">123</span>
                                                         </td>
-                                                    </tr>
-
-                                                    <tr class="cart_item">
-                                                        <th class="product-name">
-                                                            Point Của Bạn
-                                                        </th>
                                                         <td class="product-total">
-                                                            <span class="amount"><?=h(trim($dataUser[0]['point_user']))?></span>
+                                                            <span class="amount">123</span>
+                                                        </td>
+                                                        <td class="product-total">
+                                                            <span class="amount">123</span>
+                                                        </td>
+                                                        <td class="product-total">
+                                                            <span class="amount">123</span>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -111,17 +101,17 @@ echo $this->element('NormalUsers/header');
                                 </div>
                             </div>
                        <?php } else{ ?>
-                        <form enctype="multipart/form-data" action="" class="checkout" method="post" name="checkout">
-                            <div id="customer_details" class="col2-set">
-                                <div style="text-align: center;" class="col-4">
-                                    <div class="woocommerce-billing-fields">
-                                        <h3>Tài khoản chưa đăng nhập</h3>
-                                        <div class="clear"></div>
+                            <form enctype="multipart/form-data" action="" class="checkout" method="post" name="checkout">
+                                <div id="customer_details" class="col2-set">
+                                    <div style="text-align: center;" class="col-4">
+                                        <div class="woocommerce-billing-fields">
+                                            <h3>Tài khoản chưa đăng nhập</h3>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
                         <?php } ?>
                         </div>
                     </div>

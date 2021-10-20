@@ -30,7 +30,13 @@ class NormalUsersController extends AppController
         $dataProducts = $this->{'Data'}->getAllProducts();
         $dataSlideImages = $this->{'Data'}->getSlideImage();
         $dataNewsProducts = $this->{'Data'}->getNewsProduct();
+        $session = $this->request->getSession();
 
+        if($session->check('idUser')){
+            $idUsers = $session->read('idUser');
+            $dataUser = $this->{'Data'}->getInfoUser($idUsers);
+            $this->set(compact('dataUser'));
+        }
         $this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts', 'dataCategories'));
     }
 
@@ -172,13 +178,9 @@ class NormalUsersController extends AppController
             }
             if($session->check('cartData')){
                  $dataProds = $session->read('cartData');
-
-
                  //Point user trước khi mua
                  $pointBF = 0;
                  $pointAF = $pointBF + $dataProds['totalAllPoint'];
-
-
                 // Inser User
                  $insertUser =  $this->{'Data'}->insertUsers($dataProds, $pointAF);
                 if($insertUser['result'] == "invalid"){
@@ -725,10 +727,6 @@ class NormalUsersController extends AppController
 
     }
 
-    public function checkout(){
-
-    }
-
     public function dellAllCart(){
         if($this->request->is('post')){
             $dataSession = [];
@@ -855,12 +853,8 @@ class NormalUsersController extends AppController
             $cartData = [];
 
             $product_id = $this->request->getData()['productId'];
-
             $data = $this->{'Data'}->getProductByID($product_id);
-
-
             $session = $this->request->getSession();
-
             if($session->check('cartData')){
                 $dataSession = $session->read('cartData');
                 $cartData = $dataSession['cart'];
@@ -929,7 +923,6 @@ class NormalUsersController extends AppController
     }
 
     //Show thông tin cá nhân ở trang người dùng và chỉnh sửa
-
     public function myaccount(){
         $session = $this->request->getSession();
         if($session->check('idUser')){
@@ -940,6 +933,19 @@ class NormalUsersController extends AppController
     }
 
     public function editAccount($id = null){
+
+        //Check URL_ID
+        if(!is_numeric($id)){
+            $this->Flash->error(__('Người dùng không tồn tại.'));
+            return $this->redirect(['action' => 'myaccount']);
+        }else{
+            $checkUserID = $this->{'CRUD'}->checkIDUser($id);
+            if(count($checkUserID) < 1){
+                $this->Flash->error(__('Người dùng không tồn tại.'));
+                return $this->redirect(['action' => 'myaccount']);
+            }
+        }
+
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
@@ -962,26 +968,21 @@ class NormalUsersController extends AppController
         $this->set(compact('dataUser'));
     }
 
-    //End
-
-    public function contact(){
-
-    }
-
-    public function product(){
-
-    }
-
-    public function preview(){
-
-    }
-
-    public function about(){
-
-    }
 
     //View product by Category
     public function viewProductByCategory($id = null){
+        //Check URL_ID
+        if(!is_numeric($id)){
+            $this->Flash->error(__('Danh mục không tồn tại.'));
+            return $this->redirect(['action' => 'index']);
+        }else{
+            $checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
+            if(count($checkCategoryID) < 1){
+                $this->Flash->error(__('Danh mục không tồn tại.'));
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $dataProduct = $this->{'Data'}->getProductByCategory($id);
         $this->set(compact('dataCategory'));
@@ -990,6 +991,18 @@ class NormalUsersController extends AppController
 
     //Details Product
     public function detailsProduct($id = null){
+        //Check URL_ID
+        if(!is_numeric($id)){
+            $this->Flash->error(__('Sản phẩm không tồn tại.'));
+            return $this->redirect(['action' => 'index']);
+        }else{
+            $checkProductID = $this->{'CRUD'}->checkIDProduct($id);
+            if(count($checkProductID) < 1){
+                $this->Flash->error(__('Sản phẩm không tồn tại.'));
+                return $this->redirect(['action' => 'index']);
+            }
+        }
+
         $dataProduct = $this->{'Data'}->getDetailsProductByID($id);
         $dataImage = $this->{'Data'}->getImageByProduct($id);
         $idCategory = $dataProduct[0]['category_id'];
@@ -998,4 +1011,15 @@ class NormalUsersController extends AppController
         $this->set(compact('dataProduct', 'dataImage', 'dataProductByCategory'));
     }
 
+    //History Product
+    public function historyOrders(){
+        $session = $this->request->getSession();
+        $idUsers = $session->read('idUser');
+        if($session->check('idUser')){
+            $dataUser = $this->{'Data'}->getInfoUser($idUsers);
+            $this->set(compact('dataUser'));
+        }
+        $dataOrders = $this->{'Data'}->getOrdersByUser($idUsers);
+        $this->set(compact('dataOrders'));
+    }
 }

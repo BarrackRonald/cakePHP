@@ -50,11 +50,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     //NormalUser
     $builder->connect('/',['controller'=>'NormalUsers','action'=>'index']);
-    $builder->connect('/contact',['controller'=>'NormalUsers','action'=>'contact']);
-    $builder->connect('/product',['controller'=>'NormalUsers','action'=>'product']);
-    $builder->connect('/preview',['controller'=>'NormalUsers','action'=>'preview']);
-    $builder->connect('/about',['controller'=>'NormalUsers','action'=>'about']);
-    $builder->connect('/search',['controller'=>'NormalUsers','action'=>'search']);
 
     //Order
     $builder->connect('/addCart',['controller'=>'NormalUsers','action'=>'addCart']);
@@ -87,6 +82,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
     //Show chi tiết sản phẩm
     $builder->connect('/details-product/:id', ['controller' => 'NormalUsers', 'action' => 'detailsProduct'], ["pass" => ["id"]]);
 
+    // Lịch sử mua hàng
+    $builder->connect('/history-orders',['controller'=>'NormalUsers','action'=>'historyOrders']);
+
 
     //Authexs
     $builder->connect('/auth',['controller'=>'Authexs','action'=>'index']);
@@ -116,21 +114,18 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
     $builder->connect('/admin/opent-user/:id', ['controller' => 'Users', 'action' => 'opentUser'], ["pass" => ["id"]]);
     $builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUsers']);
-    $builder->connect('/admin/view-user/:id', ['controller' => 'Users', 'action' => 'viewUser'], ["pass" => ["id"]]);
 
     //CRUD Danh mục sản phẩm
     $builder->connect('/admin/add-category', ['controller' => 'Categories', 'action' => 'addCategory']);
     $builder->connect('/admin/edit-category/:id', ['controller' => 'Categories', 'action' => 'editCategory'], ["pass" => ["id"]]);
     $builder->connect('/admin/delete-category/:id', ['controller' => 'Categories', 'action' => 'deleteCategory'], ["pass" => ["id"]]);
     $builder->connect('/admin/list-categories', ['controller' => 'Categories', 'action' => 'listCategories']);
-    $builder->connect('/admin/view-category/:id', ['controller' => 'Categories', 'action' => 'viewCategory'], ["pass" => ["id"]]);
 
     //CRUD Danh sách sản phẩm
     $builder->connect('/admin/add-product', ['controller' => 'Products', 'action' => 'addProduct']);
     $builder->connect('/admin/edit-product/:id', ['controller' => 'Products', 'action' => 'editProduct'], ["pass" => ["id"]]);
     $builder->connect('/admin/delete-product/:id', ['controller' => 'Products', 'action' => 'deleteProduct'], ["pass" => ["id"]]);
     $builder->connect('/admin/list-products', ['controller' => 'Products', 'action' => 'listProducts']);
-    $builder->connect('/admin/view-product/:id', ['controller' => 'Products', 'action' => 'viewProduct'], ["pass" => ["id"]]);
 
     //CRUD Danh sách hình ảnh
     $builder->connect('/admin/add-image', ['controller' => 'Images', 'action' => 'addImages']);
@@ -143,12 +138,10 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/admin/edit-order/:id', ['controller' => 'Orders', 'action' => 'editOrder'], ["pass" => ["id"]]);
     $builder->connect('/admin/delete-order/:id', ['controller' => 'Orders', 'action' => 'deleteOrder'], ["pass" => ["id"]]);
     $builder->connect('/admin/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
-    $builder->connect('/admin/view-order/:id', ['controller' => 'Orders', 'action' => 'viewOrder'], ["pass" => ["id"]]);
 
     //Duyệt đơn và Chi tiết đơn
     $builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
     $builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
-
 
     $builder->fallbacks();
 });

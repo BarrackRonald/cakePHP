@@ -266,7 +266,6 @@ class DataComponent extends CommonComponent
             };
             $this->Orderdetails->save($dataOrderDetails);
         }
-
         return $result;
 
     }
@@ -349,7 +348,6 @@ class DataComponent extends CommonComponent
             ->contain(['Images'=> function ($q) {
                 return $q->order('Images.updated_date DESC');
                 }])
-
             ;
         return $query->toArray();
     }
@@ -386,30 +384,6 @@ class DataComponent extends CommonComponent
                 }])
             ->all();
         return $query;
-    }
-
-    public function createUsers($atribute){
-        $user = [];
-        $user['username'] = $atribute['username'];
-        $user['password'] = $atribute['password'];
-        $user['role_id'] = 1;
-        $user['avatar'] =  'default.png';
-        $user['email'] =  'hoan@gmail.com';
-        $user['phonenumber'] =  0000000000;
-        $user['point_user'] =  111;
-
-        $ac = $this->Users->newEntity($user);
-        $result = $this->Users->save($ac);
-        if ($ac->hasErrors()) {
-            return [
-                'result' => 'invalid',
-                'data' => $ac->getErrors(),
-            ];
-        }
-        return [
-            'result' => 'success',
-            'data' =>  $result
-        ];
     }
 
     public function updateUserByID($atribute, $idUser){
@@ -500,5 +474,13 @@ class DataComponent extends CommonComponent
             return $q->order('Images.updated_date DESC');
         }]);
         return $query;
+    }
+
+    public function getOrdersByUser($idUsers){
+        $query = $this->Orders->find()
+        ->where([
+            'Orders.user_id' => $idUsers
+        ]);
+        return $query->toArray();
     }
 }

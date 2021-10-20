@@ -44,12 +44,13 @@ echo $this->element('Admin/sidebar');
                                         </i>
                                 <?php }?>
                             </div>
+
                             <div class="form-group">
                                 <label for="email">Phonenumber:</label>
                                     <input type="text" class="form-control" value="<?=trim($dataUser['phonenumber'])?>" name="phonenumber" onkeypress='validate(event)'  maxlength = "10" >
                                     <?php  if(isset($error['phonenumber'])){?>
                                         <i style="color: red;">
-                                            <?= implode($error['phonenumber'])?>
+                                            <?= implode('<br>',$error['phonenumber'])?>
                                         </i>
                                     <?php }?>
                             </div>
@@ -79,7 +80,7 @@ echo $this->element('Admin/sidebar');
                             </div>
 
                             <div class="button_submit">
-                                <button type="submit" value="<?= $dataUser["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
+                                <button type="submit" value="<?=$dataUser["referer"]?>" name="referer" class="btn btn-primary btn-default">Submit</button>
                             </div>
                             <?= $this->Form->end() ?>
                         </div>

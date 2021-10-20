@@ -2,6 +2,9 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
+    <div class="row" style="margin-left: 5px" >
+            <?= $this->Flash->render() ?>
+        </div>
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -81,9 +84,7 @@ echo $this->element('NormalUsers/header');
                                         <a href="<?= $this->Url->build('/details-product/' . $product['id'], ['fullBase' => true]) ?>" class="view-details-link"><i class="fa fa-link"></i> See details</a>
                                     </div>
                                 </div>
-
                                 <h2><a href="<?= $this->Url->build('/details-product/' . $product['id'], ['fullBase' => true]) ?>"><?php echo $product['product_name']?></a></h2>
-
                                 <div class="product-carousel-price" style="display:inline">
                                     <ins><?php echo '$'. number_format($product['amount_product'])?></ins>
                                 </div>

@@ -92,10 +92,8 @@ class AuthexsController extends AppController {
             }else{
                 $this->Flash->error('Your username or password is incorrect.');
             }
-
         }
     }
-
   }
 
     //Logout

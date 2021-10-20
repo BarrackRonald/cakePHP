@@ -162,7 +162,5 @@ $this->disableAutoLayout();
                 </div>
             </div>
         </div>
-        <div class="row" style="margin-left: 5px" >
-            <?= $this->Flash->render() ?>
-        </div>
     </div> <!-- End mainmenu area -->
+

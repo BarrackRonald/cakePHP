@@ -120,7 +120,6 @@ class ProductsTable extends Table
     public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['category_id'], 'Categories'), ['errorField' => 'category_id']);
-
         return $rules;
     }
 }

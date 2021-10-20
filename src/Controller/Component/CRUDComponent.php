@@ -96,10 +96,6 @@ class CRUDComponent extends CommonComponent
             'type' => 'left',
             'conditions' => ['Users.role_id = Roles.id']
         ])
-        ->where([
-            // 'Users.del_flag' => 0,
-            // 'OR' => [['Users.role_id' => 1], ['Users.role_id' => 3]],
-        ])
         ->order('Users.created_date DESC')
         ;
         return $query;
@@ -290,7 +286,6 @@ class CRUDComponent extends CommonComponent
 
     //Search
     public function getSearch($key){
-
         $query = $this->Products->find()
         ->select([
             'Products.id',

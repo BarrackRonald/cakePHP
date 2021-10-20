@@ -102,9 +102,18 @@ class UsersTable extends Table
         $validator
             ->integer('phonenumber')
             ->requirePresence('phonenumber', 'create')
-            ->notEmptyString('phonenumber')
-            ->maxLength('phonenumber', 10)
-            ->minLength('phonenumber', 10);
+            ->notEmptyString('phonenumber', 'Please fill this field')
+            ->add('phonenumber', [
+                'length' => [
+                    'rule' => ['maxLength', 10],
+                    'message' => 'Phonenumber need to be at largest 10 characters long',
+                ],
+                'length' => [
+                    'rule' => ['minLength', 10],
+                    'message' => 'Phonenumber need to be at least 10 characters long',
+                ]
+            ])
+           ;
 
         $validator
             ->integer('point_user')
@@ -123,7 +132,6 @@ class UsersTable extends Table
             ->dateTime('updated_date')
             ->requirePresence('updated_date', 'create')
             ->notEmptyDateTime('updated_date');
-
         return $validator;
     }
 
@@ -138,7 +146,7 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
         $rules->add($rules->existsIn(['role_id'], 'Roles'), ['errorField' => 'role_id']);
-
         return $rules;
     }
+
 }

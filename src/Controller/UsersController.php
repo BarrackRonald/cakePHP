@@ -93,12 +93,18 @@ class UsersController extends AppController
     //Edit Users
     public function editUser($id = null)
     {
-        //Check ID User
-        $checkUserID = $this->{'CRUD'}->checkIDUser($id);
-        if(count($checkUserID) < 1){
+        //Check URL_ID
+        if(!is_numeric($id)){
             $this->Flash->error(__('Người dùng không tồn tại.'));
+            return $this->redirect(['action' => 'listUsers']);
+        }else{
+            $checkUserID = $this->{'CRUD'}->checkIDUser($id);
+            if(count($checkUserID) < 1){
+                $this->Flash->error(__('Người dùng không tồn tại.'));
                 return $this->redirect(['action' => 'listUsers']);
+            }
         }
+
         $session = $this->request->getSession();
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         $dataRole =  $this->{'CRUD'}->getAllRoles();
@@ -149,6 +155,9 @@ class UsersController extends AppController
         {
             $data = $dataUser[0];
             $data["referer"] = $this->referer();
+            if($data["referer"] =="/"){
+                return $this->redirect(['action' => 'listUsers']);
+            }
         }
         $this->set(compact('dataRole'));
         $this->set('dataUser', $data);

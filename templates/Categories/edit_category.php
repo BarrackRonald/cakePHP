@@ -32,13 +32,12 @@ echo $this->element('Admin/sidebar');
                                     <?php }?>
                             </div>
                             <div class="button_back">
-                                    <a href='<?= $dataCategory["referer"];?>'>
+                                    <a href='<?=$dataCategory["referer"]?>'>
                                         <button type="button" class="btn btn-primary btn-default">Back</button>
                                     </a>
                             </div>
-
                             <div class="button_submit">
-                                <button type="submit" class="btn btn-primary btn-default" value="<?= $dataCategory["referer"] ?>" name="referer">Submit</button>
+                                <button type="submit" class="btn btn-primary btn-default" value="<?=$dataCategory["referer"]?>" name="referer">Submit</button>
                             </div>
                         <?= $this->Form->end() ?>
                         </div>

@@ -58,10 +58,8 @@ class MailComponent extends Component
 
         // return an array with two keys: error & message
         if (!$mail->Send()) {
-            // return array('error' => true, 'message' => 'Mailer Error: ' . $mail->ErrorInfo);
             return true;
         } else {
-            // return array('error' => false, 'message' =>  "Message sent!");
             return false;
         }
     }

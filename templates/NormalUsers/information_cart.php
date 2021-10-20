@@ -3,6 +3,9 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
+    <div class="row" style="margin-left: 5px" >
+        <?= $this->Flash->render() ?>
+    </div>
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -135,7 +138,6 @@ echo $this->element('NormalUsers/header');
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
                 $('#totalAllAmount').html('$'+ Intl.NumberFormat().format(datatotal.totalAllAmount));
-                
 
                 //total Amount Product_id
                 var totalAmount = JSON.parse(data).cart[product_id]["totalAmount"];

@@ -1,9 +1,10 @@
 <?php
-
 use Cake\Utility\Text;
-
 echo $this->element('NormalUser/header');
 ?>
+    <div class="row" style="margin-left: 5px" >
+        <?= $this->Flash->render() ?>
+    </div>
 </div>
 
 <div class="main">

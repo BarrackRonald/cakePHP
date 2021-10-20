@@ -2,7 +2,9 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-
+    <div class="row" style="margin-left: 5px" >
+            <?= $this->Flash->render() ?>
+    </div>
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -27,9 +29,7 @@ echo $this->element('NormalUsers/header');
                         <div class="woocommerce">
 
                             <form id="login-form-wrap" class="login collapse" method="post">
-
                                 <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the Billing &amp; Shipping section.</p>
-
                                 <p class="form-row form-row-first">
                                     <label for="username">Username or email <span class="required">*</span>
                                     </label>
@@ -42,7 +42,6 @@ echo $this->element('NormalUsers/header');
                                 </p>
                                 <div class="clear"></div>
 
-
                                 <p class="form-row">
                                     <input type="submit" value="Login" name="login" class="button">
                                     <label class="inline" for="rememberme"><input type="checkbox" value="forever" id="rememberme" name="rememberme"> Remember me </label>
@@ -50,29 +49,22 @@ echo $this->element('NormalUsers/header');
                                 <p class="lost_password">
                                     <a href="#">Lost your password?</a>
                                 </p>
-
                                 <div class="clear"></div>
                             </form>
 
-
                             <form id="coupon-collapse-wrap" method="post" class="checkout_coupon collapse">
-
                                 <p class="form-row form-row-first">
                                     <input type="text" value="" id="coupon_code" placeholder="Coupon code" class="input-text" name="coupon_code">
                                 </p>
-
                                 <p class="form-row form-row-last">
                                     <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
                                 </p>
-
                                 <div class="clear"></div>
                             </form>
 
                         <?php if(isset($dataUser)){ ?>
                             <form enctype="multipart/form-data" action="/addorders" class="checkout" method="post" name="checkout">
-
                                 <div id="customer_details" class="col2-set">
-
                                     <!-- Test -->
                                     <div class="col-3">
                                     <h3 id="order_review_heading">Thông Tin Khách hàng</h3>
@@ -118,7 +110,7 @@ echo $this->element('NormalUsers/header');
                                                 </tbody>
                                         <?php } ?>
 
-                                            </table>
+                                    </table>
 
                                     </div>
                                     <!-- End Test -->
@@ -194,7 +186,6 @@ echo $this->element('NormalUsers/header');
                             </form>
                        <?php }else{?>
                             <form enctype="multipart/form-data" action="/adduser" class="checkout" method="post" name="checkout">
-
                                 <div id="customer_details" class="col2-set">
                                     <div class="col-3">
                                         <div class="woocommerce-billing-fields">

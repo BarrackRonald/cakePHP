@@ -2,7 +2,9 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-
+    <div class="row" style="margin-left: 5px" >
+            <?= $this->Flash->render() ?>
+    </div>
     <div style="background-color: #f5f5f5;">
         <div class="zigzag-bottom"></div>
         <div class="container">

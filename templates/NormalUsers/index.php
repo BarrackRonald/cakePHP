@@ -2,7 +2,9 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-    
+    <div class="row" style="margin-left: 5px;" >
+            <?= $this->Flash->render()?>
+    </div>
     <div class="slider-area">
         	<!-- Slider -->
 			<div class="block-slider block-slider4">
@@ -133,8 +135,6 @@ echo $this->element('NormalUsers/header');
             });
         }
     </script>
-
-
 <?php
 echo $this->element('NormalUsers/footer');
 ?>

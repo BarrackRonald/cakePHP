@@ -64,11 +64,17 @@ class OrdersController extends AppController
 
     // Duyệt đơn hàng
     public function confirmOrder($id = null){
-        //Check ID Order
-        $checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
-        if(count($checkOrderID) < 1){
+
+        //Check URL_ID
+        if(!is_numeric($id)){
             $this->Flash->error(__('Đơn hàng không tồn tại.'));
+            return $this->redirect(['action' => 'listOrders']);
+        }else{
+            $checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+            if(count($checkOrderID) < 1){
+                $this->Flash->error(__('Đơn hàng không tồn tại.'));
                 return $this->redirect(['action' => 'listOrders']);
+            }
         }
 
         $dataOrder = $this->{'CRUD'}->getOrderByID($id);
@@ -121,6 +127,9 @@ class OrdersController extends AppController
             $data = $dataOrder[0];
             $data["Users"] = $dataUser[0];
             $data["referer"] = $this->referer();
+            if($data["referer"] =="/"){
+                return $this->redirect(['action' => 'listOrders']);
+            }
         }
         $this->set('dataOrder', $data);
     }

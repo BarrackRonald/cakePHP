@@ -47,8 +47,6 @@ function toast({
             main.appendChild(toast);
 
         }
-
-
 }
 
 // Success
@@ -68,7 +66,6 @@ function showWarningToast(){
         type: 'warning',
         duration: 3000
     });
-    
 }
 // Info
 function showInfoToast(){

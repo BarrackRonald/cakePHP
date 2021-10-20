@@ -1,10 +1,10 @@
 jQuery(document).ready(function($){
-    
+
     // jQuery sticky Menu
-    
+
 	$(".mainmenu-area").sticky({topSpacing:0});
-    
-    
+
+
     $('.product-carousel').owlCarousel({
         loop:true,
         nav:true,
@@ -21,8 +21,8 @@ jQuery(document).ready(function($){
                 items:5,
             }
         }
-    });  
-    
+    });
+
     $('.related-products-carousel').owlCarousel({
         loop:true,
         nav:true,
@@ -42,8 +42,8 @@ jQuery(document).ready(function($){
                 items:3,
             }
         }
-    });  
-    
+    });
+
     $('.brand-list').owlCarousel({
         loop:true,
         nav:true,
@@ -60,14 +60,14 @@ jQuery(document).ready(function($){
                 items:4,
             }
         }
-    });    
-    
-    
+    });
+
+
     // Bootstrap Mobile Menu fix
     $(".navbar-nav li a").click(function(){
         $(".navbar-collapse").removeClass('in');
-    });    
-    
+    });
+
     // jQuery Scroll effect
     $('.navbar-nav li a, .scroll-to-up').bind('click', function(event) {
         var $anchor = $(this);
@@ -77,13 +77,13 @@ jQuery(document).ready(function($){
         }, 1200, 'easeInOutExpo');
 
         event.preventDefault();
-    });    
-    
+    });
+
     // Bootstrap ScrollPSY
-    $('body').scrollspy({ 
+    $('body').scrollspy({
         target: '.navbar-collapse',
         offset: 95
-    })      
+    })
 });
 
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -97,7 +97,7 @@
     <script type="text/javascript" src="js/NormalUsers/bxslider.min.js"></script>
 	<script type="text/javascript" src="js/NormalUsers/script.slider.js"></script>
 
-    <!--====================================TEST===========================================================-->	
+    <!--====================================TEST===========================================================-->
     <script src="vendor/Login/jquery/jquery-3.2.1.min.js"></script>
     <!--===============================================================================================-->
         <script src="vendor/Login/bootstrap/js/popper.js"></script>

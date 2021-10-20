@@ -92,10 +92,17 @@ class ProductsController extends AppController
     //Edit Product
     public function editProduct($id = null)
     {
-        $checkProductID = $this->{'CRUD'}->checkIDProduct($id);
-        if(count($checkProductID) < 1){
+
+        //Check URL_ID
+        if(!is_numeric($id)){
             $this->Flash->error(__('Sản phẩm không tồn tại.'));
+            return $this->redirect(['action' => 'listProducts']);
+        }else{
+            $checkProductID = $this->{'CRUD'}->checkIDProduct($id);
+            if(count($checkProductID) < 1){
+                $this->Flash->error(__('Sản phẩm không tồn tại.'));
                 return $this->redirect(['action' => 'listProducts']);
+            }
         }
 
         //Check ID User
@@ -178,6 +185,9 @@ class ProductsController extends AppController
         }else{
             $data = $dataProduct[0];
             $data["referer"] = $this->referer();
+            if($data["referer"] =="/"){
+                return $this->redirect(['action' => 'listProducts']);
+            }
         }
         $this->set('dataProduct', $data);
         $this->set(compact('dataCategory'));

@@ -27,11 +27,18 @@ echo $this->element('NormalUsers/header');
 					</div>
                     <label class="m-t-2" for="myInput2">Mật khẩu mới:</label>
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input id="myInput2" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="newpassword" placeholder="Mật khẩu mới" value="">
+						<input id="myInput2" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="password" placeholder="Mật khẩu mới" value="">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
+					</div>
+					<div style="margin-top: -8px;">
+						<?php  if(isset($error['password'])){?>
+								<i style="color: red;">
+									<?= implode($error['password'])?>
+								</i>
+						<?php }?>
 					</div>
                     <label class="m-t-2" for="myInput3">Nhập lại mật khẩu:</label>
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">

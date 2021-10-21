@@ -111,22 +111,7 @@ class NormalUsersController extends AppController
                 }
             }
 
-            //check Back
-            if($session->check('cartData')){
-                $dataProds = $session->read('cartData');
-                if(isset($dataProds['infoUser'])){
-                    if($dataProds['infoUser']['password'] == $atribute['password']){
-                        $dataUser = $this->{'Data'}->adduserNoHash($atribute);
-                    }else{
-                        $dataUser = $this->{'Data'}->adduser($atribute);
-                    }
-                } else {
-                    $dataUser = $this->{'Data'}->adduser($atribute);
-                }
-            } else{
-                $dataUser = $this->{'Data'}->adduser($atribute);
-            }
-
+            $dataUser = $this->{'Data'}->adduserNoHash($atribute);
             if($dataUser['result'] == "invalid"){
                 $error = $dataUser['data'];
                 $session->write('error', $error);
@@ -147,9 +132,18 @@ class NormalUsersController extends AppController
                         $session->delete('error');
                     }
                 }
-
+                //Check Back
                 if($session->check('cartData')){
                     $dataProds = $session->read('cartData');
+                    if(isset($dataProds['infoUser'])){
+                        if($dataProds['infoUser']['password'] == $atribute['password']){
+                            $dataUser = $this->{'Data'}->adduserNoHash($atribute);
+                        }else{
+                            $dataUser = $this->{'Data'}->adduser($atribute);
+                        }
+                    } else {
+                        $dataUser = $this->{'Data'}->adduser($atribute);
+                    }
                     $dataProds['infoUser'] = $dataUser['data'];
                     $session->write('cartData', $dataProds);
                     $this->set(compact('dataProds'));
@@ -986,7 +980,7 @@ class NormalUsersController extends AppController
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $dataProduct = $this->{'Data'}->getProductByCategory($id);
         $this->set(compact('dataCategory'));
-        $this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit'=> '3'])));
+        $this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit'=> '2'])));
     }
 
     //Details Product

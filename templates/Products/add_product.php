@@ -52,7 +52,7 @@ echo $this->element('Admin/sidebar');
                             </div>
                             <div class="form-group">
                                 <label for="email">Giá sản phẩm:</label>
-                                    <input type="text" class="form-control" value="<?php if(isset($dataProduct['amount_product'])){?><?= number_format(trim($dataProduct['amount_product']))?><?php }?>" name="amount_product" >
+                                    <input type="text" class="form-control" value="<?php if(isset($dataProduct['amount_product'])){?><?= trim($dataProduct['amount_product'])?><?php }?>" name="amount_product" >
                                     <?php  if(isset($error['amount_product'])){?>
                                             <i style="color: red;">
                                                 <?= implode($error['amount_product'])?>

@@ -42,7 +42,7 @@ class AuthexsController extends AppController {
 
           // Check rỗng và check đổi name F12
           if($email == null || $password == null ){
-            $this->Flash->error('Cannot be left empty.');
+            $this->Flash->error('Vui lòng điền đầy đủ thông tin.');
             return $this->redirect(['action' => '']);
           }
 
@@ -53,7 +53,7 @@ class AuthexsController extends AppController {
           //Check email tồn tại
           $dataUserArr = $this->{'CRUD'}->getUsersByEmailArr($email);
           if(count($dataUserArr) < 1){
-            $this->Flash->error('Email does not exist.');
+            $this->Flash->error('Email không tồn tại.');
             return $this->redirect(['action' => '']);
         }else{
           $checkPassword =  $hashPswdObj->check($password, $passwordDB[0]['password'] );
@@ -61,7 +61,7 @@ class AuthexsController extends AppController {
           //Check tài khoản bị khóa
             $delFlag = $this->{'CRUD'}->checkDelFlagByEmail($email);
             if(count($delFlag) > 0){
-                $this->Flash->error('Your account has been locked.');
+                $this->Flash->error('Tài khoản của bạn đã bị khóa.');
                 return $this->redirect(['action' => '']);
             }
 
@@ -87,10 +87,10 @@ class AuthexsController extends AppController {
                   return $this->redirect(['action' => 'index']);
                } else {
 
-                    $this->Flash->error('Your username or password is incorrect.');
+                    $this->Flash->error('Email hoặc mật khẩu chưa chính xác.');
                }
             }else{
-                $this->Flash->error('Your username or password is incorrect.');
+                $this->Flash->error('Email hoặc mật khẩu chưa chính xác.');
             }
         }
     }
@@ -118,7 +118,7 @@ class AuthexsController extends AppController {
 
         // check retype Password
         if(!($atribute['password'] == $atribute['retypePassword'])){
-            $error['retypePassword'] = ['Password incorrect. Please re-enter!!!'];
+            $error['retypePassword'] = ['Mật khẩu không khớp. Vui lòng kiểm tra lại!!!'];
                 $session->write('error', $error);
                 $this->redirect(['action' => '']);
         }
@@ -134,12 +134,20 @@ class AuthexsController extends AppController {
             $checkmail = $this->{'Data'}->checkmail($atribute);
 
             if(count($checkmail)> 0){
-                $error['email'] = ['This email address already exists.'];
+                $error['email'] = ['Địa chỉ Email đã tồn tại.'];
                 $session->write('error', $error);
                 $this->redirect(['action' => '']);
             }else{
                 if($session->check('error')){
                     $session->delete('error');
+                    //Hash Pws
+                    $hashPswdObj = new DefaultPasswordHasher;
+                    $dataUser['data']['password'] = $hashPswdObj->hash($dataUser['data']['password']);
+
+                    if($dataUser['data']['password'] == ''){
+                        $dataUser['data']['password'] = '';
+                    }
+                    dd($dataUser['data']['password']);
                     $this->Users->save($dataUser['data']);
                     $this->redirect(['action' => 'login']);
                     $this->Flash->success(__('Đăng ký tài khoản thành công.'));
@@ -147,6 +155,13 @@ class AuthexsController extends AppController {
                         $session->delete('infoUser');
                     }
                 }else {
+                    //Hash Pws
+                    $hashPswdObj = new DefaultPasswordHasher;
+                    $dataUser['data']['password'] = $hashPswdObj->hash($dataUser['data']['password']);
+
+                    if($dataUser['data']['password'] == ''){
+                        $dataUser['data']['password'] = '';
+                    }
                     $this->Users->save($dataUser['data']);
                     $this->redirect(['action' => 'login']);
                     $this->Flash->success(__('Đăng ký tài khoản thành công.'));
@@ -169,32 +184,38 @@ class AuthexsController extends AppController {
     }
     if($this->request->is('post')){
         $atribute = $this->request->getData();
-        if(($atribute['newpassword'] == '') || ($atribute['newpassword'] == '') || ($atribute['newretypepassword'] == '')){
+        if(($atribute['oldpassword'] == '') || ($atribute['password'] == '') || ($atribute['newretypepassword'] == '')){
             $this->Flash->error(__('Vui lòng Điền đầy đủ các trường và thử lại.'));
             $this->redirect(['action' => '']);
         }else{
             // check retype Password
-            if(!($atribute['newpassword'] == $atribute['newretypepassword'])){
-                $this->Flash->error(__('Password incorrect. Please re-enter!!!'));
+            if(!($atribute['password'] == $atribute['newretypepassword'])){
+                $this->Flash->error(__('Mật khẩu không khớp. Vui lòng nhập lại!!!'));
                 $this->redirect(['action' => '']);
             }else{
                 $idUser = $session->read('idUser');
                 $dataUser = $this->{'CRUD'}->getUsersByID($idUser);
-                $hashPswdObj = new DefaultPasswordHasher;
-                $checkPassword =  $hashPswdObj->check($atribute['oldpassword'], $dataUser['password']);
-                if($checkPassword){
-                    $newpass = $hashPswdObj->hash($atribute['newpassword']);
-                    $dataUser->password = $newpass;
-                    if($this->Users->save($dataUser)){
-                        $this->Flash->success('Mật khẩu của bạn đã được thay đổi!!!');
-                    }else{
-                        $this->Flash->error(__('Vui lòng thử lại.'));
+                    $hashPswdObj = new DefaultPasswordHasher;
+                    $checkPassword =  $hashPswdObj->check($atribute['oldpassword'], $dataUser['password']);
+                    if($checkPassword){
+                        $user = $this->Users->patchEntity($dataUser, $atribute);
+                        if ($user->hasErrors()) {
+                            $error = $user->getErrors();
+                            $this->set('error', $error);
+                        }else{
+                            $newpass = $hashPswdObj->hash($atribute['password']);
+                            $user->password = $newpass;
+                            if($this->Users->save($user)){
+                                $this->Flash->success('Mật khẩu của bạn đã được thay đổi!!!');
+                            }else{
+                                $this->Flash->error(__('Vui lòng thử lại.'));
+                                $this->redirect(['action' => '']);
+                            }
+                        }
+                    }else {
+                        $this->Flash->error(__('Mật khẩu sai. Vui lòng thử lại.'));
                         $this->redirect(['action' => '']);
                     }
-                }else {
-                    $this->Flash->error(__('Mật khẩu sai. Vui lòng thử lại.'));
-                    $this->redirect(['action' => '']);
-                }
             }
 
         }

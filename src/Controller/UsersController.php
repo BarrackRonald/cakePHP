@@ -66,6 +66,7 @@ class UsersController extends AppController
             }
 
             $dataUser = $this->{'CRUD'}->adduser($atribute);
+
             if($dataUser['result'] == "invalid"){
                 $error = $dataUser['data'];
                 $this->set('error', $error);
@@ -79,6 +80,12 @@ class UsersController extends AppController
                     $this->set('error', $error);
                     $data = $atribute;
                 }else{
+                    $hashPswdObj = new DefaultPasswordHasher;
+                    $dataUser['data']['password'] = $hashPswdObj->hash($dataUser['data']['password']);
+
+                    if($dataUser['data']['password'] == ''){
+                        $dataUser['data']['password'] = '';
+                    }
                     $this->Users->save($dataUser['data']);
                     $this->Flash->success(__('User đã được thêm thành công.'));
                     return $this->redirect(['action' => 'listUsers']);
@@ -131,15 +138,41 @@ class UsersController extends AppController
                 $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
                 return $this->redirect(['action' => 'listUsers']);
                 }
-
-                if($atribute['password'] == $dataUser[0]['password']){
-                    $atribute['password'] = $dataUser[0]['password'];
-                }else {
+dd($atribute);
+                // if($atribute['password'] == $dataUser[0]['password']){
+                //     $user = $this->Users->patchEntity($dataUser[0], h($atribute));
+                //     if ($user->hasErrors()) {
+                //         $error = $user->getErrors();
+                //         $this->set('error', $error);
+                //         $data = $atribute;
+                //     }else {
+                //         $user->password = $atribute['password'];
+                //         if ($this->Users->save($user)) {
+                //             $this->Flash->success(__('User đã được cập nhật thành công.'));
+                //             return $this->redirect($atribute['referer']);
+                //         }
+                //     }
+                // }else {
+                //     $user = $this->Users->patchEntity($dataUser[0], h($atribute));
+                //     if ($user->hasErrors()) {
+                //         $error = $user->getErrors();
+                //         $this->set('error', $error);
+                //         $data = $atribute;
+                //     }else {
+                //         $hashPswdObj = new DefaultPasswordHasher;
+                //         $user->password = $hashPswdObj->hash($atribute['password']);
+                //         if ($this->Users->save($user)) {
+                //             $this->Flash->success(__('User đã được cập nhật thành công.'));
+                //             return $this->redirect($atribute['referer']);
+                //         }
+                //     }
+                // }
+                if($atribute['password'] != $dataUser[0]['password']){
                     $hashPswdObj = new DefaultPasswordHasher;
                     $atribute['password'] = $hashPswdObj->hash($atribute['password']);
                 }
-                $user = $this->Users->patchEntity($dataUser[0], h($atribute));
 
+                $user = $this->Users->patchEntity($dataUser[0], h($atribute));
                 if ($user->hasErrors()) {
                     $error = $user->getErrors();
                     $this->set('error', $error);
@@ -150,6 +183,8 @@ class UsersController extends AppController
                         return $this->redirect($atribute['referer']);
                     }
                 }
+
+
             }
         }else
         {

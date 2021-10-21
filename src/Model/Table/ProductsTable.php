@@ -71,23 +71,33 @@ class ProductsTable extends Table
 
         $validator
             ->scalar('product_name')
-            ->maxLength('product_name', 70)
+            ->add('product_name', [
+                'length' => [
+                    'rule' => ['maxLength', 70],
+                    'message' => 'Tên sản phẩm tối đa 70 ký tự.',
+                ],
+            ])
             ->requirePresence('product_name', 'create')
-            ->notEmptyString('product_name');
+            ->notEmptyString('product_name', 'Tên sản phẩm không thể để trống.');
 
         $validator
             ->scalar('description')
-            ->maxLength('description', 5000)
+            ->add('description', [
+                'length' => [
+                    'rule' => ['maxLength', 5000],
+                    'message' => 'Mô tả tối đa 5000 ký tự.',
+                ],
+            ])
             ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->notEmptyString('description', 'Mô tả không thể để trống.');
 
         $validator
             ->integer('amount_product')
-            ->notEmptyString('amount_product');
+            ->notEmptyString('amount_product', 'Giá không thể để trống.');
 
         $validator
             ->integer('point_product')
-            ->notEmptyString('point_product');
+            ->notEmptyString('point_product','Point không thể để trống.');
 
         $validator
             ->integer('del_flag')

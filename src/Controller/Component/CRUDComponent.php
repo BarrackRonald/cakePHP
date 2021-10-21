@@ -52,11 +52,7 @@ class CRUDComponent extends CommonComponent
         $user['address'] = h(trim($atribute['address']));
         $user['email'] = h(trim($atribute['email']));
         $user['phonenumber'] = trim($atribute['phonenumber']);
-        $hashPswdObj = new DefaultPasswordHasher;
-        $user['password'] = $hashPswdObj->hash($atribute['password']);
-        if($atribute['password'] == ''){
-            $user['password'] = '';
-        }
+        $user['password'] = $atribute['password'];
         $user['point_user'] = trim($atribute['point_user']);
         $user['role_id'] = $atribute['role_id'];
         $user['avatar'] = 'none.jbg';
@@ -454,11 +450,7 @@ class CRUDComponent extends CommonComponent
         $user['address'] = h(trim($atribute['address']));
         $user['email'] = h(trim($atribute['email']));
         $user['phonenumber'] = h($atribute['phonenumber']);
-        $hashPswdObj = new DefaultPasswordHasher;
-        $user['password'] = $hashPswdObj->hash($atribute['password']);
-        if($atribute['password'] == ''){
-            $user['password'] = '';
-        }
+        $user['password'] = $atribute['password'];
         $user['point_user'] = 0;
         $user['role_id'] = 1;
         $user['avatar'] = 'none.jbg';

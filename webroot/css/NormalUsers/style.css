@@ -1,3 +1,26 @@
+/*////////////////////////////////////////////
+[custom]*/
+.custom_boder{
+    border: 3px dashed;
+}
+
+.custom_boder img {
+    margin-top: 20px;
+}
+
+.h4_success {
+    color: rgb(107, 103, 103);
+    margin-bottom: 25px;
+}
+.button_back2 {
+    background: none repeat scroll 0 0 #ee5057;
+    border-radius: 25px;
+    color: #fff;
+    padding: 11px 20px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
 /*/////////////////////////////////
 [custom]*/
 .button-back {
@@ -959,15 +982,24 @@ width: 10px;
 }
 
 .successs {
-    padding: 106px 0;
+    padding: 50px 0;
 }
 
 .product-bit-title h2 {
-  font-family: raleway;
-  font-size: 50px;
-  font-weight: 200;
+    font-family: raleway;
+    font-size: 50px;
+    font-weight: 200;
+    margin: 0;
+    padding: 50px 0;color: #fff;
+}
+
+.product-bit-title2 h2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 35px;
+  font-weight: 600;
   margin: 0;
-  padding: 50px 0;color: #fff;
+  padding:  0 0 35px 0;
+  color: #333;
 }
 
 .single-product-area .zigzag-bottom {background-color: #f4f4f4}

@@ -72,52 +72,68 @@ class UsersTable extends Table
 
         $validator
             ->scalar('username')
-            ->maxLength('username', 100)
+            ->add('username', [
+                'length' => [
+                    'rule' => ['maxLength', 100],
+                    'message' => 'Tên tối đa 100 ký tự.',
+                ],
+            ])
             ->requirePresence('username', 'create')
-            ->notEmptyString('username');
+            ->notEmptyString('username', 'Tên không thể để trống');
 
         $validator
             ->scalar('avatar')
             ->maxLength('avatar', 200)
             ->requirePresence('avatar', 'create')
-            ->notEmptyString('avatar');
+            ->notEmptyString('avatar', 'Avatar không thể để trống');
 
         $validator
             ->scalar('address')
             ->maxLength('address', 200)
             ->requirePresence('address', 'create')
-            ->notEmptyString('address');
+            ->notEmptyString('address', 'Địa chỉ không thể để trống.');
 
         $validator
             ->scalar('password')
-            ->maxLength('password', 90)
+            ->add('password', [
+                'length' => [
+                    'rule' => ['maxLength', 90],
+                    'message' => 'Mật khẩu tối đa 90 ký tự.',
+                ],
+            ])
             ->requirePresence('password', 'create')
-            ->notEmptyString('password');
+            ->notEmptyString('password', 'Mật khẩu không thể để trống.')
+            ->add('password',[
+                'validFormat'=>[
+                    'rule' => ['custom', '/^(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,16}$/'],
+                    'message' => 'Mật khẩu phải ít nhất 8 ký tự (có chữ hoa, chữ thường và số).'
+                ]
+            ]);
 
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->notEmptyString('email', 'Email không thể để trống.');
 
         $validator
             ->integer('phonenumber')
             ->requirePresence('phonenumber', 'create')
-            ->notEmptyString('phonenumber', 'Please fill this field')
+            ->notEmptyString('phonenumber', 'Số điện thoại không thể để trống.')
             ->add('phonenumber', [
                 'length' => [
                     'rule' => ['maxLength', 10],
-                    'message' => 'Phonenumber need to be at largest 10 characters long',
+                    'message' => 'Số điện thoại phải là 10 ký tự.',
                 ],
                 'length' => [
                     'rule' => ['minLength', 10],
-                    'message' => 'Phonenumber need to be at least 10 characters long',
+                    'message' => 'Số điện thoại phải là 10 ký tự.',
                 ]
             ])
            ;
 
         $validator
             ->integer('point_user')
-            ->notEmptyString('point_user');
+            ->notEmptyString('point_user', 'Point không thể để trống.');
 
         $validator
             ->integer('del_flag')
@@ -148,5 +164,13 @@ class UsersTable extends Table
         $rules->add($rules->existsIn(['role_id'], 'Roles'), ['errorField' => 'role_id']);
         return $rules;
     }
+
+    public function passwordCheck ($value = "") {
+        if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}/",$value)){
+         return "At least a number and a capital letter";
+        }
+
+    }
+
 
 }

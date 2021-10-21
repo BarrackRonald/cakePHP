@@ -63,9 +63,14 @@ class CategoriesTable extends Table
 
         $validator
             ->scalar('category_name')
-            ->maxLength('category_name', 100)
+            ->add('category_name', [
+                'length' => [
+                    'rule' => ['maxLength', 100],
+                    'message' => 'Tên Danh mục phải dưới 100 ký tự.',
+                ],
+            ])
             ->requirePresence('category_name', 'create')
-            ->notEmptyString('category_name');
+            ->notEmptyString('category_name', 'Tên Danh mục không thể để trống.');
 
         $validator
             ->boolean('del_flag')

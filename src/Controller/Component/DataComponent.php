@@ -111,9 +111,6 @@ class DataComponent extends CommonComponent
         $user['address'] = h(trim($atribute['address']));
         $user['email'] = h(trim($atribute['email']));
         $user['phonenumber'] = h(trim($atribute['phonenumber']));
-
-
-
         $hashPswdObj = new DefaultPasswordHasher;
         $user['password'] = $hashPswdObj->hash($atribute['password']);
         if($atribute['password'] == ''){

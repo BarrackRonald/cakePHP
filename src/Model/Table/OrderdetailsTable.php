@@ -68,15 +68,15 @@ class OrderdetailsTable extends Table
 
         $validator
             ->integer('quantity_orderDetails')
-            ->notEmptyString('quantity_orderDetails');
+            ->notEmptyString('quantity_orderDetails', 'Số lượng không thể để trống.');
 
         $validator
             ->integer('amount_orderDetails')
-            ->notEmptyString('amount_orderDetails');
+            ->notEmptyString('amount_orderDetails', 'Giá không thể để trống.');
 
         $validator
             ->integer('point_orderDetail')
-            ->notEmptyString('point_orderDetail');
+            ->notEmptyString('point_orderDetail', 'Point không thể để trống.');
 
         $validator
             ->dateTime('created_date')

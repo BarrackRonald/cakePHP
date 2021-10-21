@@ -67,52 +67,70 @@ class OrdersTable extends Table
 
         $validator
             ->scalar('order_name')
-            ->maxLength('order_name', 70)
+            ->add('order_name', [
+                'length' => [
+                    'rule' => ['maxLength', 70],
+                    'message' => 'Tên Đơn hàng dưới 70 ký tự.',
+                ],
+            ])
             ->requirePresence('order_name', 'create')
-            ->notEmptyString('order_name')
+            ->notEmptyString('order_name', 'Tên đơn hàng không được để trống.')
             ;
 
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->notEmptyString('email', 'Email không được để trống.');
 
         $validator
             ->integer('phonenumber')
             ->requirePresence('phonenumber', 'create')
-            ->notEmptyString('phonenumber')
-            ->maxLength('phonenumber', 10)
-            ->minLength('phonenumber', 10);
+            ->notEmptyString('phonenumber', 'Số điện thoại không được để trống.')
+            ->add('phonenumber', [
+                'length' => [
+                    'rule' => ['maxLength', 10],
+                    'message' => 'Số điện thoại phải là 10 ký tự.',
+                ],
+                'length' => [
+                    'rule' => ['minLength', 10],
+                    'message' => 'Số điện thoại phải là 10 ký tự.',
+                ]
+            ]);
 
         $validator
             ->scalar('address')
-            ->maxLength('address', 100)
+            ->add('address', [
+                'length' => [
+                    'rule' => ['maxLength', 100],
+                    'message' => 'Địa chỉ phải dưới 100 ký tự.',
+                ],
+            ])
             ->requirePresence('address', 'create')
-            ->notEmptyString('address');
+            ->notEmptyString('address', 'Địa chỉ không được để trống.');
 
         $validator
             ->dateTime('date_order')
             ->requirePresence('date_order', 'create')
-            ->notEmptyDateTime('date_order');
+            ->notEmptyDateTime('date_order', 'Ngày Đặt hàng không được để trống.');
 
         $validator
             ->integer('total_point')
             ->requirePresence('total_point', 'create')
-            ->notEmptyString('total_point');
+            ->notEmptyString('total_point', 'Tổng point không được để trống.');
 
         $validator
             ->integer('total_quantity')
             ->requirePresence('total_quantity', 'create')
-            ->notEmptyString('total_quantity');
+            ->notEmptyString('total_quantity', 'Tổng số lượng không được để trống.');
 
         $validator
             ->integer('total_amount')
             ->requirePresence('total_amount', 'create')
-            ->notEmptyString('total_amount');
+            ->notEmptyString('total_amount', 'Tổng giá không được để trống.');
 
         $validator
             ->integer('status')
-            ->notEmptyString('status');
+            ->notEmptyString('status', 'Trạng thái không được để trống');
 
         $validator
             ->dateTime('created_date')

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -7,6 +8,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Utility\Text;
 use Exception;
 use Cake\Event\EventInterface;
+
 /**
  * NormalUsers Controller
  *
@@ -32,7 +34,7 @@ class NormalUsersController extends AppController
         $dataNewsProducts = $this->{'Data'}->getNewsProduct();
         $session = $this->request->getSession();
 
-        if($session->check('idUser')){
+        if ($session->check('idUser')) {
             $idUsers = $session->read('idUser');
             $dataUser = $this->{'Data'}->getInfoUser($idUsers);
             $this->set(compact('dataUser'));
@@ -48,36 +50,37 @@ class NormalUsersController extends AppController
     public function index()
     {
         $session = $this->request->getSession();
-        if($session->check('error')){
+        if ($session->check('error')) {
             $session->delete('error');
         }
         //Viết ở beforeRender
 
     }
 
-    public function billOrder(){
+    public function billOrder()
+    {
 
-        if($this->request->is('post')){
+        if ($this->request->is('post')) {
             $session = $this->request->getSession();
-            if($session->check('hasBack')){
+            if ($session->check('hasBack')) {
                 $session->delete('hasBack');
             }
-            if(!$session->check('cartData')){
+            if (!$session->check('cartData')) {
                 $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
                 return $this->redirect(['action' => 'informationCart']);
-            }else{
+            } else {
                 $dataProds = $session->read('cartData');
-                if($dataProds['totalAllAmount'] == 0){
+                if ($dataProds['totalAllAmount'] == 0) {
                     $this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
                     return $this->redirect(['action' => 'informationCart']);
                 }
             }
 
             //check user đã đăng nhập chưa
-            if(!$session->check('idUser')){
+            if (!$session->check('idUser')) {
                 $dataProds['flag'] = 0;
                 echo "";
-            }else{
+            } else {
                 $dataProds['flag'] = 1;
                 $idUsers = $session->read('idUser');
                 $dataUser = $this->{'Data'}->getInfoUser($idUsers);
@@ -91,54 +94,55 @@ class NormalUsersController extends AppController
 
 
     //Add User cho phần không login
-    public function adduser(){
+    public function adduser()
+    {
         $session = $this->request->getSession();
         $hasBack = 1;
         $session->write('hasBack', $hasBack);
 
-        if($this->request->is('post')){
+        if ($this->request->is('post')) {
             $atribute = $this->request->getData();
 
             //checkmail tồn tại
             $checkmail = $this->{'Data'}->checkmail($atribute);
-            if(count($checkmail)> 0){
+            if (count($checkmail) > 0) {
                 $error['email'] = ['Địa chỉ mail này đã tồn tại.'];
                 $session->write('error', $error);
                 $this->redirect(['action' => 'billOrder']);
-            }else{
-                if($session->check('error')){
+            } else {
+                if ($session->check('error')) {
                     $session->delete('error');
                 }
             }
 
             $dataUser = $this->{'Data'}->adduserNoHash($atribute);
-            if($dataUser['result'] == "invalid"){
+            if ($dataUser['result'] == "invalid") {
                 $error = $dataUser['data'];
                 $session->write('error', $error);
                 $this->redirect(['action' => 'billOrder']);
-            }else{
-                if($session->check('error')){
+            } else {
+                if ($session->check('error')) {
                     $session->delete('error');
                 }
                 // Checkmail trùng
                 $checkmail = $this->{'Data'}->checkmail($atribute);
 
-                if(count($checkmail)> 0){
+                if (count($checkmail) > 0) {
                     $error['email'] = ['This email address already exists.'];
                     $session->write('error', $error);
                     $this->redirect(['action' => 'billOrder']);
-                }else{
-                    if($session->check('error')){
+                } else {
+                    if ($session->check('error')) {
                         $session->delete('error');
                     }
                 }
                 //Check Back
-                if($session->check('cartData')){
+                if ($session->check('cartData')) {
                     $dataProds = $session->read('cartData');
-                    if(isset($dataProds['infoUser'])){
-                        if($dataProds['infoUser']['password'] == $atribute['password']){
+                    if (isset($dataProds['infoUser'])) {
+                        if ($dataProds['infoUser']['password'] == $atribute['password']) {
                             $dataUser = $this->{'Data'}->adduserNoHash($atribute);
-                        }else{
+                        } else {
                             $dataUser = $this->{'Data'}->adduser($atribute);
                         }
                     } else {
@@ -148,41 +152,37 @@ class NormalUsersController extends AppController
                     $session->write('cartData', $dataProds);
                     $this->set(compact('dataProds'));
                 }
-
             }
         }
 
-        if($session->check('cartData')){
+        if ($session->check('cartData')) {
             $dataProds = $session->read('cartData');
             $this->set(compact('dataProds'));
         }
     }
 
     //Add Order không login
-    public function addordersnonelogin(){
-        if($this->request->is('post')){
+    public function addordersnonelogin()
+    {
+        if ($this->request->is('post')) {
             $session = $this->request->getSession();
             $product = null;
 
-            //Check Dữ liệu bắt buộc không đổi
-            if($session->check('cartData')){
-               $cartData = $session->read('cartData');
-               $infoUser = $cartData['infoUser'];
-
-            }
-            if($session->check('cartData')){
-                 $dataProds = $session->read('cartData');
-                 //Point user trước khi mua
-                 $pointBF = 0;
-                 $pointAF = $pointBF + $dataProds['totalAllPoint'];
+            if ($session->check('cartData')) {
+                $cartData = $session->read('cartData');
+                $infoUser = $cartData['infoUser'];
+                $dataProds = $session->read('cartData');
+                //Point user trước khi mua
+                $pointBF = 0;
+                $pointAF = $pointBF + $dataProds['totalAllPoint'];
                 // Inser User
-                 $insertUser =  $this->{'Data'}->insertUsers($dataProds, $pointAF);
-                if($insertUser['result'] == "invalid"){
+                $insertUser =  $this->{'Data'}->insertUsers($dataProds, $pointAF);
+                if ($insertUser['result'] == "invalid") {
                     $error = $insertUser['data'];
                     $this->set(compact('error'));
-                }else {
+                } else {
                     $result = $this->{'Data'}->checklogin($insertUser);
-                    if(count($result) > 0){
+                    if (count($result) > 0) {
                         $idUser = $result[0]['id'];
                         $username = $result[0]['username'];
                         $session = $this->request->getSession();
@@ -190,27 +190,26 @@ class NormalUsersController extends AppController
                         $session->write('username', $username);
 
                         //Check quyền gắn cờ
-                        if($result[0]['role_id'] == 1){
-                                $flag = 1;
-                        }elseif ($result[0]['role_id'] == 2) {
-                                $flag = 2;
-                            }else{
-                                $flag = 3;
-                            }
-                            $session->write('flag', $flag);
+                        if ($result[0]['role_id'] == 1) {
+                            $flag = 1;
+                        } elseif ($result[0]['role_id'] == 2) {
+                            $flag = 2;
+                        } else {
+                            $flag = 3;
+                        }
+                        $session->write('flag', $flag);
                     } else {
-                            $this->Flash->error('Hệ thống đăng ký tài khoản thất bại. Vui lòng đặt hàng lại.');
-                            $this->redirect(['action' => 'index']);
+                        $this->Flash->error('Hệ thống đăng ký tài khoản thất bại. Vui lòng đặt hàng lại.');
+                        $this->redirect(['action' => 'index']);
                     }
                 }
                 //  Insert Order
-                 $insertOrder = $this->{'Data'}->createOrdersNone($infoUser, $dataProds, $insertUser);
-                 if(!$insertOrder['result'] == "invalid")
-                 {
-                     $to = $infoUser['email'];
-                     $toAdmin = 'tienphamvan2005@gmail.com';
-                     $subject = 'Mail Confirm Order';
-                     $message = '
+                $insertOrder = $this->{'Data'}->createOrdersNone($infoUser, $dataProds, $insertUser);
+                if (!$insertOrder['result'] == "invalid") {
+                    $to = $infoUser['email'];
+                    $toAdmin = 'tienphamvan2005@gmail.com';
+                    $subject = 'Mail Confirm Order';
+                    $message = '
                      <!DOCTYPE html>
                      <html>
                      <head>
@@ -312,7 +311,7 @@ class NormalUsersController extends AppController
                                                  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                                      <tr>
                                                          <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;"> <img src="https://img.icons8.com/carbon-copy/100/000000/checked-checkbox.png" width="125" height="120" style="display: block; border: 0px;" /><br>
-                                                             <h2 style="font-size: 30px; font-weight: 700; line-height: 36px; color: #333333; margin: 0;"> Cảm ơn '.$infoUser['username'].' đã đặt hàng tại VerTu.vn! </h2>
+                                                             <h2 style="font-size: 30px; font-weight: 700; line-height: 36px; color: #333333; margin: 0;"> Cảm ơn ' . $infoUser['username'] . ' đã đặt hàng tại VerTu.vn! </h2>
                                                          </td>
                                                      </tr>
                                                      <tr>
@@ -328,24 +327,24 @@ class NormalUsersController extends AppController
                                                                      <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">  </td>
                                                                  <tr>
                                                                      <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Khách hàng:  </td>
-                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.$infoUser['username'].' </td>
+                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $infoUser['username'] . ' </td>
                                                                  </tr>
                                                                  <tr>
                                                                      <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Số điện thoại:  </td>
-                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.$infoUser['phonenumber'].' </td>
+                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $infoUser['phonenumber'] . ' </td>
                                                                  </tr>
 
                                                                  <tr>
                                                                      <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px;"> Mã Đơn hàng </td>
-                                                                     <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> #'.$insertOrder["id"].' </td>
+                                                                     <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> #' . $insertOrder["id"] . ' </td>
                                                                  </tr>';
-                                                                 foreach($dataProds['cart'] as $value) {
-                                                                     $product .= '<tr>
-                                                                             <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">'.$value["name"].' × '.$value["quantity"].'</td>
-                                                                             <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> $'.number_format($value["totalAmount"]).' </td>
-                                                                         </tr>'." \r\n";
-                                                                     }
-                                                                 $message .=''.$product.'
+                    foreach ($dataProds['cart'] as $value) {
+                        $product .= '<tr>
+                                                                             <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">' . $value["name"] . ' × ' . $value["quantity"] . '</td>
+                                                                             <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> $' . number_format($value["totalAmount"]) . ' </td>
+                                                                         </tr>' . " \r\n";
+                    }
+                    $message .= '' . $product . '
                                                              </table>
                                                          </td>
                                                      </tr>
@@ -358,7 +357,7 @@ class NormalUsersController extends AppController
                                                                 <tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Point của đơn hàng:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.number_format($dataProds['totalAllPoint']).' point </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . number_format($dataProds['totalAllPoint']) . ' point </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Point của bạn hiện có:  </td>
@@ -366,15 +365,15 @@ class NormalUsersController extends AppController
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Point sau khi mua hàng:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.number_format($dataProds['totalAllPoint']).' point </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . number_format($dataProds['totalAllPoint']) . ' point </td>
                                                                 </tr>
                                                                  <tr>
                                                                      <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; "> Tổng Point nhận:  </td>
-                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; "> '.number_format($dataProds['totalAllPoint']).' </td>
+                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; "> ' . number_format($dataProds['totalAllPoint']) . ' </td>
                                                                  </tr>
                                                                  <tr>
                                                                      <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> Tổng thanh toán:  </td>
-                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> $'.number_format($dataProds['totalAllAmount']).' </td>
+                                                                     <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> $' . number_format($dataProds['totalAllAmount']) . ' </td>
                                                                  </tr>
                                                              </table>
                                                          </td>
@@ -392,7 +391,7 @@ class NormalUsersController extends AppController
                                                                      <tr>
                                                                          <td align="left" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
                                                                              <p style="font-weight: 700;">Địa chỉ giao hàng</p>
-                                                                             <p>'.$infoUser['address'].'</p>
+                                                                             <p>' . $infoUser['address'] . '</p>
                                                                          </td>
                                                                      </tr>
                                                                  </table>
@@ -436,40 +435,60 @@ class NormalUsersController extends AppController
                          </table>
                      </body>
                      </html>';
-                     //xóa session
-                     $session->delete('cartData');
-                     $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
-                     if($errSendMail == false){
-                         $this->redirect(['action' => 'successOrder']);
-                     }
+                    //xóa session
+                    $session->delete('cartData');
+                    $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
+                    if ($errSendMail == false) {
+                        $this->redirect(['action' => 'successOrder']);
+                    }
                 }
-             }
-         }
+            }
+        }
     }
 
-    public function addorders(){
-        if($this->request->is('post')){
-           $this->request->getData();
-           $session = $this->request->getSession();
-           $product = null;
+    public function addorders()
+    {
+        if ($this->request->is('post')) {
+            $this->request->getData();
+            $session = $this->request->getSession();
+            $product = null;
 
-           if($session->check('cartData')){
+            if ($session->check('cartData')) {
                 $dataProds = $session->read('cartData');
+                //Kiểm tra Sản phẩm còn trên hệ thống không trước khi đặt hàng
+                foreach ($dataProds['cart'] as $key => $valueProduct) {
+                    $checkProduct = $this->{'CRUD'}->checkIDProduct($key);
+                    if (count($checkProduct) < 1) {
+                        $session->write('checkErr', 1);
+                        $dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
+                        $dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
+                        $dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
+                        $this->Flash->error(__('Sản phẩm "'.$valueProduct['name'].'" không còn trên Hệ thống. Vui lòng Đặt hàng lại!!!'));
+                        if (isset($dataProds['cart'][$key])) {
+                            unset($dataProds['cart'][$key]);
+                        }
+                        $session->write('cartData', $dataProds);
+                    }
+                }
+
+                if($session->check('checkErr')){
+                    $session->delete('checkErr');
+                    return $this->redirect(['action' => 'informationCart']);
+                }
+
                 $idUsers = $session->read('idUser');
                 $dataUser = $this->{'Data'}->getInfoUser($idUsers);
                 $result = $this->{'Data'}->createOrders($dataProds, $dataUser);
                 $pointuser = $this->{'Data'}->getPointByUser($idUsers);
-
 
                 //Point user trước khi mua
                 $pointBF = $pointuser[0]['point_user'];
                 $pointAF = $pointBF + $dataProds['totalAllPoint'];
                 $this->{'Data'}->updatePoint($pointAF, $idUsers);
 
-                if(!$result['result'] == "invalid")
-                {
+                if (!$result['result'] == "invalid") {
                     $to = $dataUser[0]['email'];
-                    $toAdmin = 'tienphamvan2005@gmail.com';
+                    $toAdmin = 'phamhoan020501@gmail.com';
                     $subject = 'Mail Confirm Order';
                     $message = '
                     <!DOCTYPE html>
@@ -573,7 +592,7 @@ class NormalUsersController extends AppController
                                                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                                     <tr>
                                                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;"> <img src="https://img.icons8.com/carbon-copy/100/000000/checked-checkbox.png" width="125" height="120" style="display: block; border: 0px;" /><br>
-                                                            <h2 style="font-size: 30px; font-weight: 700; line-height: 36px; color: #333333; margin: 0;"> Cảm ơn '.$dataUser[0]["username"].' đã đặt hàng tại VerTu.vn! </h2>
+                                                            <h2 style="font-size: 30px; font-weight: 700; line-height: 36px; color: #333333; margin: 0;"> Cảm ơn ' . $dataUser[0]["username"] . ' đã đặt hàng tại VerTu.vn! </h2>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -589,25 +608,25 @@ class NormalUsersController extends AppController
                                                                     <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">  </td>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Khách hàng:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.$dataUser[0]["username"].' </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $dataUser[0]["username"] . ' </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Số điện thoại:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.$dataUser[0]["phonenumber"].' </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $dataUser[0]["phonenumber"] . ' </td>
                                                                 </tr>
 
 
                                                                 <tr>
                                                                     <td width="75%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px;"> Mã Đơn hàng </td>
-                                                                    <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> #'.$result["id"].' </td>
+                                                                    <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;"> #' . $result["id"] . ' </td>
                                                                 </tr>';
-                                                                foreach($dataProds['cart'] as $value) {
-                                                                    $product .= '<tr>
-                                                                            <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">'.$value["name"].' × '.$value["quantity"].'</td>
-                                                                            <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> $'.number_format($value["totalAmount"]).' </td>
-                                                                        </tr>'." \r\n";
-                                                                    }
-                                                                $message .=''.$product.'
+                    foreach ($dataProds['cart'] as $value) {
+                        $product .= '<tr>
+                                                                            <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">' . $value["name"] . ' × ' . $value["quantity"] . '</td>
+                                                                            <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> $' . number_format($value["totalAmount"]) . ' </td>
+                                                                        </tr>' . " \r\n";
+                    }
+                    $message .= '' . $product . '
                                                             </table>
                                                         </td>
                                                     </tr>
@@ -620,19 +639,19 @@ class NormalUsersController extends AppController
                                                                 <tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Point của đơn hàng:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.number_format($dataProds['totalAllPoint']).' point </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . number_format($dataProds['totalAllPoint']) . ' point </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Point của bạn hiện có:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.number_format($dataUser[0]['point_user']).' point </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . number_format($dataUser[0]['point_user']) . ' point </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Point sau khi mua hàng:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> '.number_format($pointAF).' point </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . number_format($pointAF) . ' point </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px;border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> Tổng thanh toán:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px;border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> $'.number_format($dataProds['totalAllAmount']).' </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; line-height: 24px; padding: 10px;border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;"> $' . number_format($dataProds['totalAllAmount']) . ' </td>
                                                                 </tr>
                                                             </table>
                                                         </td>
@@ -650,7 +669,7 @@ class NormalUsersController extends AppController
                                                                     <tr>
                                                                         <td align="left" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
                                                                             <p style="font-weight: 700;">Địa chỉ giao hàng</p>
-                                                                            <p>'.$dataUser[0]['address'].'</p>
+                                                                            <p>' . $dataUser[0]['address'] . '</p>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -697,42 +716,42 @@ class NormalUsersController extends AppController
                     //xóa session
                     $session->delete('cartData');
                     $errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
-                    if($errSendMail == false){
+                    if ($errSendMail == false) {
                         $this->redirect(['action' => 'successOrder']);
                     }
                 }
-
             }
         }
     }
-    public function successOrder(){
-
+    public function successOrder()
+    {
     }
 
-    public function informationCart(){
+    public function informationCart()
+    {
         $session = $this->request->getSession();
-			if($session->check('cartData')){
-                $dataProds = $session->read('cartData');
-                $this->set(compact('dataProds'));
-            }
-            if($session->check('error')){
-                $session->delete('error');
-            }
-
+        if ($session->check('cartData')) {
+            $dataProds = $session->read('cartData');
+            $this->set(compact('dataProds'));
+        }
+        if ($session->check('error')) {
+            $session->delete('error');
+        }
     }
 
-    public function dellAllCart(){
-        if($this->request->is('post')){
+    public function dellAllCart()
+    {
+        if ($this->request->is('post')) {
             $dataSession = [];
             $cartData = [];
 
             $product_id = $this->request->getData()['productId'];
 
-            $data = $this->{'Data'}->getProductByID($product_id);
+            $this->{'Data'}->getProductByID($product_id);
 
             $session = $this->request->getSession();
 
-            if($session->check('cartData')){
+            if ($session->check('cartData')) {
                 $dataSession = $session->read('cartData');
                 $cartData = $dataSession['cart'];
             }
@@ -740,7 +759,7 @@ class NormalUsersController extends AppController
             //Tổng tất cả mặt hàng
             $totalAmounts = $cartData[$product_id]['totalAmount'];
 
-            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']-$totalAmounts : $totalAmounts;
+            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount'] - $totalAmounts : $totalAmounts;
 
             $dataSession['totalAllAmount'] = $totalAllAmount;
 
@@ -749,7 +768,7 @@ class NormalUsersController extends AppController
             //Tổng tất cả point
             $totalPoint = $cartData[$product_id]['totalPoint'];
 
-            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint']-$totalPoint : $totalPoint;
+            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint'] - $totalPoint : $totalPoint;
 
             $dataSession['totalAllPoint'] = $totalAllPoint;
 
@@ -761,19 +780,20 @@ class NormalUsersController extends AppController
 
             $dataSession['totalquantity'] = $totalquantity - $quantity;
 
-            if(isset($cartData[$product_id])){
+            if (isset($cartData[$product_id])) {
                 unset($cartData[$product_id]);
             }
 
             $dataSession['cart'] = $cartData;
 
             $session->write('cartData', $dataSession);
-           return  $this->response->withStringBody(json_encode($dataSession));
+            return  $this->response->withStringBody(json_encode($dataSession));
         }
     }
 
-    public function dellCart(){
-        if($this->request->is('post')){
+    public function dellCart()
+    {
+        if ($this->request->is('post')) {
             $dataSession = [];
             $cartData = [];
 
@@ -783,12 +803,12 @@ class NormalUsersController extends AppController
 
             $session = $this->request->getSession();
 
-            if($session->check('cartData')){
+            if ($session->check('cartData')) {
                 $dataSession = $session->read('cartData');
                 $cartData = $dataSession['cart'];
             }
 
-            $quantity = (isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0) -1;
+            $quantity = isset($cartData[$product_id]) ? ($cartData[$product_id]['quantity'] - 1) : 0;
             $amount = $data[0]['amount_product'];
             $point = $data[0]['point_product'];
 
@@ -796,16 +816,15 @@ class NormalUsersController extends AppController
             $totalAmount = $quantity * $amount;
             $totalPoint = $quantity * $point;
 
-
             $productArr = [
                 $product_id => [
-                  'name' => $data[0]['product_name'],
-                  'image'=> $data[0]['Images']["image"],
-                  'amount' => $data[0]['amount_product'],
-                  'point' => $data[0]['point_product'],
-                  'quantity'=> $quantity,
-                  'totalAmount' =>  $totalAmount,
-                  'totalPoint' => $totalPoint
+                    'name' => $data[0]['product_name'],
+                    'image' => $data[0]['images'][0]["image"],
+                    'amount' => $data[0]['amount_product'],
+                    'point' => $data[0]['point_product'],
+                    'quantity' => $quantity,
+                    'totalAmount' =>  $totalAmount,
+                    'totalPoint' => $totalPoint
                 ],
             ];
 
@@ -814,14 +833,14 @@ class NormalUsersController extends AppController
             //Tổng tất cả mặt hàng
             $totalAmounts = $cartData[$product_id]['amount'];
 
-            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']-$totalAmounts : $totalAmounts;
+            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount'] - $totalAmounts : $totalAmounts;
 
             $dataSession['totalAllAmount'] = $totalAllAmount;
 
             //Tổng tất cả point
             $totalPoint = $cartData[$product_id]['point'];
 
-            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint']+$totalPoint : $totalPoint;
+            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint'] + $totalPoint : $totalPoint;
 
             $dataSession['totalAllPoint'] = $totalAllPoint;
 
@@ -830,39 +849,39 @@ class NormalUsersController extends AppController
 
             $dataSession['totalquantity'] = $totalquantity - 1;
 
-            if($quantity <= 0){
+            if ($quantity <= 0) {
                 unset($cartData[$product_id]);
             }
 
             $dataSession['cart'] = $cartData;
 
             $session->write('cartData', $dataSession);
-           return  $this->response->withStringBody(json_encode($dataSession));
+            return  $this->response->withStringBody(json_encode($dataSession));
         }
     }
 
-    public function addCart(){
-        if($this->request->is('post')){
+    public function addCart()
+    {
+        if ($this->request->is('post')) {
             $dataSession = [];
             $cartData = [];
 
             $product_id = $this->request->getData()['productId'];
             $data = $this->{'Data'}->getProductByID($product_id);
             $session = $this->request->getSession();
-            if($session->check('cartData')){
+            if ($session->check('cartData')) {
                 $dataSession = $session->read('cartData');
                 $cartData = $dataSession['cart'];
             }
 
             //Số lượng = kiểm tra sản phẩm trong giỏ hàng có tồn tại ko, nếu tồn tại thì lấy theo số lượng trong giỏ hàng, nếu ko tồn tại thì =0
-            $quantity = (isset($cartData[$product_id]) ? $cartData[$product_id]['quantity'] : 0) + 1;
+            $quantity = isset($cartData[$product_id]) ? ($cartData[$product_id]['quantity'] + 1) : 1;
 
             $amount = $data[0]['amount_product'];
 
             $point = $data[0]['point_product'];
 
             // Tính số lượng từng sản phẩm
-
             $totalAmount = $quantity * $amount;
 
             $totalPoint = $quantity * $point;
@@ -870,30 +889,29 @@ class NormalUsersController extends AppController
             //Tạo arr sản phẩm để lưu thông tin và số lượng.
             $productArr = [
                 $product_id => [
-                  'name' => $data[0]['product_name'],
-                  'image'=> $data[0]['images'][0]["image"],
-                  'amount' => $data[0]['amount_product'],
-                  'point' => $data[0]['point_product'],
-                  'quantity'=> $quantity,
-                  'totalAmount' =>  $totalAmount,
-                  'totalPoint' => $totalPoint
+                    'name' => $data[0]['product_name'],
+                    'image' => $data[0]['images'][0]["image"],
+                    'amount' => $data[0]['amount_product'],
+                    'point' => $data[0]['point_product'],
+                    'quantity' => $quantity,
+                    'totalAmount' =>  $totalAmount,
+                    'totalPoint' => $totalPoint
                 ],
             ];
-
 
             //Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
             $cartData[$product_id] = $productArr[$product_id];
             //Tổng tất cả mặt hàng
             $totalAmounts = $cartData[$product_id]['amount'];
 
-            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount']+$totalAmounts : $totalAmounts;
+            $totalAllAmount = isset($dataSession['totalAllAmount']) ? $dataSession['totalAllAmount'] + $totalAmounts : $totalAmounts;
 
             $dataSession['totalAllAmount'] = $totalAllAmount;
 
             //Tổng tất cả point
             $totalPoint = $cartData[$product_id]['point'];
 
-            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint']+$totalPoint : $totalPoint;
+            $totalAllPoint = isset($dataSession['totalAllPoint']) ? $dataSession['totalAllPoint'] + $totalPoint : $totalPoint;
 
             $dataSession['totalAllPoint'] = $totalAllPoint;
 
@@ -904,12 +922,13 @@ class NormalUsersController extends AppController
             $dataSession['cart'] = $cartData;
             $session->write('cartData', $dataSession);
 
-           return  $this->response->withStringBody(json_encode($dataSession));
+            return  $this->response->withStringBody(json_encode($dataSession));
         }
     }
 
-    public function search(){
-        if($this->request->is('get')){
+    public function search()
+    {
+        if ($this->request->is('get')) {
             $keyword = $this->request->getQueryParams();
             $this->{'Data'}->getSearch($keyword);
             return $this->redirect(['action' => 'index']);
@@ -917,24 +936,26 @@ class NormalUsersController extends AppController
     }
 
     //Show thông tin cá nhân ở trang người dùng và chỉnh sửa
-    public function myaccount(){
+    public function myaccount()
+    {
         $session = $this->request->getSession();
-        if($session->check('idUser')){
+        if ($session->check('idUser')) {
             $idUsers = $session->read('idUser');
             $dataUser = $this->{'Data'}->getInfoUser($idUsers);
             $this->set(compact('dataUser'));
         }
     }
 
-    public function editAccount($id = null){
+    public function editAccount($id = null)
+    {
 
         //Check URL_ID
-        if(!is_numeric($id)){
+        if (!is_numeric($id)) {
             $this->Flash->error(__('Người dùng không tồn tại.'));
             return $this->redirect(['action' => 'myaccount']);
-        }else{
+        } else {
             $checkUserID = $this->{'CRUD'}->checkIDUser($id);
-            if(count($checkUserID) < 1){
+            if (count($checkUserID) < 1) {
                 $this->Flash->error(__('Người dùng không tồn tại.'));
                 return $this->redirect(['action' => 'myaccount']);
             }
@@ -943,13 +964,13 @@ class NormalUsersController extends AppController
         $dataUser = $this->{'CRUD'}->getUserByID($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $atribute = $this->request->getData();
-            if(
+            if (
                 $atribute['username'] == $dataUser[0]['username'] &&
                 $atribute['phonenumber'] == $dataUser[0]['phonenumber'] &&
                 $atribute['address'] == $dataUser[0]['address']
-            ){
+            ) {
                 $this->Flash->error(__('Tài khoản không có sự thay đổi.'));
-            }else {
+            } else {
                 $user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
                 if ($this->Users->save($user)) {
                     $this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
@@ -964,14 +985,15 @@ class NormalUsersController extends AppController
 
 
     //View product by Category
-    public function viewProductByCategory($id = null){
+    public function viewProductByCategory($id = null)
+    {
         //Check URL_ID
-        if(!is_numeric($id)){
+        if (!is_numeric($id)) {
             $this->Flash->error(__('Danh mục không tồn tại.'));
             return $this->redirect(['action' => 'index']);
-        }else{
+        } else {
             $checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
-            if(count($checkCategoryID) < 1){
+            if (count($checkCategoryID) < 1) {
                 $this->Flash->error(__('Danh mục không tồn tại.'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -980,18 +1002,19 @@ class NormalUsersController extends AppController
         $dataCategory = $this->{'CRUD'}->getCategoryByID($id);
         $dataProduct = $this->{'Data'}->getProductByCategory($id);
         $this->set(compact('dataCategory'));
-        $this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit'=> '2'])));
+        $this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit' => '2'])));
     }
 
     //Details Product
-    public function detailsProduct($id = null){
+    public function detailsProduct($id = null)
+    {
         //Check URL_ID
-        if(!is_numeric($id)){
+        if (!is_numeric($id)) {
             $this->Flash->error(__('Sản phẩm không tồn tại.'));
             return $this->redirect(['action' => 'index']);
-        }else{
+        } else {
             $checkProductID = $this->{'CRUD'}->checkIDProduct($id);
-            if(count($checkProductID) < 1){
+            if (count($checkProductID) < 1) {
                 $this->Flash->error(__('Sản phẩm không tồn tại.'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -1006,10 +1029,11 @@ class NormalUsersController extends AppController
     }
 
     //History Product
-    public function historyOrders(){
+    public function historyOrders()
+    {
         $session = $this->request->getSession();
         $idUsers = $session->read('idUser');
-        if($session->check('idUser')){
+        if ($session->check('idUser')) {
             $dataUser = $this->{'Data'}->getInfoUser($idUsers);
             $this->set(compact('dataUser'));
         }

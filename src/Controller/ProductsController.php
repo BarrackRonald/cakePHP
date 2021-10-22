@@ -212,7 +212,6 @@ class ProductsController extends AppController
     }
 
     //View Product
-
     public function viewProduct($id = null)
     {
         $dataCategory =  $this->{'CRUD'}->getAllCategory();

@@ -3,9 +3,6 @@
 use Cake\Utility\Text;
 echo $this->element('NormalUsers/header');
 ?>
-    <div class="row" style="margin-left: 5px" >
-        <?= $this->Flash->render() ?>
-    </div>
     <div class="product-big-title-area">
         <div class="container">
             <div class="row">
@@ -17,6 +14,9 @@ echo $this->element('NormalUsers/header');
             </div>
         </div>
     </div> <!-- End Page title area -->
+    <div class="row" style="margin: 10px 0 0 5px" >
+        <?= $this->Flash->render() ?>
+    </div>
     <div class="single-product-area">
         <div class="zigzag-bottom"></div>
         <div class="container">

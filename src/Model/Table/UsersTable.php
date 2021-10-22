@@ -105,8 +105,8 @@ class UsersTable extends Table
             ->notEmptyString('password', 'Mật khẩu không thể để trống.')
             ->add('password',[
                 'validFormat'=>[
-                    'rule' => ['custom', '/^(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,16}$/'],
-                    'message' => 'Mật khẩu phải ít nhất 8 ký tự (có chữ hoa, chữ thường và số).'
+                    'rule' => ['custom', '/^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/'],
+                    'message' => 'Mật khẩu phải ít nhất 8 ký tự (có chữ hoa, chữ thường và số và ký tự đặc biệt).'
                 ]
             ]);
 
@@ -127,9 +127,12 @@ class UsersTable extends Table
                 'length' => [
                     'rule' => ['minLength', 10],
                     'message' => 'Số điện thoại phải là 10 ký tự.',
+                ],
+                'validFormat'=>[
+                    'rule' => ['custom','/^(0)([0-9]){9}$/'],
+                    'message' => 'Số điện thoại không đúng định dạng.'
                 ]
-            ])
-           ;
+            ]);
 
         $validator
             ->integer('point_user')
@@ -165,12 +168,90 @@ class UsersTable extends Table
         return $rules;
     }
 
-    public function passwordCheck ($value = "") {
-        if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}/",$value)){
-         return "At least a number and a capital letter";
-        }
+    public function validationCustom(){
+        $validator = new Validator();
+        $validator
+            ->integer('id')
+            ->allowEmptyString('id', null, 'create');
 
+        $validator
+            ->scalar('username')
+            ->add('username', [
+                'length' => [
+                    'rule' => ['maxLength', 100],
+                    'message' => 'Tên tối đa 100 ký tự.',
+                ],
+            ])
+            ->requirePresence('username', 'create')
+            ->notEmptyString('username', 'Tên không thể để trống');
+
+        $validator
+            ->scalar('avatar')
+            ->maxLength('avatar', 200)
+            ->requirePresence('avatar', 'create')
+            ->notEmptyString('avatar', 'Avatar không thể để trống');
+
+        $validator
+            ->scalar('address')
+            ->maxLength('address', 200)
+            ->requirePresence('address', 'create')
+            ->notEmptyString('address', 'Địa chỉ không thể để trống.');
+
+        $validator
+            ->scalar('password')
+            ->add('password', [
+                'length' => [
+                    'rule' => ['maxLength', 90],
+                    'message' => 'Mật khẩu tối đa 90 ký tự.',
+                ],
+            ])
+            ->requirePresence('password', 'create')
+            ->notEmptyString('password', 'Mật khẩu không thể để trống.')
+            ;
+
+        $validator
+            ->email('email')
+            ->requirePresence('email', 'create')
+            ->notEmptyString('email', 'Email không thể để trống.');
+
+        $validator
+            ->integer('phonenumber')
+            ->requirePresence('phonenumber', 'create')
+            ->notEmptyString('phonenumber', 'Số điện thoại không thể để trống.')
+            ->add('phonenumber', [
+                'length' => [
+                    'rule' => ['maxLength', 10],
+                    'message' => 'Số điện thoại phải là 10 ký tự.',
+                ],
+                'length' => [
+                    'rule' => ['minLength', 10],
+                    'message' => 'Số điện thoại phải là 10 ký tự.',
+                ],
+                'validFormat'=>[
+                    'rule' => ['custom','/^(0)([0-9]){9}$/'],
+                    'message' => 'Số điện thoại không đúng định dạng.'
+                ]
+            ])
+           ;
+
+        $validator
+            ->integer('point_user')
+            ->notEmptyString('point_user', 'Point không thể để trống.');
+
+        $validator
+            ->integer('del_flag')
+            ->notEmptyString('del_flag');
+
+        $validator
+            ->dateTime('created_date')
+            ->requirePresence('created_date', 'create')
+            ->notEmptyDateTime('created_date');
+
+        $validator
+            ->dateTime('updated_date')
+            ->requirePresence('updated_date', 'create')
+            ->notEmptyDateTime('updated_date');
+        return $validator;
     }
-
 
 }

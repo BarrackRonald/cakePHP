@@ -69,15 +69,6 @@ echo $this->element('Admin/sidebar');
                                     <?php }?>
                             </div>
 
-                            <div class="form-group">
-                                <label for="email">Point:</label>
-                                    <input type="text" class="form-control" value="<?php if(isset($dataUser['point_user'])){?><?=trim($dataUser['point_user'])?><?php }?>" name="point_user" >
-                                    <?php  if(isset($error['point_user'])){?>
-                                            <i style="color: red;">
-                                                <?= implode($error['point_user'])?>
-                                            </i>
-                                    <?php }?>
-                            </div>
 
                             <div class="form-group">
                                 <label for="pwd">Role:</label>

@@ -17,20 +17,20 @@ require ROOT. '/vendor/phpmailer/phpmailer/src/SMTP.php';
 class MailComponent extends Component
 {
     public function send_mail($to, $toAdmin, $subject, $message){
-        $sender = "phoan434@gmail.com"; // this will be overwritten by GMail
+        $sender = "phoan434@gmail.com";
 
         $header = "X-Mailer: PHP/" . phpversion() . "Return-Path: $sender";
 
         $mail = new PHPMailer(true);
         $mail->CharSet = 'UTF-8';
-        // $mail->SMTPDebug  = 2; // turn it off in production
+
         $mail->IsSMTP();
         $mail->Host = "smtp.gmail.com";
         $mail->SMTPAuth = true;
         $mail->Username   = "phoan434@gmail.com";
         $mail->Password   = "H19101976";
-        $mail->SMTPSecure = "ssl"; // ssl and tls
-        $mail->Port = 465; // 465 and 587
+        $mail->SMTPSecure = "ssl";
+        $mail->Port = 465;
 
         $mail->SMTPOptions = array(
             'tls' => array(
@@ -54,9 +54,7 @@ class MailComponent extends Component
         $mail->CreateHeader($header);
         $mail->Subject = $subject;
         $mail->Body    =  $message;
-        // $mail->AltBody = nl2br($message); nl2br là tự động xuống dòng
 
-        // return an array with two keys: error & message
         if (!$mail->Send()) {
             return true;
         } else {

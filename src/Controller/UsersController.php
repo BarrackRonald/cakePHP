@@ -138,49 +138,33 @@ class UsersController extends AppController
                 $this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
                 return $this->redirect(['action' => 'listUsers']);
                 }
-dd($atribute);
-                // if($atribute['password'] == $dataUser[0]['password']){
-                //     $user = $this->Users->patchEntity($dataUser[0], h($atribute));
-                //     if ($user->hasErrors()) {
-                //         $error = $user->getErrors();
-                //         $this->set('error', $error);
-                //         $data = $atribute;
-                //     }else {
-                //         $user->password = $atribute['password'];
-                //         if ($this->Users->save($user)) {
-                //             $this->Flash->success(__('User đã được cập nhật thành công.'));
-                //             return $this->redirect($atribute['referer']);
-                //         }
-                //     }
-                // }else {
-                //     $user = $this->Users->patchEntity($dataUser[0], h($atribute));
-                //     if ($user->hasErrors()) {
-                //         $error = $user->getErrors();
-                //         $this->set('error', $error);
-                //         $data = $atribute;
-                //     }else {
-                //         $hashPswdObj = new DefaultPasswordHasher;
-                //         $user->password = $hashPswdObj->hash($atribute['password']);
-                //         if ($this->Users->save($user)) {
-                //             $this->Flash->success(__('User đã được cập nhật thành công.'));
-                //             return $this->redirect($atribute['referer']);
-                //         }
-                //     }
-                // }
-                if($atribute['password'] != $dataUser[0]['password']){
-                    $hashPswdObj = new DefaultPasswordHasher;
-                    $atribute['password'] = $hashPswdObj->hash($atribute['password']);
-                }
 
-                $user = $this->Users->patchEntity($dataUser[0], h($atribute));
-                if ($user->hasErrors()) {
-                    $error = $user->getErrors();
-                    $this->set('error', $error);
-                    $data = $atribute;
+                if($atribute['password'] == $dataUser[0]['password']){
+                    $user = $this->Users->patchEntity($dataUser[0], h($atribute), ['validate' => 'Custom']);
+                    if ($user->hasErrors()) {
+                        $error = $user->getErrors();
+                        $this->set('error', $error);
+                        $data = $atribute;
+                    }else {
+                        $user->password = $atribute['password'];
+                        if ($this->Users->save($user)) {
+                            $this->Flash->success(__('User đã được cập nhật thành công.'));
+                            return $this->redirect($atribute['referer']);
+                        }
+                    }
                 }else {
-                    if ($this->Users->save($user)) {
-                        $this->Flash->success(__('User đã được cập nhật thành công.'));
-                        return $this->redirect($atribute['referer']);
+                    $user = $this->Users->patchEntity($dataUser[0], h($atribute));
+                    if ($user->hasErrors()) {
+                        $error = $user->getErrors();
+                        $this->set('error', $error);
+                        $data = $atribute;
+                    }else {
+                        $hashPswdObj = new DefaultPasswordHasher;
+                        $user->password = $hashPswdObj->hash($atribute['password']);
+                        if ($this->Users->save($user)) {
+                            $this->Flash->success(__('User đã được cập nhật thành công.'));
+                            return $this->redirect($atribute['referer']);
+                        }
                     }
                 }
 

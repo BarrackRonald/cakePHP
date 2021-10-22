@@ -142,6 +142,7 @@ class CRUDComponent extends CommonComponent
 
     //Check Product ID
     public function checkIDProduct($id){
+
         $query = $this->Products->find()
         ->where([
             'Products.id' => $id,

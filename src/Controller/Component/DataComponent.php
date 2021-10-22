@@ -341,6 +341,7 @@ class DataComponent extends CommonComponent
             ])
             ->where([
                 'products.id' => $product_id,
+                'products.del_flag' => 0,
             ])
             ->contain(['Images'=> function ($q) {
                 return $q->order('Images.updated_date DESC');

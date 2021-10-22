@@ -28,6 +28,7 @@ echo $this->element('Admin/sidebar');
                             <div class="form-group">
                             <label for="email">Username:</label>
                                 <input type="text" class="form-control" value="<?=trim($dataUser['username'])?>" name="username" >
+                                <input type="hidden" value="<?=trim($dataUser['id'])?>" name="id">
                                 <?php  if(isset($error['username'])){?>
                                         <i style="color: red;">
                                             <?= implode($error['username'])?>

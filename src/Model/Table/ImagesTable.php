@@ -1,9 +1,9 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -30,85 +30,85 @@ use Cake\Validation\Validator;
  */
 class ImagesTable extends Table
 {
-    /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
-     */
-    public function initialize(array $config): void
-    {
-        parent::initialize($config);
+	/**
+	 * Initialize method
+	 *
+	 * @param array $config The configuration for the Table.
+	 * @return void
+	 */
+	public function initialize(array $config): void
+	{
+		parent::initialize($config);
 
-        $this->setTable('images');
-        $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
+		$this->setTable('images');
+		$this->setDisplayField('id');
+		$this->setPrimaryKey('id');
 
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('Products', [
-            'foreignKey' => 'product_id',
-            'joinType' => 'INNER',
-        ]);
-    }
+		$this->belongsTo('Users', [
+			'foreignKey' => 'user_id',
+			'joinType' => 'INNER',
+		]);
+		$this->belongsTo('Products', [
+			'foreignKey' => 'product_id',
+			'joinType' => 'INNER',
+		]);
+	}
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
-    public function validationDefault(Validator $validator): Validator
-    {
-        $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+	/**
+	 * Default validation rules.
+	 *
+	 * @param \Cake\Validation\Validator $validator Validator instance.
+	 * @return \Cake\Validation\Validator
+	 */
+	public function validationDefault(Validator $validator): Validator
+	{
+		$validator
+			->integer('id')
+			->allowEmptyString('id', null, 'create');
 
-        $validator
-            ->scalar('image_name')
-            ->maxLength('image_name', 70)
-            ->requirePresence('image_name', 'create')
-            ->notEmptyFile('image_name');
+		$validator
+			->scalar('image_name')
+			->maxLength('image_name', 70)
+			->requirePresence('image_name', 'create')
+			->notEmptyFile('image_name');
 
-        $validator
-            ->scalar('image_type')
-            ->maxLength('image_type', 70)
-            ->requirePresence('image_type', 'create')
-            ->notEmptyFile('image_type');
+		$validator
+			->scalar('image_type')
+			->maxLength('image_type', 70)
+			->requirePresence('image_type', 'create')
+			->notEmptyFile('image_type');
 
-        $validator
-            ->scalar('image')
-            ->maxLength('image', 300)
-            ->requirePresence('image', 'create')
-            ->notEmptyFile('image');
+		$validator
+			->scalar('image')
+			->maxLength('image', 300)
+			->requirePresence('image', 'create')
+			->notEmptyFile('image');
 
-        $validator
-            ->dateTime('created_date')
-            ->requirePresence('created_date', 'create')
-            ->notEmptyDateTime('created_date');
+		$validator
+			->dateTime('created_date')
+			->requirePresence('created_date', 'create')
+			->notEmptyDateTime('created_date');
 
-        $validator
-            ->dateTime('updated_date')
-            ->requirePresence('updated_date', 'create')
-            ->notEmptyDateTime('updated_date');
+		$validator
+			->dateTime('updated_date')
+			->requirePresence('updated_date', 'create')
+			->notEmptyDateTime('updated_date');
 
-        return $validator;
-    }
+		return $validator;
+	}
 
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
-        $rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
+	/**
+	 * Returns a rules checker object that will be used for validating
+	 * application integrity.
+	 *
+	 * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+	 * @return \Cake\ORM\RulesChecker
+	 */
+	public function buildRules(RulesChecker $rules): RulesChecker
+	{
+		$rules->add($rules->existsIn(['user_id'], 'Users'), ['errorField' => 'user_id']);
+		$rules->add($rules->existsIn(['product_id'], 'Products'), ['errorField' => 'product_id']);
 
-        return $rules;
-    }
+		return $rules;
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -27,29 +28,29 @@ use Cake\ORM\Entity;
  */
 class Order extends Entity
 {
-    /**
-     * Fields that can be mass assigned using newEntity() or patchEntity().
-     *
-     * Note that when '*' is set to true, this allows all unspecified fields to
-     * be mass assigned. For security purposes, it is advised to set '*' to false
-     * (or remove it), and explicitly make individual fields accessible as needed.
-     *
-     * @var array
-     */
-    protected $_accessible = [
-        'order_name' => true,
-        'email' => true,
-        'phonenumber' => true,
-        'address' => true,
-        'date_order' => true,
-        'total_point' => true,
-        'total_quantity' => true,
-        'total_amount' => true,
-        'status' => true,
-        'user_id' => true,
-        'created_date' => true,
-        'updated_date' => true,
-        'user' => true,
-        'orderdetails' => true,
-    ];
+	/**
+	 * Fields that can be mass assigned using newEntity() or patchEntity().
+	 *
+	 * Note that when '*' is set to true, this allows all unspecified fields to
+	 * be mass assigned. For security purposes, it is advised to set '*' to false
+	 * (or remove it), and explicitly make individual fields accessible as needed.
+	 *
+	 * @var array
+	 */
+	protected $_accessible = [
+		'order_name' => true,
+		'email' => true,
+		'phonenumber' => true,
+		'address' => true,
+		'date_order' => true,
+		'total_point' => true,
+		'total_quantity' => true,
+		'total_amount' => true,
+		'status' => true,
+		'user_id' => true,
+		'created_date' => true,
+		'updated_date' => true,
+		'user' => true,
+		'orderdetails' => true,
+	];
 }

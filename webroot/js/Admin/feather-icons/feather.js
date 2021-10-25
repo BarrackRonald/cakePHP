@@ -580,7 +580,6 @@ module.exports = function (IteratorConstructor, NAME, next) {
   return IteratorConstructor;
 };
 
-
 /***/ }),
 
 /***/ "./node_modules/core-js/internals/create-property-descriptor.js":
@@ -598,7 +597,6 @@ module.exports = function (bitmap, value) {
     value: value
   };
 };
-
 
 /***/ }),
 
@@ -620,7 +618,6 @@ module.exports = function (object, key, value) {
   if (propertyKey in object) definePropertyModule.f(object, propertyKey, createPropertyDescriptor(0, value));
   else object[propertyKey] = value;
 };
-
 
 /***/ }),
 
@@ -723,7 +720,6 @@ module.exports = function (Iterable, NAME, IteratorConstructor, next, DEFAULT, I
   return methods;
 };
 
-
 /***/ }),
 
 /***/ "./node_modules/core-js/internals/descriptors.js":
@@ -739,7 +735,6 @@ var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-j
 module.exports = !fails(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
-
 
 /***/ }),
 
@@ -761,7 +756,6 @@ module.exports = function (it) {
   return exist ? document.createElement(it) : {};
 };
 
-
 /***/ }),
 
 /***/ "./node_modules/core-js/internals/enum-bug-keys.js":
@@ -781,7 +775,6 @@ module.exports = [
   'toString',
   'valueOf'
 ];
-
 
 /***/ }),
 
@@ -943,7 +936,6 @@ module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-
 /***/ }),
 
 /***/ "./node_modules/core-js/internals/hidden-keys.js":
@@ -954,7 +946,6 @@ module.exports = function (it, key) {
 /***/ (function(module, exports) {
 
 module.exports = {};
-
 
 /***/ }),
 
@@ -976,7 +967,6 @@ module.exports = DESCRIPTORS ? function (object, key, value) {
   return object;
 };
 
-
 /***/ }),
 
 /***/ "./node_modules/core-js/internals/html.js":
@@ -991,7 +981,6 @@ var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core
 var document = global.document;
 
 module.exports = document && document.documentElement;
-
 
 /***/ }),
 

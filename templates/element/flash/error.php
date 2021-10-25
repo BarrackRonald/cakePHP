@@ -1,19 +1,20 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var array $params
  * @var string $message
  */
 if (!isset($params['escape']) || $params['escape'] !== false) {
-    $message = h($message);
+	$message = h($message);
 }
 ?>
 <div id="message">
-    <div class="message error" onclick="this.classList.add('hidden');"><?= $message ?></div> <br><br>
+	<div class="message error" onclick="this.classList.add('hidden');"><?= $message ?></div> <br><br>
 </div>
 
 <script>
-  setTimeout(() => {
-    document.getElementById('message').style.display = 'none';
-  }, 4000);
+	setTimeout(() => {
+		document.getElementById('message').style.display = 'none';
+	}, 4000);
 </script>

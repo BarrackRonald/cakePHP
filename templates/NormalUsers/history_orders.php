@@ -32,38 +32,48 @@ echo $this->element('NormalUsers/header');
 											<thead>
 												<tr>
 													<th>Mã Đơn hàng</th>
-													<th>Sản phẩm</th>
 													<th>Số Lượng</th>
 													<th>Point</th>
-													<th>Tổng Giá</th>
 													<th>Giá Đơn hàng</th>
 													<th>Trạng Thái</th>
+													<th>Chi tiết đơn</th>
 												</tr>
 											</thead>
 											<tbody>
+											<?php foreach ($dataOrders as $order) {?>
 												<tr class="cart_item">
 													<td class="product-total">
-														<span class="amount">123</span>
+														<span class="amount"><?='#'.$order['id']?></span>
 													</td>
 													<td class="product-total">
-														<span class="amount">123</span>
+													<span class="amount"><?=$order['total_quantity'].' cái'?></span>
 													</td>
 													<td class="product-total">
-														<span class="amount">123</span>
+														<span class="amount"><?=$order['total_point']?></span>
 													</td>
 													<td class="product-total">
-														<span class="amount">123</span>
+														<span class="amount"><?= '$'.number_format($order['total_amount'])?></span>
 													</td>
 													<td class="product-total">
-														<span class="amount">123</span>
+														<span class="amount">
+															<?php
+																if($order['status'] == 0){
+																	echo 'Chờ Duyệt';
+																}elseif ($order['status'] == 1) {
+																	echo 'Đã Duyệt';
+																}else {
+																	echo 'Từ chối';
+																}
+															 ?>
+														</span>
 													</td>
 													<td class="product-total">
-														<span class="amount">123</span>
-													</td>
-													<td class="product-total">
-														<span class="amount">123</span>
+														<span class="amount">
+															<button>Button</button>
+														</span>
 													</td>
 												</tr>
+											<?php }?>
 											</tbody>
 										</table>
 									</div>

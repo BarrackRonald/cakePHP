@@ -31,6 +31,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'Users.id' => $id,
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -87,12 +88,12 @@ class CRUDComponent extends CommonComponent
 				'Roles.role_name'
 			])
 			->join([
-				'table' => 'roles',
-				'alias' => 'roles',
+				'table' => 'Roles',
+				'alias' => 'Roles',
 				'type' => 'left',
 				'conditions' => ['Users.role_id = Roles.id']
 			])
-			->order('Users.created_date DESC');
+			->order('Users.id DESC');
 		return $query;
 	}
 
@@ -107,7 +108,8 @@ class CRUDComponent extends CommonComponent
 			])
 			->where([
 				'Categories.del_flag' => 0,
-			]);
+			])
+			->order('Categories.id DESC');
 		return $query;
 	}
 
@@ -170,6 +172,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Categories->find()
 			->where([
 				'Categories.id' => $id,
+				'Categories.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -199,6 +202,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Products->find()
 			->where([
 				'Products.category_id' => $idCategory,
+				'Products.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -217,15 +221,15 @@ class CRUDComponent extends CommonComponent
 				'Categories.category_name'
 			])
 			->join([
-				'table' => 'categories',
-				'alias' => 'categories',
+				'table' => 'Categories',
+				'alias' => 'Categories',
 				'type' => 'left',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
 			->where([
 				'Products.del_flag' => 0,
 			])
-			->order('Products.created_date DESC')
+			->order('Products.id DESC')
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
 			}]);
@@ -284,6 +288,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Products->find()
 			->where([
 				'Products.id' => $id,
+				'Products.del_flag' => 0
 			])
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
@@ -305,8 +310,8 @@ class CRUDComponent extends CommonComponent
 				'Categories.category_name'
 			])
 			->join([
-				'table' => 'categories',
-				'alias' => 'categories',
+				'table' => 'Categories',
+				'alias' => 'Categories',
 				'type' => 'left',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
@@ -329,7 +334,7 @@ class CRUDComponent extends CommonComponent
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Users.email like' => '%' . $key . '%']],
 				'Users.del_flag' => 0
 			])
-			->order('Users.created_date DESC');
+			->order('Users.id DESC');
 		return $query;
 	}
 
@@ -350,8 +355,8 @@ class CRUDComponent extends CommonComponent
 				'Users.username'
 			])
 			->join([
-				'table' => 'users',
-				'alias' => 'users',
+				'table' => 'Users',
+				'alias' => 'Users',
 				'type' => 'left',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
@@ -373,14 +378,14 @@ class CRUDComponent extends CommonComponent
 				'Orderdetails.order_id',
 			])
 			->join([
-				'table' => 'orders',
-				'alias' => 'orders',
+				'table' => 'Orders',
+				'alias' => 'Orders',
 				'type' => 'left',
 				'conditions' => ['Orderdetails.order_id = Orders.id']
 			])
 			->join([
-				'table' => 'products',
-				'alias' => 'products',
+				'table' => 'Products',
+				'alias' => 'Products',
 				'type' => 'left',
 				'conditions' => ['Orderdetails.product_id = Products.id']
 			])
@@ -408,12 +413,12 @@ class CRUDComponent extends CommonComponent
 				'Users.username'
 			])
 			->join([
-				'table' => 'users',
-				'alias' => 'users',
+				'table' => 'Users',
+				'alias' => 'Users',
 				'type' => 'left',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
-			->order('Orders.created_date DESC')
+			->order('Orders.id DESC')
 			->where([
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
 			]);
@@ -460,8 +465,8 @@ class CRUDComponent extends CommonComponent
 				'Users.username'
 			])
 			->join([
-				'table' => 'users',
-				'alias' => 'users',
+				'table' => 'Users',
+				'alias' => 'Users',
 				'type' => 'left',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
@@ -504,6 +509,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'id' => $idUser,
+				'Users.del_flag' => 0
 			])
 			->first();
 		return $query;
@@ -514,6 +520,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'email' => $email,
+				'Users.del_flag' => 0
 			])
 			->first();
 		return $query;
@@ -524,6 +531,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'email' => $email,
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -541,64 +549,4 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
-	//Images
-	public function getAllImage()
-	{
-		$query = $this->Images->find()
-			->select([
-				'Images.id',
-				'Images.image_name',
-				'Images.image_type',
-				'Images.image_type',
-				'Images.image',
-				'Images.user_id',
-				'Images.del_flag',
-				'Images.product_id',
-				'Products.product_name'
-			])
-			->join([
-				'table' => 'products',
-				'alias' => 'products',
-				'type' => 'left',
-				'conditions' => ['Images.product_id = Products.id']
-			])
-			->where([
-				'Images.del_flag' => 0,
-			])
-			->order('Images.created_date DESC');
-		return $query;
-	}
-
-	public function addimage($atribute)
-	{
-		$image = [];
-		$image['image_name'] = $atribute['product_name'];
-		$image['description'] = $atribute['description'];
-		$image['amount_product'] = $atribute['amount_product'];
-		$image['point_product'] = $atribute['point_product'];
-		$image['category_id'] = $atribute['category_id'];
-		$image['created_date'] = date('Y-m-d h:i:s');
-		$image['updated_date'] = date('Y-m-d h:i:s');
-		$dataImage = $this->Images->newEntity($image);
-
-		if ($dataImage->hasErrors()) {
-			return [
-				'result' => 'invalid',
-				'data' => $dataImage->getErrors(),
-			];
-		};
-		return [
-			'result' => 'success',
-			'data' => $this->Products->save($dataImage),
-		];
-	}
-
-	public function getimageByID($id)
-	{
-		$query = $this->Products->find()
-			->where([
-				'Products.id' => $id,
-			]);
-		return $query->toArray();
-	}
 }

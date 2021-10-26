@@ -22,6 +22,13 @@ class AuthexsController extends AppController
 		$dataProducts = $this->{'Data'}->getAllProducts();
 		$dataSlideImages = $this->{'Data'}->getSlideImage();
 		$dataNewsProducts = $this->{'Data'}->getNewsProduct();
+		$session = $this->request->getSession();
+
+		if ($session->check('idUser')) {
+			$idUsers = $session->read('idUser');
+			$dataNameForUser = $this->{'Data'}->getInfoUser($idUsers);
+			$this->set(compact('dataNameForUser'));
+		}
 
 		$this->set(compact('dataProducts', 'dataSlideImages', 'dataNewsProducts', 'dataCategories'));
 	}
@@ -181,6 +188,7 @@ class AuthexsController extends AppController
 	public function changePassword()
 	{
 		$session = $this->request->getSession();
+		$data = null;
 		if (!$session->check('flag')) {
 			return $this->redirect(['controller' => 'NormalUsers', 'action' => 'index']);
 		}
@@ -188,39 +196,47 @@ class AuthexsController extends AppController
 			$atribute = $this->request->getData();
 			if (($atribute['oldpassword'] == '') || ($atribute['password'] == '') || ($atribute['newretypepassword'] == '')) {
 				$this->Flash->error(__('Vui lòng Điền đầy đủ các trường và thử lại.'));
-				$this->redirect(['action' => '']);
+				$data = $atribute;
 			} else {
 				// check retype Password
 				if (!($atribute['password'] == $atribute['newretypepassword'])) {
 					$this->Flash->error(__('Mật khẩu không khớp. Vui lòng nhập lại!!!'));
-					$this->redirect(['action' => '']);
+					$data = $atribute;
 				} else {
-					$idUser = $session->read('idUser');
-					$dataUser = $this->{'CRUD'}->getUsersByID($idUser);
-					$hashPswdObj = new DefaultPasswordHasher;
-					$checkPassword =  $hashPswdObj->check($atribute['oldpassword'], $dataUser['password']);
-					if ($checkPassword) {
-						$user = $this->Users->patchEntity($dataUser, $atribute);
-						if ($user->hasErrors()) {
-							$error = $user->getErrors();
-							$this->set('error', $error);
-						} else {
-							$newpass = $hashPswdObj->hash($atribute['password']);
-							$user->password = $newpass;
-							if ($this->Users->save($user)) {
-								$this->Flash->success('Mật khẩu của bạn đã được thay đổi!!!');
+					if(($atribute['password'] == $atribute['oldpassword'])){
+						$this->Flash->error(__('Mật khẩu không có sự thay đổi!!!'));
+						$data = $atribute;
+					}else{
+						$idUser = $session->read('idUser');
+						$dataUser = $this->{'CRUD'}->getUsersByID($idUser);
+						$hashPswdObj = new DefaultPasswordHasher;
+						$checkPassword =  $hashPswdObj->check($atribute['oldpassword'], $dataUser['password']);
+						if ($checkPassword) {
+							$user = $this->Users->patchEntity($dataUser, $atribute);
+							if ($user->hasErrors()) {
+								$error = $user->getErrors();
+								$this->set('error', $error);
 							} else {
-								$this->Flash->error(__('Vui lòng thử lại.'));
-								$this->redirect(['action' => '']);
+								$newpass = $hashPswdObj->hash($atribute['password']);
+								$user->password = $newpass;
+								if ($this->Users->save($user)) {
+									$this->Flash->success('Mật khẩu của bạn đã được thay đổi!!!');
+								} else {
+									$this->Flash->error(__('Vui lòng thử lại.'));
+									$data = $atribute;
+								}
 							}
+						} else {
+							$error['errPassword'] = ['Mật khẩu sai. Vui lòng kiểm tra lại.'] ;
+							$this->set('error', $error);
+							$data = $atribute;
 						}
-					} else {
-						$this->Flash->error(__('Mật khẩu sai. Vui lòng thử lại.'));
-						$this->redirect(['action' => '']);
 					}
 				}
 			}
 		}
+
+		$this->set('dataPassword', $data);
 	}
 
 	//Quên mật khẩu

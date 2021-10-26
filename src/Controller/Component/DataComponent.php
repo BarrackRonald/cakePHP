@@ -33,8 +33,8 @@ class DataComponent extends CommonComponent
 		$query = $this->Images->find()
 			->where([
 				'Images.del_flag' => 0,
+				'Images.image_type' => 'Slider'
 			])
-			->where(['Images.image_type' => 'Slider'])
 			->order('created_date DESC')
 			->limit(5)
 			->all();
@@ -61,6 +61,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.email' => $email,
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -75,6 +76,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.id' => $idUser,
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -92,7 +94,7 @@ class DataComponent extends CommonComponent
 		$user['avatar'] = 'none.jbg';
 		$user['created_date'] = date('Y-m-d h:i:s');
 		$user['updated_date'] = date('Y-m-d h:i:s');
-		$dataUser = $this->Users->newEntity($user);
+		$dataUser = $this->Users->newEntity($user, ['validate' => 'Custom']);
 
 		if ($dataUser->hasErrors()) {
 			return [
@@ -107,7 +109,7 @@ class DataComponent extends CommonComponent
 	public function addUser($atribute)
 	{
 		$user = [];
-		$user['username'] = h(trim($atribute['fullname']));
+		$user['username'] = h(trim($atribute['username']));
 		$user['address'] = h(trim($atribute['address']));
 		$user['email'] = h(trim($atribute['email']));
 		$user['phonenumber'] = h(trim($atribute['phonenumber']));
@@ -121,13 +123,6 @@ class DataComponent extends CommonComponent
 		$user['avatar'] = 'none.jbg';
 		$user['created_date'] = date('Y-m-d h:i:s');
 		$user['updated_date'] = date('Y-m-d h:i:s');
-		$dataUser = $this->Users->newEntity($user);
-		if ($dataUser->hasErrors()) {
-			return [
-				'result' => 'invalid',
-				'data' => $dataUser->getErrors(),
-			];
-		};
 		return [
 			'result' => 'success',
 			'data' => $user,
@@ -138,7 +133,7 @@ class DataComponent extends CommonComponent
 	public function addUserNoHash($atribute)
 	{
 		$user = [];
-		$user['username'] = h(trim($atribute['fullname']));
+		$user['username'] = h(trim($atribute['username']));
 		$user['address'] = h(trim($atribute['address']));
 		$user['email'] = h(trim($atribute['email']));
 		$user['phonenumber'] = h(trim($atribute['phonenumber']));
@@ -170,6 +165,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.email' => $atribute['email'],
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -276,6 +272,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.id' => $idUser,
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -289,6 +286,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.id' => $idUsers,
+				'Users.del_flag' => 0
 			])
 			->execute();
 	}
@@ -306,6 +304,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.id' => $idUser,
+				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -325,8 +324,8 @@ class DataComponent extends CommonComponent
 				'Roles.role_name'
 			])
 			->join([
-				'table' => 'roles',
-				'alias' => 'roles',
+				'table' => 'Roles',
+				'alias' => 'Roles',
 				'type' => 'left',
 				'conditions' => ['Users.role_id = Roles.id']
 			]);
@@ -401,6 +400,7 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.id' => $idUser,
+				'Users.del_flag' => 0
 			])
 			->execute();
 	}
@@ -442,8 +442,8 @@ class DataComponent extends CommonComponent
 				'Categories.category_name'
 			])
 			->join([
-				'table' => 'categories',
-				'alias' => 'categories',
+				'table' => 'Categories',
+				'alias' => 'Categories',
 				'type' => 'left',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
@@ -489,7 +489,18 @@ class DataComponent extends CommonComponent
 		$query = $this->Orders->find()
 			->where([
 				'Orders.user_id' => $idUsers
-			]);
-		return $query->toArray();
+			])
+			->join([
+				'table' => 'Orderdetails',
+				'type' => 'inner',
+				'conditions' => ['Orderdetails.order_id = Orders.id']
+			])
+			->join([
+				'table' => 'Products',
+				'type' => 'inner',
+				'conditions' => ['Orderdetails.product_id = Products.id']
+			])
+			;
+		return $query;
 	}
 }

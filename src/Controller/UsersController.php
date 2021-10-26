@@ -91,7 +91,7 @@ class UsersController extends AppController
 				$checkmail = $this->{'Data'}->checkmail($atribute);
 
 				if (count($checkmail) > 0) {
-					$error['email'] = ['This email address already exists.'];
+					$error['email'] = ['Địa chỉ Email đã tồn tại.'];
 					$this->set('error', $error);
 					$data = $atribute;
 				} else {

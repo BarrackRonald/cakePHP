@@ -26,7 +26,7 @@ echo $this->element('NormalUsers/header');
 				<div class="product-content-right">
 					<div class="woocommerce">
 						<?php if (isset($dataUser)) { ?>
-							<?= $this->Form->create($dataUser[0]) ?>
+							<?= $this->Form->create() ?>
 							<div id="customer_details" class="col2-set">
 								<div class="col-3">
 									<div class="woocommerce-billing-fields">
@@ -35,6 +35,11 @@ echo $this->element('NormalUsers/header');
 											<label class="" for="billing_first_name">FullName: <abbr title="required" class="required">*</abbr>
 											</label>
 											<input type="text" value="<?= h(trim($dataUser[0]['username'])) ?>" placeholder="" id="billing_first_name" name="username" class="input-text ">
+											<?php if (isset($error['username'])) { ?>
+												<i style="color: red;">
+													<?= implode($error['username']) ?>
+												</i>
+											<?php } ?>
 										</p>
 										<div class="clear"></div>
 
@@ -42,6 +47,11 @@ echo $this->element('NormalUsers/header');
 											<label class="" for="billing_address_1">PhoneNumber: <abbr title="required" class="required">*</abbr>
 											</label>
 											<input type="text" value="<?= h(trim($dataUser[0]['phonenumber'])) ?>" placeholder="" id="billing_address_1" name="phonenumber" class="input-text input_number " onkeypress='validate(event)' maxlength="10">
+											<?php if (isset($error['phonenumber'])) { ?>
+												<i style="color: red;">
+												<?= implode('<br>', $error['phonenumber']) ?>
+												</i>
+											<?php } ?>
 										</p>
 										<div class="clear"></div>
 
@@ -49,6 +59,11 @@ echo $this->element('NormalUsers/header');
 											<label class="" for="billing_address_1">Address: <abbr title="required" class="required">*</abbr>
 											</label>
 											<input type="text" value="<?= h(trim($dataUser[0]['address'])) ?>" placeholder="" id="billing_address_1" name="address" class="input-text ">
+											<?php if (isset($error['address'])) { ?>
+												<i style="color: red;">
+													<?= implode($error['address']) ?>
+												</i>
+											<?php } ?>
 										</p>
 										<div class="clear"></div>
 

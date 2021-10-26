@@ -18,15 +18,22 @@ echo $this->element('NormalUsers/header');
 
 				<label class="m-t-15" for="myInput1">Mật khẩu cũ:</label>
 				<div class="wrap-input100 validate-input" data-validate="Password is required">
-					<input id="myInput1" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="oldpassword" placeholder="Mật khẩu cũ" value="">
+					<input id="myInput1" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="oldpassword" placeholder="Mật khẩu cũ" value="<?=$dataPassword['oldpassword']?>">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-lock" aria-hidden="true"></i>
 					</span>
 				</div>
+				<div style="margin-top: -8px;">
+					<?php if (isset($error['errPassword'])) { ?>
+						<i style="color: red;">
+							<?= implode($error['errPassword']) ?>
+						</i>
+					<?php } ?>
+				</div>
 				<label class="m-t-2" for="myInput2">Mật khẩu mới:</label>
 				<div class="wrap-input100 validate-input" data-validate="Password is required">
-					<input id="myInput2" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="password" placeholder="Mật khẩu mới" value="">
+					<input id="myInput2" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="password" placeholder="Mật khẩu mới" value="<?=$dataPassword['password']?>">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-lock" aria-hidden="true"></i>
@@ -41,7 +48,7 @@ echo $this->element('NormalUsers/header');
 				</div>
 				<label class="m-t-2" for="myInput3">Nhập lại mật khẩu:</label>
 				<div class="wrap-input100 validate-input" data-validate="Password is required">
-					<input id="myInput3" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="newretypepassword" placeholder="Nhập lại mật khẩu" value="">
+					<input id="myInput3" class="input100" type="password" style="padding: 0 30px 0 50px; border: 1px solid;" name="newretypepassword" placeholder="Nhập lại mật khẩu" value="<?=$dataPassword['newretypepassword']?>">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-lock" aria-hidden="true"></i>

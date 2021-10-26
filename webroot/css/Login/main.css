@@ -125,7 +125,7 @@ textarea {
 }
 
 textarea:focus, input:focus {
-  border-color: transparent !important;
+  border: 1px solid #ddd;
 }
 
 input:focus::-webkit-input-placeholder { color:transparent; }

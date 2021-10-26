@@ -191,9 +191,10 @@ echo $this->element('NormalUsers/header');
 									<p id="billing_first_name_field" class="form-row form-row-first validate-required">
 										<label class="" for="billing_first_name">Họ và tên <abbr title="required" class="required">*</abbr>
 										</label>
-										<input <?php if (isset($_SESSION['error']['username'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value=" <?php if (isset($_SESSION['cartData']['infoUser'])) {
+										
+										<input <?php if (isset($_SESSION['error']['username'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value=" <?php if (isset($_SESSION['cartData']['infoUser']['username'])) {
 																																											echo h($_SESSION['cartData']['infoUser']['username']);
-																																										} ?>" placeholder="" id="billing_first_name" name="fullname" class="input-text ">
+																																						} ?>" placeholder="" id="billing_first_name" name="username" class="input-text ">
 										<?php if (isset($_SESSION['error']['username'])) { ?>
 											<i style="color: red;">
 												<?= implode($_SESSION['error']['username']) ?>
@@ -204,7 +205,7 @@ echo $this->element('NormalUsers/header');
 									<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
 										<label class="" for="billing_address_1">Địa chỉ <abbr title="required" class="required">*</abbr>
 										</label>
-										<input <?php if (isset($_SESSION['error']['address'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser'])) {
+										<input <?php if (isset($_SESSION['error']['address'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser']['address'])) {
 																																											echo h($_SESSION['cartData']['infoUser']['address']);
 																																										} ?>" placeholder="" id="billing_address_1" name="address" class="input-text ">
 										<?php if (isset($_SESSION['error']['address'])) { ?>
@@ -232,7 +233,7 @@ echo $this->element('NormalUsers/header');
 									<p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
 										<label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
 										</label>
-										<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser'])) {
+										<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser']['phonenumber'])) {
 																																												echo h($_SESSION['cartData']['infoUser']['phonenumber']);
 																																											} ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
 										<?php if (isset($_SESSION['error']['phonenumber'])) { ?>
@@ -248,9 +249,8 @@ echo $this->element('NormalUsers/header');
 										<p id="account_password_field" class="form-row validate-required">
 											<label class="" for="account_password">Mật khẩu <abbr title="required" class="required">*</abbr>
 											</label>
-											<input <?php if (isset($_SESSION['error']['password'])) { ?> style="border-color: red; color: red;" <?php } ?> type="password" value="<?php if (isset($_SESSION['cartData']['infoUser']['password'])) {
-																																													echo $_SESSION['cartData']['infoUser']['password'];
-																																												} ?>" placeholder="Password" id="account_password" name="password" class="input-text">
+
+											<input <?php if (isset($_SESSION['error']['password'])) { ?> style="border-color: red; color: red;" <?php } ?> type="password" value="" placeholder="Password" id="account_password" name="password" class="input-text">
 											<?php if (isset($_SESSION['error']['password'])) { ?>
 												<i style="color: red;">
 													<?= implode($_SESSION['error']['password']) ?>

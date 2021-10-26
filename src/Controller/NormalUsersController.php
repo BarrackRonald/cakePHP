@@ -92,57 +92,37 @@ class NormalUsersController extends AppController
 		$session = $this->request->getSession();
 		$hasBack = 1;
 		$session->write('hasBack', $hasBack);
-
+		$dataProds = $session->read('cartData');
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
-			//checkmail tồn tại
-			$checkmail = $this->{'Data'}->checkmail($atribute);
-			if (count($checkmail) > 0) {
-				$error['email'] = ['Địa chỉ mail này đã tồn tại.'];
-				$session->write('error', $error);
-				$this->redirect(['action' => 'billOrder']);
-			} else {
-				if ($session->check('error')) {
-					$session->delete('error');
-				}
-			}
 
 			$dataUser = $this->{'Data'}->addUserNoHash($atribute);
 			if ($dataUser['result'] == "invalid") {
 				$error = $dataUser['data'];
 				$session->write('error', $error);
+				$dataProds['infoUser'] = $atribute;
+				$session->write('cartData', $dataProds);
 				$this->redirect(['action' => 'billOrder']);
 			} else {
 				if ($session->check('error')) {
 					$session->delete('error');
 				}
-				// Checkmail trùng
-				$checkmail = $this->{'Data'}->checkmail($atribute);
 
+				$dataUser = $this->{'Data'}->addUser($atribute);
+				$dataProds['infoUser'] = $dataUser['data'];
+				$session->write('cartData', $dataProds);
+				$this->set(compact('dataProds'));
+
+				//checkmail tồn tại
+				$checkmail = $this->{'Data'}->checkmail($atribute);
 				if (count($checkmail) > 0) {
-					$error['email'] = ['This email address already exists.'];
+					$error['email'] = ['Địa chỉ mail này đã tồn tại.'];
 					$session->write('error', $error);
-					$this->redirect(['action' => 'billOrder']);
+					return $this->redirect(['action' => 'billOrder']);
 				} else {
 					if ($session->check('error')) {
 						$session->delete('error');
 					}
-				}
-				//Check Back
-				if ($session->check('cartData')) {
-					$dataProds = $session->read('cartData');
-					if (isset($dataProds['infoUser'])) {
-						if ($dataProds['infoUser']['password'] == $atribute['password']) {
-							$dataUser = $this->{'Data'}->addUserNoHash($atribute);
-						} else {
-							$dataUser = $this->{'Data'}->addUser($atribute);
-						}
-					} else {
-						$dataUser = $this->{'Data'}->addUser($atribute);
-					}
-					$dataProds['infoUser'] = $dataUser['data'];
-					$session->write('cartData', $dataProds);
-					$this->set(compact('dataProds'));
 				}
 			}
 		}
@@ -163,6 +143,28 @@ class NormalUsersController extends AppController
 				$cartData = $session->read('cartData');
 				$infoUser = $cartData['infoUser'];
 				$dataProds = $session->read('cartData');
+
+				//Kiểm tra Sản phẩm còn trên hệ thống không trước khi đặt hàng
+				foreach ($dataProds['cart'] as $key => $valueProduct) {
+					$checkProduct = $this->{'CRUD'}->checkIDProduct($key);
+					if (count($checkProduct) < 1) {
+						$session->write('checkErr', 1);
+						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
+						$dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
+						$dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
+						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên Hệ thống. Vui lòng Đặt hàng lại!!!'));
+						if (isset($dataProds['cart'][$key])) {
+							unset($dataProds['cart'][$key]);
+						}
+						$session->write('cartData', $dataProds);
+					}
+				}
+
+				if ($session->check('checkErr')) {
+					$session->delete('checkErr');
+					return $this->redirect(['action' => 'informationCart']);
+				}
+
 				//Point user trước khi mua
 				$pointBF = 0;
 				$pointAF = $pointBF + $dataProds['totalAllPoint'];
@@ -943,6 +945,7 @@ class NormalUsersController extends AppController
 		}
 
 		$dataUser = $this->{'CRUD'}->getUserByID($id);
+
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
 			if (
@@ -951,17 +954,25 @@ class NormalUsersController extends AppController
 				$atribute['address'] == $dataUser[0]['address']
 			) {
 				$this->Flash->error(__('Tài khoản không có sự thay đổi.'));
+				$data[0] = $atribute;
 			} else {
 				$user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
-				if ($this->Users->save($user)) {
-					$this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
-					return $this->redirect(['action' => 'myAccount']);
+				if($user->hasErrors()){
+					$error = $user->getErrors();
+					$this->set('error', $error);
+					$data[0] = $atribute;
+				}else{
+					if ($this->Users->save($user)) {
+						$this->Flash->success(__('Tài khoản đã được cập nhật thành công.'));
+						return $this->redirect(['action' => 'myAccount']);
+					}
+					$this->Flash->error(__('Tài khoản chưa được cập nhật. Vui lòng thử lại.'));
 				}
-				$this->Flash->error(__('Tài khoản chưa được cập nhật. Vui lòng thử lại.'));
 			}
+		}else {
+			$data = $dataUser;
 		}
-
-		$this->set(compact('dataUser'));
+		$this->set('dataUser', $data);
 	}
 
 
@@ -1019,6 +1030,8 @@ class NormalUsersController extends AppController
 			$this->set(compact('dataUser'));
 		}
 		$dataOrders = $this->{'Data'}->getOrdersByUser($idUsers);
+		dd($dataOrders);
 		$this->set(compact('dataOrders'));
 	}
+
 }

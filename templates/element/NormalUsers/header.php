@@ -65,27 +65,12 @@ $this->disableAutoLayout();
 
 		<div class="container">
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-md-6">
 					<div class="user-menu">
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 					<div class="user-menu">
-						<ul>
-							<li><a href="/myAccount">
-									<?php if (isset($_SESSION['idUser'])) { ?>
-										<i class="fa fa-user"><b style="margin-left: 7px;"><?= h(trim($dataNameForUser[0]['username'])) ?></b></i>
-									<?php } else { ?>
-										<i class="fa fa-user">My Account</i>
-									<?php } ?>
-								</a>
-							</li>
-							<?php if (isset($_SESSION['flag'])) {
-								if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
-									<li><a href="/admin"><i class="fa fa-heart"></i> Truy cập Admin</a></li>
-							<?php }
-							} ?>
-						</ul>
 						<ul>
 							<li>
 								<?php $session = $this->request->getSession();
@@ -101,6 +86,26 @@ $this->disableAutoLayout();
 										Login
 									</a>
 								<?php } ?>
+							</li>
+
+							<?php if (isset($_SESSION['flag'])) {
+								if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
+									<li><a href="/admin"><i class="fa fa-heart"></i> Truy cập Admin</a></li>
+								<?php }
+							} ?>
+
+							<li><a href="/myAccount">
+									<?php if (isset($_SESSION['idUser'])) { ?>
+										<i class="fa fa-user"><b style="margin-left: 7px;"><?= h(trim($dataNameForUser[0]['username'])) ?></b></i>
+									<?php } ?>
+								</a>
+							</li>
+
+							<li><a href="/history-orders">
+									<?php if (isset($_SESSION['idUser'])) { ?>
+										<i class="fas fa-cart-plus"><b style="margin-left: 7px;">Lịch sử mua hàng</b></i>
+									<?php } ?>
+								</a>
 							</li>
 						</ul>
 					</div>

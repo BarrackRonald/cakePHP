@@ -86,6 +86,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 	// Lịch sử mua hàng
 	$builder->connect('/history-orders', ['controller' => 'NormalUsers', 'action' => 'historyOrders']);
+	$builder->connect('/details-order/:id', ['controller' => 'NormalUsers', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
 
 	//Authexs
 	$builder->connect('/auth', ['controller' => 'Authexs', 'action' => 'index']);

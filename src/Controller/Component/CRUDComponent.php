@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
+use Cake\Chronos\Date;
+use Symfony\Component\VarDumper\Cloner\Data;
+
 /**
  * CRUD component
  */
@@ -31,7 +34,6 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'Users.id' => $id,
-				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -90,10 +92,10 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Roles',
 				'alias' => 'Roles',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Users.role_id = Roles.id']
 			])
-			->order('Users.id DESC');
+			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
 		return $query;
 	}
 
@@ -223,7 +225,7 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Categories',
 				'alias' => 'Categories',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
 			->where([
@@ -312,7 +314,7 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Categories',
 				'alias' => 'Categories',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
 			->order('Products.created_date DESC')
@@ -332,9 +334,8 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Users.email like' => '%' . $key . '%']],
-				'Users.del_flag' => 0
 			])
-			->order('Users.id DESC');
+			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
 		return $query;
 	}
 
@@ -357,7 +358,7 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Users',
 				'alias' => 'Users',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
 			->order('Orders.id DESC');
@@ -380,13 +381,13 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Orders',
 				'alias' => 'Orders',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Orderdetails.order_id = Orders.id']
 			])
 			->join([
 				'table' => 'Products',
 				'alias' => 'Products',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Orderdetails.product_id = Products.id']
 			])
 			->where([
@@ -415,7 +416,7 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Users',
 				'alias' => 'Users',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
 			->order('Orders.id DESC')
@@ -467,7 +468,7 @@ class CRUDComponent extends CommonComponent
 			->join([
 				'table' => 'Users',
 				'alias' => 'Users',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
 			->where([
@@ -509,7 +510,6 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'id' => $idUser,
-				'Users.del_flag' => 0
 			])
 			->first();
 		return $query;
@@ -520,7 +520,6 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'email' => $email,
-				'Users.del_flag' => 0
 			])
 			->first();
 		return $query;
@@ -531,7 +530,6 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'email' => $email,
-				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -545,6 +543,52 @@ class CRUDComponent extends CommonComponent
 			->where([
 				'Users.email' => $email,
 				'Users.del_flag' => 1
+			]);
+		return $query->toArray();
+	}
+
+	// Thống Kê
+	public function totalOrderForMonth(){
+		$query = $this->Orders->find()
+			->where([
+				'Month(Orders.created_date)' => Date('m'),
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			]);
+		return $query->toArray();
+	}
+
+	public function totalUser(){
+		$query = $this->Users->find()
+			->where([
+				'Users.del_flag' => 0,
+				'Users.role_id' => 1
+			]);
+		return $query->toArray();
+	}
+
+	public function totalProduct(){
+		$query = $this->Products->find()
+			->where([
+				'Products.del_flag' => 0,
+			]);
+		return $query->toArray();
+	}
+
+	//Doanh thu
+	public function revenueForMonth(){
+		$query = $this->Orders->find()
+			->select([
+				'sum'=>'SUM(Orders.total_amount)'
+			])
+			->where([
+				'Month(Orders.created_date)' => Date('m'),
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
 			]);
 		return $query->toArray();
 	}

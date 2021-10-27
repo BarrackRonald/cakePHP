@@ -67,14 +67,30 @@ class OrdersController extends AppController
 	//Chi tiết đơn hàng
 	public function orderDetails($id = null)
 	{
+		//Check URL_ID
+		if (!is_numeric($id)) {
+			$this->Flash->error(__('Đơn hàng không tồn tại.'));
+			return $this->redirect(['action' => 'listOrders']);
+		} else {
+			$checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+			if (count($checkOrderID) < 1) {
+				$this->Flash->error(__('Đơn hàng không tồn tại.'));
+				return $this->redirect(['action' => 'listOrders']);
+			}
+		}
 		$dataOrderDetails = $this->{'CRUD'}->getOrderDetailsByID($id);
-		$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => '3'])));
+		$referer = $this->referer();
+		$this->set('referer', $referer);
+		if($referer == "/"){
+			return $this->redirect(['action' => 'listOrders']);
+		}else{
+			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => '3'])));
+		}
 	}
 
 	// Duyệt đơn hàng
 	public function confirmOrder($id = null)
 	{
-
 		//Check URL_ID
 		if (!is_numeric($id)) {
 			$this->Flash->error(__('Đơn hàng không tồn tại.'));

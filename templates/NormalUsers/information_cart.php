@@ -153,7 +153,6 @@ echo $this->element('NormalUsers/header');
 
 			},
 			error: function(data, textStatus, jqXHR) {
-
 				console.log("error");
 			}
 		});

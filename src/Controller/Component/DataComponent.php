@@ -66,21 +66,6 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
-	//Lấy Pws By ID
-	public function getPwsByID($idUser)
-	{
-		$query = $this->Users->find()
-			->select([
-				'Users.id',
-				'Users.password',
-			])
-			->where([
-				'Users.id' => $idUser,
-				'Users.del_flag' => 0
-			]);
-		return $query->toArray();
-	}
-
 	public function insertUsers($dataProds, $pointAF)
 	{
 		$user = [];
@@ -165,7 +150,6 @@ class DataComponent extends CommonComponent
 			])
 			->where([
 				'Users.email' => $atribute['email'],
-				'Users.del_flag' => 0
 			]);
 		return $query->toArray();
 	}
@@ -326,7 +310,7 @@ class DataComponent extends CommonComponent
 			->join([
 				'table' => 'Roles',
 				'alias' => 'Roles',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Users.role_id = Roles.id']
 			]);
 		return $query->toArray();
@@ -388,23 +372,6 @@ class DataComponent extends CommonComponent
 		return $query;
 	}
 
-	public function updateUserByID($atribute, $idUser)
-	{
-		$this->Users->query()
-			->update()
-			->set([
-				'Users.username' => $atribute['username'],
-				'Users.email' => $atribute['email'],
-				'Users.phonenumber' => $atribute['phonenumber'],
-				'Users.address' => $atribute['address'],
-			])
-			->where([
-				'Users.id' => $idUser,
-				'Users.del_flag' => 0
-			])
-			->execute();
-	}
-
 	public function checklogin($atribute)
 	{
 		$query = $this->Users->query()
@@ -444,7 +411,7 @@ class DataComponent extends CommonComponent
 			->join([
 				'table' => 'Categories',
 				'alias' => 'Categories',
-				'type' => 'left',
+				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
 			->Where([
@@ -487,20 +454,17 @@ class DataComponent extends CommonComponent
 	public function getOrdersByUser($idUsers)
 	{
 		$query = $this->Orders->find()
+			->select([
+				'Orders.id',
+				'Orders.total_point',
+				'Orders.total_amount',
+				'Orders.created_date',
+				'Orders.status'
+			])
 			->where([
 				'Orders.user_id' => $idUsers
 			])
-			->join([
-				'table' => 'Orderdetails',
-				'type' => 'inner',
-				'conditions' => ['Orderdetails.order_id = Orders.id']
-			])
-			->join([
-				'table' => 'Products',
-				'type' => 'inner',
-				'conditions' => ['Orderdetails.product_id = Products.id']
-			])
-			;
+			->order('Orders.id DESC');
 		return $query;
 	}
 }

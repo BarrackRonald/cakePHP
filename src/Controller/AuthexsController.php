@@ -157,7 +157,6 @@ class AuthexsController extends AppController
 						if ($dataUser['data']['password'] == '') {
 							$dataUser['data']['password'] = '';
 						}
-						dd($dataUser['data']['password']);
 						$this->Users->save($dataUser['data']);
 						$this->redirect(['action' => 'login']);
 						$this->Flash->success(__('Đăng ký tài khoản thành công.'));

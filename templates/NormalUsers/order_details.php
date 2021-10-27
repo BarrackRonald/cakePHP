@@ -7,7 +7,7 @@ echo $this->element('NormalUsers/header');
 		<div class="row">
 			<div class="col-md-12">
 				<div class="product-bit-title text-center">
-					<h2>Lịch sử Đơn hàng</h2>
+					<h2>Chi tiết Đơn hàng</h2>
 				</div>
 			</div>
 		</div>
@@ -26,38 +26,30 @@ echo $this->element('NormalUsers/header');
 						<?php if (isset($dataNameForUser)) { ?>
 								<div id="customer_details" class="col2-set">
 									<div class="col-3">
-										<h3 id="order_review_heading">Thông Tin Đơn Hàng</h3>
+										<h3 id="order_review_heading">Thông Tin Chi Tiết</h3>
 										<table class="shop_table">
 											<thead>
 												<tr>
-													<th>Ngày đặt hàng</th>
-													<th>Trạng Thái</th>
-													<th>Chi tiết đơn</th>
+													<th>Tên sản phẩm</th>
+													<th>Số lượng</th>
+													<th>Point nhận được</th>
+													<th>Giá sản phẩm</th>
 												</tr>
 											</thead>
 											<tbody>
-											<?php foreach ($dataOrders as $order) {?>
+											<?php foreach ($dataOrderDetails as $orderDetail) {?>
 												<tr class="cart_item">
 													<td class="product-total">
-														<span class="amount"><?=$order['created_date']?></span>
+														<span class="amount"><?= $orderDetail['Products']['product_name'] ?></span>
 													</td>
 													<td class="product-total">
-														<span class="amount">
-															<?php
-																if($order['status'] == 0){
-																	echo 'Chờ Duyệt';
-																}elseif ($order['status'] == 1) {
-																	echo 'Đã Duyệt';
-																}else {
-																	echo 'Từ chối';
-																}
-															 ?>
-														</span>
+														<span class="amount"><?= $orderDetail['quantity_orderDetails'] ?></span>
 													</td>
 													<td class="product-total">
-														<a href="<?= $this->Url->build('/details-order/' .$order['id'], ['fullBase' => true])?>">
-															<input type="submit" data-value="Place order" value="Chi Tiết" id="place_order" class="button alt">
-														</a>
+														<span class="amount"><?= $orderDetail['point_orderDetail'].' point' ?></span>
+													</td>
+													<td class="product-total">
+														<span class="amount"><?= '$'.number_format($orderDetail['amount_orderDetails']) ?></span>
 													</td>
 												</tr>
 											<?php }?>
@@ -79,15 +71,18 @@ echo $this->element('NormalUsers/header');
 					</div>
 					</form>
 				<?php } ?>
-				<?php if (isset($dataNameForUser)) { ?>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="product-pagination text-center pagination-button">
-								<?= $this->element('paginator') ?>
+				<div class="col-3">
+					<div id="order_review" class="button-back">
+						<div id="payment">
+							<div class="form-row place-order">
+								<a href="<?= $referer?>">
+									<input type="button" data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
+								</a>
 							</div>
+							<div class="clear"></div>
 						</div>
 					</div>
-				<?php }?>
+				</div>
 				</div>
 			</div>
 		</div>

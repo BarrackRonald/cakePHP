@@ -39,18 +39,15 @@ $n = 1;
 								<td>
 								<td> <a><?= $orderDetail['Products']['product_name'] ?></a></td>
 								<td> <a><?= $orderDetail['quantity_orderDetails'] ?></a></td>
-								<td> <a><?= $orderDetail['point_orderDetail'] ?></a></td>
-								<td> <a><?= number_format($orderDetail['amount_orderDetails']) ?></a></td>
+								<td> <a><?= $orderDetail['point_orderDetail'].' point' ?></a></td>
+								<td> <a><?= '$'.number_format($orderDetail['amount_orderDetails']) ?></a></td>
 							</tr>
 						<?php } ?>
 					</tbody>
 				</table>
-				<div class="pagination-button">
-					<?= $this->element('paginator') ?>
-				</div>
 			</div>
 			<div style="margin-left: 25px">
-				<a href="/admin/list-orders">
+				<a href="<?= $referer?>">
 					<input type="submit" class="btn btn-info" value="Quay Lại" style="margin-bottom: 5px" />
 				</a>
 			</div>

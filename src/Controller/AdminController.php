@@ -13,6 +13,13 @@ use Cake\Event\EventInterface;
  */
 class AdminController extends AppController
 {
+	public function initialize(): void
+	{
+		parent::initialize();
+		$this->loadComponent('Data');
+		$this->loadComponent('CRUD');
+		$this->loadModel("Categories");
+	}
 	public function beforeRender(EventInterface $event)
 	{
 		$session = $this->request->getSession();
@@ -24,12 +31,7 @@ class AdminController extends AppController
 		}
 	}
 
-	/**
-	 * Index method
-	 *
-	 * @return \Cake\Http\Response|null|void Renders view
-	 */
-	public function index()
+	public function beforeFilter(EventInterface $event)
 	{
 		$session = $this->request->getSession();
 		$flag = $session->read('flag');
@@ -37,5 +39,23 @@ class AdminController extends AppController
 			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
 			return $this->redirect(['controller' => 'NormalUsers', 'action' => 'index']);
 		}
+	}
+
+	/**
+	 * Index method
+	 *
+	 * @return \Cake\Http\Response|null|void Renders view
+	 */
+	public function index()
+	{
+		$Order = $this->{'CRUD'}->totalOrderForMonth();
+		$User = $this->{'CRUD'}->totalUser();
+		$product = $this->{'CRUD'}->totalProduct();
+		$revenueOrderForMonth = $this->{'CRUD'}->revenueForMonth();
+		$OrderForMonth = count($Order);
+		$totalUser = count($User);
+		$totalProduct = count($product);
+
+		$this->set(compact('OrderForMonth', 'totalUser', 'totalProduct', 'revenueOrderForMonth'));
 	}
 }

@@ -14,9 +14,8 @@ $this->disableAutoLayout();
 	<link rel="stylesheet" href="../../css/Admin/bootstrap.css">
 	<link rel="stylesheet" href="../../css/Admin/main.css">
 
-	<link rel="stylesheet" href="../../vendors/Admin/chartjs/Chart.min.css">
-
-	<link rel="stylesheet" href="../../vendors/Admin/perfect-scrollbar/perfect-scrollbar.css">
+	<link rel="stylesheet" href="../../vendor/Admin/chartjs/Chart.min.css">
+	<link rel="stylesheet" href="../../vendor/Admin/perfect-scrollbar/perfect-scrollbar.css">
 	<link rel="stylesheet" href="../../css/Admin/app.css">
 	<link rel="stylesheet" href="../../css/Admin/cake.css">
 	<link rel="shortcut icon" href="../../images/Admin/favicon.svg" type="image/x-icon">

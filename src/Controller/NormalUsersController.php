@@ -1024,14 +1024,36 @@ class NormalUsersController extends AppController
 	public function historyOrders()
 	{
 		$session = $this->request->getSession();
-		$idUsers = $session->read('idUser');
 		if ($session->check('idUser')) {
+			$idUsers = $session->read('idUser');
 			$dataUser = $this->{'Data'}->getInfoUser($idUsers);
 			$this->set(compact('dataUser'));
+			$dataOrders = $this->{'Data'}->getOrdersByUser($idUsers);
+			$this->set(compact('dataOrders', $this->paginate($dataOrders, ['limit' => '3'])));
 		}
-		$dataOrders = $this->{'Data'}->getOrdersByUser($idUsers);
-		dd($dataOrders);
-		$this->set(compact('dataOrders'));
+
 	}
 
+	public function orderDetails ($id=null){
+		//Check URL_ID
+		if (!is_numeric($id)) {
+			$this->Flash->error(__('Đơn hàng không tồn tại.'));
+			return $this->redirect(['action' => 'historyOrders']);
+		} else {
+			$checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+			if (count($checkOrderID) < 1) {
+				$this->Flash->error(__('Đơn hàng không tồn tại.'));
+				return $this->redirect(['action' => 'historyOrders']);
+			}
+		}
+
+		$dataOrderDetails = $this->{'CRUD'}->getOrderDetailsByID($id);
+		$referer = $this->referer();
+		$this->set('referer', $referer);
+		if($referer == "/"){
+			return $this->redirect(['action' => 'historyOrders']);
+		}else{
+			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => '3'])));
+		}
+	}
 }

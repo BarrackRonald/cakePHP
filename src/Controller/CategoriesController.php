@@ -125,7 +125,6 @@ class CategoriesController extends AppController
 						$this->Flash->success(__('Danh mục đã được cập nhật thành công.'));
 						return $this->redirect($atribute['referer']);
 					} else {
-						$session->write('hasReferer', 1);
 						$this->Flash->error(__('Danh mục chưa được cập nhật. Vui lòng thử lại.'));
 					}
 				}

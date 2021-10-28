@@ -56,20 +56,25 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	//Order
 	$builder->connect('/addCart', ['controller' => 'NormalUsers', 'action' => 'addCart']);
 	$builder->connect('/reduceQuantity', ['controller' => 'NormalUsers', 'action' => 'reduceQuantity']);
-	$builder->connect('/delAllCart', ['controller' => 'NormalUsers', 'action' => 'delAllCart']);
+	$builder->connect('/removeProduct', ['controller' => 'NormalUsers', 'action' => 'removeProduct']);
 	$builder->connect('/carts', ['controller' => 'NormalUsers', 'action' => 'informationCart']);
-	$builder->connect('/successorder', ['controller' => 'NormalUsers', 'action' => 'successOrder']);
 
-	//Hóa đơn Order
-	$builder->connect('/billOrder', ['controller' => 'NormalUsers', 'action' => 'billOrder']);
+	//Xác nhận đặt hàng
+	$builder->connect('/confirmOrder', ['controller' => 'NormalUsers', 'action' => 'confirmOrder']);
 
-	//Xác nhận đăt hàng
+	//Đặt hàng
 	$builder->connect('/addOrders', ['controller' => 'NormalUsers', 'action' => 'addOrders']);
 
-	//Add User
-	$builder->connect('/addUser', ['controller' => 'NormalUsers', 'action' => 'addUser']);
+	//Hoàn thành đặt hàng
+	$builder->connect('/completeOrder', ['controller' => 'NormalUsers', 'action' => 'completeOrder']);
 
-	//Xác nhận đặt hàng không login
+	//Input - Order none Login
+	$builder->connect('/input', ['controller' => 'NormalUsers', 'action' => 'inputUser']);
+
+	//Xác nhận đơn hàng không Login
+	$builder->connect('/confirm', ['controller' => 'NormalUsers', 'action' => 'confirm']);
+
+	//Đặt hàng không login
 	$builder->connect('/addOrdersNoneLogin', ['controller' => 'NormalUsers', 'action' => 'addOrdersNoneLogin']);
 
 	//Thông tin cá nhân show ở trang index

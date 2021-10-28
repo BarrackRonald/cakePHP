@@ -548,10 +548,11 @@ class CRUDComponent extends CommonComponent
 	}
 
 	// Thống Kê
-	public function totalOrderForMonth(){
+	/* Tổng số đơn hàng bán ra trong tháng hiện tại */
+	public function totalOrderForYear(){
 		$query = $this->Orders->find()
 			->where([
-				'Month(Orders.created_date)' => Date('m'),
+				'Year(Orders.created_date)' => '20'.Date('y'),
 				'OR' => [
 					['Orders.status' => 0],
 					['Orders.status' => 1],
@@ -560,15 +561,83 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
-	public function totalUser(){
-		$query = $this->Users->find()
+	/*Tổng số đơn hàng bán ra trong các tháng */
+	public function totalOrderAllMonth(){
+		$query = $this->Orders->find()
+			->select([
+				'Month' => 'Month(Orders.created_date)',
+				'Count' => 'count(Orders.id)'
+			])
 			->where([
-				'Users.del_flag' => 0,
-				'Users.role_id' => 1
+				'Year(Orders.created_date)' => '20'.Date('y'),
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			])
+			->group('Month');
+		return $query->toArray();
+	}
+	/*Tổng đơn hàng đã đặt trên website */
+	public function totalOrder(){
+		$query = $this->Orders->find()
+			->where([
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
 			]);
 		return $query->toArray();
 	}
 
+	/*Tổng đơn hàng trong các năm gần nhất */
+	public function totalOrderAllYear(){
+		$query = $this->Orders->find()
+			->select([
+				'Year' => 'Year(Orders.created_date)',
+				'Count' => 'count(Orders.id)'
+			])
+			->where([
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			])
+			->group('Year');
+		return $query->toArray();
+
+	}
+	/*Tổng số người dùng đã đặt hàng */
+	public function totalUser(){
+		$query = $this->Orders->find()
+			->where([
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			])
+			->group('Orders.user_id');
+		return $query->toArray();
+	}
+	/*Tổng người dùng đã đặt hàng của các tháng trong năm */
+	public function totalUserForMonth(){
+		$query = $this->Orders->find()
+			->select([
+				'Month' => 'Month(Orders.created_date)',
+				'Count' => 'count(DISTINCT Orders.user_id)'
+			])
+			->where([
+				'Year(Orders.created_date)' => '20'.Date('y'),
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			])
+			->group('Month');
+		return $query->toArray();
+	}
+
+	/*Tổng sản phẩm đang bán trên website */
 	public function totalProduct(){
 		$query = $this->Products->find()
 			->where([
@@ -577,19 +646,76 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
-	//Doanh thu
-	public function revenueForMonth(){
+	/*Tổng sản phẩm đã bán của các tháng */
+	public function totalProductForMonth(){
+		$query = $this->Orderdetails->find()
+			->select([
+				'Month' => 'Month(Orderdetails.created_date)',
+				'Count' => 'count(DISTINCT Orderdetails.product_id)'
+			])
+			->join([
+				'table' => 'Orders',
+				'alias' => 'Orders',
+				'type' => 'inner',
+				'conditions' => ['Orderdetails.order_id = Orders.id']
+			])
+			->where([
+				'Year(Orderdetails.created_date)' => '20'.Date('y'),
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			])
+			->group('Month');
+		return $query->toArray();
+	}
+
+	//Doanh thu năm hiện tại
+	public function revenue(){
 		$query = $this->Orders->find()
 			->select([
 				'sum'=>'SUM(Orders.total_amount)'
 			])
 			->where([
-				'Month(Orders.created_date)' => Date('m'),
 				'OR' => [
 					['Orders.status' => 0],
 					['Orders.status' => 1],
 				]
 			]);
+		return $query->toArray();
+	}
+
+	//Doanh thu các tháng trong năm hiện tại
+	public function revenueForMonth(){
+		$query = $this->Orders->find()
+			->select([
+				'Month' => 'Month(Orders.created_date)',
+				'sum'=>'SUM(Orders.total_amount)'
+			])
+			->where([
+				'Year(Orders.created_date)' => '20'.Date('y'),
+				'OR' => [
+					['Orders.status' => 0],
+					['Orders.status' => 1],
+				]
+			])
+			->group('Month');
+		return $query->toArray();
+	}
+
+	//Set màu cho cột
+	public function colorCurrentMonth(){
+		$query = $this->Orders->find()
+			->select([
+				'Month' => 'Month(Orders.created_date)',
+			])
+			->where([
+				'OR' => [
+					['Month(Orders.created_date)' => Date('m')-1],
+					['Month(Orders.created_date)' => Date('m')]
+				],
+			])
+			->group('Month');
 		return $query->toArray();
 	}
 

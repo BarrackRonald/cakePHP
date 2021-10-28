@@ -27,45 +27,9 @@ echo $this->element('NormalUsers/header');
 			<div class="col-md-12">
 				<div class="product-content-right">
 					<div class="woocommerce">
-
-						<form id="login-form-wrap" class="login collapse" method="post">
-							<p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer please proceed to the Billing &amp; Shipping section.</p>
-							<p class="form-row form-row-first">
-								<label for="username">Username or email <span class="required">*</span>
-								</label>
-								<input type="text" id="username" name="username" class="input-text">
-							</p>
-							<p class="form-row form-row-last">
-								<label for="password">Password <span class="required">*</span>
-								</label>
-								<input type="password" id="password" name="password" class="input-text">
-							</p>
-							<div class="clear"></div>
-
-							<p class="form-row">
-								<input type="submit" value="Login" name="login" class="button">
-								<label class="inline" for="rememberme"><input type="checkbox" value="forever" id="rememberme" name="rememberme"> Remember me </label>
-							</p>
-							<p class="lost_password">
-								<a href="#">Lost your password?</a>
-							</p>
-							<div class="clear"></div>
-						</form>
-
-						<form id="coupon-collapse-wrap" method="post" class="checkout_coupon collapse">
-							<p class="form-row form-row-first">
-								<input type="text" value="" id="coupon_code" placeholder="Coupon code" class="input-text" name="coupon_code">
-							</p>
-							<p class="form-row form-row-last">
-								<input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
-							</p>
-							<div class="clear"></div>
-						</form>
-
 						<?php if (isset($dataUser)) { ?>
 							<form enctype="multipart/form-data" action="/addOrders" class="checkout" method="post" name="checkout">
 								<div id="customer_details" class="col2-set">
-									<!-- Test -->
 									<div class="col-3">
 										<h3 id="order_review_heading">Thông Tin Khách hàng</h3>
 										<table class="shop_table">
@@ -110,7 +74,6 @@ echo $this->element('NormalUsers/header');
 											<?php } ?>
 										</table>
 									</div>
-									<!-- End Test -->
 									<div class="col-3">
 										<h3 id="order_review_heading"> Thông Tin Đơn Hàng</h3>
 										<div id="order_review" style="position: relative;">
@@ -191,10 +154,9 @@ echo $this->element('NormalUsers/header');
 									<p id="billing_first_name_field" class="form-row form-row-first validate-required">
 										<label class="" for="billing_first_name">Họ và tên <abbr title="required" class="required">*</abbr>
 										</label>
-										
 										<input <?php if (isset($_SESSION['error']['username'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value=" <?php if (isset($_SESSION['cartData']['infoUser']['username'])) {
-																																											echo h($_SESSION['cartData']['infoUser']['username']);
-																																						} ?>" placeholder="" id="billing_first_name" name="username" class="input-text ">
+																																												echo h($_SESSION['cartData']['infoUser']['username']);
+																																											} ?>" placeholder="" id="billing_first_name" name="username" class="input-text ">
 										<?php if (isset($_SESSION['error']['username'])) { ?>
 											<i style="color: red;">
 												<?= implode($_SESSION['error']['username']) ?>
@@ -206,8 +168,8 @@ echo $this->element('NormalUsers/header');
 										<label class="" for="billing_address_1">Địa chỉ <abbr title="required" class="required">*</abbr>
 										</label>
 										<input <?php if (isset($_SESSION['error']['address'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser']['address'])) {
-																																											echo h($_SESSION['cartData']['infoUser']['address']);
-																																										} ?>" placeholder="" id="billing_address_1" name="address" class="input-text ">
+																																												echo h($_SESSION['cartData']['infoUser']['address']);
+																																											} ?>" placeholder="" id="billing_address_1" name="address" class="input-text ">
 										<?php if (isset($_SESSION['error']['address'])) { ?>
 											<i style="color: red;">
 												<?= implode($_SESSION['error']['address']) ?>
@@ -220,8 +182,8 @@ echo $this->element('NormalUsers/header');
 										<label class="" for="billing_email">Địa chỉ Email <abbr title="required" class="required">*</abbr>
 										</label>
 										<input <?php if (isset($_SESSION['error']['email'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser']['email'])) {
-																																										echo h($_SESSION['cartData']['infoUser']['email']);
-																																									} ?>" placeholder="" id="billing_email" name="email" class="input-text ">
+																																											echo h($_SESSION['cartData']['infoUser']['email']);
+																																										} ?>" placeholder="" id="billing_email" name="email" class="input-text ">
 										<?php if (isset($_SESSION['error']['email'])) { ?>
 											<i style="color: red;">
 												<?= implode($_SESSION['error']['email']) ?>
@@ -234,8 +196,8 @@ echo $this->element('NormalUsers/header');
 										<label class="" for="billing_phone">Số điện thoại <abbr title="required" class="required">*</abbr>
 										</label>
 										<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if (isset($_SESSION['cartData']['infoUser']['phonenumber'])) {
-																																												echo h($_SESSION['cartData']['infoUser']['phonenumber']);
-																																											} ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
+																																													echo h($_SESSION['cartData']['infoUser']['phonenumber']);
+																																												} ?>" placeholder="" id="billing_phone" name="phonenumber" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
 										<?php if (isset($_SESSION['error']['phonenumber'])) { ?>
 											<i style="color: red;">
 												<?= implode($_SESSION['error']['phonenumber']) ?>

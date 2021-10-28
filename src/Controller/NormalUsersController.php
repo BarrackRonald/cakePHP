@@ -51,7 +51,42 @@ class NormalUsersController extends AppController
 		}
 	}
 
-	public function billOrder()
+	public function confirmOrder()
+	{
+		if ($this->request->is('post')) {
+			$session = $this->request->getSession();
+			if ($session->check('hasBack')) {
+				$session->delete('hasBack');
+			}
+			if (!$session->check('cartData')) {
+				$this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
+				return $this->redirect(['action' => 'informationCart']);
+			} else {
+				$dataProds = $session->read('cartData');
+				if ($dataProds['totalAllAmount'] == 0) {
+					$this->Flash->error(__('Giỏ hàng trống nên không thể đặt hàng'));
+					return $this->redirect(['action' => 'informationCart']);
+				}
+			}
+
+			//check user đã đăng nhập chưa
+			if (!$session->check('idUser')) {
+				$dataProds['flag'] = 0;
+				echo "";
+			} else {
+				$dataProds['flag'] = 1;
+				$idUsers = $session->read('idUser');
+				$dataUser = $this->{'Data'}->getInfoUser($idUsers);
+				$this->set(compact('dataUser'));
+			}
+
+			$session->write('cartData', $dataProds);
+			$this->set(compact('dataProds'));
+		}
+	}
+
+	//Input infor User
+	public function inputUser()
 	{
 		if ($this->request->is('post')) {
 			$session = $this->request->getSession();
@@ -86,8 +121,8 @@ class NormalUsersController extends AppController
 	}
 
 
-	//Add User cho phần không login
-	public function addUser()
+	//Xác nhận cho phần không login
+	public function confirm()
 	{
 		$session = $this->request->getSession();
 		$hasBack = 1;
@@ -102,7 +137,7 @@ class NormalUsersController extends AppController
 				$session->write('error', $error);
 				$dataProds['infoUser'] = $atribute;
 				$session->write('cartData', $dataProds);
-				$this->redirect(['action' => 'billOrder']);
+				$this->redirect(['action' => 'inputUser']);
 			} else {
 				if ($session->check('error')) {
 					$session->delete('error');
@@ -118,7 +153,7 @@ class NormalUsersController extends AppController
 				if (count($checkmail) > 0) {
 					$error['email'] = ['Địa chỉ mail này đã tồn tại.'];
 					$session->write('error', $error);
-					return $this->redirect(['action' => 'billOrder']);
+					return $this->redirect(['action' => 'inputUser']);
 				} else {
 					if ($session->check('error')) {
 						$session->delete('error');
@@ -432,7 +467,7 @@ class NormalUsersController extends AppController
 					$session->delete('cartData');
 					$errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
 					if ($errSendMail == false) {
-						$this->redirect(['action' => 'successOrder']);
+						$this->redirect(['action' => 'completeOrder']);
 					}
 				}
 			}
@@ -710,13 +745,13 @@ class NormalUsersController extends AppController
 					$session->delete('cartData');
 					$errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);
 					if ($errSendMail == false) {
-						$this->redirect(['action' => 'successOrder']);
+						$this->redirect(['action' => 'completeOrder']);
 					}
 				}
 			}
 		}
 	}
-	public function successOrder()
+	public function completeOrder()
 	{
 	}
 
@@ -730,9 +765,20 @@ class NormalUsersController extends AppController
 		if ($session->check('error')) {
 			$session->delete('error');
 		}
+
+		//check user đã đăng nhập chưa
+		if (!$session->check('idUser')) {
+			$dataProds['flag'] = 0;
+			echo "";
+		} else {
+			$dataProds['flag'] = 1;
+			$idUsers = $session->read('idUser');
+			$dataUser = $this->{'Data'}->getInfoUser($idUsers);
+			$this->set(compact('dataUser'));
+		}
 	}
 
-	public function delAllCart()
+	public function removeProduct()
 	{
 		if ($this->request->is('post')) {
 			$dataSession = [];

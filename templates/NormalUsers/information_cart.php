@@ -23,7 +23,8 @@ echo $this->element('NormalUsers/header');
 			<div class="col-md-12">
 				<div class="product-content-right">
 					<div class="woocommerce">
-						<form method="post" action="/billOrder">
+					<?php if(isset($dataUser)){ ?>
+						<form method="post" action="/confirmOrder">
 							<table cellspacing="0" class="shop_table cart">
 								<thead>
 									<tr>
@@ -41,7 +42,7 @@ echo $this->element('NormalUsers/header');
 									<?php if (isset($dataProds)) foreach ($dataProds['cart'] as $key => $product) {  ?>
 										<tr class="cart_item" id="cart_item_<?= $key ?>">
 											<td class="product-remove">
-												<a title="Remove this item" class="remove" href="javascript:;" onclick="delAllCart(<?= $key ?>)">x</a>
+												<a title="Remove this item" class="remove" href="javascript:;" onclick="removeProduct(<?= $key ?>)">x</a>
 											</td>
 
 											<td class="product-thumbnail">
@@ -116,6 +117,101 @@ echo $this->element('NormalUsers/header');
 								</tbody>
 							</table>
 						</form>
+					<?php } else {?>
+						<form method="post" action="/input">
+							<table cellspacing="0" class="shop_table cart">
+								<thead>
+									<tr>
+										<th class="product-remove">Xóa</th>
+										<th class="product-thumbnail">Hình Ảnh</th>
+										<th class="product-name">Sản Phẩm</th>
+										<th class="product-price">Giá</th>
+										<th class="product-point">Point</th>
+										<th class="product-quantity">Số Lượng</th>
+										<th class="product-subtotal">Tổng Giá</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<?php if (isset($dataProds)) foreach ($dataProds['cart'] as $key => $product) {  ?>
+										<tr class="cart_item" id="cart_item_<?= $key ?>">
+											<td class="product-remove">
+												<a title="Remove this item" class="remove" href="javascript:;" onclick="removeProduct(<?= $key ?>)">x</a>
+											</td>
+
+											<td class="product-thumbnail">
+												<a><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="<?= $product['image'] ?>"></a>
+											</td>
+
+											<td class="product-name">
+												<a><?= h($product['name']) ?></a>
+											</td>
+
+											<td class="product-price">
+												<span class="amount"><?= '$' . number_format($product['amount']) ?></span>
+											</td>
+
+											<td class="product-point">
+												<span class="amount" id="point_<?= $key ?>"><?= $product['totalPoint'] ?></span>
+											</td>
+
+											<td class="product-quantity" style="width:auto">
+												<div class="quantity buttons_added">
+													<a href="javascript:;" onclick="reduceQuantity(<?= $key ?>)">
+														<input type="button" class="minus" value="-">
+
+													</a>
+													<input class='valueItem' id="product_<?= $key ?>" type="number" size="4" class="input-text qty text" title="Qty" value="<?= isset($this->request->getSession()->read('cartData')['cart']["$key"]) ? $this->request->getSession()->read('cartData')['cart']["$key"]['quantity'] : "0"; ?>" min="0" step="1" readonly>
+													<a href="javascript:;" onclick="addCart(<?= $key ?>)">
+														<input type="button" class="plus" value="+">
+													</a>
+												</div>
+											</td>
+
+											<td class="product-subtotal">
+
+												<span class="amount" id="amount_<?= $key ?>">
+													<?= '$' . number_format($product['totalAmount']) ?>
+												</span>
+											</td>
+										</tr>
+									<?php } ?>
+									<?php if (isset($dataProds)) { ?>
+										<tr>
+											<td class="actions" colspan="6">
+												<div class="coupon">
+													<label for="coupon_code">Tổng Giá:</label>
+												</div>
+											</td>
+											<td class="actions" colspan="1">
+												<label for="coupon_code" id="totalAllAmount"> $
+													<?php
+													echo isset($this->request->getSession()->read('cartData')['totalAllAmount']) ? number_format($this->request->getSession()->read('cartData')['totalAllAmount']) : "0";
+													?>
+												</label>
+											</td>
+										</tr>
+									<?php } else { ?>
+										<tr>
+											<td class="actions" colspan="7">
+												<div class="coupon">
+													<label for="coupon_code">
+													</label>
+												</div>
+											</td>
+										</tr>
+									<?php } ?>
+
+									<tr>
+										<td class="actions" colspan="7">
+											<input type="submit" value="Đặt Hàng" name="proceed" class="checkout-button button alt wc-forward">
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</form>
+					<?php } ?>
 					</div>
 				</div>
 			</div>
@@ -188,9 +284,9 @@ echo $this->element('NormalUsers/header');
 		});
 	}
 
-	function delAllCart(product_id) {
+	function removeProduct(product_id) {
 		$.ajax({
-			url: '/delAllCart',
+			url: '/removeProduct',
 			type: 'post',
 			data: {
 				productId: (product_id)

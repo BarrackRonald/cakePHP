@@ -13,10 +13,10 @@ var chartColors = {
 var config1 = {
   type: "line",
   data: {
-    labels: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    labels: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
     datasets: [
       {
-        label: "Balance",
+        label: "Orders",
         backgroundColor: "#fff",
         borderColor: "#fff",
         data: [90, 40, 20, 70, 10, 50, 20, 90, 40, 20, 70, 10],
@@ -81,13 +81,13 @@ var config1 = {
 var config2 = {
   type: "line",
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["Năm 2021","Năm 2022","Năm 2023","Năm 2024","Năm 2025","Năm 2026","Năm 2027","Năm 2028","Năm 2029","Năm 2030"],
     datasets: [
       {
-        label: "Revenue",
+        label: "Order of the year",
         backgroundColor: "#fff",
         borderColor: "#fff",
-        data: [20, 800, 300, 400, 10, 50, 20],
+        data: [90, 40, 20, 70, 10, 50, 20, 90, 40, 20],
         fill: false,
         pointBorderWidth: 100,
         pointBorderColor: "transparent",
@@ -149,13 +149,13 @@ var config2 = {
 var config3 = {
   type: "line",
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
     datasets: [
       {
-        label: "Orders",
+        label: "Total Users",
         backgroundColor: "#fff",
         borderColor: "#fff",
-        data: [20, 40, 20, 200, 10, 540, 723],
+        data: [90, 40, 20, 70, 10, 50, 20, 90, 40, 20, 70, 10],
         fill: false,
         pointBorderWidth: 100,
         pointBorderColor: "transparent",
@@ -218,13 +218,13 @@ var config3 = {
 var config4 = {
   type: "line",
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
     datasets: [
       {
-        label: "My First dataset",
+        label: "Products",
         backgroundColor: "#fff",
         borderColor: "#fff",
-        data: [20, 40, 20, 70, 10, 5, 23],
+        data: [90, 40, 20, 70, 10, 50, 20, 90, 40, 20, 70, 10],
         fill: false,
         pointBorderWidth: 100,
         pointBorderColor: "transparent",
@@ -236,7 +236,7 @@ var config4 = {
   },
   options: {
     responsive: true,
-    maintainAspectRatio: false, 
+    maintainAspectRatio: false,
     layout: {
       padding: {
         left: -10,
@@ -300,7 +300,7 @@ Chart.helpers.drawRoundedTopRectangle = function(ctx, x, y, width, height, radiu
   ctx.lineTo(x + width, y + height);
   // bottom left corner
   ctx.lineTo(x, y + height);
-  // top left	
+  // top left
   ctx.lineTo(x, y + radius);
   ctx.quadraticCurveTo(x, y, x + radius, y);
   ctx.closePath();
@@ -397,9 +397,9 @@ var ctxBar = document.getElementById("bar").getContext("2d");
 var myBar = new Chart(ctxBar, {
   type: 'bar',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+    labels: ["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"],
     datasets: [{
-      label: 'Students',
+      label: 'Doanh Thu',
       backgroundColor: [chartColors.grey, chartColors.grey, chartColors.grey, chartColors.grey, chartColors.info, chartColors.blue, chartColors.grey],
       data: [
         5,
@@ -409,6 +409,12 @@ var myBar = new Chart(ctxBar, {
         35,
         55,
         15,
+		10,
+        30,
+        40,
+        35,
+        55,
+        15
       ]
     }]
   },

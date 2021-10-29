@@ -36,7 +36,8 @@ $n = 1;
 					<table id="tbl-users-list" class='table table-striped' id="table1">
 						<thead>
 							<tr>
-								<th>STT<th>
+								<th>STT
+								<th>
 								<th>Họ và tên</th>
 								<th>Email</th>
 								<th>Số Điện thoại</th>
@@ -66,16 +67,16 @@ $n = 1;
 										<?php } ?>
 
 										<?php if ($user->del_flag == 0) { ?>
-											<form action="<?= $this->Url->build('/admin/delete-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
+											<form id="formLock_<?= $user->id ?>" action="<?= $this->Url->build('/admin/delete-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
 												<input type="hidden" value="<?= $user->id ?>" name="id" />
 												<input type="hidden" value="<?= $user->del_flag ?>" name="del_flag" />
-												<input type="submit" class="btn btn-danger" value="Khóa TK" style="margin-bottom: 5px" />
+												<input type="button" id="<?= $user->id ?>" name="lock" class="btn btn-danger" value="Khóa TK" style="margin-bottom: 5px" />
 											</form>
 										<?php } else { ?>
-											<form action="<?= $this->Url->build('/admin/opent-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
+											<form id="formUnlock_<?= $user->id ?>" action="<?= $this->Url->build('/admin/opent-user/' . $user->id, ['fullBase' => false]) ?>" method="post">
 												<input type="hidden" value="<?= $user->id ?>" name="id" />
 												<input type="hidden" value="<?= $user->del_flag ?>" name="del_flag" />
-												<input type="submit" class="btn btn-success" value="  Mở TK " style="margin-bottom: 5px" />
+												<input type="button" id="<?= $user->id ?>" name="unlock" class="btn btn-success" value="  Mở TK " style="margin-bottom: 5px" />
 											</form>
 										<?php } ?>
 									</td>
@@ -93,6 +94,40 @@ $n = 1;
 <?php } else { ?>
 	<h3>Người dùng không đủ quyền để truy cập</h3>
 <?php } ?>
+
 <?php
 echo $this->element('Admin/footer');
 ?>
+<script>
+	// Khóa
+	$("input[name = 'lock']").click(function(e) {
+		swal({
+			title: 'Bạn có muốn khóa?',
+			text: 'Người dùng này sẽ không thể mua hàng sau khi khóa?',
+			icon: 'warning',
+			buttons: ["Hủy", "Khóa"],
+			dangerMode: true,
+		}).then(function(value) {
+			if (value) {
+				let formName = '#formLock_' + e.target.id;
+				$(formName).submit();
+			}
+		});
+	});
+
+	// Mở khóa
+	$("input[name = 'unlock']").click(function(e) {
+		swal({
+			title: 'Bạn có muốn mở khóa?',
+			text: 'Người dùng này sẽ có thể mua hàng sau khi mở?',
+			icon: 'warning',
+			buttons: ["Hủy", "Mở"],
+			dangerMode: true,
+		}).then(function(value) {
+			if (value) {
+				let formName = '#formUnlock_' + e.target.id;
+				$(formName).submit();
+			}
+		});
+	});
+</script>

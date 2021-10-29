@@ -62,7 +62,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	//Xác nhận đặt hàng
 	$builder->connect('/confirmOrder', ['controller' => 'NormalUsers', 'action' => 'confirmOrder']);
 
-	//Đặt hàng
+	//Add vào DB cho đặt hàng đã login
 	$builder->connect('/addOrders', ['controller' => 'NormalUsers', 'action' => 'addOrders']);
 
 	//Hoàn thành đặt hàng
@@ -74,7 +74,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	//Xác nhận đơn hàng không Login
 	$builder->connect('/confirm', ['controller' => 'NormalUsers', 'action' => 'confirm']);
 
-	//Đặt hàng không login
+	//Add vào DB cho đặt hàng không login
 	$builder->connect('/addOrdersNoneLogin', ['controller' => 'NormalUsers', 'action' => 'addOrdersNoneLogin']);
 
 	//Thông tin cá nhân show ở trang index

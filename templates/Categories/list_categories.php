@@ -40,10 +40,10 @@ $n = 1;
 										<a href="<?= $this->Url->build('/admin/edit-category/' . $category->id, ['fullBase' => true]) ?>">
 											<input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px" />
 										</a>
-										<form action="<?= $this->Url->build('/admin/delete-category/' . $category->id, ['fullBase' => false]) ?>" method="post">
+										<form id="formDelete_<?=$category->id?>" action="<?= $this->Url->build('/admin/delete-category/' . $category->id, ['fullBase' => false]) ?>" method="post">
 											<input type="hidden" value="<?= $category->id ?>" name="id" />
 											<input type="hidden" value="<?= $category->del_flag ?>" name="del_flag" />
-											<input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px" />
+											<input type="button" id="<?= $category->id ?>" class="btn btn-danger" name="delete" value="Xóa" style="margin-bottom: 5px" />
 										</form>
 									</td>
 								<?php } ?>
@@ -62,3 +62,20 @@ $n = 1;
 <?php
 echo $this->element('Admin/footer');
 ?>
+<script>
+	// Delete
+	$("input[name = 'delete']").click(function(e) {
+		swal({
+			title: 'Bạn có muốn xóa?',
+			text: 'Danh mục này sẽ bị xóa và không thể hoàn tác được?',
+			icon: 'warning',
+			buttons: ["Hủy", "Xóa"],
+			dangerMode: true,
+		}).then(function(value) {
+			if (value) {
+				let formName = '#formDelete_' + e.target.id;
+				$(formName).submit();
+			}
+		});
+	});
+</script>

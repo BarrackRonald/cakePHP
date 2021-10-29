@@ -73,10 +73,10 @@ $n = 1;
 										<a href="<?= $this->Url->build('/admin/edit-product/' . $product->id, ['fullBase' => true]) ?>">
 											<input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px" />
 										</a>
-										<form action="<?= $this->Url->build('/admin/delete-product/' . $product->id, ['fullBase' => false]) ?>" method="post">
+										<form id="formDelete_<?=$product->id?>" action="<?= $this->Url->build('/admin/delete-product/' . $product->id, ['fullBase' => false]) ?>" method="post">
 											<input type="hidden" value="<?= $product->id ?>" name="id" />
 											<input type="hidden" value="<?= $product->del_flag ?>" name="del_flag" />
-											<input type="submit" class="btn btn-danger" value="Xóa" style="margin-bottom: 5px" />
+											<input type="button" id="<?=$product->id?>" class="btn btn-danger" name="delete" value="Xóa" style="margin-bottom: 5px" />
 										</form>
 									</td>
 								<?php } ?>
@@ -95,3 +95,20 @@ $n = 1;
 <?php
 echo $this->element('Admin/footer');
 ?>
+<script>
+	// Delete
+	$("input[name = 'delete']").click(function(e) {
+		swal({
+			title: 'Bạn có muốn xóa?',
+			text: 'Sản phẩm này sẽ bị xóa và không thể hoàn tác được?',
+			icon: 'warning',
+			buttons: ["Hủy", "Xóa"],
+			dangerMode: true,
+		}).then(function(value) {
+			if (value) {
+				let formName = '#formDelete_' + e.target.id;
+				$(formName).submit();
+			}
+		});
+	});
+</script>

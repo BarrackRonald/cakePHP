@@ -110,9 +110,14 @@ class UsersTable extends Table
 			]);
 
 		$validator
-			->email('email')
 			->requirePresence('email', 'create')
-			->notEmptyString('email', 'Email không thể để trống.');
+			->notEmptyString('email', 'Email không thể để trống.')
+			->add('email', [
+				'validFormat' => [
+					'rule' => ['custom', '/^[a-zA-Z0-9]+@[a-z0-9]+\.[a-z]{2,5}$/'],
+					'message' => 'Email không đúng định dạng.'
+				]
+			]);
 
 		$validator
 			->integer('phonenumber')
@@ -209,9 +214,14 @@ class UsersTable extends Table
 			->notEmptyString('password', 'Mật khẩu không thể để trống.');
 
 		$validator
-			->email('email')
 			->requirePresence('email', 'create')
-			->notEmptyString('email', 'Email không thể để trống.');
+			->notEmptyString('email', 'Email không thể để trống.')
+			->add('email', [
+				'validFormat' => [
+					'rule' => ['custom', '/^[a-zA-Z0-9]+@[a-z0-9]+\.[a-z]{2,5}$/'],
+					'message' => 'Email không đúng định dạng.'
+				]
+			]);
 
 		$validator
 			->integer('phonenumber')

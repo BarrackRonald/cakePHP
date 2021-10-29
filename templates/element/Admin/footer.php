@@ -8,6 +8,7 @@
 <script src="../../vendor/Admin/apexcharts/apexcharts.min.js"></script>
 <script src="../../js/Admin/pages/dashboard.js"></script>
 <script src="../../vendor/Admin/simple-datatables/simple-datatables.js"></script>
+<script src="../../vendor/Login/jquery/jquery-3.2.1.min.js"></script>
 
 <script src="../../js/Admin/main.js"></script>
 

@@ -128,7 +128,7 @@ echo $this->element('Admin/sidebar');
 							<div class="col-md-4 col-12">
 								<div class="pl-3">
 									<h1 class='mt-5'><?= 'Tổng Doanh thu: $' . number_format($revenueOrder[0]['sum']) ?></h1>
-									<p class='text-xs'><span class="text-green"><i data-feather="bar-chart" width="15"></i> +19%</span> so với tháng trước</p>
+									<p class='text-xs'><span class="text-green"><i data-feather="bar-chart" width="15"></i> <?= $percentGrowth?>%</span> so với tháng trước</p>
 									<div class="legends">
 										<div class="legend d-flex flex-row align-items-center">
 											<div class='w-3 h-3 rounded-full bg-info me-2'></div><span class='text-xs'>Tháng Trước</span>

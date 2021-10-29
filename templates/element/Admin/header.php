@@ -20,6 +20,8 @@ $this->disableAutoLayout();
 	<link rel="stylesheet" href="../../css/Admin/cake.css">
 	<link rel="shortcut icon" href="../../images/Admin/favicon.svg" type="image/x-icon">
 	<script src="../../js/Admin/ckeditor/ckeditor.js"></script>
+	<!-- Sweet Alert -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>

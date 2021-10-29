@@ -113,13 +113,32 @@ class AdminController extends AppController
 			$totalrevenueOrderForMonth[$month['Month']] = $month['sum'];
 		}
 
+		//Doanh thu tháng trước và tháng hiện tại
+		$revenueCurrentMonth = $this->{'CRUD'}->revenueCurrentMonth();
+
+		foreach ($revenueCurrentMonth as $month) {
+			if($month['Month'] == Date('m')){
+				$currentMonth = $month['sum'];
+			}else{
+				$lastMonth = $month['sum'];
+			}
+		}
+		//Tính % tăng trưởng của tháng hiện tại so với tháng trước
+		$percent = (int) (($currentMonth - $lastMonth)/$lastMonth * 100);
+
+		if($percent > 0){
+			$percentGrowth = '+'.$percent;
+
+		}else{
+			$percentGrowth = $percent;
+		}
+
 		//Set màu cho cột
-		$colorCurrentMonth = $this->{'CRUD'}->colorCurrentMonth();
 		$totalColorCurrentMonth = [
 			1 => "chartColors.grey", 2 => "chartColors.grey", 3 => "chartColors.grey", 4 => "chartColors.grey", 5 => "chartColors.grey", 6 => "chartColors.grey",
 			7 => "chartColors.grey", 8 => "chartColors.grey", 9 => "chartColors.grey", 10 => "chartColors.grey", 11 => "chartColors.grey", 12 => "chartColors.grey"
 		];
-		foreach ($colorCurrentMonth as $month) {
+		foreach ($revenueCurrentMonth as $month) {
 			if($month['Month'] == Date('m')){
 				$totalColorCurrentMonth[$month['Month']] = 'chartColors.blue';
 			}else{
@@ -127,6 +146,6 @@ class AdminController extends AppController
 			}
 		}
 
-		$this->set(compact('OrderForYear', 'totalOrders', 'totalUser', 'totalProduct', 'revenueOrder', 'totalOrderForMonth', 'totalOrderForYear', 'totalUserForMonths', 'totalProductsForMonths', 'totalrevenueOrderForMonth', 'totalColorCurrentMonth'));
+		$this->set(compact('OrderForYear', 'totalOrders', 'totalUser', 'totalProduct', 'revenueOrder', 'totalOrderForMonth', 'totalOrderForYear', 'totalUserForMonths', 'totalProductsForMonths', 'totalrevenueOrderForMonth', 'totalColorCurrentMonth', 'percentGrowth'));
 	}
 }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Component;
 
 use Cake\Chronos\Date;
+use Cake\Database\Expression\QueryExpression;
+use Cake\Database\Query;
 use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
@@ -95,7 +97,7 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Users.role_id = Roles.id']
 			])
-			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
+			->order(['Users.id' => 'DESC']);
 		return $query;
 	}
 
@@ -530,6 +532,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Users->find()
 			->where([
 				'email' => $email,
+				'del_flag' => 0,
 			]);
 		return $query->toArray();
 	}
@@ -703,19 +706,21 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
-	//Set màu cho cột
-	public function colorCurrentMonth(){
+	//Lấy doanh thu tháng trước và tháng hiện tại
+	public function revenueCurrentMonth(){
 		$query = $this->Orders->find()
-			->select([
-				'Month' => 'Month(Orders.created_date)',
-			])
-			->where([
-				'OR' => [
-					['Month(Orders.created_date)' => Date('m')-1],
-					['Month(Orders.created_date)' => Date('m')]
-				],
-			])
-			->group('Month');
+		->select([
+			'Month' => 'Month(Orders.created_date)',
+			'sum'=>'SUM(Orders.total_amount)'
+		])
+		->where(function (QueryExpression $exp, Query $query) {
+			$Month = $query->newExpr()->or(['Month(Orders.created_date)' => Date('m')-1])->add(['Month(Orders.created_date)' => Date('m')]);
+			$status = $query->newExpr()->or(['Orders.status' => 0])->add(['Orders.status' => 1]);
+			return $exp->or([
+				$query->newExpr()->and([$Month, $status])
+			]);
+		})
+		->group('Month');
 		return $query->toArray();
 	}
 

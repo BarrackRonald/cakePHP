@@ -58,6 +58,13 @@ class AuthexsController extends AppController
 			$hashPswdObj = new DefaultPasswordHasher;
 			$passwordDB = $this->{'Data'}->getPws($email);
 
+			//Check tài khoản bị khóa
+			$delFlag = $this->{'CRUD'}->checkDelFlagByEmail($email);
+			if (count($delFlag) > 0) {
+				$this->Flash->error('Tài khoản của bạn đã bị khóa.');
+				return $this->redirect(['action' => '']);
+			}
+
 			//Check email tồn tại
 			$dataUserArr = $this->{'CRUD'}->getUsersByEmailArr($email);
 			if (count($dataUserArr) < 1) {
@@ -65,13 +72,6 @@ class AuthexsController extends AppController
 				return $this->redirect(['action' => '']);
 			} else {
 				$checkPassword =  $hashPswdObj->check($password, $passwordDB[0]['password']);
-
-				//Check tài khoản bị khóa
-				$delFlag = $this->{'CRUD'}->checkDelFlagByEmail($email);
-				if (count($delFlag) > 0) {
-					$this->Flash->error('Tài khoản của bạn đã bị khóa.');
-					return $this->redirect(['action' => '']);
-				}
 
 				// checkpass bằng mã hash
 				if ($checkPassword) {

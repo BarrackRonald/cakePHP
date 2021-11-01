@@ -72,7 +72,7 @@ $n = 1;
 									<a href="<?= $this->Url->build('/admin/details-order/' . $order->id, ['fullBase' => true]) ?>">
 										<input type="submit" class="btn btn-info" value="   Chi Tiết Đơn " style="margin-bottom: 5px" />
 									</a>
-									<?php if ($_SESSION['flag'] == 3) { ?>
+									<?php if ($_SESSION['flag'] == 3 || $_SESSION['flag'] == 2) { ?>
 										<a href="<?= $this->Url->build('/admin/confirm-order/' . $order->id, ['fullBase' => true]) ?>">
 											<input type="submit" class="btn btn-info" value="Cập Nhật Đơn" style="margin-bottom: 5px" />
 										</a>

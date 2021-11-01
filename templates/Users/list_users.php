@@ -17,7 +17,7 @@ $n = 1;
 					<form action="/admin/list-user" method="get">
 						<div class="form-group" style="display: inline-block">
 							<label for="key">Search:</label>
-							<input type="text" class="form-control" name="key" id="key" value="">
+							<input type="text" class="form-control" name="key" id="key" value="<?php if(isset($_SESSION['keySearch'])) { echo $_SESSION['keySearch']; }?>">
 						</div>
 						<button type="submit" class="btn btn-primary btn-default">Search</button>
 					</form>

@@ -9,7 +9,7 @@ $this->disableAutoLayout();
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Dashboard - Voler Admin Dashboard</title>
+	<title>Dashboard - VerTu</title>
 
 	<link rel="stylesheet" href="../../css/Admin/bootstrap.css">
 	<link rel="stylesheet" href="../../css/Admin/main.css">
@@ -18,10 +18,13 @@ $this->disableAutoLayout();
 	<link rel="stylesheet" href="../../vendor/Admin/perfect-scrollbar/perfect-scrollbar.css">
 	<link rel="stylesheet" href="../../css/Admin/app.css">
 	<link rel="stylesheet" href="../../css/Admin/cake.css">
-	<link rel="shortcut icon" href="../../images/Admin/favicon.svg" type="image/x-icon">
+	<link rel="shortcut icon" href="../../img/Admin/favicon.svg" type="image/x-icon">
 	<script src="../../js/Admin/ckeditor/ckeditor.js"></script>
 	<!-- Sweet Alert -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Login/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 </head>
 
 <body>
@@ -37,7 +40,7 @@ $this->disableAutoLayout();
 						<li class="dropdown">
 							<a href="#" data-bs-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
 								<div class="avatar me-1">
-									<img src="../../img/Admin/avatar/avatar-s-1.png" alt="" srcset="">
+								<i data-feather="user"></i>
 								</div>
 								<div class="d-none d-md-block d-lg-inline-block">
 									<?php if (isset($_SESSION['username'])) { ?>
@@ -48,7 +51,7 @@ $this->disableAutoLayout();
 							<div class="dropdown-menu dropdown-menu-end">
 								<?php if (isset($_SESSION['flag'])) {
 									if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
-										<a class="dropdown-item" href="/"><i data-feather="user"></i> Trang Home</a>
+										<a class="dropdown-item" href="/"><i class="fas fa-home"></i> Trang Home</a>
 								<?php }
 								} ?>
 								<div class="dropdown-divider"></div>

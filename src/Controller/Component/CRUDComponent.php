@@ -300,7 +300,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
-	//Search
+	//Search Products
 	public function getSearch($key)
 	{
 		$query = $this->Products->find()
@@ -330,10 +330,58 @@ class CRUDComponent extends CommonComponent
 		return $query;
 	}
 
+	//Search Product to Array
+	public function getSearchtoArr($key)
+	{
+		$query = $this->Products->find()
+			->select([
+				'Products.id',
+				'Products.product_name',
+				'Products.description',
+				'Products.amount_product',
+				'Products.point_product',
+				'Products.category_id',
+				'Categories.category_name'
+			])
+			->join([
+				'table' => 'Categories',
+				'alias' => 'Categories',
+				'type' => 'inner',
+				'conditions' => ['Products.category_id = Categories.id']
+			])
+			->order('Products.created_date DESC')
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
+			->where([
+				'Products.product_name like' => '%' . $key . '%',
+				'Products.del_flag' => 0
+			]);
+		return $query->toArray();
+	}
+
 	//Search User
 	public function getSearchUser($key)
 	{
 		$query = $this->Users->find()
+			->select([
+				'Users.id',
+				'Users.username',
+				'Users.email',
+				'Users.phonenumber',
+				'Users.address',
+				'Users.point_user',
+				'Users.role_id',
+				'Users.del_flag',
+				'Users.address',
+				'Roles.role_name'
+			])
+			->join([
+				'table' => 'Roles',
+				'alias' => 'Roles',
+				'type' => 'inner',
+				'conditions' => ['Users.role_id = Roles.id']
+			])
 			->where([
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Users.email like' => '%' . $key . '%']],
 			])
@@ -439,6 +487,36 @@ class CRUDComponent extends CommonComponent
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
 			]);
 		return $query;
+	}
+
+	//Search Orders to Array
+	public function getSearchOrderArr($key)
+	{
+
+		$query = $this->Orders->find()
+			->select([
+				'Orders.id',
+				'Orders.email',
+				'Orders.phonenumber',
+				'Orders.address',
+				'Orders.total_point',
+				'Orders.total_quantity',
+				'Orders.total_amount',
+				'Orders.status',
+				'Orders.user_id',
+				'Users.username'
+			])
+			->join([
+				'table' => 'Users',
+				'alias' => 'Users',
+				'type' => 'inner',
+				'conditions' => ['Orders.user_id = Users.id']
+			])
+			->order('Orders.id DESC')
+			->where([
+				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
+			]);
+		return $query->toArray();
 	}
 
 	public function addorder($atribute)
@@ -735,6 +813,34 @@ class CRUDComponent extends CommonComponent
 		})
 		->group('Month');
 		return $query->toArray();
+	}
+
+	//Lọc
+	public function filterUser($filters){
+		$query = $this->Users->find()
+			->select([
+				'Users.id',
+				'Users.username',
+				'Users.email',
+				'Users.phonenumber',
+				'Users.address',
+				'Users.point_user',
+				'Users.role_id',
+				'Users.del_flag',
+				'Users.address',
+				'Roles.role_name'
+			])
+			->join([
+				'table' => 'Roles',
+				'alias' => 'Roles',
+				'type' => 'inner',
+				'conditions' => ['Users.role_id = Roles.id']
+			])
+			->where([
+				'Users.del_flag' => $filters,
+			])
+			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
+		return $query;
 	}
 
 }

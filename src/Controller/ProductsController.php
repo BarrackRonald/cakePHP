@@ -52,12 +52,23 @@ class ProductsController extends AppController
 	public function listProducts()
 	{
 		$products = $this->{'CRUD'}->getAllProduct();
+		$session = $this->request->getSession();
 
 		//Search
 		$key = $this->request->getQuery('key');
 		if ($key) {
-			$query = $this->{'CRUD'}->getSearch($key);
+			//Lưu key
+			$session->write('keySearch', trim($key));
+			$query = $this->{'CRUD'}->getSearch(trim($key));
+			$querytoArr = $this->{'CRUD'}->getSearchtoArr(trim($key));
+			if(count($querytoArr) == 0){
+				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
+			}
 		} else {
+			if ($session->check('keySearch')) {
+				$session->delete('keySearch');
+			}
+
 			$query = $products;
 		}
 
@@ -141,7 +152,7 @@ class ProductsController extends AppController
 				$checkIDCategory = $this->{'CRUD'}->checkIDCategory($idCategory);
 				if (count($checkIDCategory) < 1) {
 					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
-					return $this->redirect(['action' => 'listProducts']);
+					$data = $atribute;
 				}
 
 				//Chỉnh sửa nếu có sự thay đổi ảnh

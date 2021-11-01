@@ -1,10 +1,9 @@
 <?php
 
 use Cake\Utility\Text;
-
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = 1;
+echo $this->element('serial');
 ?>
 <div class="main-content container-fluid">
 	<div class="page-title">
@@ -18,7 +17,7 @@ $n = 1;
 				<form action="/admin/list-products" method="get">
 					<div class="form-group" style="display: inline-block">
 						<label for="key">Search:</label>
-						<input type="text" class="form-control" name="key" id="key" value="">
+						<input type="text" class="form-control" name="key" id="key" value="<?php if(isset($_SESSION['keySearch'])) { echo $_SESSION['keySearch']; }?>">
 					</div>
 					<button type="submit" class="btn btn-primary btn-default">Search</button>
 				</form>
@@ -52,7 +51,7 @@ $n = 1;
 					<tbody>
 						<?php foreach ($query as $product) { ?>
 							<tr>
-								<td><?= $n++ ?>
+								<td><?=$GLOBALS['n']++?>
 								<td>
 								<td> <a><?= h($product['product_name']) ?></a></td>
 								<td>

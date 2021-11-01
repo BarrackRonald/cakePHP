@@ -2,7 +2,10 @@
 
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = 1;
+echo $this->element('serial');
+
+$n = $this->request->getAttribute('paging')[$this->request->getParam('controller')]['start'];
+
 ?>
 <?php if ($_SESSION['flag'] == 2) { ?>
 	<div class="main-content container-fluid">
@@ -22,6 +25,24 @@ $n = 1;
 						<button type="submit" class="btn btn-primary btn-default">Search</button>
 					</form>
 				</div>
+
+				<div class="col-12 col-md-6 order-md-1 order-last">
+					<form action="/admin/list-user" method="get" style="float: right;">
+						<?php if(isset($_SESSION['hasfilter'])){?>
+							<a href="/admin/list-user" title="Hủy Lọc">
+								<i class="far fa-times-circle"></i>
+							</a>
+						<?php }?>
+						<div class="form-group" style="display: inline-block">
+							<label for="filter">Lọc Kết Quả:</label>:
+							<select class="form-control" name="filter">
+								<option value="lock" <?= isset($filters) && ($filters== 'lock') ? 'selected' : '' ?>>TK Bị Khóa</option>
+								<option value="unlock" <?= isset($filters) && ($filters== 'unlock') ? 'selected' : '' ?>>TK Không Khóa</option>
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary btn-default"><i class="fa fa-filter"></i>Lọc</button>
+					</form>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-12 col-md-6 order-md-1 order-last">
@@ -36,8 +57,7 @@ $n = 1;
 					<table id="tbl-users-list" class='table table-striped' id="table1">
 						<thead>
 							<tr>
-								<th>STT
-								<th>
+								<th>STT<th>
 								<th>Họ và tên</th>
 								<th>Email</th>
 								<th>Số Điện thoại</th>
@@ -50,7 +70,7 @@ $n = 1;
 						<tbody>
 							<?php foreach ($query as $user) { ?>
 								<tr class="list">
-									<td><?= $n++ ?>
+									<td><?=$GLOBALS['n']++?>
 									<td>
 									<td><a><?= $user['username'] ?></a></td>
 									<td><a><?= $user['email'] ?></a></td>
@@ -64,7 +84,7 @@ $n = 1;
 											<a href="<?= $this->Url->build('/admin/edit-user/' . $user->id, ['fullBase' => true]) ?>">
 												<input type="submit" class="btn btn-info" value="    Sửa    " style="margin-bottom: 5px" />
 											</a>
-										<?php } ?>
+										<?php }?>
 
 										<?php if ($user->del_flag == 0) { ?>
 											<form id="formLock_<?= $user->id ?>" action="<?= $this->Url->build('/admin/delete-user/' . $user->id, ['fullBase' => false]) ?>" method="post">

@@ -280,7 +280,7 @@ class AuthexsController extends AppController
 					if ($this->Users->save($dataUser)) {
 						$this->Flash->success('Mật khẩu của bạn đã được gửi về email (' . $email . '), vui lòng kiểm tra');
 						$to = $email;
-						$toAdmin = 'tienphamvan2005@gmail.com';
+						$toAdmin = 'phamhoan020501@gmail.com';
 						$subject = 'Reset Password';
 						$message = 'Mật khẩu của bạn là:' . $randompws . '';
 						$errSendMail = $this->{'Mail'}->send_mail($to, $toAdmin, $subject, $message);

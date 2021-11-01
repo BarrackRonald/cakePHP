@@ -50,15 +50,24 @@ class OrdersController extends AppController
 	public function listOrders()
 	{
 		$orders = $this->{'CRUD'}->getAllOrder();
+		$session = $this->request->getSession();
 		//Search
 		$key = $this->request->getQuery('key');
 		if ($key) {
-			if ($key == '') {
-				$this->Flash->error(__('Không có dữ liệu Search!!!'));
-			} else {
-				$query1 = $this->{'CRUD'}->getSearchOrder($key);
+			//Lưu key
+			$session->write('keySearch', trim($key));
+
+			$query1 = $this->{'CRUD'}->getSearchOrder(trim($key));
+			$querytoArr = $this->{'CRUD'}->getSearchOrderArr(trim($key));
+
+			if(count($querytoArr) == 0){
+				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
 			}
 		} else {
+			if ($session->check('keySearch')) {
+				$session->delete('keySearch');
+			}
+
 			$query1 = $orders;
 		}
 		$this->set(compact('query1', $this->paginate($query1, ['limit' => '3'])));
@@ -128,30 +137,30 @@ class OrdersController extends AppController
 					$atribute['status'] != 1 &&
 					$atribute['status'] != 2))) {
 					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận Đơn hàng!!!'));
-					return $this->redirect(['action' => 'listOrders']);
-				}
-
-				//Tính toán Xóa Point Khi Từ chối đơn
-				if ($atribute['status'] == $dataOrder[0]['status']) {
-					$pointAF = $dataUser[0]['point_user'];
-				} else if ($atribute['status'] == 2) {
-					$pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
-				} else if ($dataOrder[0]['status'] == 2) {
-					$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
-				} else {
-					$pointAF = $dataUser[0]['point_user'];
-				}
-				$this->{'Data'}->updatePoint($pointAF, $idUser);
-
-				$confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
-				if ($confirm->hasErrors()) {
-					$error = $confirm->getErrors();
-					$this->set('error', $error);
 					$data = $atribute;
-				} else {
-					if ($this->Orders->save($confirm)) {
-						$this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
-						return $this->redirect($atribute['referer']);
+				}else{
+					//Tính toán Xóa Point Khi Từ chối đơn
+					if ($atribute['status'] == $dataOrder[0]['status']) {
+						$pointAF = $dataUser[0]['point_user'];
+					} else if ($atribute['status'] == 2) {
+						$pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
+					} else if ($dataOrder[0]['status'] == 2) {
+						$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
+					} else {
+						$pointAF = $dataUser[0]['point_user'];
+					}
+					$this->{'Data'}->updatePoint($pointAF, $idUser);
+
+					$confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());
+					if ($confirm->hasErrors()) {
+						$error = $confirm->getErrors();
+						$this->set('error', $error);
+						$data = $atribute;
+					} else {
+						if ($this->Orders->save($confirm)) {
+							$this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
+							return $this->redirect($atribute['referer']);
+						}
 					}
 				}
 			}

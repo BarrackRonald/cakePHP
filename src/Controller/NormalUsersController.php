@@ -82,6 +82,8 @@ class NormalUsersController extends AppController
 
 			$session->write('cartData', $dataProds);
 			$this->set(compact('dataProds'));
+		}else{
+			$this->redirect(['action' => 'pageError']);
 		}
 	}
 
@@ -753,6 +755,10 @@ class NormalUsersController extends AppController
 	}
 	public function completeOrder()
 	{
+	}
+
+	public function pageError(){
+
 	}
 
 	public function informationCart()

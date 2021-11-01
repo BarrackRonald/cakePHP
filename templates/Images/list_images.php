@@ -1,8 +1,7 @@
 <?php
-use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = 1;
+echo $this->element('serial');
 ?>
 
             <div class="main-content container-fluid">
@@ -46,7 +45,7 @@ $n = 1;
                                 <tbody>
                                     <?php foreach ($query as $image) { ?>
                                         <tr>
-                                            <td><?= $n++ ?><td>
+                                            <td><?=$GLOBALS['n']++?><td>
                                             <td> <a><?= $image['image_name'] ?></a></td>
                                             <td>
                                                 <img width="60%" src="<?= $image['file']?>" alt="">

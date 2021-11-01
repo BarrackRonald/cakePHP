@@ -2,7 +2,7 @@
 
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = 1;
+echo $this->element('serial');
 ?>
 <div class="main-content container-fluid">
 	<div class="page-title">
@@ -33,7 +33,7 @@ $n = 1;
 					<tbody>
 						<?php foreach ($categories as $category) { ?>
 							<tr>
-								<td><?= $n++ ?></td>
+								<td><?=$GLOBALS['n']++?></td>
 								<td class="t-al-center"> <a><?= h($category['category_name']) ?></a></td>
 								<?php if ($_SESSION['flag'] == 2) { ?>
 									<td class="t-al-center">

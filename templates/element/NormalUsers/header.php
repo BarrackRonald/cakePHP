@@ -14,9 +14,9 @@ $this->disableAutoLayout();
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Ustora Demo</title>
+	<link rel="shortcut icon" href="../../img/NormalUsers/vertu.jpg" type="image/x-icon">
+	<title>VerTu Website</title>
 	<!--=============================TEST==================================================================-->
-	<link rel="icon" type="image/png" href="images/Login/icons/favicon.ico" />
 
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="fonts/Login/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -90,7 +90,7 @@ $this->disableAutoLayout();
 
 							<?php if (isset($_SESSION['flag'])) {
 								if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
-									<li><a href="/admin"><i class="fa fa-heart"></i> Truy cập Admin</a></li>
+									<li><a href="/admin"><i class="fa fa-heart"></i> Truy cập hệ thống</a></li>
 								<?php }
 							} ?>
 

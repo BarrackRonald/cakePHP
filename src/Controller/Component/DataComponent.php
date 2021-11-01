@@ -293,6 +293,24 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy thông tin User kể cả del_flag = 1
+	public function getCheckInfoUser($idUser)
+	{
+		$query = $this->Users->find()
+			->select([
+				'Users.id',
+				'Users.username',
+				'Users.email',
+				'Users.phonenumber',
+				'Users.address',
+				'Users.point_user',
+			])
+			->where([
+				'Users.id' => $idUser,
+			]);
+		return $query->toArray();
+	}
+
 	public function getAllUser()
 	{
 		$query = $this->Users->find()

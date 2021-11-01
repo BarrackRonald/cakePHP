@@ -341,6 +341,16 @@ class CRUDComponent extends CommonComponent
 		return $query;
 	}
 
+	public function getSearchUsertoArr($key)
+	{
+		$query = $this->Users->find()
+			->where([
+				'OR' => [['Users.username like' => '%' . $key . '%'], ['Users.email like' => '%' . $key . '%']],
+			])
+			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
+		return $query->toArray();
+	}
+
 	//Orders
 	public function getAllOrder()
 	{
@@ -379,6 +389,9 @@ class CRUDComponent extends CommonComponent
 				'Orderdetails.product_id',
 				'Products.product_name',
 				'Orderdetails.order_id',
+				'Orders.total_point',
+				'Orders.total_quantity',
+				'Orders.total_amount',
 			])
 			->join([
 				'table' => 'Orders',

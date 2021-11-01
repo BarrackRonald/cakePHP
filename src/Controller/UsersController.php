@@ -55,9 +55,22 @@ class UsersController extends AppController
 		$users = $this->{'CRUD'}->getUser();
 		//Search
 		$key = $this->request->getQuery('key');
+		$session = $this->request->getSession();
 		if ($key) {
+			//Lưu key
+			$session->write('keySearch', $key);
 			$query = $this->{'CRUD'}->getSearchUser($key);
+			$queryArr = $this->{'CRUD'}->getSearchUsertoArr($key);
+			if(count($queryArr) == 0){
+				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
+				return $this->redirect(['listUsers']);
+			}
+			
 		} else {
+			if ($session->check('keySearch')) {
+				$session->delete('keySearch');
+			}
+
 			$query = $users;
 		}
 		$this->set(compact('query', $this->paginate($query, ['limit' => '3'])));
@@ -203,11 +216,29 @@ class UsersController extends AppController
 		$user = $this->Users->patchEntity($dataUser[0], $atribute);
 
 		if ($this->Users->save($user)) {
-			$this->Flash->success(__('User đã được khóa thành công.'));
+			
+			//Tự động logout khi khóa chính User đó
+			$session = $this->request->getSession();
+			if ($session->check('idUser')) {
+				$idUsers = $session->read('idUser');
+				$checkEmail = $this->{'Data'}->getCheckInfoUser($idUsers);
+				if($checkEmail[0]['email'] == $dataUser[0]['email']){
+					$session = $this->request->getSession();
+					$session->destroy();
+					return $this->redirect(['controller' => 'Authexs', 'action' => 'login']);
+				}else{
+					$this->Flash->success(__('User đã được khóa thành công.'));
+					return $this->redirect("$urlPageList");
+				}
+			}else{
+				$this->Flash->success(__('User đã được khóa thành công.'));
+				return $this->redirect("$urlPageList");
+			}
+
+		}else{
+			$this->Flash->error(__('User chưa được khóa. Vui lòng thử lại.'));
 			return $this->redirect("$urlPageList");
 		}
-		$this->Flash->error(__('User chưa được khóa. Vui lòng thử lại.'));
-		return $this->redirect("$urlPageList");
 	}
 
 	//Mở lại tài khoản

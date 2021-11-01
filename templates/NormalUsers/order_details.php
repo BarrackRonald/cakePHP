@@ -38,7 +38,6 @@ echo $this->element('NormalUsers/header');
 											</thead>
 											<tbody>
 											<?php foreach ($dataOrderDetails as $orderDetail) {?>
-												
 												<tr class="cart_item">
 													<td class="product-total">
 														<span class="amount"><?= $orderDetail['Products']['product_name'] ?></span>
@@ -61,13 +60,13 @@ echo $this->element('NormalUsers/header');
 													</div>
 												</th>
 												<td class="product-total">
-													<span class="amount"><?= $orderDetail['quantity_orderDetails'] ?></span>
+													<span class="amount"><?= $orderDetail['Orders']['total_quantity'] ?></span>
 												</td>
 												<td class="product-total">
-													<span class="amount"><?= $orderDetail['point_orderDetail'].' point' ?></span>
+													<span class="amount"><?= number_format($orderDetail['Orders']['total_point']).' point' ?></span>
 												</td>
 												<td class="product-total">
-													<span class="amount"><?= '$'.number_format($orderDetail['amount_orderDetails']) ?></span>
+													<span class="amount"><?= '$'.number_format($orderDetail['Orders']['total_amount']) ?></span>
 												</td>
 											</tr>
 											</tbody>

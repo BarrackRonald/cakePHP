@@ -2,7 +2,8 @@
 
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = 1;
+echo $this->element('serial');
+
 ?>
 <div class="main-content container-fluid">
 	<div class="page-title">
@@ -16,7 +17,7 @@ $n = 1;
 				<form action="/admin/list-orders" method="get">
 					<div class="form-group" style="display: inline-block">
 						<label for="key">Search:</label>
-						<input type="text" class="form-control" name="key" id="key" value="">
+						<input type="text" class="form-control" name="key" id="key" value="<?php if(isset($_SESSION['keySearch'])) { echo $_SESSION['keySearch']; }?>">
 					</div>
 					<button type="submit" class="btn btn-primary btn-default">Search</button>
 				</form>
@@ -49,14 +50,14 @@ $n = 1;
 					<tbody>
 						<?php foreach ($query1 as $order) { ?>
 							<tr class="list">
-								<td><?= $n++ ?></td>
+								<td><?=$GLOBALS['n']++?></td>
 								<td><a><?= $order['Users']['username'] ?></a></td>
 								<td><a><?= $order['email'] ?></a></td>
 								<td><a><?= $order['phonenumber'] ?></a></td>
 								<td><a><?= $order['address'] ?></a></td>
 								<td><a><?= $order['total_point'] ?></a></td>
 								<td><a><?= $order['total_quantity'] ?></a></td>
-								<td><a><?= number_format($order['total_amount']) ?></a></td>
+								<td><a><?= '$'.number_format($order['total_amount']) ?></a></td>
 								<td><a>
 										<?php
 										if ($order['status'] == 0) {

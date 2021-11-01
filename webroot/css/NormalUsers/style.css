@@ -147,6 +147,7 @@
     min-width: 400px;
     max-width: 500px;
     transition: all linear 0.3s;
+	margin-top: 50px;
 }
 
 @keyframes showToast {

@@ -2,7 +2,8 @@
 
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = 1;
+$n = $this->request->getAttribute('paging')['odersDetails']['start'];;
+
 ?>
 
 <div class="main-content container-fluid">
@@ -35,8 +36,7 @@ $n = 1;
 					<tbody>
 						<?php foreach ($dataOrderDetails as $orderDetail) { ?>
 							<tr>
-								<td><?= $n++ ?>
-								<td>
+								<td><?=$n++?><td>
 								<td> <a><?= $orderDetail['Products']['product_name'] ?></a></td>
 								<td> <a><?= $orderDetail['quantity_orderDetails'] ?></a></td>
 								<td> <a><?= $orderDetail['point_orderDetail'].' point' ?></a></td>

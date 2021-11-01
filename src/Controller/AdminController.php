@@ -114,6 +114,8 @@ class AdminController extends AppController
 		}
 
 		//Doanh thu tháng trước và tháng hiện tại
+		$currentMonth = null;
+		$lastMonth = null;
 		$revenueCurrentMonth = $this->{'CRUD'}->revenueCurrentMonth();
 
 		foreach ($revenueCurrentMonth as $month) {
@@ -123,6 +125,16 @@ class AdminController extends AppController
 				$lastMonth = $month['sum'];
 			}
 		}
+		//check rỗng tháng hiện tại và thagns trước
+		if($currentMonth == null && $lastMonth == null){
+			$currentMonth = 0;
+			$lastMonth = 0;
+		}elseif($currentMonth == null){
+			$currentMonth = 0;
+		}elseif($lastMonth == null){
+			$lastMonth = 0;
+		}
+
 		//Tính % tăng trưởng của tháng hiện tại so với tháng trước
 		$percent = (int) (($currentMonth - $lastMonth)/$lastMonth * 100);
 

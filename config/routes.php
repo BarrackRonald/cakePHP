@@ -93,6 +93,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	$builder->connect('/history-orders', ['controller' => 'NormalUsers', 'action' => 'historyOrders']);
 	$builder->connect('/details-order/:id', ['controller' => 'NormalUsers', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
 
+	//Page Error
+	$builder->connect('/pageError', ['controller' => 'NormalUsers', 'action' => 'pageError']);
+
 	//Authexs
 	$builder->connect('/auth', ['controller' => 'Authexs', 'action' => 'index']);
 	$builder->connect('/login', ['controller' => 'Authexs', 'action' => 'login']);

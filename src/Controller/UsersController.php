@@ -55,25 +55,43 @@ class UsersController extends AppController
 		$users = $this->{'CRUD'}->getUser();
 		//Search
 		$key = $this->request->getQuery('key');
+		$filter = $this->request->getQuery('filter');
 		$session = $this->request->getSession();
 		if ($key) {
 			//Lưu key
-			$session->write('keySearch', $key);
-			$query = $this->{'CRUD'}->getSearchUser($key);
-			$queryArr = $this->{'CRUD'}->getSearchUsertoArr($key);
+			$session->write('keySearch', trim($key));
+			$query = $this->{'CRUD'}->getSearchUser(trim($key));
+			$queryArr = $this->{'CRUD'}->getSearchUsertoArr(trim($key));
+
 			if(count($queryArr) == 0){
 				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
-				return $this->redirect(['listUsers']);
 			}
-			
+		}else if($filter){
+			$session->write('hasfilter', 1);
+			//Lọc
+			if($filter == 'lock'){
+				$filters = 1;
+			}elseif($filter == 'unlock'){
+				$filters = 0;
+			}else{
+				$this->Flash->error(__('Dữ liệu lọc đã bị thay đổi!!!'));
+				return $this->redirect(['action' => 'listUsers']);
+			}
+			$this->set('filters', $filter);
+
+			$query = $this->{'CRUD'}->filterUser($filters);
 		} else {
 			if ($session->check('keySearch')) {
 				$session->delete('keySearch');
 			}
 
+			if ($session->check('hasfilter')) {
+				$session->delete('hasfilter');
+			}
+
 			$query = $users;
 		}
-		$this->set(compact('query', $this->paginate($query, ['limit' => '3'])));
+		$this->set(compact('query', $this->paginate($query, ['limit' => '10'])));
 	}
 
 	//Add Users
@@ -162,7 +180,7 @@ class UsersController extends AppController
 					$dataRole[1]['id'] == h($atribute['role_id']) ||
 					$dataRole[2]['id'] == h($atribute['role_id']))) {
 					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
-					return $this->redirect(['action' => 'listUsers']);
+					$data = $atribute;
 				}
 
 				if ($atribute['password'] == $dataUser[0]['password']) {

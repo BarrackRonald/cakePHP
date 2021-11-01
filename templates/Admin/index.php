@@ -10,7 +10,7 @@ echo $this->element('Admin/sidebar');
 <div class="main-content container-fluid">
 	<div class="page-title">
 		<h3>Thống kê</h3>
-		<p class="text-subtitle text-muted">Hiển thị thống kê của website</p>
+		<p class="text-subtitle text-muted">Hiển thị thông tin thống kê của website</p>
 	</div>
 	<section class="section">
 		<div class="row mb-2">
@@ -22,7 +22,7 @@ echo $this->element('Admin/sidebar');
 								<h3 class='card-title'>Tổng Đơn hàng năm <?= '20'.Date('y') ?></h3> <br>
 							</div>
 							<div style="margin: -15px 0 0 10px">
-								<i>(*) Không tính đơn từ chối</i>
+								<i></i>
 							</div>
 							<div class="card-right d-flex align-items-center" style="justify-content: center; margin-bottom: 15px">
 								<p><?= number_format($OrderForYear) . ' đơn hàng' ?> </p>
@@ -43,7 +43,7 @@ echo $this->element('Admin/sidebar');
 								<h3 class='card-title'>Tổng Đơn hàng của các năm</h3> <br>
 							</div>
 							<div style="margin: -15px 0 0 10px">
-								<i>(*) Không tính đơn từ chối</i>
+								<i></i>
 							</div>
 							<div class="card-right d-flex align-items-center" style="justify-content: center; margin-bottom: 15px">
 								<p><?= number_format($totalOrders) . ' đơn hàng' ?> </p>
@@ -64,7 +64,7 @@ echo $this->element('Admin/sidebar');
 								<h3 class='card-title'>Tổng Người dùng đặt hàng</h3> <br>
 							</div>
 							<div style="margin: -15px 0 0 10px">
-								<i>(*) Không tính người dùng bị khóa</i>
+								<i></i>
 							</div>
 							<div class="card-right d-flex align-items-center" style="justify-content: center; margin-bottom: 15px">
 								<p><?= $totalUser . ' Users' ?> </p>
@@ -84,7 +84,7 @@ echo $this->element('Admin/sidebar');
 								<h3 class='card-title'>Tổng Sản phẩm đang bán</h3> <br>
 							</div>
 							<div style="margin: -15px 0 0 10px">
-								<i>*</i>
+								<i></i>
 							</div>
 							<div class="card-right d-flex align-items-center" style="justify-content: center; margin-bottom: 15px">
 								<p><?= $totalProduct . ' sản phẩm' ?> </p>
@@ -96,26 +96,6 @@ echo $this->element('Admin/sidebar');
 					</div>
 				</div>
 			</div>
-			<!-- <div class="col-12 col-md-3">
-				<div class="card card-statistic">
-					<div class="card-body p-0">
-						<div class="d-flex flex-column">
-							<div class='px-3 py-3 d-flex justify-content-between' style="justify-content: center;">
-								<h3 class='card-title'>Doanh thu tháng <?= Date('m') ?> </h3> <br>
-							</div>
-							<div style="margin: -15px 0 0 10px">
-								<i>(*) Không tính đơn từ chối</i>
-							</div>
-							<div class="card-right d-flex align-items-center" style="justify-content: center; margin-bottom: 15px">
-								<p><?= '$' . number_format($revenueOrderForMonth[0]['sum']) ?> </p>
-							</div>
-							<div class="chart-wrapper">
-								<canvas id="canvas4" style="height:100px !important"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div> -->
 		</div>
 		<div class="row mb-4">
 			<div class="col-md-11">

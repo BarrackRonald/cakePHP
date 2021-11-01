@@ -124,17 +124,9 @@ class UsersTable extends Table
 			->requirePresence('phonenumber', 'create')
 			->notEmptyString('phonenumber', 'Số điện thoại không thể để trống.')
 			->add('phonenumber', [
-				'length' => [
-					'rule' => ['maxLength', 10],
-					'message' => 'Số điện thoại phải là 10 ký tự.',
-				],
-				'length' => [
-					'rule' => ['minLength', 10],
-					'message' => 'Số điện thoại phải là 10 ký tự.',
-				],
 				'validFormat' => [
 					'rule' => ['custom', '/^(0)([0-9]){9}$/'],
-					'message' => 'Số điện thoại không đúng định dạng.'
+					'message' => 'Số điện thoại không đúng định dạng(10 ký tự và bắt đầu bằng "0").'
 				]
 			]);
 
@@ -228,17 +220,9 @@ class UsersTable extends Table
 			->requirePresence('phonenumber', 'create')
 			->notEmptyString('phonenumber', 'Số điện thoại không thể để trống.')
 			->add('phonenumber', [
-				'length' => [
-					'rule' => ['maxLength', 10],
-					'message' => 'Số điện thoại phải là 10 ký tự.',
-				],
-				'length' => [
-					'rule' => ['minLength', 10],
-					'message' => 'Số điện thoại phải là 10 ký tự.',
-				],
 				'validFormat' => [
 					'rule' => ['custom', '/^(0)([0-9]){9}$/'],
-					'message' => 'Số điện thoại không đúng định dạng.'
+					'message' => 'Số điện thoại không đúng định dạng(10 ký tự và bắt đầu bằng "0").'
 				]
 			]);
 

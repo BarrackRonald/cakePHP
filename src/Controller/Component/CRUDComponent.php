@@ -119,27 +119,6 @@ class CRUDComponent extends CommonComponent
 		return $query;
 	}
 
-	//Check Category ID
-	public function checkIDCategory($id)
-	{
-		$query = $this->Categories->find()
-			->where([
-				'Categories.id' => $id,
-				'Categories.del_flag' => 0,
-			]);
-		return $query->toArray();
-	}
-
-	//Check Order ID
-	public function checkIDOrder($id)
-	{
-		$query = $this->Orders->find()
-			->where([
-				'Orders.id' => $id
-			]);
-		return $query->toArray();
-	}
-
 	//Check User ID
 	public function checkIDUser($id)
 	{
@@ -147,18 +126,6 @@ class CRUDComponent extends CommonComponent
 			->where([
 				'Users.id' => $id,
 				'Users.del_flag' => 0,
-			]);
-		return $query->toArray();
-	}
-
-	//Check Product ID
-	public function checkIDProduct($id)
-	{
-
-		$query = $this->Products->find()
-			->where([
-				'Products.id' => $id,
-				'Products.del_flag' => 0,
 			]);
 		return $query->toArray();
 	}
@@ -235,16 +202,17 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
 			->where([
 				'Products.del_flag' => 0,
 			])
-			->order('Products.id DESC')
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}]);
+			->order('Products.id DESC');
 		return $query;
 	}
 
+	//Add Product
 	public function addproduct($atribute)
 	{
 		$product = [];
@@ -266,42 +234,45 @@ class CRUDComponent extends CommonComponent
 
 		//Add Image vào Table Image
 		$result = $this->Products->save($dataProduct);
-		$images = $this->Images->newEmptyEntity();
+		if($result){
+			$images = $this->Images->newEmptyEntity();
 
-		$image = $atribute['uploadfile'];
-		$name = $image->getClientFilename();
-		$targetPath = WWW_ROOT . 'img' . DS . $name;
+			$image = $atribute['uploadfile'];
+			$name = $image->getClientFilename();
+			$targetPath = WWW_ROOT . 'img' . DS . $name;
 
-		if ($name) {
-			$image->moveTo($targetPath);
-			$images->image = '../../img/' . $name;
+			if ($name) {
+				$image->moveTo($targetPath);
+				$images->image = '../../img/' . $name;
+			}
+
+			$images->image_name = 'img' . $atribute['product_name'];
+			$images->image_type = 'Banner';
+			$images->user_id = 1;
+			$images->product_id = $result['id'];
+			$images->created_date = date('Y-m-d h:i:s');
+			$images->updated_date = date('Y-m-d h:i:s');
+
+			$this->Images->save($images);
+
+			return [
+				'result' => 'success',
+				'data' => $this->Products->save($dataProduct),
+			];
 		}
-
-		$images->image_name = 'img' . $atribute['product_name'];
-		$images->image_type = 'Banner';
-		$images->user_id = 1;
-		$images->product_id = $result['id'];
-		$images->created_date = date('Y-m-d h:i:s');
-		$images->updated_date = date('Y-m-d h:i:s');
-
-		$this->Images->save($images);
-
-		return [
-			'result' => 'success',
-			'data' => $this->Products->save($dataProduct),
-		];
 	}
 
+	//Lấy Product bằng ID
 	public function getProductByID($id)
 	{
 		$query = $this->Products->find()
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
 			->where([
 				'Products.id' => $id,
 				'Products.del_flag' => 0
-			])
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}]);
+			]);
 		return $query->toArray();
 	}
 
@@ -324,17 +295,15 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
-			->order('Products.created_date DESC')
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
 			}])
 			->where([
 				'Products.product_name like' => '%' . $key . '%',
 				'Products.del_flag' => 0
-			]);
-
+			])
+			->order('Products.created_date DESC');
 		return $query;
-
 	}
 
 	//Search Product to Array
@@ -356,14 +325,14 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
-			->order('Products.created_date DESC')
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
 			}])
 			->where([
 				'Products.product_name like' => '%' . $key . '%',
 				'Products.del_flag' => 0
-			]);
+			])
+			->order('Products.created_date DESC');
 		return $query->toArray();
 	}
 
@@ -469,7 +438,6 @@ class CRUDComponent extends CommonComponent
 	//Search Orders
 	public function getSearchOrder($key)
 	{
-
 		$query = $this->Orders->find()
 			->select([
 				'Orders.id',
@@ -489,10 +457,10 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
-			->order('Orders.id DESC')
 			->where([
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
-			]);
+			])
+			->order('Orders.id DESC');
 		return $query;
 	}
 
@@ -519,13 +487,14 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
-			->order('Orders.id DESC')
 			->where([
 				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
-			]);
+			])
+			->order('Orders.id DESC');
 		return $query->toArray();
 	}
 
+	//Add Orders
 	public function addorder($atribute)
 	{
 		$product = [];
@@ -550,6 +519,7 @@ class CRUDComponent extends CommonComponent
 		];
 	}
 
+	//Lấy Order bằng ID
 	public function getOrderByID($id)
 	{
 		$query = $this->Orders->find()
@@ -578,6 +548,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Đăng ký
 	public function register($atribute)
 	{
 		$user = [];
@@ -605,6 +576,7 @@ class CRUDComponent extends CommonComponent
 		];
 	}
 
+	//Lấy User bằng ID
 	public function getUsersByID($idUser)
 	{
 		$query = $this->Users->find()
@@ -615,6 +587,7 @@ class CRUDComponent extends CommonComponent
 		return $query;
 	}
 
+	//Lấy User bằng email
 	public function getUsersByEmail($email)
 	{
 		$query = $this->Users->find()
@@ -635,6 +608,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Check Del Flag bằng Email
 	public function checkDelFlagByEmail($email)
 	{
 		$query = $this->Users->find()

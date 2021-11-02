@@ -183,7 +183,7 @@ class NormalUsersController extends AppController
 
 				//Kiểm tra Sản phẩm còn trên hệ thống không trước khi đặt hàng
 				foreach ($dataProds['cart'] as $key => $valueProduct) {
-					$checkProduct = $this->{'CRUD'}->checkIDProduct($key);
+					$checkProduct = $this->{'CRUD'}->getProductByID($key);
 					if (count($checkProduct) < 1) {
 						$session->write('checkErr', 1);
 						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
@@ -487,7 +487,7 @@ class NormalUsersController extends AppController
 				$dataProds = $session->read('cartData');
 				//Kiểm tra Sản phẩm còn trên hệ thống không trước khi đặt hàng
 				foreach ($dataProds['cart'] as $key => $valueProduct) {
-					$checkProduct = $this->{'CRUD'}->checkIDProduct($key);
+					$checkProduct = $this->{'CRUD'}->getProductByID($key);
 					if (count($checkProduct) < 1) {
 						$session->write('checkErr', 1);
 						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
@@ -1036,7 +1036,7 @@ class NormalUsersController extends AppController
 			$this->Flash->error(__('Danh mục không tồn tại.'));
 			return $this->redirect(['action' => 'index']);
 		} else {
-			$checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
+			$checkCategoryID = $this->{'CRUD'}->getCategoryByID($id);
 			if (count($checkCategoryID) < 1) {
 				$this->Flash->error(__('Danh mục không tồn tại.'));
 				return $this->redirect(['action' => 'index']);
@@ -1057,7 +1057,7 @@ class NormalUsersController extends AppController
 			$this->Flash->error(__('Sản phẩm không tồn tại.'));
 			return $this->redirect(['action' => 'index']);
 		} else {
-			$checkProductID = $this->{'CRUD'}->checkIDProduct($id);
+			$checkProductID = $this->{'CRUD'}->getProductByID($id);
 			if (count($checkProductID) < 1) {
 				$this->Flash->error(__('Sản phẩm không tồn tại.'));
 				return $this->redirect(['action' => 'index']);
@@ -1092,7 +1092,7 @@ class NormalUsersController extends AppController
 			$this->Flash->error(__('Đơn hàng không tồn tại.'));
 			return $this->redirect(['action' => 'historyOrders']);
 		} else {
-			$checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+			$checkOrderID = $this->{'CRUD'}->getOrderByID($id);
 			if (count($checkOrderID) < 1) {
 				$this->Flash->error(__('Đơn hàng không tồn tại.'));
 				return $this->redirect(['action' => 'historyOrders']);

@@ -115,7 +115,7 @@ class UsersTable extends Table
 			->add('email', [
 				'validFormat' => [
 					'rule' => ['custom', '/^[a-zA-Z0-9]+@[a-z0-9]+\.[a-z]{2,5}$/'],
-					'message' => 'Email không đúng định dạng.'
+					'message' => 'Email không đúng định dạng( Email không chứa ký tự tiếng việt).'
 				]
 			]);
 
@@ -211,7 +211,7 @@ class UsersTable extends Table
 			->add('email', [
 				'validFormat' => [
 					'rule' => ['custom', '/^[a-zA-Z0-9]+@[a-z0-9]+\.[a-z]{2,5}$/'],
-					'message' => 'Email không đúng định dạng.'
+					'message' => 'Email không đúng định dạng( Email không chứa ký tự tiếng việt).'
 				]
 			]);
 

@@ -98,7 +98,7 @@ class CategoriesController extends AppController
 			$this->Flash->error(__('Danh mục không tồn tại.'));
 			return $this->redirect(['action' => 'listCategories']);
 		} else {
-			$checkCategoryID = $this->{'CRUD'}->checkIDCategory($id);
+			$checkCategoryID = $this->{'CRUD'}->getCategoryByID($id);
 			if (count($checkCategoryID) < 1) {
 				$this->Flash->error(__('Danh mục không tồn tại.'));
 				return $this->redirect(['action' => 'listCategories']);

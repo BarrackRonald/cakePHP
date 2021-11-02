@@ -27,6 +27,7 @@ class DataComponent extends CommonComponent
 		$this->loadModel('Orderdetails');
 	}
 
+	//Lấy ảnh có Type là Slide
 	public function getSlideImage()
 	{
 		$query = $this->Images->find()
@@ -40,9 +41,9 @@ class DataComponent extends CommonComponent
 		return $query;
 	}
 
+	//Search Products
 	public function getSearch($keyword)
 	{
-
 		$query = $this->Products->find()
 			->where([
 				'Products.product_name like' => '%' . $keyword . '%',
@@ -65,6 +66,7 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Insert Users
 	public function insertUsers($dataProds, $pointAF)
 	{
 		$user = [];
@@ -140,6 +142,7 @@ class DataComponent extends CommonComponent
 		];
 	}
 
+	//Kiểm tra mail
 	public function checkmail($atribute)
 	{
 		$query = $this->Users->find()
@@ -153,6 +156,7 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Tạo Orders
 	public function createOrders($dataProds, $insertUser)
 	{
 		$order = [];
@@ -200,6 +204,7 @@ class DataComponent extends CommonComponent
 		return $result;
 	}
 
+	//Tạo orders không login
 	public function createOrdersNone($infoUser, $dataProds, $insertUser)
 	{
 		$order = [];
@@ -246,6 +251,7 @@ class DataComponent extends CommonComponent
 		return $result;
 	}
 
+	//Lấy Point của users
 	public function getPointByUser($idUser)
 	{
 		$query = $this->Users->find()
@@ -260,6 +266,7 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Cập nhật point
 	public function updatePoint($pointAF, $idUsers)
 	{
 		$this->Users->query()
@@ -274,6 +281,7 @@ class DataComponent extends CommonComponent
 			->execute();
 	}
 
+	//Lấy thông tin Users
 	public function getInfoUser($idUser)
 	{
 		$query = $this->Users->find()
@@ -310,6 +318,7 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy tất cả Users
 	public function getAllUser()
 	{
 		$query = $this->Users->find()
@@ -333,6 +342,7 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy Product Bằng ID
 	public function getProductByID($product_id)
 	{
 		$query = $this->Products->find()
@@ -342,13 +352,13 @@ class DataComponent extends CommonComponent
 				'Products.amount_product',
 				'Products.point_product',
 			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
 			->where([
 				'products.id' => $product_id,
 				'products.del_flag' => 0,
-			])
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}]);
+			]);
 		return $query->toArray();
 	}
 
@@ -358,37 +368,40 @@ class DataComponent extends CommonComponent
 			->where([
 				'Products.del_flag' => 0,
 			])
-			->order('created_date DESC')
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
 			}])
+			->order('created_date DESC')
 			->all();
 		return $query;
 	}
 
+	//Lấy category
 	public function getCategory()
 	{
 		$query = $this->Categories->find()
-			->limit(5)
 			->where([
 				'Categories.del_flag' => 0,
 			])
+			->limit(5)
 			->all();
 		return $query;
 	}
 
+	//Lấy tất cả sản phẩm
 	public function getAllProducts()
 	{
 		$query = $this->Products->find()
-			->order('created_date DESC')
-			->limit(2)
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
 			}])
+			->order('created_date DESC')
+			->limit(2)
 			->all();
 		return $query;
 	}
 
+	//Kiểm tra Login
 	public function checklogin($atribute)
 	{
 		$query = $this->Users->query()
@@ -399,19 +412,21 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy tất cả Product bằng Danh mục
 	public function getProductByCategory($id)
 	{
 		$query = $this->Products->query()
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
 			->Where([
 				'Products.category_id' => $id,
 				'Products.del_flag' => 0,
-			])
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}]);
+			]);
 		return $query;
 	}
 
+	//Lấy chi tiết sản phẩm bằng ID
 	public function getDetailsProductByID($id)
 	{
 		$query = $this->Products->query()
@@ -430,16 +445,17 @@ class DataComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Products.category_id = Categories.id']
 			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
 			->Where([
 				'Products.id' => $id,
 				'Products.del_flag' => 0,
-			])
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}]);
+			]);
 		return $query->toArray();
 	}
 
+	//Lấy Ảnh của Products
 	public function getImageByProduct($id)
 	{
 		$query = $this->Images->query()
@@ -453,20 +469,22 @@ class DataComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy sản phẩm liên quan
 	public function similarProduct($idCategory, $idProduct)
 	{
 		$query = $this->Products->query()
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
 			->Where([
 				'Products.id NOT IN' => $idProduct,
 				'Products.category_id' => $idCategory,
 				'Products.del_flag' => 0,
-			])
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}]);
+			]);
 		return $query;
 	}
 
+	//Lấy các đơn hàng bằng Users
 	public function getOrdersByUser($idUsers)
 	{
 		$query = $this->Orders->find()

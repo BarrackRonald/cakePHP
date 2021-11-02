@@ -96,7 +96,7 @@ class ProductsController extends AppController
 
 			//Check F12
 			$idCategory = $atribute['category_id'];
-			$checkIDCategory = $this->{'CRUD'}->checkIDCategory($idCategory);
+			$checkIDCategory = $this->{'CRUD'}->getCategoryByID($idCategory);
 			if (count($checkIDCategory) < 1) {
 				$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
 				return $this->redirect(['action' => 'listProducts']);
@@ -123,7 +123,7 @@ class ProductsController extends AppController
 			$this->Flash->error(__('Sản phẩm không tồn tại.'));
 			return $this->redirect(['action' => 'listProducts']);
 		} else {
-			$checkProductID = $this->{'CRUD'}->checkIDProduct($id);
+			$checkProductID = $this->{'CRUD'}->getProductByID($id);
 			if (count($checkProductID) < 1) {
 				$this->Flash->error(__('Sản phẩm không tồn tại.'));
 				return $this->redirect(['action' => 'listProducts']);
@@ -149,7 +149,7 @@ class ProductsController extends AppController
 			} else {
 				//Check F12
 				$idCategory = $atribute['category_id'];
-				$checkIDCategory = $this->{'CRUD'}->checkIDCategory($idCategory);
+				$checkIDCategory = $this->{'CRUD'}->getCategoryByID($idCategory);
 				if (count($checkIDCategory) < 1) {
 					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
 					$data = $atribute;

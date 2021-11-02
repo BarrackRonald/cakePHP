@@ -38,7 +38,10 @@ echo $this->element('NormalUsers/header');
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button type="submit" class="login100-form-btn">
+						<button type="submit" id="submit" onclick="disable()" class="login100-form-btn">
+							Xác nhận
+						</button>
+						<button type="submit" id="none" style="display: none" disabled class="login100-form-btn">
 							Xác nhận
 						</button>
 					</div>
@@ -65,3 +68,9 @@ echo $this->element('NormalUsers/header');
 	<?php
 	echo $this->element('NormalUsers/footer');
 	?>
+<script>
+	function disable(){
+		document.getElementById("submit").style.display = "none";
+		document.getElementById("none").style.display = "block";
+	}
+</script>

@@ -80,7 +80,7 @@ class OrdersController extends AppController
 			$this->Flash->error(__('Đơn hàng không tồn tại.'));
 			return $this->redirect(['action' => 'listOrders']);
 		} else {
-			$checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+			$checkOrderID = $this->{'CRUD'}->getOrderByID($id);
 			if (count($checkOrderID) < 1) {
 				$this->Flash->error(__('Đơn hàng không tồn tại.'));
 				return $this->redirect(['action' => 'listOrders']);
@@ -104,7 +104,7 @@ class OrdersController extends AppController
 			$this->Flash->error(__('Đơn hàng không tồn tại.'));
 			return $this->redirect(['action' => 'listOrders']);
 		} else {
-			$checkOrderID = $this->{'CRUD'}->checkIDOrder($id);
+			$checkOrderID = $this->{'CRUD'}->getOrderByID($id);
 			if (count($checkOrderID) < 1) {
 				$this->Flash->error(__('Đơn hàng không tồn tại.'));
 				return $this->redirect(['action' => 'listOrders']);

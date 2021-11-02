@@ -76,7 +76,7 @@ echo $this->element('NormalUsers/header');
 									</div>
 								</div>
 							</div>
-					</div>
+						</div>
 					</form>
 				<?php } ?>
 				<?php if (isset($dataNameForUser)) { ?>

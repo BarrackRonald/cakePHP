@@ -82,7 +82,8 @@ echo $this->element('Admin/sidebar');
 						</a>
 					</div>
 					<div class="button_submit">
-						<button type="submit" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" id="submit" onclick="disable()" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" id="none" style="display: none" disabled class="btn btn-primary btn-default">Submit</button>
 					</div>
 					<?= $this->Form->end() ?>
 				</div>
@@ -112,5 +113,10 @@ echo $this->element('Admin/footer');
 			theEvent.returnValue = false;
 			if (theEvent.preventDefault) theEvent.preventDefault();
 		}
+	}
+
+	function disable(){
+		document.getElementById("submit").style.display = "none";
+		document.getElementById("none").style.display = "block";
 	}
 </script>

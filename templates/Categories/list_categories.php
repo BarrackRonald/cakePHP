@@ -56,7 +56,6 @@ echo $this->element('serial');
 				</div>
 			</div>
 		</div>
-
 	</section>
 </div>
 <?php

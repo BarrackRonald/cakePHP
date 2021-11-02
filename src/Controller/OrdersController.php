@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-
 use Cake\Event\EventInterface;
 
 /**
@@ -70,7 +69,7 @@ class OrdersController extends AppController
 
 			$query1 = $orders;
 		}
-		$this->set(compact('query1', $this->paginate($query1, ['limit' => '3'])));
+		$this->set(compact('query1', $this->paginate($query1, ['limit' => '10'])));
 	}
 
 	//Chi tiết đơn hàng
@@ -93,7 +92,7 @@ class OrdersController extends AppController
 		if($referer == "/"){
 			return $this->redirect(['action' => 'listOrders']);
 		}else{
-			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => '3'])));
+			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => '6'])));
 		}
 	}
 

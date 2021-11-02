@@ -81,7 +81,8 @@ echo $this->element('Admin/sidebar');
 					</div>
 
 					<div class="button_submit">
-						<button type="submit" value="<?= $dataUser["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" value="<?= $dataUser["referer"] ?>" name="referer" id="submit" onclick="disable()" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" id="none" style="display: none" disabled class="btn btn-primary btn-default">Submit</button>
 					</div>
 					<?= $this->Form->end() ?>
 				</div>
@@ -111,5 +112,10 @@ echo $this->element('Admin/footer');
 			theEvent.returnValue = false;
 			if (theEvent.preventDefault) theEvent.preventDefault();
 		}
+	}
+
+	function disable(){
+		document.getElementById("submit").style.display = "none";
+		document.getElementById("none").style.display = "block";
 	}
 </script>

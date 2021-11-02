@@ -57,7 +57,7 @@ $n = $this->request->getAttribute('paging')[$this->request->getParam('controller
 					<table id="tbl-users-list" class='table table-striped' id="table1">
 						<thead>
 							<tr>
-								<th>STT<th>
+								<th>STT</th>
 								<th>Họ và tên</th>
 								<th>Email</th>
 								<th>Số Điện thoại</th>
@@ -70,8 +70,7 @@ $n = $this->request->getAttribute('paging')[$this->request->getParam('controller
 						<tbody>
 							<?php foreach ($query as $user) { ?>
 								<tr class="list">
-									<td><?=$GLOBALS['n']++?>
-									<td>
+									<td><?=$GLOBALS['n']++?></td>
 									<td><a><?= $user['username'] ?></a></td>
 									<td><a><?= $user['email'] ?></a></td>
 									<td><a><?= $user['phonenumber'] ?></a></td>

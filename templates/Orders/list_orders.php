@@ -3,7 +3,6 @@
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 echo $this->element('serial');
-
 ?>
 <div class="main-content container-fluid">
 	<div class="page-title">

@@ -72,16 +72,15 @@ echo $this->element('NormalUsers/header');
 														Point Của Bạn
 													</th>
 													<td class="product-total">
-														<span class="amount"><?= h(trim($dataUser[0]['point_user'])) ?></span>
+														<span class="amount"><?= h(number_format(trim($dataUser[0]['point_user']))).' point' ?></span>
 													</td>
 												</tr>
 											</tbody>
 										</table>
 									</div>
-
 								</div>
-					</div>
-					</form>
+							</div>
+						</form>
 					<div class="col-3" style="display: inline-block">
 						<div id="order_review" style="position: relative;">
 							<div id="payment">

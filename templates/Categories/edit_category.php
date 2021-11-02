@@ -36,7 +36,8 @@ echo $this->element('Admin/sidebar');
 						</a>
 					</div>
 					<div class="button_submit">
-						<button type="submit" class="btn btn-primary btn-default" value="<?= $dataCategory["referer"] ?>" name="referer">Submit</button>
+						<button type="submit" value="<?= $dataCategory["referer"] ?>" name="referer" id="submit" onclick="disable()" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" id="none" style="display: none" disabled class="btn btn-primary btn-default">Submit</button>
 					</div>
 					<?= $this->Form->end() ?>
 				</div>
@@ -49,3 +50,9 @@ echo $this->element('Admin/sidebar');
 <?php
 echo $this->element('Admin/footer');
 ?>
+<script>
+	function disable(){
+		document.getElementById("submit").style.display = "none";
+		document.getElementById("none").style.display = "block";
+	}
+</script>

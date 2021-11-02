@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Controller;
-
 use Cake\Event\EventInterface;
 
 /**
@@ -23,7 +22,6 @@ class AdminController extends AppController
 	public function beforeRender(EventInterface $event)
 	{
 		$session = $this->request->getSession();
-
 		if ($session->check('idUser')) {
 			$idUsers = $session->read('idUser');
 			$dataNameForUser = $this->{'Data'}->getInfoUser($idUsers);

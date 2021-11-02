@@ -1,7 +1,6 @@
 <div id="sidebar" class='active'>
 	<div class="sidebar-wrapper active">
 		<div class="sidebar-header">
-			<!-- <img src="../../img/Admin/logo.svg" alt="" srcset=""> -->
 			<?php
 			echo $this->Html->image("Admin/logo.svg", [
 				"alt" => "logo",
@@ -12,15 +11,21 @@
 		<div class="sidebar-menu">
 			<ul class="menu">
 				<li class='sidebar-title'>Main Menu</li>
-				<li class="sidebar-item active ">
+				<li class="sidebar-item ">
+					<a href="/" class='sidebar-link'>
+						<i data-feather="home" width="20"></i>
+						<span>Trang Home</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item ">
 					<a href="/admin" class='sidebar-link'>
 						<i data-feather="home" width="20"></i>
 						<span>Dashboard</span>
 					</a>
-
 				</li>
 
-				<li class='sidebar-title'>Forms &amp; Tables</li>
+				<li class='sidebar-title'>Quản Lý</li>
 
 				<?php if ($_SESSION['flag'] == 2) { ?>
 					<li class="sidebar-item  has-sub">

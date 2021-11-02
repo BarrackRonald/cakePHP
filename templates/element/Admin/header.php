@@ -1,6 +1,5 @@
 <?php
 $this->disableAutoLayout();
-
 ?>
 
 <!DOCTYPE html>

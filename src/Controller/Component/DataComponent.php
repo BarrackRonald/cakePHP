@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Controller\Component;
-
 use Cake\Auth\DefaultPasswordHasher;
 
 /**
@@ -396,7 +395,6 @@ class DataComponent extends CommonComponent
 			->Where([
 				'Users.email' => $atribute['email'],
 				'Users.del_flag' => 0,
-
 			]);
 		return $query->toArray();
 	}

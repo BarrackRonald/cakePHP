@@ -22,8 +22,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
-
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 
@@ -91,7 +89,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 	// Lịch sử mua hàng
 	$builder->connect('/history-orders', ['controller' => 'NormalUsers', 'action' => 'historyOrders']);
-	$builder->connect('/details-order/:id', ['controller' => 'NormalUsers', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
+	$builder->connect('/details-order/:id', ['controller' => 'NormalUsers', 'action' => 'orderDetails'], ["pass" => ["id"]]);
 
 	//Page Error
 	$builder->connect('/pageError', ['controller' => 'NormalUsers', 'action' => 'pageError']);
@@ -148,7 +146,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	$builder->connect('/admin/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
 
 	//Duyệt đơn và Chi tiết đơn
-	$builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'OrderDetails'], ["pass" => ["id"]]);
+	$builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'orderDetails'], ["pass" => ["id"]]);
 	$builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
 
 	$builder->fallbacks();

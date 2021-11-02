@@ -77,7 +77,8 @@ echo $this->element('Admin/sidebar');
 					</div>
 					<div class="button_submit">
 						<input type="hidden" class="form-control" value="<?= trim($dataOrder['id']) ?>" name="id" readonly>
-						<button type="submit" value="<?= $dataOrder["referer"] ?>" name="referer" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" value="<?= $dataOrder["referer"] ?>" name="referer" id="submit" onclick="disable()" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit" id="none" style="display: none" disabled class="btn btn-primary btn-default">Submit</button>
 					</div>
 					<?= $this->Form->end() ?>
 				</div>
@@ -90,3 +91,9 @@ echo $this->element('Admin/sidebar');
 <?php
 echo $this->element('Admin/footer');
 ?>
+<script>
+	function disable(){
+		document.getElementById("submit").style.display = "none";
+		document.getElementById("none").style.display = "block";
+	}
+</script>

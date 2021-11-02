@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 
-use Cake\Chronos\Date;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\Query;
-use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * CRUD component
@@ -31,6 +29,7 @@ class CRUDComponent extends CommonComponent
 		$this->loadModel('Orderdetails');
 	}
 
+	//Lấy Users bằng ID Users
 	public function getUserByID($id)
 	{
 		$query = $this->Users->find()
@@ -40,6 +39,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy Data trong bảng quyền
 	public function getAllRoles()
 	{
 		$query = $this->Roles->find()
@@ -50,6 +50,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Add User
 	public function addUser($atribute)
 	{
 		$user = [];
@@ -76,6 +77,7 @@ class CRUDComponent extends CommonComponent
 		];
 	}
 
+	//Lấy thông tin Users
 	public function getUser()
 	{
 		$query = $this->Users->find()
@@ -171,6 +173,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Lấy Danh mục bằng ID
 	public function getCategoryByID($id)
 	{
 		$query = $this->Categories->find()
@@ -181,6 +184,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Add Danh mục
 	public function addCategory($atribute)
 	{
 		$category = [];
@@ -200,6 +204,7 @@ class CRUDComponent extends CommonComponent
 		];
 	}
 
+	//Lấy Product theo Danh mục
 	public function checkProductByCategory($atribute)
 	{
 		$idCategory = $atribute['id'];
@@ -327,7 +332,9 @@ class CRUDComponent extends CommonComponent
 				'Products.product_name like' => '%' . $key . '%',
 				'Products.del_flag' => 0
 			]);
+
 		return $query;
+
 	}
 
 	//Search Product to Array
@@ -672,6 +679,7 @@ class CRUDComponent extends CommonComponent
 			->group('Month');
 		return $query->toArray();
 	}
+
 	/*Tổng đơn hàng đã đặt trên website */
 	public function totalOrder(){
 		$query = $this->Orders->find()
@@ -701,6 +709,7 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 
 	}
+
 	/*Tổng số người dùng đã đặt hàng */
 	public function totalUser(){
 		$query = $this->Orders->find()
@@ -713,6 +722,7 @@ class CRUDComponent extends CommonComponent
 			->group('Orders.user_id');
 		return $query->toArray();
 	}
+
 	/*Tổng người dùng đã đặt hàng của các tháng trong năm */
 	public function totalUserForMonth(){
 		$query = $this->Orders->find()

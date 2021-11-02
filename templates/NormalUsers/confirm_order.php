@@ -132,7 +132,8 @@ echo $this->element('NormalUsers/header');
 												<div id="order_review" style="position: relative; float: right;">
 													<div id="payment">
 														<div class="form-row place-order">
-															<input type="submit" data-value="Place order" value="Xác nhận" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+															<input type="submit" id="submit" data-value="Place order" onclick="disable()" value="Xác nhận"  id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+															<input type="submit" id="none" data-value="Place order" style="display: none" disabled value="Xác nhận"  id="place_order" name="woocommerce_checkout_place_order" class="button alt">
 														</div>
 														<div class="clear"></div>
 													</div>
@@ -141,7 +142,7 @@ echo $this->element('NormalUsers/header');
 										</div>
 									</div>
 								</div>
-					</div>
+						</div>
 					</form>
 				<?php }?>
 				</div>
@@ -153,3 +154,9 @@ echo $this->element('NormalUsers/header');
 <?php
 echo $this->element('NormalUsers/footer');
 ?>
+<script>
+	function disable(){
+		document.getElementById("submit").style.display = "none";
+		document.getElementById("none").style.display = "block";
+	}
+</script>

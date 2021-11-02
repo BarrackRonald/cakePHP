@@ -2,7 +2,7 @@
 
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
-$n = $this->request->getAttribute('paging')['odersDetails']['start'];;
+$n = $this->request->getAttribute('paging')['Orderdetails']['start'];
 
 ?>
 
@@ -25,8 +25,7 @@ $n = $this->request->getAttribute('paging')['odersDetails']['start'];;
 				<table id="tbl-users-list" class='table table-striped' id="table1">
 					<thead>
 						<tr>
-							<th>STT
-							<th>
+							<th>STT<th>
 							<th>Tên sản phẩm</th>
 							<th>Số lượng</th>
 							<th>Point nhận được</th>
@@ -52,7 +51,6 @@ $n = $this->request->getAttribute('paging')['odersDetails']['start'];;
 				</a>
 			</div>
 		</div>
-
 	</section>
 </div>
 <?php

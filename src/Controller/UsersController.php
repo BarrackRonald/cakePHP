@@ -234,7 +234,7 @@ class UsersController extends AppController
 		$user = $this->Users->patchEntity($dataUser[0], $atribute);
 
 		if ($this->Users->save($user)) {
-			
+
 			//Tự động logout khi khóa chính User đó
 			$session = $this->request->getSession();
 			if ($session->check('idUser')) {

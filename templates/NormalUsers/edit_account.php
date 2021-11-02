@@ -7,9 +7,7 @@ echo $this->element('NormalUsers/header');
 		<div class="row">
 			<div class="col-md-12">
 				<div class="product-bit-title text-center">
-
 					<h2>Chỉnh sửa thông tin tài khoản</h2>
-
 				</div>
 			</div>
 		</div>
@@ -83,15 +81,11 @@ echo $this->element('NormalUsers/header');
 								</div>
 
 								<div id="order_review" class="button-next">
-
 									<div id="payment">
-
 										<div class="form-row place-order">
 											<input type="submit" data-value="Place order" value="Xác nhận" id="place_order" class="button alt">
-
 										</div>
 										<div class="clear"></div>
-
 									</div>
 								</div>
 							</div>

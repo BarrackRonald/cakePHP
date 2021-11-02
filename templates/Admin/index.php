@@ -1,8 +1,5 @@
 <?php
 
-use Cake\I18n\Date;
-use Cake\I18n\Number;
-
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>

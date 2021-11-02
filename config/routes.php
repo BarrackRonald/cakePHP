@@ -24,6 +24,7 @@
 
 use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
+use Cake\Routing\Router;
 
 /*
  * The default class to use for all routes
@@ -111,43 +112,43 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	$builder->fallbacks();
 });
 
-$routes->scope('/', function (RouteBuilder $builder) {
-	$builder->connect('/admin', ['controller' => 'Admin', 'action' => 'index']);
+Router::prefix('admin', function (RouteBuilder $routes) {
+	$routes->connect('/', ['controller' => 'Admin', 'action' => 'index']);
 
 	//CRUD Users
-	$builder->connect('/admin/add-user', ['controller' => 'Users', 'action' => 'addUser']);
-	$builder->connect('/admin/edit-user/:id', ['controller' => 'Users', 'action' => 'editUser'], ["pass" => ["id"]]);
-	$builder->connect('/admin/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
-	$builder->connect('/admin/opent-user/:id', ['controller' => 'Users', 'action' => 'opentUser'], ["pass" => ["id"]]);
-	$builder->connect('/admin/list-user', ['controller' => 'Users', 'action' => 'listUsers']);
+	$routes->connect('/add-user', ['controller' => 'Users', 'action' => 'addUser']);
+	$routes->connect('/edit-user/:id', ['controller' => 'Users', 'action' => 'editUser'], ["pass" => ["id"]]);
+	$routes->connect('/delete-user/:id', ['controller' => 'Users', 'action' => 'deleteUser'], ["pass" => ["id"]]);
+	$routes->connect('/opent-user/:id', ['controller' => 'Users', 'action' => 'opentUser'], ["pass" => ["id"]]);
+	$routes->connect('/list-user', ['controller' => 'Users', 'action' => 'listUsers']);
 
 	//CRUD Danh mục sản phẩm
-	$builder->connect('/admin/add-category', ['controller' => 'Categories', 'action' => 'addCategory']);
-	$builder->connect('/admin/edit-category/:id', ['controller' => 'Categories', 'action' => 'editCategory'], ["pass" => ["id"]]);
-	$builder->connect('/admin/delete-category/:id', ['controller' => 'Categories', 'action' => 'deleteCategory'], ["pass" => ["id"]]);
-	$builder->connect('/admin/list-categories', ['controller' => 'Categories', 'action' => 'listCategories']);
+	$routes->connect('/add-category', ['controller' => 'Categories', 'action' => 'addCategory']);
+	$routes->connect('/edit-category/:id', ['controller' => 'Categories', 'action' => 'editCategory'], ["pass" => ["id"]]);
+	$routes->connect('/delete-category/:id', ['controller' => 'Categories', 'action' => 'deleteCategory'], ["pass" => ["id"]]);
+	$routes->connect('/list-categories', ['controller' => 'Categories', 'action' => 'listCategories']);
 
 	//CRUD Danh sách sản phẩm
-	$builder->connect('/admin/add-product', ['controller' => 'Products', 'action' => 'addProduct']);
-	$builder->connect('/admin/edit-product/:id', ['controller' => 'Products', 'action' => 'editProduct'], ["pass" => ["id"]]);
-	$builder->connect('/admin/delete-product/:id', ['controller' => 'Products', 'action' => 'deleteProduct'], ["pass" => ["id"]]);
-	$builder->connect('/admin/list-products', ['controller' => 'Products', 'action' => 'listProducts']);
+	$routes->connect('/add-product', ['controller' => 'Products', 'action' => 'addProduct']);
+	$routes->connect('/edit-product/:id', ['controller' => 'Products', 'action' => 'editProduct'], ["pass" => ["id"]]);
+	$routes->connect('/delete-product/:id', ['controller' => 'Products', 'action' => 'deleteProduct'], ["pass" => ["id"]]);
+	$routes->connect('/list-products', ['controller' => 'Products', 'action' => 'listProducts']);
 
 	//CRUD Danh sách hình ảnh
-	$builder->connect('/admin/add-image', ['controller' => 'Images', 'action' => 'addImages']);
-	$builder->connect('/admin/edit-image/:id', ['controller' => 'Images', 'action' => 'editImage'], ["pass" => ["id"]]);
-	$builder->connect('/admin/delete-image/:id', ['controller' => 'Images', 'action' => 'deleteImage'], ["pass" => ["id"]]);
-	$builder->connect('/admin/list-images', ['controller' => 'Images', 'action' => 'listImages']);
+	$routes->connect('/add-image', ['controller' => 'Images', 'action' => 'addImages']);
+	$routes->connect('/edit-image/:id', ['controller' => 'Images', 'action' => 'editImage'], ["pass" => ["id"]]);
+	$routes->connect('/delete-image/:id', ['controller' => 'Images', 'action' => 'deleteImage'], ["pass" => ["id"]]);
+	$routes->connect('/list-images', ['controller' => 'Images', 'action' => 'listImages']);
 
 	//CRUD Danh sách order
-	$builder->connect('/admin/add-order', ['controller' => 'Orders', 'action' => 'addOrder']);
-	$builder->connect('/admin/edit-order/:id', ['controller' => 'Orders', 'action' => 'editOrder'], ["pass" => ["id"]]);
-	$builder->connect('/admin/delete-order/:id', ['controller' => 'Orders', 'action' => 'deleteOrder'], ["pass" => ["id"]]);
-	$builder->connect('/admin/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
+	$routes->connect('/add-order', ['controller' => 'Orders', 'action' => 'addOrder']);
+	$routes->connect('/edit-order/:id', ['controller' => 'Orders', 'action' => 'editOrder'], ["pass" => ["id"]]);
+	$routes->connect('/delete-order/:id', ['controller' => 'Orders', 'action' => 'deleteOrder'], ["pass" => ["id"]]);
+	$routes->connect('/list-orders', ['controller' => 'Orders', 'action' => 'listOrders']);
 
 	//Duyệt đơn và Chi tiết đơn
-	$builder->connect('/admin/details-order/:id', ['controller' => 'Orders', 'action' => 'orderDetails'], ["pass" => ["id"]]);
-	$builder->connect('/admin/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
+	$routes->connect('/details-order/:id', ['controller' => 'Orders', 'action' => 'orderDetails'], ["pass" => ["id"]]);
+	$routes->connect('/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
 
-	$builder->fallbacks();
+	$routes->fallbacks(DashedRoute::class);
 });

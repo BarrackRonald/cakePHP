@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Admin;
+use App\Controller\AppController;
 use Cake\Event\EventInterface;
 
 /**
@@ -35,7 +36,7 @@ class AdminController extends AppController
 		$flag = $session->read('flag');
 		if (!$session->check('flag') || $flag == 1) {
 			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
-			return $this->redirect(['controller' => 'NormalUsers', 'action' => 'index']);
+			return $this->redirect('/');
 		}
 	}
 

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
 
@@ -34,7 +35,7 @@ class UsersController extends AppController
 		$flag = $session->read('flag');
 		if (!$session->check('flag') || $flag == 1) {
 			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
-			return $this->redirect(['controller' => 'NormalUsers', 'action' => 'index']);
+			return $this->redirect('/');
 		}
 	}
 
@@ -88,7 +89,6 @@ class UsersController extends AppController
 			if ($session->check('hasfilter')) {
 				$session->delete('hasfilter');
 			}
-
 			$query = $users;
 		}
 		$this->set(compact('query', $this->paginate($query, ['limit' => '10'])));

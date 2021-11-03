@@ -149,18 +149,6 @@ class NormalUsersController extends AppController
 				$dataProds['infoUser'] = $dataUser['data'];
 				$session->write('cartData', $dataProds);
 				$this->set(compact('dataProds'));
-
-				//checkmail tồn tại
-				$checkmail = $this->{'Data'}->checkmail($atribute);
-				if (count($checkmail) > 0) {
-					$error['email'] = ['Địa chỉ mail này đã tồn tại.'];
-					$session->write('error', $error);
-					return $this->redirect(['action' => 'inputUser']);
-				} else {
-					if ($session->check('error')) {
-						$session->delete('error');
-					}
-				}
 			}
 		}
 

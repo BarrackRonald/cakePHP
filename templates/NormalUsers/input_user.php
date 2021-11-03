@@ -101,6 +101,7 @@ echo $this->element('NormalUsers/header');
 											<?php
 											} ?>
 										</p>
+										<i style="font-size: 13px;">(*) Mật khẩu phải trên 8 ký tự và bao gồm: chữ hoa, chữ thường, số, ký tự đặc biệt. </i>
 										<div class="clear"></div>
 									</div>
 								</div>

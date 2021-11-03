@@ -81,7 +81,7 @@ class ProductsController extends AppController
 			$requestedPage = $atribute['Products']['requestedPage'];
 			$pageCount = $atribute['Products']['pageCount'];
 			if ($requestedPage > $pageCount) {
-				return $this->redirect("https://test.com/admin/list-products?page=" . $pageCount . "");
+				return $this->redirect("/admin/list-products?page=" . $pageCount . "");
 			}
 		}
 	}
@@ -93,7 +93,6 @@ class ProductsController extends AppController
 		$product = $this->Products->newEmptyEntity();
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
-			$dataProduct = $this->{'CRUD'}->addproduct($atribute);
 
 			//Check F12
 			$idCategory = $atribute['category_id'];
@@ -101,16 +100,17 @@ class ProductsController extends AppController
 			if (count($checkIDCategory) < 1) {
 				$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
 				return $this->redirect(['action' => 'listProducts']);
-			}
-
-			if ($dataProduct['result'] == "invalid") {
-				$error = $dataProduct['data'];
-				$this->set('error', $error);
-				$data = $atribute;
-				$this->set('dataProduct', $data);
-			} else {
-				$this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
-				return $this->redirect(['action' => 'listProducts']);
+			}else{
+				$dataProduct = $this->{'CRUD'}->addproduct($atribute);
+				if ($dataProduct['result'] == "invalid") {
+					$error = $dataProduct['data'];
+					$this->set('error', $error);
+					$data = $atribute;
+					$this->set('dataProduct', $data);
+				} else {
+					$this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
+					return $this->redirect(['action' => 'listProducts']);
+				}
 			}
 		}
 		$this->set(compact('dataCategory'));

@@ -92,9 +92,14 @@ class AuthexsController extends AppController
 							$flag = 3;
 						}
 						$session->write('flag', $flag);
-						return $this->redirect(['action' => 'index']);
-					} else {
 
+						//Check nếu là admin hoặc employee thì đi thẳng đến admin
+						if($flag == 2 || $flag == 3){
+							return $this->redirect('/admin');
+						}else{
+							return $this->redirect(['action' => 'index']);
+						}
+					} else {
 						$this->Flash->error('Email hoặc mật khẩu chưa chính xác.');
 					}
 				} else {
@@ -131,23 +136,15 @@ class AuthexsController extends AppController
 				$error['retypePassword'] = ['Mật khẩu không khớp. Vui lòng kiểm tra lại!!!'];
 				$session->write('error', $error);
 				$this->redirect(['action' => '']);
-			}
-
-			if ($dataUser['result'] == "invalid") {
-				$error = $dataUser['data'];
-				$session->write('error', $error);
-			} else {
-				if ($session->check('error')) {
-					$session->delete('error');
-				}
-				// Checkmail trùng
-				$checkmail = $this->{'Data'}->checkmail($atribute);
-
-				if (count($checkmail) > 0) {
-					$error['email'] = ['Địa chỉ Email đã tồn tại.'];
+			}else{
+				if ($dataUser['result'] == "invalid") {
+					$error = $dataUser['data'];
 					$session->write('error', $error);
-					$this->redirect(['action' => '']);
 				} else {
+					if ($session->check('error')) {
+						$session->delete('error');
+					}
+
 					if ($session->check('error')) {
 						$session->delete('error');
 						//Hash Pws

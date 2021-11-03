@@ -67,7 +67,7 @@ class CategoriesController extends AppController
 			$requestedPage = $atribute['Categories']['requestedPage'];
 			$pageCount = $atribute['Categories']['pageCount'];
 			if ($requestedPage > $pageCount) {
-				return $this->redirect("https://test.com/admin/list-categories?page=" . $pageCount . "");
+				return $this->redirect("/admin/list-categories?page=" . $pageCount . "");
 			}
 		}
 	}

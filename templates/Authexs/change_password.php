@@ -54,6 +54,7 @@ echo $this->element('NormalUsers/header');
 						<i class="fa fa-lock" aria-hidden="true"></i>
 					</span>
 				</div>
+				<i style="font-size: 13px;">(*) Sử dụng 8 ký tự trở lên và bao gồm: chữ hoa, chữ thường, số, ký tự đặc biệt. </i>
 				<div class="text-left p-t-1 m-l-25">
 					<a class="txt2">
 						<input id="check" type="checkbox" onclick="myFunction()"><label class="m-l-5" for="check">Hiện mật khẩu</label>
@@ -64,15 +65,6 @@ echo $this->element('NormalUsers/header');
 					<button type="submit" class="login100-form-btn">
 						Xác nhận
 					</button>
-				</div>
-
-				<div class="text-center p-t-12">
-					<span class="txt1">
-						Quên
-					</span>
-					<a class="txt2" href="/forgotPassword">
-						Tài khoản / Mật khẩu?
-					</a>
 				</div>
 
 				<div class="text-center p-t-12">

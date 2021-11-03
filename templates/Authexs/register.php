@@ -117,6 +117,9 @@ echo $this->element('NormalUsers/header');
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
 					</div>
+					<div style="margin-bottom: 8px">
+						<i style="font-size: 13px">(*) Mật khẩu 8 ký tự trở lên và bao gồm: chữ hoa, chữ thường, số, ký tự đặc biệt. </i>
+					</div>
 					<div style="margin-top: -8px;">
 						<?php if (isset($_SESSION['error']['retypePassword'])) { ?>
 							<i style="color: red;">

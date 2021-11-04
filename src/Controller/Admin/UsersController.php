@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
+use Cake\Routing\Router;
 
 /**
  * Users Controller
@@ -34,8 +35,16 @@ class UsersController extends AppController
 		$session = $this->request->getSession();
 		$flag = $session->read('flag');
 		if (!$session->check('flag') || $flag == 1) {
-			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
+		}else{
+			$idUser = $session->read('idUser');
+			$check = $this->{'CRUD'}->checkUserLock($idUser);
+			if(count($check) < 1){
+				$session->destroy();
+				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
+				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
+			}
 		}
 	}
 
@@ -65,7 +74,7 @@ class UsersController extends AppController
 			$queryArr = $this->{'CRUD'}->getSearchUsertoArr(trim($key));
 
 			if(count($queryArr) == 0){
-				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
+				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
 			}
 		}else if($filter){
 			$session->write('hasfilter', 1);
@@ -75,8 +84,8 @@ class UsersController extends AppController
 			}elseif($filter == 'unlock'){
 				$filters = 0;
 			}else{
-				$this->Flash->error(__('Dữ liệu lọc đã bị thay đổi!!!'));
-				return $this->redirect(['action' => 'listUsers']);
+				$this->Flash->error(__(ERROR_DATA_FILTER_CHANGED));
+				return $this->redirect(['action' => ADMIN_LIST_USERS]);
 			}
 			$this->set('filters', $filter);
 
@@ -91,7 +100,7 @@ class UsersController extends AppController
 			}
 			$query = $users;
 		}
-		$this->set(compact('query', $this->paginate($query, ['limit' => '10'])));
+		$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
 	}
 
 	//Add Users
@@ -107,8 +116,8 @@ class UsersController extends AppController
 			if (!($dataRole[0]['id'] == $atribute['role_id'] ||
 				$dataRole[1]['id'] == $atribute['role_id'] ||
 				$dataRole[2]['id'] == $atribute['role_id'])) {
-				$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận thêm Người dùng!!!'));
-				return $this->redirect(['action' => 'listUsers']);
+				$this->Flash->error(__(ERROR_USER_DATA_CHANGED_NOT_ADD_CONFIRM));
+				return $this->redirect(['action' => ADMIN_LIST_USERS]);
 			}
 
 			$dataUser = $this->{'CRUD'}->addUser($atribute);
@@ -122,7 +131,7 @@ class UsersController extends AppController
 				$checkmail = $this->{'Data'}->checkmail($atribute);
 
 				if (count($checkmail) > 0) {
-					$error['email'] = ['Địa chỉ Email đã tồn tại.'];
+					$error['email'] = [EMAIL_ALREADY_EXISTS];
 					$this->set('error', $error);
 					$data = $atribute;
 				} else {
@@ -133,8 +142,8 @@ class UsersController extends AppController
 						$dataUser['data']['password'] = '';
 					}
 					$this->Users->save($dataUser['data']);
-					$this->Flash->success(__('User đã được thêm thành công.'));
-					return $this->redirect(['action' => 'listUsers']);
+					$this->Flash->success(__(SUCCESS_ADD_USER));
+					return $this->redirect(['action' => ADMIN_LIST_USERS]);
 				}
 			}
 			$this->set('dataUser', $data);
@@ -147,13 +156,13 @@ class UsersController extends AppController
 	{
 		//Check URL_ID
 		if (!is_numeric($id)) {
-			$this->Flash->error(__('Người dùng không tồn tại.'));
-			return $this->redirect(['action' => 'listUsers']);
+			$this->Flash->error(__(ERROR_USER_EMPTY));
+			return $this->redirect(['action' => ADMIN_LIST_USERS]);
 		} else {
 			$checkUserID = $this->{'CRUD'}->checkIDUser($id);
 			if (count($checkUserID) < 1) {
-				$this->Flash->error(__('Người dùng không tồn tại.'));
-				return $this->redirect(['action' => 'listUsers']);
+				$this->Flash->error(__(ERROR_USER_EMPTY));
+				return $this->redirect(['action' => ADMIN_LIST_USERS]);
 			}
 		}
 
@@ -172,14 +181,14 @@ class UsersController extends AppController
 				trim($atribute['address']) == trim($checkUserID[0]['address']) &&
 				$atribute['role_id'] == $checkUserID[0]['role_id']
 			) {
-				$this->Flash->error(__('Dữ liệu không có sự thay đổi.'));
+				$this->Flash->error(__(ERROR_USER_NOT_CHANGED));
 				$data = $atribute;
 			} else {
 				// Check dữ liệu F12
 				if (!($dataRole[0]['id'] == h($atribute['role_id']) ||
 					$dataRole[1]['id'] == h($atribute['role_id']) ||
 					$dataRole[2]['id'] == h($atribute['role_id']))) {
-					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Người dùng!!!'));
+					$this->Flash->error(__(ERROR_USER_DATA_CHANGED_NOT_UPDATED_CONFIRM));
 					$data = $atribute;
 				}
 
@@ -192,7 +201,7 @@ class UsersController extends AppController
 					} else {
 						$user->password = $atribute['password'];
 						if ($this->Users->save($user)) {
-							$this->Flash->success(__('User đã được cập nhật thành công.'));
+							$this->Flash->success(__(SUCCESS_UPDATED_USER));
 							return $this->redirect($atribute['referer']);
 						}
 					}
@@ -206,7 +215,7 @@ class UsersController extends AppController
 						$hashPswdObj = new DefaultPasswordHasher;
 						$user->password = $hashPswdObj->hash($atribute['password']);
 						if ($this->Users->save($user)) {
-							$this->Flash->success(__('User đã được cập nhật thành công.'));
+							$this->Flash->success(__(SUCCESS_UPDATED_USER));
 							return $this->redirect($atribute['referer']);
 						}
 					}
@@ -216,7 +225,7 @@ class UsersController extends AppController
 			$data = $dataUser[0];
 			$data["referer"] = $this->referer();
 			if ($data["referer"] == "/") {
-				return $this->redirect(['action' => 'listUsers']);
+				return $this->redirect(['action' => ADMIN_LIST_USERS]);
 			}
 		}
 		$this->set(compact('dataRole'));
@@ -234,7 +243,6 @@ class UsersController extends AppController
 		$user = $this->Users->patchEntity($dataUser[0], $atribute);
 
 		if ($this->Users->save($user)) {
-
 			//Tự động logout khi khóa chính User đó
 			$session = $this->request->getSession();
 			if ($session->check('idUser')) {
@@ -243,20 +251,19 @@ class UsersController extends AppController
 				if($checkEmail[0]['email'] == $dataUser[0]['email']){
 					$session = $this->request->getSession();
 					$session->destroy();
-					return $this->redirect(['controller' => 'Authexs', 'action' => 'login']);
+					return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
 				}else{
-					$this->Flash->success(__('User đã được khóa thành công.'));
-					return $this->redirect("$urlPageList");
+					$this->Flash->success(__(SUCCESS_USER_LOCK));
 				}
 			}else{
-				$this->Flash->success(__('User đã được khóa thành công.'));
-				return $this->redirect("$urlPageList");
+				$this->Flash->success(__(SUCCESS_USER_LOCK));
 			}
 
 		}else{
-			$this->Flash->error(__('User chưa được khóa. Vui lòng thử lại.'));
-			return $this->redirect("$urlPageList");
+			$this->Flash->error(__(ERROR_USER_LOCK));
 		}
+
+		return $this->redirect("$urlPageList");
 	}
 
 	//Mở lại tài khoản
@@ -269,10 +276,10 @@ class UsersController extends AppController
 		$atribute['del_flag'] = 0;
 		$user = $this->Users->patchEntity($dataUser[0], $atribute);
 		if ($this->Users->save($user)) {
-			$this->Flash->success(__('User đã được mở thành công.'));
+			$this->Flash->success(__(SUCCESS_USER_UNLOCK));
 			return $this->redirect("$urlPageList");
 		}
-		$this->Flash->error(__('User chưa được mở. Vui lòng thử lại.'));
+		$this->Flash->error(__(ERROR_USER_LOCK));
 	}
 
 	//View user

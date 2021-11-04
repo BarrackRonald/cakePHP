@@ -26,7 +26,7 @@ echo $this->element('NormalUsers/header');
 				<div class="product-content-right">
 					<div class="woocommerce">
 						<?php if (isset($dataUser)) { ?>
-							<form enctype="multipart/form-data" action="/addOrders" class="checkout" method="post" name="checkout">
+							<form enctype="multipart/form-data" action="<?= URL_NORMALUSER_ADD_ORDERS ?>" class="checkout" method="post" name="checkout">
 								<div id="customer_details" class="col2-set">
 									<div class="col-3">
 										<h3 id="order_review_heading">Thông Tin Khách hàng</h3>

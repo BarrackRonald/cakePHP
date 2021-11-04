@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
+use Cake\Routing\Router;
 
 /**
  * Orders Controller
@@ -32,8 +33,16 @@ class OrdersController extends AppController
 		$session = $this->request->getSession();
 		$flag = $session->read('flag');
 		if (!$session->check('flag') || $flag == 1) {
-			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
+		}else{
+			$idUser = $session->read('idUser');
+			$check = $this->{'CRUD'}->checkUserLock($idUser);
+			if(count($check) < 1){
+				$session->destroy();
+				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
+				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
+			}
 		}
 	}
 
@@ -62,7 +71,7 @@ class OrdersController extends AppController
 			$querytoArr = $this->{'CRUD'}->getSearchOrderArr(trim($key));
 
 			if(count($querytoArr) == 0){
-				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
+				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
 			}
 		} else {
 			if ($session->check('keySearch')) {
@@ -71,7 +80,7 @@ class OrdersController extends AppController
 
 			$query1 = $orders;
 		}
-		$this->set(compact('query1', $this->paginate($query1, ['limit' => '10'])));
+		$this->set(compact('query1', $this->paginate($query1, ['limit' => PAGINATE_LIMIT])));
 	}
 
 	//Chi tiết đơn hàng
@@ -79,22 +88,22 @@ class OrdersController extends AppController
 	{
 		//Check URL_ID
 		if (!is_numeric($id)) {
-			$this->Flash->error(__('Đơn hàng không tồn tại.'));
-			return $this->redirect(['action' => 'listOrders']);
+			$this->Flash->error(__(ERROR_ORDER_EMPTY));
+			return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 		} else {
 			$checkOrderID = $this->{'CRUD'}->getOrderByID($id);
 			if (count($checkOrderID) < 1) {
-				$this->Flash->error(__('Đơn hàng không tồn tại.'));
-				return $this->redirect(['action' => 'listOrders']);
+				$this->Flash->error(__(ERROR_ORDER_EMPTY));
+				return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 			}
 		}
 		$dataOrderDetails = $this->{'CRUD'}->getOrderDetailsByID($id);
 		$referer = $this->referer();
 		$this->set('referer', $referer);
 		if($referer == "/"){
-			return $this->redirect(['action' => 'listOrders']);
+			return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 		}else{
-			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => '6'])));
+			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => PAGINATE_LIMIT])));
 		}
 	}
 
@@ -103,13 +112,13 @@ class OrdersController extends AppController
 	{
 		//Check URL_ID
 		if (!is_numeric($id)) {
-			$this->Flash->error(__('Đơn hàng không tồn tại.'));
-			return $this->redirect(['action' => 'listOrders']);
+			$this->Flash->error(__(ERROR_ORDER_EMPTY));
+			return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 		} else {
 			$checkOrderID = $this->{'CRUD'}->getOrderByID($id);
 			if (count($checkOrderID) < 1) {
-				$this->Flash->error(__('Đơn hàng không tồn tại.'));
-				return $this->redirect(['action' => 'listOrders']);
+				$this->Flash->error(__(ERROR_ORDER_EMPTY));
+				return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 			}
 		}
 
@@ -122,7 +131,7 @@ class OrdersController extends AppController
 
 			// Check point sau khi duyệt đơn
 			if ($atribute['status'] == $dataOrder[0]['status']) {
-				$this->Flash->error(__('Đơn hàng không có sự thay đổi.'));
+				$this->Flash->error(__(ERROR_ORDER_NOT_CHANGED));
 				$data = $atribute;
 			} else {
 				//Check F12
@@ -137,7 +146,7 @@ class OrdersController extends AppController
 					($atribute['status'] != 0 &&
 					$atribute['status'] != 1 &&
 					$atribute['status'] != 2))) {
-					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận Đơn hàng!!!'));
+					$this->Flash->error(__(ERROR_ORDER_DATA_CHANGED_NOT_CONFIRM));
 					$data = $atribute;
 				}else{
 					//Tính toán Xóa Point Khi Từ chối đơn
@@ -159,7 +168,7 @@ class OrdersController extends AppController
 						$data = $atribute;
 					} else {
 						if ($this->Orders->save($confirm)) {
-							$this->Flash->success(__('Đơn hàng đã được cập nhật thành công.'));
+							$this->Flash->success(__(SUCCESS_UPDATED_ORDER));
 							return $this->redirect($atribute['referer']);
 						}
 					}
@@ -170,7 +179,7 @@ class OrdersController extends AppController
 			$data["Users"] = $dataUser[0];
 			$data["referer"] = $this->referer();
 			if ($data["referer"] == "/") {
-				return $this->redirect(['action' => 'listOrders']);
+				return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 			}
 		}
 		$this->set('dataOrder', $data);

@@ -11,7 +11,7 @@ echo $this->element('NormalUsers/header');
 		<div class="row" style="margin: 0 200px;">
 			<div class="wrap-login100">
 
-				<form enctype="multipart/form-data" action="/register" method="POST" style="width: 90%">
+				<form enctype="multipart/form-data" action="<?= URL_REGISTER ?>" method="POST" style="width: 90%">
 					<span class="login100-form-title">
 						<h3><b>Đăng Ký Tài Khoản</b></h3>
 					</span>

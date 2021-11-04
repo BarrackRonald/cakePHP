@@ -53,7 +53,7 @@ echo $this->element('NormalUsers/header');
 					<span class="txt1">
 						Quên
 					</span>
-					<a class="txt2" href="/forgotPassword">
+					<a class="txt2" href="<?= URL_FORGOT_PWS ?>">
 						Tài khoản / Mật khẩu?
 					</a>
 				</div>

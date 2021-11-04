@@ -26,7 +26,7 @@ echo $this->element('Admin/sidebar');
 						<?php } ?>
 					</div>
 					<div class="button_back">
-						<a href="/admin/list-categories">
+						<a href="<?= URL_ADMIN_LIST_CATEGORIES ?>">
 							<button type="button" class="btn btn-primary btn-default">Back</button>
 						</a>
 					</div>

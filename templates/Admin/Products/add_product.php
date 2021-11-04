@@ -76,7 +76,7 @@ echo $this->element('Admin/sidebar');
 						</select>
 					</div>
 					<div class="button_back">
-						<a href="/admin/list-products">
+						<a href="<?= URL_ADMIN_LIST_PRODUCTS ?>">
 							<button type="button" class="btn btn-primary btn-default">Back</button>
 						</a>
 					</div>

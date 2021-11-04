@@ -19,6 +19,7 @@ declare(strict_types=1);
  * Configure paths required to find CakePHP + general filepath constants
  */
 require __DIR__ . DIRECTORY_SEPARATOR . 'paths.php';
+require __DIR__ . DIRECTORY_SEPARATOR . 'app_constant.php';
 
 /*
  * Bootstrap CakePHP.

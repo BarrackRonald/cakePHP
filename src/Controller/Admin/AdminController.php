@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
+use Cake\Routing\Router;
 
 /**
  * Admin Controller
@@ -35,8 +36,16 @@ class AdminController extends AppController
 		$session = $this->request->getSession();
 		$flag = $session->read('flag');
 		if (!$session->check('flag') || $flag == 1) {
-			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
+		}else{
+			$idUser = $session->read('idUser');
+			$check = $this->{'CRUD'}->checkUserLock($idUser);
+			if(count($check) < 1){
+				$session->destroy();
+				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
+				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
+			}
 		}
 	}
 

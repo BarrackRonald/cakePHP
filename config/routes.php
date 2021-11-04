@@ -97,7 +97,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
 	//Authexs
 	$builder->connect('/auth', ['controller' => 'Authexs', 'action' => 'index']);
-	$builder->connect('/login', ['controller' => 'Authexs', 'action' => 'login']);
+	$builder->connect('/login', ['controller' => 'Authexs', 'action' => 'login'], ['_name' => 'login']);
 	$builder->connect('/register', ['controller' => 'Authexs', 'action' => 'register']);
 	$builder->connect('/logout', ['controller' => 'Authexs', 'action' => 'logout']);
 

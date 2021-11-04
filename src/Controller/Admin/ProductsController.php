@@ -7,6 +7,8 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Routing\Router;
+
 /**
  * Products Controller
  *
@@ -34,8 +36,16 @@ class ProductsController extends AppController
 		$session = $this->request->getSession();
 		$flag = $session->read('flag');
 		if (!$session->check('flag') || $flag == 1) {
-			$this->Flash->error(__('Bạn không có quyền truy cập vào trang Admin.'));
+			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
+		}else{
+			$idUser = $session->read('idUser');
+			$check = $this->{'CRUD'}->checkUserLock($idUser);
+			if(count($check) < 1){
+				$session->destroy();
+				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
+				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
+			}
 		}
 	}
 
@@ -63,7 +73,7 @@ class ProductsController extends AppController
 			$query = $this->{'CRUD'}->getSearch(trim($key));
 			$querytoArr = $this->{'CRUD'}->getSearchtoArr(trim($key));
 			if(count($querytoArr) == 0){
-				$this->Flash->error(__('Không tìm thấy kết quả tìm kiếm!!!'));
+				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
 			}
 		} else {
 			if ($session->check('keySearch')) {
@@ -75,7 +85,7 @@ class ProductsController extends AppController
 
 		//Pagination
 		try {
-			$this->set(compact('query', $this->paginate($query, ['limit' => '3'])));
+			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');
 			$requestedPage = $atribute['Products']['requestedPage'];
@@ -98,8 +108,8 @@ class ProductsController extends AppController
 			$idCategory = $atribute['category_id'];
 			$checkIDCategory = $this->{'CRUD'}->getCategoryByID($idCategory);
 			if (count($checkIDCategory) < 1) {
-				$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
-				return $this->redirect(['action' => 'listProducts']);
+				$this->Flash->error(__(ERROR_PRODUCT_DATA_CHANGED_NOT_CONFIRM));
+				return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
 			}else{
 				$dataProduct = $this->{'CRUD'}->addproduct($atribute);
 				if ($dataProduct['result'] == "invalid") {
@@ -108,8 +118,8 @@ class ProductsController extends AppController
 					$data = $atribute;
 					$this->set('dataProduct', $data);
 				} else {
-					$this->Flash->success(__('Sản phẩm đã được thêm thành công.'));
-					return $this->redirect(['action' => 'listProducts']);
+					$this->Flash->success(__(SUCCESS_ADD_PRODUCT));
+					return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
 				}
 			}
 		}
@@ -121,13 +131,13 @@ class ProductsController extends AppController
 	{
 		//Check URL_ID
 		if (!is_numeric($id)) {
-			$this->Flash->error(__('Sản phẩm không tồn tại.'));
-			return $this->redirect(['action' => 'listProducts']);
+			$this->Flash->error(__(ERROR_PRODUCT_EMPTY));
+			return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
 		} else {
 			$checkProductID = $this->{'CRUD'}->getProductByID($id);
 			if (count($checkProductID) < 1) {
-				$this->Flash->error(__('Sản phẩm không tồn tại.'));
-				return $this->redirect(['action' => 'listProducts']);
+				$this->Flash->error(__(ERROR_PRODUCT_EMPTY));
+				return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
 			}
 		}
 
@@ -145,14 +155,14 @@ class ProductsController extends AppController
 				trim($atribute['category_id']) == $dataProduct[0]['category_id'] &&
 				$atribute['uploadfile']->getClientFilename() == ""
 			) {
-				$this->Flash->error(__('Sản phẩm không có sự thay đổi.'));
+				$this->Flash->error(__(ERROR_PRODUCT_NOT_CHANGED));
 				$data = $atribute;
 			} else {
 				//Check F12
 				$idCategory = $atribute['category_id'];
 				$checkIDCategory = $this->{'CRUD'}->getCategoryByID($idCategory);
 				if (count($checkIDCategory) < 1) {
-					$this->Flash->error(__('Dữ liệu đã bị thay đổi. Không thể xác nhận chỉnh sửa Sản phẩm!!!'));
+					$this->Flash->error(__(ERROR_PRODUCT_DATA_CHANGED_NOT_CONFIRM));
 					$data = $atribute;
 				}
 
@@ -183,7 +193,7 @@ class ProductsController extends AppController
 						$this->Images->save($images);
 					}
 					if ($result) {
-						$this->Flash->success(__('Sản phẩm đã được cập nhật thành công.'));
+						$this->Flash->success(__(SUCCESS_UPDATED_PRODUCT));
 						return $this->redirect($atribute['referer']);
 					}
 				}
@@ -192,7 +202,7 @@ class ProductsController extends AppController
 			$data = $dataProduct[0];
 			$data["referer"] = $this->referer();
 			if ($data["referer"] == "/") {
-				return $this->redirect(['action' => 'listProducts']);
+				return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
 			}
 		}
 		$this->set('dataProduct', $data);
@@ -209,11 +219,11 @@ class ProductsController extends AppController
 		$atribute['del_flag'] = 1;
 		$product = $this->Products->patchEntity($dataProduct[0], $atribute);
 		if ($this->Products->save($product)) {
-			$this->Flash->success(__('Sản phẩm đã được xóa thành công.'));
-			return $this->redirect("$urlPageList");
+			$this->Flash->success(__(SUCCESS_DEL_PRODUCT));
 		} else {
-			$this->Flash->error(__('Sản phẩm chưa được xóa. Vui lòng thử lại.'));
-			return $this->redirect("$urlPageList");
+			$this->Flash->error(__(ERROR_DEL_PRODUCT));
 		}
+
+		return $this->redirect("$urlPageList");
 	}
 }

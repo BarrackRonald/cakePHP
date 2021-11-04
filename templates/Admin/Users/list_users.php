@@ -17,7 +17,7 @@ $n = $this->request->getAttribute('paging')[$this->request->getParam('controller
 			</div>
 			<div class="row">
 				<div class="col-12 col-md-6 order-md-1 order-last">
-					<form action="/admin/list-user" method="get">
+					<form action="<?= URL_ADMIN_LIST_USER ?>" method="get">
 						<div class="form-group" style="display: inline-block">
 							<label for="key">Search:</label>
 							<input type="text" class="form-control" name="key" id="key" value="<?php if(isset($_SESSION['keySearch'])) { echo $_SESSION['keySearch']; }?>">
@@ -27,7 +27,7 @@ $n = $this->request->getAttribute('paging')[$this->request->getParam('controller
 				</div>
 
 				<div class="col-12 col-md-6 order-md-1 order-last">
-					<form action="/admin/list-user" method="get" style="float: right;">
+					<form action="<?=URL_ADMIN_LIST_USER?>" method="get" style="float: right;">
 						<?php if(isset($_SESSION['hasfilter'])){?>
 							<a href="/admin/list-user" title="Hủy Lọc">
 								<i class="far fa-times-circle"></i>

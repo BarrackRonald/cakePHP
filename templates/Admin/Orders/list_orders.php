@@ -13,7 +13,7 @@ echo $this->element('serial');
 		</div>
 		<div class="row">
 			<div class="col-12 col-md-6 order-md-1 order-last">
-				<form action="/admin/list-orders" method="get">
+				<form action="<?= URL_ADMIN_LIST_ORDERS ?>" method="get">
 					<div class="form-group" style="display: inline-block">
 						<label for="key">Search:</label>
 						<input type="text" class="form-control" name="key" id="key" value="<?php if(isset($_SESSION['keySearch'])) { echo $_SESSION['keySearch']; }?>">

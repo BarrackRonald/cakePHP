@@ -10,7 +10,7 @@ echo $this->element('NormalUsers/header');
 		<div class="row" style="margin: 0 200px;">
 			<div class="wrap-login100">
 
-				<form enctype="multipart/form-data" action="/forgotPassword" method="POST" style="width: 90%">
+				<form enctype="multipart/form-data" action="<?= URL_FORGOT_PWS ?>" method="POST" style="width: 90%">
 					<span class="login100-form-title">
 						<h3><b>Lấy Lại Mật Khẩu</b></h3>
 					</span>

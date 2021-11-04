@@ -27,7 +27,7 @@ echo $this->element('NormalUsers/header');
 			<div class="col-md-12">
 				<div class="product-content-right">
 					<div class="woocommerce">
-					<form enctype="multipart/form-data" action="/confirm" class="checkout" method="post" name="checkout">
+					<form enctype="multipart/form-data" action="<?= URL_NORMALUSER_CONFIRM ?>" class="checkout" method="post" name="checkout">
 						<div id="customer_details" class="col2-set">
 							<div class="col-3">
 								<div class="woocommerce-billing-fields">

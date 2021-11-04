@@ -24,7 +24,7 @@ echo $this->element('NormalUsers/header');
 				<div class="product-content-right">
 					<div class="woocommerce">
 						<?php if (isset($dataProds)) { ?>
-							<form enctype="multipart/form-data" action="/addOrdersNoneLogin" class="checkout" method="post" name="checkout">
+							<form enctype="multipart/form-data" action="<?= URL_NORMALUSER_ADD_ORDERS_NONE_LOGIN ?>" class="checkout" method="post" name="checkout">
 								<div id="customer_details" class="col2-set">
 									<!-- Test -->
 									<div class="col-3">

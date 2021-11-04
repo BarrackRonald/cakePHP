@@ -24,7 +24,7 @@ echo $this->element('NormalUsers/header');
 				<div class="product-content-right">
 					<div class="woocommerce">
 					<?php if(isset($dataUser)){ ?>
-						<form method="post" action="/confirmOrder">
+						<form method="post" action="<?= URL_NORMALUSER_CONFIRM_ORDER ?>">
 							<table cellspacing="0" class="shop_table cart">
 								<thead>
 									<tr>
@@ -82,10 +82,24 @@ echo $this->element('NormalUsers/header');
 									<?php } ?>
 									<?php if (isset($dataProds)) { ?>
 										<tr>
-											<td class="actions" colspan="6">
+											<th class="actions" colspan="4">
 												<div class="coupon">
-													<label for="coupon_code">Tổng Giá:</label>
+													<label for="coupon_code">Tổng:</label>
 												</div>
+											</th>
+											<td class="actions" colspan="1">
+												<label for="coupon_code" id="totalAllPoint">
+													<?php
+													echo isset($this->request->getSession()->read('cartData')['totalAllPoint']) ? number_format($this->request->getSession()->read('cartData')['totalAllPoint']) : "0";
+													?>
+												</label>
+											</td>
+											<td class="actions" colspan="1">
+												<label for="coupon_code" id="totalquantity">
+													<?php
+													echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? number_format($this->request->getSession()->read('cartData')['totalquantity']) : "0";
+													?>
+												</label>
 											</td>
 											<td class="actions" colspan="1">
 												<label for="coupon_code" id="totalAllAmount"> $
@@ -115,7 +129,7 @@ echo $this->element('NormalUsers/header');
 							</table>
 						</form>
 					<?php } else {?>
-						<form method="post" action="/input">
+						<form method="post" action="<?= URL_NORMALUSER_INPUT ?>">
 							<table cellspacing="0" class="shop_table cart">
 								<thead>
 									<tr>
@@ -174,10 +188,24 @@ echo $this->element('NormalUsers/header');
 									<?php } ?>
 									<?php if (isset($dataProds)) { ?>
 										<tr>
-											<td class="actions" colspan="6">
+											<th class="actions" colspan="4">
 												<div class="coupon">
-													<label for="coupon_code">Tổng Giá:</label>
+													<label for="coupon_code">Tổng:</label>
 												</div>
+											</th>
+											<td class="actions" colspan="1">
+												<label for="coupon_code" id="totalAllPoint">
+													<?php
+													echo isset($this->request->getSession()->read('cartData')['totalAllPoint']) ? number_format($this->request->getSession()->read('cartData')['totalAllPoint']) : "0";
+													?>
+												</label>
+											</td>
+											<td class="actions" colspan="1">
+												<label for="coupon_code" id="totalquantity">
+													<?php
+													echo isset($this->request->getSession()->read('cartData')['totalquantity']) ? number_format($this->request->getSession()->read('cartData')['totalquantity']) : "0";
+													?>
+												</label>
 											</td>
 											<td class="actions" colspan="1">
 												<label for="coupon_code" id="totalAllAmount"> $
@@ -228,6 +256,9 @@ echo $this->element('NormalUsers/header');
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
 				$('#totalAllAmount').html('$' + Intl.NumberFormat().format(datatotal.totalAllAmount));
+				$('#totalAllPoint').html(datatotal.totalAllPoint);
+				$('#totalquantity').html(datatotal.totalquantity);
+
 
 				//total Amount Product_id
 				var totalAmount = JSON.parse(data).cart[product_id]["totalAmount"];
@@ -261,6 +292,8 @@ echo $this->element('NormalUsers/header');
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
 				$('#totalAllAmount').html('$' + Intl.NumberFormat().format(datatotal.totalAllAmount));
+				$('#totalAllPoint').html(datatotal.totalAllPoint);
+				$('#totalquantity').html(datatotal.totalquantity);
 
 				//quantity and total mount
 				var dataProduct = JSON.parse(data).cart[product_id]
@@ -292,6 +325,8 @@ echo $this->element('NormalUsers/header');
 				var datatotal = JSON.parse(data);
 				$('.product-count').html(datatotal.totalquantity);
 				$('#totalAllAmount').html('$' + Intl.NumberFormat().format(datatotal.totalAllAmount));
+				$('#totalAllPoint').html(datatotal.totalAllPoint);
+				$('#totalquantity').html(datatotal.totalquantity);
 				//dell item
 				$("#cart_item_" + product_id).remove();
 			},

@@ -29,6 +29,17 @@ class CRUDComponent extends CommonComponent
 		$this->loadModel('Orderdetails');
 	}
 
+	//Check Users có bị khóa không
+	public function checkUserLock($id)
+	{
+		$query = $this->Users->find()
+			->where([
+				'Users.id' => $id,
+				'Users.del_flag' => 0,
+			]);
+		return $query->toArray();
+	}
+
 	//Lấy Users bằng ID Users
 	public function getUserByID($id)
 	{

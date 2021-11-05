@@ -128,6 +128,10 @@
     pointer-events: none;
 }
 
+.text-left {
+	text-align: left !important;
+}
+
 /* ======= Toast message ======== */
 #toast {
     position: fixed;

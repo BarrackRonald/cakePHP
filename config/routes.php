@@ -58,6 +58,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 	$builder->connect('/removeProduct', ['controller' => 'NormalUsers', 'action' => 'removeProduct']);
 	$builder->connect('/carts', ['controller' => 'NormalUsers', 'action' => 'informationCart']);
 
+	//Information Customer
+	$builder->connect('/infoCustomer', ['controller' => 'NormalUsers', 'action' => 'infoCustomer']);
+
 	//Xác nhận đặt hàng
 	$builder->connect('/confirmOrder', ['controller' => 'NormalUsers', 'action' => 'confirmOrder']);
 

@@ -4,6 +4,10 @@
 
 }
 
+.input-color {
+	color: #8b8787cc;
+}
+
 .button_submit {
   display: inline-block;
   float: right;

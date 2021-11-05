@@ -3,7 +3,7 @@
 const PAGINATE_LIMIT = '5';
 
 /*/////////////// DOMAIN ////////////////////////*/
-const DOMAINT = 'https://test.com/';
+const DOMAIN = 'https://test.com/';
 
 /*/////////////// Message ////////////////////////*/
 

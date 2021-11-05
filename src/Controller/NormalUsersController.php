@@ -69,6 +69,33 @@ class NormalUsersController extends AppController
 	public function confirmOrder()
 	{
 		if ($this->request->is('post')) {
+			$atribute = $this->request->getData();
+			$data = [];
+			$data['email'] = $atribute['email'];
+
+			//Lấy thông tin người dùng từ bảng infomation Customer
+			if($atribute['address_status'] == 0){
+				$data['address'] = $atribute['address0'];
+				if($atribute['phonenumber_status']==1){
+					$data['phonenumber'] = $atribute['phonenumber01'];
+				}else{
+					$data['phonenumber'] = $atribute['phonenumber0'];
+				}
+			}else{
+				$data['address'] = $atribute['address1'];
+				$data['phonenumber'] = $atribute['phonenumber1'];
+			}
+
+			if(isset($atribute['username_status'])){
+				$data['username'] = $atribute['username1'];
+			}else{
+				$data['username'] = $atribute['username'];
+			}
+
+			dd($data);
+
+
+			//END
 			$session = $this->request->getSession();
 			if ($session->check('hasBack')) {
 				$session->delete('hasBack');
@@ -99,6 +126,21 @@ class NormalUsersController extends AppController
 			$this->set(compact('dataProds'));
 		}else{
 			$this->redirect(['action' => NORMALUSER_PAGE_ERROR]);
+		}
+	}
+
+	//Infomation Customer
+	public function infoCustomer(){
+		$session = $this->request->getSession();
+		//check user đã đăng nhập chưa
+		if (!$session->check('idUser')) {
+			$dataProds['flag'] = 0;
+			echo "";
+		} else {
+			$dataProds['flag'] = 1;
+			$idUsers = $session->read('idUser');
+			$dataUser = $this->{'Data'}->getInfoUser($idUsers);
+			$this->set(compact('dataUser'));
 		}
 	}
 
@@ -328,9 +370,9 @@ class NormalUsersController extends AppController
                                                                  <table cellspacing="0" cellpadding="0" border="0" align="right">
                                                                      <tr>
                                                                          <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400;">
-                                                                             <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="'. DOMAINT .'" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
+                                                                             <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
                                                                          </td>
-                                                                         <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="'. DOMAINT .'" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
+                                                                         <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
                                                                      </tr>
                                                                  </table>
                                                              </td>
@@ -454,7 +496,7 @@ class NormalUsersController extends AppController
                                                          <td align="center" style="padding: 25px 0 15px 0;">
                                                              <table border="0" cellspacing="0" cellpadding="0">
                                                                  <tr>
-                                                                     <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="'. DOMAINT .'" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
+                                                                     <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="'. DOMAIN .'" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
                                                                  </tr>
                                                              </table>
                                                          </td>
@@ -609,9 +651,9 @@ class NormalUsersController extends AppController
                                                                 <table cellspacing="0" cellpadding="0" border="0" align="right">
                                                                     <tr>
                                                                         <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400;">
-                                                                            <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="'. DOMAINT .'" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
+                                                                            <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
                                                                         </td>
-                                                                        <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="'. DOMAINT .'" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
+                                                                        <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -732,7 +774,7 @@ class NormalUsersController extends AppController
                                                         <td align="center" style="padding: 25px 0 15px 0;">
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="'. DOMAINT .'" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
+                                                                    <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="'. DOMAIN .'" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
                                                                 </tr>
                                                             </table>
                                                         </td>
@@ -1112,4 +1154,5 @@ class NormalUsersController extends AppController
 			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => PAGINATE_LIMIT])));
 		}
 	}
+
 }

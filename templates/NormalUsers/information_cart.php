@@ -24,7 +24,7 @@ echo $this->element('NormalUsers/header');
 				<div class="product-content-right">
 					<div class="woocommerce">
 					<?php if(isset($dataUser)){ ?>
-						<form method="post" action="<?= URL_NORMALUSER_CONFIRM_ORDER ?>">
+						<form method="post" action="/infoCustomer">
 							<table cellspacing="0" class="shop_table cart">
 								<thead>
 									<tr>

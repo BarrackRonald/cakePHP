@@ -18,6 +18,7 @@ class NormalUsersController extends AppController
 	{
 		parent::initialize();
 		$this->loadComponent('Data');
+		$this->loadComponent('Validate');
 		$this->loadComponent('Mail');
 		$this->loadComponent('CRUD');
 		$this->loadModel("Users");
@@ -68,6 +69,7 @@ class NormalUsersController extends AppController
 
 	public function confirmOrder()
 	{
+		$session = $this->request->getSession();
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
 			$data = [];
@@ -76,8 +78,22 @@ class NormalUsersController extends AppController
 			//Lấy thông tin người dùng từ bảng infomation Customer
 			if($atribute['address_status'] == 0){
 				$data['address'] = $atribute['address0'];
-				if($atribute['phonenumber_status']==1){
+				if(isset($atribute['phonenumber_status'])){
+					$session->write('phonenumber_status', 1);
 					$data['phonenumber'] = $atribute['phonenumber01'];
+
+					//Validate PhoneNumber
+					$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
+					if($checkPhoneNumber['result'] == 'invalid'){
+						
+						$session->write('errorPhone01', $checkPhoneNumber['message']);
+						return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
+					}else{
+						if($session->check('errorPhone01')){
+							$session->delete('errorPhone01');
+						}
+
+					}
 				}else{
 					$data['phonenumber'] = $atribute['phonenumber0'];
 				}
@@ -85,9 +101,22 @@ class NormalUsersController extends AppController
 				$data['address'] = $atribute['address1'];
 				$data['phonenumber'] = $atribute['phonenumber1'];
 			}
-
+			
 			if(isset($atribute['username_status'])){
+				$session->write('username_status', 1);
 				$data['username'] = $atribute['username1'];
+				
+
+				//Validate Username
+				$checkUsername = $this->{'Validate'}->validateUsername($data['username']);
+				if($checkUsername['result'] == 'invalid'){
+					$session->write('errorUsername1', $checkUsername['message']);
+					return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
+				}else{
+					if($session->check('errorUsername1')){
+						$session->delete('errorUsername1');
+					}
+				}
 			}else{
 				$data['username'] = $atribute['username'];
 			}

@@ -94,6 +94,7 @@ const NORMALUSER_INPUT_USER = 'inputUser';
 const NORMALUSER_COMPLETE_ORDER = 'completeOrder';
 const NORMALUSER_MY_ACCOUNT = 'myAccount';
 const NORMALUSER_HISTORY_ORDER = 'historyOrders';
+const NORMALUSER_INFO_CUSTOMER = 'infoCustomer';
 
 //Admin
 const ADMIN_LIST_CATEGORIES = 'listCategories';
@@ -121,3 +122,8 @@ const URL_ADMIN_LIST_CATEGORIES = '/admin/list-categories';
 
 /*/////////////// Name Router ////////////////////////*/
 const NAME_LOGIN = 'login';
+
+/*/////////////// Validate ////////////////////////*/
+const ERROR_NULL_PHONE_NUMBER = 'Số điện thoại không được để trống.';
+const ERROR_INVALID_PHONE_NUMBER = 'Số điện thoại không đúng định dạng.';
+const ERROR_NULL_USERNAME = 'Tên không được để trống.';

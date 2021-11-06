@@ -122,7 +122,7 @@ echo $this->element('NormalUsers/header');
 															</div>
 
 															<div style="margin: 10px 0 10px 10px; ">
-																<input type="checkbox" name="phonenumber_status" value="1" id="changeNumbers" onclick="changeNumber()" />
+																<input type="checkbox" name="phonenumber_status" value="1" id="changeNumbers" onclick="changeNumber()" <?php if(isset($_SESSION['phonenumber_status'])){ echo 'checked'; } ?> />
 																<label for="changeNumbers" style="display: inline-block; font-weight: 300;">Thay đổi số điện thoại</label> <br>
 															</div>
 
@@ -130,9 +130,9 @@ echo $this->element('NormalUsers/header');
 																<div style="margin-left: 10px; margin-bottom: 10px; ">
 																	<p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
 																		<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="" placeholder="" id="billing_phone" name="phonenumber01" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
-																		<?php if (isset($_SESSION['error']['phonenumber'])) { ?>
+																		<?php if (isset($_SESSION['errorPhone01'])) { ?>
 																			<i style="color: red;">
-																				<?= implode($_SESSION['error']['phonenumber']) ?>
+																				<?= $_SESSION['errorPhone01'] ?><br>
 																			</i>
 																		<?php
 																		} ?>
@@ -159,7 +159,7 @@ echo $this->element('NormalUsers/header');
 														</th>
 														<td class="product-total text-left">
 															<div style="margin-left: 10px; margin-bottom: 10px; ">
-																<input type="checkbox" name="username_status" value="1" id="change" onclick="others()" />
+																<input type="checkbox" name="username_status" value="1" id="change" onclick="others()" <?php if(isset($_SESSION['username_status'])){ echo 'checked'; } ?> />
 																<label for="change" style="display: inline-block; font-weight: 300;">Thay đổi tên người nhận</label> <br>
 															</div>
 
@@ -168,10 +168,10 @@ echo $this->element('NormalUsers/header');
 																	<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
 																		<label class="" for="billing_address_1">Họ và tên người nhận: <abbr title="required" class="required">*</abbr>
 																		</label>
-																		<input <?php if (isset($_SESSION['error']['address'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="" name="username1" placeholder="" id="billing_address_1" class="input-text ">
-																		<?php if (isset($_SESSION['error']['address'])) { ?>
+																		<input type="text" value="" name="username1" placeholder="" id="billing_address_1" class="input-text ">
+																		<?php if (isset($_SESSION['errorUsername1'])) { ?>
 																			<i style="color: red;">
-																				<?= implode($_SESSION['error']['address']) ?>
+																				<?= $_SESSION['errorUsername1'] ?>
 																			</i>
 																		<?php
 																		} ?>
@@ -251,10 +251,22 @@ echo $this->element('NormalUsers/footer');
 
 	function changeNumber() {
 		var changeNumber = document.getElementById("changeNumber").style.display;
-		if (changeNumber == 'none') {
+		if (changeNumber == 'none' || checkbox == true) {
 			document.getElementById("changeNumber").style.display = 'block';
 		} else {
 			document.getElementById("changeNumber").style.display = 'none';
+		}
+	}
+
+	window.onload = function() {
+		var checkbox = document.getElementById("changeNumbers").checked;
+		var checkChangeUsername = document.getElementById("change").checked;
+		if (checkbox == true) {
+			document.getElementById("changeNumber").style.display = 'block';
+		}
+
+		if(checkChangeUsername == true){
+			document.getElementById("others").style.display = 'block';
 		}
 	}
 

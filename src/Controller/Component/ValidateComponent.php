@@ -69,6 +69,22 @@ class ValidateComponent extends CommonComponent
         }
     }
 
+    //Validate Address
+    public function validateAddress($address){
+
+        if($address == null || $address == ''){
+            return [
+                'result' => 'invalid',
+                'message' => ERROR_NULL_ADDRESS,
+            ];
+        }else{
+            return [
+                'result' => 'success',
+                'message' => '',
+            ];
+        }
+    }
+
 
 
 }

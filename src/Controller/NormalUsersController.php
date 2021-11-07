@@ -78,6 +78,20 @@ class NormalUsersController extends AppController
 			//Lấy thông tin người dùng từ bảng infomation Customer
 			if($atribute['address_status'] == 0){
 				$data['address'] = $atribute['address0'];
+
+				//Del address status 1 and del error
+				if($session->check('address_status')){
+					$session->delete('address_status');
+				}
+
+				if($session->check('errorAddress')){
+					$session->delete('errorAddress');
+				}
+
+				if($session->check('errorPhone1')){
+					$session->delete('errorPhone1');
+				}
+
 				if(isset($atribute['phonenumber_status'])){
 					$session->write('phonenumber_status', 1);
 					$data['phonenumber'] = $atribute['phonenumber01'];
@@ -85,43 +99,80 @@ class NormalUsersController extends AppController
 					//Validate PhoneNumber
 					$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
 					if($checkPhoneNumber['result'] == 'invalid'){
-						
 						$session->write('errorPhone01', $checkPhoneNumber['message']);
-						return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
 					}else{
 						if($session->check('errorPhone01')){
 							$session->delete('errorPhone01');
 						}
-
 					}
 				}else{
+					if($session->check('phonenumber_status')){
+						$session->delete('phonenumber_status');
+					}
+
+					if($session->check('errorPhone01')){
+						$session->delete('errorPhone01');
+					}
+
 					$data['phonenumber'] = $atribute['phonenumber0'];
 				}
 			}else{
+				$session->write('address_status', 1);
 				$data['address'] = $atribute['address1'];
 				$data['phonenumber'] = $atribute['phonenumber1'];
+
+				//Validate address
+				$checkAddress = $this->{'Validate'}->validateAddress($data['address']);
+				if($checkAddress['result'] == 'invalid'){
+					$session->write('errorAddress', $checkAddress['message']);
+				}else{
+					if($session->check('errorAddress')){
+						$session->delete('errorAddress');
+					}
+				}
+
+				//Validate PhoneNumber
+				$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
+				if($checkPhoneNumber['result'] == 'invalid'){
+					$session->write('errorPhone1', $checkPhoneNumber['message']);
+				}else{
+					if($session->check('errorPhone1')){
+						$session->delete('errorPhone1');
+					}
+				}
 			}
 			
 			if(isset($atribute['username_status'])){
 				$session->write('username_status', 1);
 				$data['username'] = $atribute['username1'];
 				
-
 				//Validate Username
 				$checkUsername = $this->{'Validate'}->validateUsername($data['username']);
 				if($checkUsername['result'] == 'invalid'){
 					$session->write('errorUsername1', $checkUsername['message']);
-					return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
 				}else{
 					if($session->check('errorUsername1')){
 						$session->delete('errorUsername1');
 					}
 				}
 			}else{
+				if($session->check('username_status')){
+					$session->delete('username_status');
+				}
+
+				if($session->check('errorUsername1')){
+					$session->delete('errorUsername1');
+				}
+
 				$data['username'] = $atribute['username'];
 			}
 
-			dd($data);
+			//Check hasError
+			if($session->check('errorUsername1') || $session->check('errorPhone01') || $session->check('errorAddress') || $session->check('errorPhone1')){
+				return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
+			}
+
+			// dd($data);
 
 
 			//END
@@ -147,7 +198,11 @@ class NormalUsersController extends AppController
 			} else {
 				$dataProds['flag'] = 1;
 				$idUsers = $session->read('idUser');
-				$dataUser = $this->{'Data'}->getInfoUser($idUsers);
+				$User = $this->{'Data'}->getInfoUser($idUsers);
+
+				//Set data for dataUser
+				$dataUser = $data;
+				$dataUser['point_user'] = $User[0]['point_user'];
 				$this->set(compact('dataUser'));
 			}
 

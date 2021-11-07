@@ -58,11 +58,11 @@ echo $this->element('NormalUsers/header');
 														</th>
 														<td class="product-total text-left">
 															<div style="margin-left: 10px; margin-bottom: 10px; ">
-																<input type="radio" name="address_status" value="0" id="default" onclick="addressDefault()" checked />
+																<input type="radio" name="address_status" value="0" id="default" onclick="addressDefault()" checked  />
 																<label for="default" style="display: inline-block"><?= h($User['address']) ?></label> <br>
 																<input type="hidden" name="address0" value="<?= h($User['address']) ?>">
 
-																<input type="radio" name="address_status" value="1" id="other" onclick="addressOrder()" />
+																<input type="radio" name="address_status" value="1" id="other" onclick="addressOrder()" <?php if(isset($_SESSION['address_status'])){ echo 'checked'; } ?> />
 																<label for="other" style="display: inline-block">Địa chỉ giao hàng khác</label> <br>
 															</div>
 														</td>
@@ -74,15 +74,13 @@ echo $this->element('NormalUsers/header');
 														<td class="product-total text-left">
 															<div style="margin-left: 10px; margin-bottom: 10px; ">
 																<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-																	<input <?php if (isset($_SESSION['error']['address'])) { ?> style="border-color: red; color: red;" <?php } ?> name="address1" type="text" value="<?php if (isset($_SESSION['cartData']['infoUser']['address'])) {
-																																																			echo h($_SESSION['cartData']['infoUser']['address']);
-																																																		} ?>" placeholder="" id="billing_address_1" class="input-text ">
-																	<?php if (isset($_SESSION['error']['address'])) { ?>
+																	<input name="address1" type="text" value="" placeholder="" id="billing_address_1" class="input-text ">
+																	<?php if (isset($_SESSION['errorAddress'])) { ?>
 																		<i style="color: red;">
-																			<?= implode($_SESSION['error']['address']) ?>
+																			<?= $_SESSION['errorAddress'] ?>
 																		</i>
 																	<?php
-																	} ?>
+																	} ?><br>
 																	<i>(*)Cần nhập đầy đủ địa chỉ của bạn</i>
 																</p>
 																<div class="clear"></div>
@@ -97,13 +95,13 @@ echo $this->element('NormalUsers/header');
 														<td class="product-total text-left">
 															<div style="margin-left: 10px; margin-bottom: 10px; ">
 																<p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-																	<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="" placeholder="" name="phonenumber1" id="billing_phone" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
-																	<?php if (isset($_SESSION['error']['phonenumber'])) { ?>
+																	<input  type="text" value="" placeholder="" name="phonenumber1" id="billing_phone" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
+																	<?php if (isset($_SESSION['errorPhone1'])) { ?>
 																		<i style="color: red;">
-																			<?= implode($_SESSION['error']['phonenumber']) ?>
+																			<?=$_SESSION['errorPhone1'] ?>
 																		</i>
 																	<?php
-																	} ?>
+																	} ?><br>
 																	<i>(*)Vui lòng nhập đúng số điện thoại</i>
 																</p>
 																<div class="clear"></div>
@@ -261,12 +259,18 @@ echo $this->element('NormalUsers/footer');
 	window.onload = function() {
 		var checkbox = document.getElementById("changeNumbers").checked;
 		var checkChangeUsername = document.getElementById("change").checked;
+		var checkOther = document.getElementById("other").checked;
 		if (checkbox == true) {
 			document.getElementById("changeNumber").style.display = 'block';
 		}
 
 		if(checkChangeUsername == true){
 			document.getElementById("others").style.display = 'block';
+		}
+
+		if(checkOther == true){
+			document.getElementById("address").style.display = 'revert';
+			document.getElementById("phonenumber").style.display = 'revert';
 		}
 	}
 

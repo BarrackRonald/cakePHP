@@ -31,14 +31,14 @@ echo $this->element('NormalUsers/header');
 									<div class="col-3">
 										<h3 id="order_review_heading">Thông Tin Khách hàng</h3>
 										<table class="shop_table">
-											<?php foreach ($dataUser as $User) { ?>
+											
 												<tbody>
 													<tr class="cart_item">
 														<th class="product-name">
 															Họ Và Tên
 														</th>
 														<td class="product-total">
-															<span class="amount"><?= h($User['username']) ?></span>
+															<span class="amount"><?= h($dataUser['username']) ?></span>
 														</td>
 													</tr>
 
@@ -47,7 +47,7 @@ echo $this->element('NormalUsers/header');
 															Số Điện Thoại
 														</th>
 														<td class="product-total">
-															<span class="amount"><?= h($User['phonenumber']) ?> </span>
+															<span class="amount"><?= h($dataUser['phonenumber']) ?> </span>
 														</td>
 													</tr>
 
@@ -56,7 +56,7 @@ echo $this->element('NormalUsers/header');
 															Địa chỉ Email
 														</th>
 														<td class="product-total">
-															<span class="amount"><?= h($User['email']) ?> </span>
+															<span class="amount"><?= h($dataUser['email']) ?> </span>
 														</td>
 													</tr>
 
@@ -65,11 +65,11 @@ echo $this->element('NormalUsers/header');
 															Địa chỉ
 														</th>
 														<td class="product-total">
-															<span class="amount"><?= h($User['address']) ?></span>
+															<span class="amount"><?= h($dataUser['address']) ?></span>
 														</td>
 													</tr>
 												</tbody>
-											<?php } ?>
+											
 										</table>
 									</div>
 									<div class="col-3">
@@ -103,13 +103,13 @@ echo $this->element('NormalUsers/header');
 													<tr class="shipping">
 														<th>Point Hiện có</th>
 														<td>
-															<?= number_format($dataUser[0]['point_user']) . ' point' ?>
+															<?= number_format($dataUser['point_user']) . ' point' ?>
 														</td>
 													</tr>
 													<tr class="shipping">
 														<th>Point Sau khi mua</th>
 														<td>
-															<?= number_format($dataProds['totalAllPoint'] + $dataUser[0]['point_user']) . ' point' ?>
+															<?= number_format($dataProds['totalAllPoint'] + $dataUser['point_user']) . ' point' ?>
 														</td>
 													</tr>
 													<tr class="order-total">

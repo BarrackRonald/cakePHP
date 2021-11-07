@@ -127,3 +127,4 @@ const NAME_LOGIN = 'login';
 const ERROR_NULL_PHONE_NUMBER = 'Số điện thoại không được để trống.';
 const ERROR_INVALID_PHONE_NUMBER = 'Số điện thoại không đúng định dạng.';
 const ERROR_NULL_USERNAME = 'Tên không được để trống.';
+const ERROR_NULL_ADDRESS = 'Địa chỉ không được để trống.';

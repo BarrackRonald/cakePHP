@@ -50,7 +50,7 @@ echo $this->element('serial');
 						<?php foreach ($query1 as $order) { ?>
 							<tr class="list">
 								<td><?=$GLOBALS['n']++?></td>
-								<td><a><?= $order['Users']['username'] ?></a></td>
+								<td><a><?= $order['order_name'] ?></a></td>
 								<td><a><?= $order['email'] ?></a></td>
 								<td><a><?= $order['phonenumber'] ?></a></td>
 								<td><a><?= $order['address'] ?></a></td>

@@ -31,7 +31,6 @@ echo $this->element('NormalUsers/header');
 									<div class="col-3">
 										<h3 id="order_review_heading">Thông Tin Khách hàng</h3>
 										<table class="shop_table">
-											
 												<tbody>
 													<tr class="cart_item">
 														<th class="product-name">
@@ -69,7 +68,6 @@ echo $this->element('NormalUsers/header');
 														</td>
 													</tr>
 												</tbody>
-											
 										</table>
 									</div>
 									<div class="col-3">
@@ -122,7 +120,7 @@ echo $this->element('NormalUsers/header');
 												<div id="order_review" style="position: relative; display: inline-block;">
 													<div id="payment">
 														<div class="form-row place-order">
-															<a href="/carts">
+															<a href="/infoCustomer">
 																<input type="button" data-value="Place order" value="Back" id="place_order" name="woocommerce_checkout_place_order" class="button alt button_back">
 															</a>
 														</div>

@@ -108,7 +108,7 @@ echo $this->element('NormalUsers/header');
 								<div class="clear"></div>
 							</div>
 						</div>
-					<?php } else { ?>
+				<?php } else { ?>
 						<form enctype="multipart/form-data" action="" class="checkout" method="post" name="checkout">
 							<div id="customer_details" class="col2-set">
 								<div style="text-align: center;" class="col-4">

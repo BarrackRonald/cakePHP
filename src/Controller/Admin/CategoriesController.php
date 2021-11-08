@@ -51,7 +51,6 @@ class CategoriesController extends AppController
 	public function beforeRender(EventInterface $event)
 	{
 		$session = $this->request->getSession();
-
 		if ($session->check('idUser')) {
 			$idUsers = $session->read('idUser');
 			$dataNameForUser = $this->{'Data'}->getInfoUser($idUsers);
@@ -64,7 +63,6 @@ class CategoriesController extends AppController
 	{
 		//Check Referer
 		$session = $this->request->getSession();
-
 		if ($session->check('error')) {
 			$session->delete('error');
 		}
@@ -102,7 +100,6 @@ class CategoriesController extends AppController
 	//Edit Categories
 	public function editCategory($id = null)
 	{
-		$session = $this->request->getSession();
 		//Check URL_ID
 		if (!is_numeric($id)) {
 			$this->Flash->error(__(ERROR_CATEGORY_EMPTY));

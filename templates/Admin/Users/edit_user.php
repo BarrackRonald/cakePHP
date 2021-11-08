@@ -44,6 +44,7 @@ echo $this->element('Admin/sidebar');
 								<?= implode($error['password']) ?>
 							</i>
 						<?php } ?>
+						<i style="font-size: 13px;">(*) Mật khẩu phải trên 8 ký tự và bao gồm: chữ hoa, chữ thường, số, ký tự đặc biệt. </i>
 					</div>
 
 					<div class="form-group">

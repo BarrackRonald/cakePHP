@@ -398,6 +398,7 @@ class CRUDComponent extends CommonComponent
 				'Orders.total_point',
 				'Orders.total_quantity',
 				'Orders.total_amount',
+				'Orders.order_name',
 				'Orders.status',
 				'Orders.user_id',
 				'Users.username'
@@ -536,6 +537,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Orders->find()
 			->select([
 				'Orders.id',
+				'Orders.order_name',
 				'Orders.email',
 				'Orders.phonenumber',
 				'Orders.address',

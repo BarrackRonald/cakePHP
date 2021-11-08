@@ -128,3 +128,5 @@ const ERROR_NULL_PHONE_NUMBER = 'Số điện thoại không được để tr�
 const ERROR_INVALID_PHONE_NUMBER = 'Số điện thoại không đúng định dạng.';
 const ERROR_NULL_USERNAME = 'Tên không được để trống.';
 const ERROR_NULL_ADDRESS = 'Địa chỉ không được để trống.';
+const ERROR_DATA_NOT_CHANGED = 'Dữ liệu không có sự thay đổi!!!';
+const ERROR_DATA_CHANGED = 'Dữ liệu đã bị thay đổi!!!';

@@ -66,10 +66,8 @@ class OrdersController extends AppController
 		if ($key) {
 			//Lưu key
 			$session->write('keySearch', trim($key));
-
 			$query1 = $this->{'CRUD'}->getSearchOrder(trim($key));
 			$querytoArr = $this->{'CRUD'}->getSearchOrderArr(trim($key));
-
 			if(count($querytoArr) == 0){
 				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
 			}
@@ -136,10 +134,10 @@ class OrdersController extends AppController
 			} else {
 				//Check F12
 				if ((
-					($atribute['username'] != $dataUser[0]['username']||
-					$atribute['email'] != $dataUser[0]['email']||
-					$atribute['phonenumber'] != $dataUser[0]['phonenumber']||
-					$atribute['address'] != $dataUser[0]['address']||
+					($atribute['username'] != $dataOrder[0]['order_name']||
+					$atribute['email'] != $dataOrder[0]['email']||
+					$atribute['phonenumber'] != $dataOrder[0]['phonenumber']||
+					$atribute['address'] != $dataOrder[0]['address']||
 					$atribute['total_point'] != $dataOrder[0]['total_point']||
 					$atribute['total_quantity'] != $dataOrder[0]['total_quantity']||
 					$atribute['total_amount'] != $dataOrder[0]['total_amount']) ||
@@ -149,6 +147,7 @@ class OrdersController extends AppController
 					$this->Flash->error(__(ERROR_ORDER_DATA_CHANGED_NOT_CONFIRM));
 					$data = $atribute;
 				}else{
+
 					//Tính toán Xóa Point Khi Từ chối đơn
 					if ($atribute['status'] == $dataOrder[0]['status']) {
 						$pointAF = $dataUser[0]['point_user'];
@@ -182,6 +181,7 @@ class OrdersController extends AppController
 				return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
 			}
 		}
+
 		$this->set('dataOrder', $data);
 	}
 }

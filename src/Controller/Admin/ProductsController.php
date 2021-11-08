@@ -64,7 +64,6 @@ class ProductsController extends AppController
 	{
 		$products = $this->{'CRUD'}->getAllProduct();
 		$session = $this->request->getSession();
-
 		//Search
 		$key = $this->request->getQuery('key');
 		if ($key) {

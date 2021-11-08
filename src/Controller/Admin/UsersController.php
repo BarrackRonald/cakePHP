@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Auth\DefaultPasswordHasher;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 
 /**
@@ -100,7 +101,17 @@ class UsersController extends AppController
 			}
 			$query = $users;
 		}
-		$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
+
+		try {
+			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
+		} catch (NotFoundException $e) {
+			$atribute = $this->request->getAttribute('paging');
+			$requestedPage = $atribute['Users']['requestedPage'];
+			$pageCount = $atribute['Users']['pageCount'];
+			if ($requestedPage > $pageCount) {
+				return $this->redirect("/admin/list-user?page=" . $pageCount . "");
+			}
+		}
 	}
 
 	//Add Users
@@ -121,7 +132,6 @@ class UsersController extends AppController
 			}
 
 			$dataUser = $this->{'CRUD'}->addUser($atribute);
-
 			if ($dataUser['result'] == "invalid") {
 				$error = $dataUser['data'];
 				$this->set('error', $error);
@@ -129,7 +139,6 @@ class UsersController extends AppController
 			} else {
 				// Checkmail trùng
 				$checkmail = $this->{'Data'}->checkmail($atribute);
-
 				if (count($checkmail) > 0) {
 					$error['email'] = [EMAIL_ALREADY_EXISTS];
 					$this->set('error', $error);
@@ -172,7 +181,6 @@ class UsersController extends AppController
 
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
-
 			//Check thay đổi
 			if (
 				trim($atribute['username']) == trim($checkUserID[0]['username']) &&

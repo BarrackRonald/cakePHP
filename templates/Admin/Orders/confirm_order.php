@@ -23,38 +23,39 @@ echo $this->element('Admin/sidebar');
 				<div class="col-12">
 					<?= $this->Form->create() ?>
 					<div class="form-group">
+					
 						<label for="email">Họ và tên Khách hàng:</label>
 						<input type="text" class="form-control input-color"
-						value="<?php if (isset($dataOrder['Users']['username'])) {
-							echo h(trim($dataOrder['Users']['username']));
+						value="<?php if (isset($dataOrder['order_name'])) {
+							echo h(trim($dataOrder['order_name']));
 							} else {
-								echo h(trim($dataOrder['username']));
+								echo h(trim($dataOrder['order_name']));
 							}
-						?>"name="username" disabled>
+						?>"name="order_name" readonly>
 					</div>
 					<div class="form-group">
 						<label for="email">Email:</label>
-						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['email']) ?>" name="email" disabled>
+						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['email']) ?>" name="email" readonly>
 					</div>
 					<div class="form-group">
 						<label for="email">Số điện thoại:</label>
-						<input type="number" class="form-control input-color" value="<?= trim($dataOrder['phonenumber']) ?>" name="phonenumber" disabled>
+						<input type="number" class="form-control input-color" value="<?= trim($dataOrder['phonenumber']) ?>" name="phonenumber" readonly>
 					</div>
 					<div class="form-group">
 						<label for="email">Địa chỉ:</label>
-						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['address']) ?>" name="address" disabled>
+						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['address']) ?>" name="address" readonly>
 					</div>
 					<div class="form-group">
 						<label for="email">Tổng Point:</label>
-						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['total_point']) ?>" name="total_point" disabled>
+						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['total_point']) ?>" name="total_point" readonly>
 					</div>
 					<div class="form-group">
 						<label for="email">Tổng số lượng:</label>
-						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['total_quantity']) ?>" name="total_quantity" disabled>
+						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['total_quantity']) ?>" name="total_quantity" readonly>
 					</div>
 					<div class="form-group">
 						<label for="email">Tổng giá:</label>
-						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['total_amount']) ?>" name="total_amount" disabled>
+						<input type="text" class="form-control input-color" value="<?= trim($dataOrder['total_amount']) ?>" name="total_amount" readonly>
 					</div>
 					<div class="form-group">
 						<label for="pwd">Xác nhận đơn:</label>

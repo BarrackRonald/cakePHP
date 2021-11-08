@@ -70,6 +70,8 @@ class NormalUsersController extends AppController
 	public function confirmOrder()
 	{
 		$session = $this->request->getSession();
+		$idUsers = $session->read('idUser');
+		$User = $this->{'Data'}->getInfoUser($idUsers);
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
 			$data = [];
@@ -78,6 +80,41 @@ class NormalUsersController extends AppController
 			//Lấy thông tin người dùng từ bảng infomation Customer
 			if($atribute['address_status'] == 0){
 				$data['address'] = $atribute['address0'];
+
+				if(isset($atribute['phonenumber_status'])){
+					$session->write('phonenumber_status', 1);
+					$data['phonenumber'] = $atribute['phonenumber01'];
+					$session->write('dataInput', $atribute);
+
+					//check thay đổi
+					if($User[0]['phonenumber'] == $data['phonenumber']){
+						$session->write('errorPhone01', ERROR_DATA_NOT_CHANGED);
+					}else{
+						//Validate PhoneNumber
+						$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
+						if($checkPhoneNumber['result'] == 'invalid'){
+							$session->write('errorPhone01', $checkPhoneNumber['message']);
+						}else{
+							if($session->check('errorPhone01')){
+								$session->delete('errorPhone01');
+							}
+						}
+					}
+				}else{
+					if($session->check('phonenumber_status')){
+						$session->delete('phonenumber_status');
+					}
+					if($session->check('errorPhone01')){
+						$session->delete('errorPhone01');
+					}
+
+					$data['phonenumber'] = $atribute['phonenumber0'];
+				}
+
+				//Del Session
+				if($session->check('error')){
+					$session->delete('error');
+				}
 
 				//Del address status 1 and del error
 				if($session->check('address_status')){
@@ -91,71 +128,77 @@ class NormalUsersController extends AppController
 				if($session->check('errorPhone1')){
 					$session->delete('errorPhone1');
 				}
+			}elseif($atribute['address_status'] == 1){
+				$session->write('address_status', 1);
+				$data['address'] = trim($atribute['address1']);
+				$data['phonenumber'] = trim($atribute['phonenumber1']);
+				$session->write('dataInput', $atribute);
 
-				if(isset($atribute['phonenumber_status'])){
-					$session->write('phonenumber_status', 1);
-					$data['phonenumber'] = $atribute['phonenumber01'];
+				//Check thay đổi địa chỉ
+				if($User[0]['address'] == $data['address']){
+					$session->write('errorAddress', ERROR_DATA_NOT_CHANGED);
+				}else{
+					//Validate address
+					$checkAddress = $this->{'Validate'}->validateAddress($data['address']);
+					if($checkAddress['result'] == 'invalid'){
+						$session->write('errorAddress', $checkAddress['message']);
+					}else{
+						if($session->check('errorAddress')){
+							$session->delete('errorAddress');
+						}
+					}
+				}
 
+				//Check thay đổi số điện thoại
+				if($User[0]['phonenumber'] == $data['phonenumber']){
+					$session->write('errorPhone1', ERROR_DATA_NOT_CHANGED);
+				}else{
 					//Validate PhoneNumber
 					$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
 					if($checkPhoneNumber['result'] == 'invalid'){
-						$session->write('errorPhone01', $checkPhoneNumber['message']);
+						$session->write('errorPhone1', $checkPhoneNumber['message']);
 					}else{
-						if($session->check('errorPhone01')){
-							$session->delete('errorPhone01');
+						if($session->check('errorPhone1')){
+							$session->delete('errorPhone1');
 						}
 					}
-				}else{
-					if($session->check('phonenumber_status')){
-						$session->delete('phonenumber_status');
-					}
+				}
 
-					if($session->check('errorPhone01')){
-						$session->delete('errorPhone01');
-					}
+				//Del Session
+				if($session->check('phonenumber_status')){
+					$session->delete('phonenumber_status');
+				}
 
-					$data['phonenumber'] = $atribute['phonenumber0'];
+				if($session->check('error')){
+					$session->delete('error');
 				}
 			}else{
-				$session->write('address_status', 1);
-				$data['address'] = $atribute['address1'];
-				$data['phonenumber'] = $atribute['phonenumber1'];
-
-				//Validate address
-				$checkAddress = $this->{'Validate'}->validateAddress($data['address']);
-				if($checkAddress['result'] == 'invalid'){
-					$session->write('errorAddress', $checkAddress['message']);
-				}else{
-					if($session->check('errorAddress')){
-						$session->delete('errorAddress');
-					}
-				}
-
-				//Validate PhoneNumber
-				$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
-				if($checkPhoneNumber['result'] == 'invalid'){
-					$session->write('errorPhone1', $checkPhoneNumber['message']);
-				}else{
-					if($session->check('errorPhone1')){
-						$session->delete('errorPhone1');
-					}
-				}
+				//Check F12 đổi value
+				$this->Flash->error(__(ERROR_DATA_CHANGED));
+				$session->write('error', 1);
 			}
-			
+
 			if(isset($atribute['username_status'])){
 				$session->write('username_status', 1);
 				$data['username'] = $atribute['username1'];
-				
-				//Validate Username
-				$checkUsername = $this->{'Validate'}->validateUsername($data['username']);
-				if($checkUsername['result'] == 'invalid'){
-					$session->write('errorUsername1', $checkUsername['message']);
+				$session->write('dataInput', $atribute);
+
+				//Check thay đổi
+				if($User[0]['username'] == $data['username']){
+					$session->write('errorUsername1', ERROR_DATA_NOT_CHANGED);
 				}else{
-					if($session->check('errorUsername1')){
-						$session->delete('errorUsername1');
+					//Validate Username
+					$checkUsername = $this->{'Validate'}->validateUsername($data['username']);
+					if($checkUsername['result'] == 'invalid'){
+						$session->write('errorUsername1', $checkUsername['message']);
+					}else{
+						if($session->check('errorUsername1')){
+							$session->delete('errorUsername1');
+						}
 					}
 				}
 			}else{
+				$data['username'] = $atribute['username'];
 				if($session->check('username_status')){
 					$session->delete('username_status');
 				}
@@ -163,17 +206,11 @@ class NormalUsersController extends AppController
 				if($session->check('errorUsername1')){
 					$session->delete('errorUsername1');
 				}
-
-				$data['username'] = $atribute['username'];
 			}
-
 			//Check hasError
-			if($session->check('errorUsername1') || $session->check('errorPhone01') || $session->check('errorAddress') || $session->check('errorPhone1')){
+			if($session->check('errorUsername1') || $session->check('errorPhone01') || $session->check('errorAddress') || $session->check('errorPhone1') || $session->check('error')){
 				return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
 			}
-
-			// dd($data);
-
 
 			//END
 			$session = $this->request->getSession();
@@ -197,12 +234,11 @@ class NormalUsersController extends AppController
 				echo "";
 			} else {
 				$dataProds['flag'] = 1;
-				$idUsers = $session->read('idUser');
-				$User = $this->{'Data'}->getInfoUser($idUsers);
-
 				//Set data for dataUser
 				$dataUser = $data;
 				$dataUser['point_user'] = $User[0]['point_user'];
+				$dataUser['user_id'] = $idUsers;
+				$session->write('infoCustomer', $dataUser);
 				$this->set(compact('dataUser'));
 			}
 
@@ -225,6 +261,18 @@ class NormalUsersController extends AppController
 			$idUsers = $session->read('idUser');
 			$dataUser = $this->{'Data'}->getInfoUser($idUsers);
 			$this->set(compact('dataUser'));
+		}
+
+		//check giỏ hàng rỗng
+		if (!$session->check('cartData')) {
+			$this->Flash->error(__(ERROR_CART_EMPTY));
+			return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
+		} else {
+			$dataProds = $session->read('cartData');
+			if ($dataProds['totalAllAmount'] == 0) {
+				$this->Flash->error(__(ERROR_CART_EMPTY));
+				return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
+			}
 		}
 	}
 
@@ -637,14 +685,14 @@ class NormalUsersController extends AppController
 
 				$idUsers = $session->read('idUser');
 				$dataUser = $this->{'Data'}->getInfoUser($idUsers);
-				$result = $this->{'Data'}->createOrders($dataProds, $dataUser);
+				$dataCustomer = $session->read('infoCustomer');
+				$result = $this->{'Data'}->createOrders($dataProds, $dataCustomer);
 				$pointuser = $this->{'Data'}->getPointByUser($idUsers);
 
 				//Point user trước khi mua
 				$pointBF = $pointuser[0]['point_user'];
 				$pointAF = $pointBF + $dataProds['totalAllPoint'];
 				$this->{'Data'}->updatePoint($pointAF, $idUsers);
-
 				if (!$result['result'] == "invalid") {
 					$to = $dataUser[0]['email'];
 					$toAdmin = 'phamhoan020501@gmail.com';
@@ -751,7 +799,7 @@ class NormalUsersController extends AppController
                                                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                                     <tr>
                                                         <td align="center" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;"> <img src="https://img.icons8.com/carbon-copy/100/000000/checked-checkbox.png" width="125" height="120" style="display: block; border: 0px;" /><br>
-                                                            <h2 style="font-size: 30px; font-weight: 700; line-height: 36px; color: #333333; margin: 0;"> Cảm ơn ' . $dataUser[0]["username"] . ' đã đặt hàng tại VerTu.vn! </h2>
+                                                            <h2 style="font-size: 30px; font-weight: 700; line-height: 36px; color: #333333; margin: 0;"> Cảm ơn ' . $dataCustomer["username"] . ' đã đặt hàng tại VerTu.vn! </h2>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -767,11 +815,11 @@ class NormalUsersController extends AppController
                                                                     <td width="25%" align="left" bgcolor="#eeeeee" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">  </td>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Khách hàng:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $dataUser[0]["username"] . ' </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $dataCustomer["username"] . ' </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">Số điện thoại:  </td>
-                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $dataUser[0]["phonenumber"] . ' </td>
+                                                                    <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;"> ' . $dataCustomer["phonenumber"] . ' </td>
                                                                 </tr>
 
 
@@ -828,7 +876,7 @@ class NormalUsersController extends AppController
                                                                     <tr>
                                                                         <td align="left" valign="top" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
                                                                             <p style="font-weight: 700;">Địa chỉ giao hàng</p>
-                                                                            <p>' . $dataUser[0]['address'] . '</p>
+                                                                            <p>' . $dataCustomer['address'] . '</p>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -884,6 +932,24 @@ class NormalUsersController extends AppController
 	}
 	public function completeOrder()
 	{
+		$session = $this->request->getSession();
+		if ($session->check('address_status')) {
+			$session->delete('address_status');
+		}
+
+		if ($session->check('phonenumber_status')) {
+			$session->delete('phonenumber_status');
+		}
+
+		if ($session->check('username_status')) {
+			$session->delete('username_status');
+		}
+
+		if ($session->check('dataInput')) {
+			$session->delete('dataInput');
+		}
+
+
 	}
 
 	public function pageError(){

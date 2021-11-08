@@ -161,12 +161,12 @@ class DataComponent extends CommonComponent
 	public function createOrders($dataProds, $insertUser)
 	{
 		$order = [];
-		$order['order_name'] = 'order_' . $insertUser[0]['username'];
-		$order['email'] = $insertUser[0]['email'];
-		$order['phonenumber'] = $insertUser[0]['phonenumber'];
-		$order['address'] = $insertUser[0]['address'];
+		$order['order_name'] = $insertUser['username'];
+		$order['email'] = $insertUser['email'];
+		$order['phonenumber'] = $insertUser['phonenumber'];
+		$order['address'] = $insertUser['address'];
 		$order['date_order'] = date('Y-m-d h:i:s');
-		$order['user_id'] = $insertUser[0]['id'];
+		$order['user_id'] = $insertUser['user_id'];
 		$order['total_point'] = $dataProds['totalAllPoint'];
 		$order['total_quantity'] = $dataProds['totalquantity'];
 		$order['total_amount'] = $dataProds['totalAllAmount'];

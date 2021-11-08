@@ -69,7 +69,17 @@ class CategoriesTable extends Table
 				],
 			])
 			->requirePresence('category_name', 'create')
-			->notEmptyString('category_name', 'Tên Danh mục không thể để trống.');
+			->notEmptyString('category_name', 'Tên Danh mục không thể để trống.')
+			->add(
+				'category_name',
+				[
+					'unique' => [
+						'rule' => 'validateUnique',
+						'provider' => 'table',
+						'message' => 'Tên Danh mục đã tồn tại.'
+					]
+				]
+			);
 
 		$validator
 			->boolean('del_flag')

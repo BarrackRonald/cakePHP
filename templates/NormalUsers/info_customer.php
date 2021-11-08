@@ -2,9 +2,7 @@
 
 echo $this->element('NormalUsers/header');
 ?>
-<div class="row" style="margin-left: 5px">
-	<?= $this->Flash->render() ?>
-</div>
+
 <div class="product-big-title-area">
 	<div class="container">
 		<div class="row">
@@ -17,6 +15,9 @@ echo $this->element('NormalUsers/header');
 			</div>
 		</div>
 	</div>
+</div>
+<div class="row" style="margin: 10px 0 0 5px">
+	<?= $this->Flash->render() ?>
 </div>
 <div class="single-product-area">
 	<div class="zigzag-bottom"></div>
@@ -74,7 +75,7 @@ echo $this->element('NormalUsers/header');
 														<td class="product-total text-left">
 															<div style="margin-left: 10px; margin-bottom: 10px; ">
 																<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-																	<input name="address1" type="text" value="" placeholder="" id="billing_address_1" class="input-text ">
+																	<input name="address1" type="text" value="<?php if(isset($_SESSION['dataInput']['address1'])){ echo $_SESSION['dataInput']['address1']; }?>" placeholder="" id="billing_address_1" class="input-text ">
 																	<?php if (isset($_SESSION['errorAddress'])) { ?>
 																		<i style="color: red;">
 																			<?= $_SESSION['errorAddress'] ?>
@@ -95,7 +96,7 @@ echo $this->element('NormalUsers/header');
 														<td class="product-total text-left">
 															<div style="margin-left: 10px; margin-bottom: 10px; ">
 																<p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-																	<input  type="text" value="" placeholder="" name="phonenumber1" id="billing_phone" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
+																	<input  type="text" value="<?php if(isset($_SESSION['dataInput']['phonenumber1'])){ echo $_SESSION['dataInput']['phonenumber1']; } ?>" placeholder="" name="phonenumber1" id="billing_phone" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
 																	<?php if (isset($_SESSION['errorPhone1'])) { ?>
 																		<i style="color: red;">
 																			<?=$_SESSION['errorPhone1'] ?>
@@ -127,7 +128,7 @@ echo $this->element('NormalUsers/header');
 															<div id="changeNumber" style="display: none" class="col-3">
 																<div style="margin-left: 10px; margin-bottom: 10px; ">
 																	<p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-																		<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="" placeholder="" id="billing_phone" name="phonenumber01" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
+																		<input <?php if (isset($_SESSION['error']['phonenumber'])) { ?> style="border-color: red; color: red;" <?php } ?> type="text" value="<?php if(isset($_SESSION['dataInput']['phonenumber01'])){ echo $_SESSION['dataInput']['phonenumber01']; } ?>" placeholder="" id="billing_phone" name="phonenumber01" class="input-text input_number" onkeypress='validate(event)' maxlength="10">
 																		<?php if (isset($_SESSION['errorPhone01'])) { ?>
 																			<i style="color: red;">
 																				<?= $_SESSION['errorPhone01'] ?><br>
@@ -166,7 +167,7 @@ echo $this->element('NormalUsers/header');
 																	<p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
 																		<label class="" for="billing_address_1">Họ và tên người nhận: <abbr title="required" class="required">*</abbr>
 																		</label>
-																		<input type="text" value="" name="username1" placeholder="" id="billing_address_1" class="input-text ">
+																		<input type="text" value="<?php if(isset($_SESSION['dataInput']['username1'])){ echo $_SESSION['dataInput']['username1']; } ?>" name="username1" placeholder="" id="billing_address_1" class="input-text ">
 																		<?php if (isset($_SESSION['errorUsername1'])) { ?>
 																			<i style="color: red;">
 																				<?= $_SESSION['errorUsername1'] ?>
@@ -249,7 +250,7 @@ echo $this->element('NormalUsers/footer');
 
 	function changeNumber() {
 		var changeNumber = document.getElementById("changeNumber").style.display;
-		if (changeNumber == 'none' || checkbox == true) {
+		if (changeNumber == 'none') {
 			document.getElementById("changeNumber").style.display = 'block';
 		} else {
 			document.getElementById("changeNumber").style.display = 'none';
@@ -271,6 +272,7 @@ echo $this->element('NormalUsers/footer');
 		if(checkOther == true){
 			document.getElementById("address").style.display = 'revert';
 			document.getElementById("phonenumber").style.display = 'revert';
+			document.getElementById("phonenumberDefault").style.display = 'none';
 		}
 	}
 

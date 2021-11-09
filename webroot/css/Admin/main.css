@@ -1,3 +1,19 @@
+/*Bootstrap selector*/
+.search_select_box button {
+	display: block;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
+
+/*////////////////////*/
 .button_back {
   display: inline-block;
 

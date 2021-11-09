@@ -40,6 +40,7 @@ class Product extends Entity
 		'description' => true,
 		'amount_product' => true,
 		'point_product' => true,
+		'quantity_product' => true,
 		'del_flag' => true,
 		'status' => true,
 		'category_id' => true,

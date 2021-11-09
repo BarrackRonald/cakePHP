@@ -18,12 +18,16 @@ $this->disableAutoLayout();
 	<link rel="stylesheet" href="../../css/Admin/app.css">
 	<link rel="stylesheet" href="../../css/Admin/cake.css">
 	<link rel="shortcut icon" href="../../img/Admin/favicon.svg" type="image/x-icon">
+
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 	<script src="../../js/Admin/ckeditor/ckeditor.js"></script>
 	<!-- Sweet Alert -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="fonts/Login/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
 </head>
 
 <body>

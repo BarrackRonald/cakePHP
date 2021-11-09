@@ -100,6 +100,10 @@ class ProductsTable extends Table
 			->notEmptyString('point_product', 'Point không thể để trống.');
 
 		$validator
+			->integer('quantity_product')
+			->notEmptyString('quantity_product', 'Số lượng không thể để trống.');
+
+		$validator
 			->integer('del_flag')
 			->notEmptyString('del_flag');
 

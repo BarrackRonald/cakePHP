@@ -153,5 +153,9 @@ Router::prefix('admin', function (RouteBuilder $routes) {
 	$routes->connect('/details-order/:id', ['controller' => 'Orders', 'action' => 'orderDetails'], ["pass" => ["id"]]);
 	$routes->connect('/confirm-order/:id', ['controller' => 'Orders', 'action' => 'confirmOrder'], ["pass" => ["id"]]);
 
+	//Quản lý nhập kho
+	$routes->connect('/input-product', ['controller' => 'HistoryInput', 'action' => 'inputProduct']);
+
+
 	$routes->fallbacks(DashedRoute::class);
 });

@@ -30,10 +30,13 @@ class CreateProducts extends AbstractMigration
             'limit' => 12,
             'default' => 0,
         ]);
+		$table->addColumn('quantity_product', 'integer', [
+            'limit' => 12,
+            'default' => 0,
+        ]);
         $table->addColumn('del_flag', 'boolean', [
             'default' => 0,
         ]);
-
         $table->addColumn('status', 'boolean', [
             'default' => 1,
         ]);

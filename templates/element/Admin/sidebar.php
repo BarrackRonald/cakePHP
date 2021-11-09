@@ -91,6 +91,23 @@
 						</li>
 					</ul>
 				</li>
+
+				<li class="sidebar-item  has-sub">
+					<a href="#" class='sidebar-link'>
+						<i data-feather="file-text" width="20"></i>
+						<span>Quản lý Nhập</span>
+					</a>
+					<ul class="submenu ">
+
+						<li>
+							<a href="<?= $this->Url->build('admin/history-input', ['fullBase' => true]) ?>">Lịch sử Nhập</a>
+						</li>
+
+						<li>
+							<a href="<?= $this->Url->build('admin/input-product', ['fullBase' => true]) ?>">Nhập Kho</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 		</div>
 		<button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

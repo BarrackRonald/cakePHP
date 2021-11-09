@@ -63,6 +63,10 @@ class AuthexsController extends AppController
 			$email = $this->request->getData('email');
 			$password = $this->request->getData('password');
 
+			//Lưu oldValue
+			$session->write('email', $email);
+			$session->write('password', $password);
+
 			// Check rỗng và check đổi name F12
 			if ($email == null || $password == null) {
 				$this->Flash->error(ERROR_FULL_INFOR);
@@ -273,6 +277,13 @@ class AuthexsController extends AppController
 				if ($session->check('error_forgot')) {
 					$session->delete('error_forgot');
 					if ($this->Users->save($dataUser)) {
+
+						//Lưu và xóa Session
+						$session->write('email', $email);
+						if($session->check('password')){
+							$session->delete('password');
+						}
+
 						$this->Flash->success('Mật khẩu của bạn đã được gửi về email (' . $email . '), vui lòng kiểm tra');
 						$to = $email;
 						$toAdmin = 'phamhoan020501@gmail.com';
@@ -287,7 +298,13 @@ class AuthexsController extends AppController
 					}
 				} else {
 					if ($this->Users->save($dataUser)) {
+
+						//Lưu và xóa Session
 						$session->write('email', $email);
+						if($session->check('password')){
+							$session->delete('password');
+						}
+
 						$this->Flash->success('Mật khẩu của bạn đã được gửi về email (' . $email . '), vui lòng kiểm tra');
 						$to = $email;
 						$toAdmin = 'tienphamvan2005@gmail.com';

@@ -47,7 +47,7 @@ class DataComponent extends CommonComponent
 	{
 		$query = $this->Products->find()
 			->where([
-				'Products.product_name like' => '%' . $keyword . '%',
+				'Products.product_name like BINARY' => '%' . $keyword . '%',
 				'Products.del_flag' => 0,
 			]);
 		return $query;
@@ -79,8 +79,8 @@ class DataComponent extends CommonComponent
 		$user['point_user'] = $pointAF;
 		$user['role_id'] = 1;
 		$user['avatar'] = 'none.jbg';
-		$user['created_date'] = date('Y-m-d h:i:s');
-		$user['updated_date'] = date('Y-m-d h:i:s');
+		$user['created_date'] = date('Y-m-d H:i:s');
+		$user['updated_date'] = date('Y-m-d H:i:s');
 		$dataUser = $this->Users->newEntity($user, ['validate' => 'Custom']);
 
 		if ($dataUser->hasErrors()) {
@@ -108,8 +108,8 @@ class DataComponent extends CommonComponent
 		$user['point_user'] = 0;
 		$user['role_id'] = 1;
 		$user['avatar'] = 'none.jbg';
-		$user['created_date'] = date('Y-m-d h:i:s');
-		$user['updated_date'] = date('Y-m-d h:i:s');
+		$user['created_date'] = date('Y-m-d H:i:s');
+		$user['updated_date'] = date('Y-m-d H:i:s');
 		return [
 			'result' => 'success',
 			'data' => $user,
@@ -128,8 +128,8 @@ class DataComponent extends CommonComponent
 		$user['point_user'] = 0;
 		$user['role_id'] = 1;
 		$user['avatar'] = 'none.jbg';
-		$user['created_date'] = date('Y-m-d h:i:s');
-		$user['updated_date'] = date('Y-m-d h:i:s');
+		$user['created_date'] = date('Y-m-d H:i:s');
+		$user['updated_date'] = date('Y-m-d H:i:s');
 		$dataUser = $this->Users->newEntity($user);
 		if ($dataUser->hasErrors()) {
 			return [
@@ -165,13 +165,13 @@ class DataComponent extends CommonComponent
 		$order['email'] = $insertUser['email'];
 		$order['phonenumber'] = $insertUser['phonenumber'];
 		$order['address'] = $insertUser['address'];
-		$order['date_order'] = date('Y-m-d h:i:s');
+		$order['date_order'] = date('Y-m-d H:i:s');
 		$order['user_id'] = $insertUser['user_id'];
 		$order['total_point'] = $dataProds['totalAllPoint'];
 		$order['total_quantity'] = $dataProds['totalquantity'];
 		$order['total_amount'] = $dataProds['totalAllAmount'];
-		$order['created_date'] = date('Y-m-d h:i:s');
-		$order['updated_date'] = date('Y-m-d h:i:s');
+		$order['created_date'] = date('Y-m-d H:i:s');
+		$order['updated_date'] = date('Y-m-d H:i:s');
 		$dataOrder = $this->Orders->newEntity($order);
 
 		if ($dataOrder->hasErrors()) {
@@ -190,8 +190,8 @@ class DataComponent extends CommonComponent
 			$orderDetail['point_orderDetail'] = $product['totalPoint'];
 			$orderDetail['product_id'] = $key;
 			$orderDetail['order_id'] = $result['id'];
-			$orderDetail['created_date'] = date('Y-m-d h:i:s');
-			$orderDetail['updated_date'] = date('Y-m-d h:i:s');
+			$orderDetail['created_date'] = date('Y-m-d H:i:s');
+			$orderDetail['updated_date'] = date('Y-m-d H:i:s');
 			$dataOrderDetails = $this->Orderdetails->newEntity($orderDetail);
 			if ($dataOrderDetails->hasErrors()) {
 				return [
@@ -210,17 +210,17 @@ class DataComponent extends CommonComponent
 	public function createOrdersNone($infoUser, $dataProds, $insertUser)
 	{
 		$order = [];
-		$order['order_name'] = 'order_' . $infoUser['username'];
+		$order['order_name'] = $infoUser['username'];
 		$order['email'] = $infoUser['email'];
 		$order['phonenumber'] = $infoUser['phonenumber'];
 		$order['address'] = $infoUser['address'];
-		$order['date_order'] = date('Y-m-d h:i:s');
+		$order['date_order'] = date('Y-m-d H:i:s');
 		$order['user_id'] = $insertUser['id'];
 		$order['total_point'] = $dataProds['totalAllPoint'];
 		$order['total_quantity'] = $dataProds['totalquantity'];
 		$order['total_amount'] = $dataProds['totalAllAmount'];
-		$order['created_date'] = date('Y-m-d h:i:s');
-		$order['updated_date'] = date('Y-m-d h:i:s');
+		$order['created_date'] = date('Y-m-d H:i:s');
+		$order['updated_date'] = date('Y-m-d H:i:s');
 		$dataOrder = $this->Orders->newEntity($order);
 
 		if ($dataOrder->hasErrors()) {
@@ -239,8 +239,8 @@ class DataComponent extends CommonComponent
 			$orderDetail['point_orderDetail'] = $product['totalPoint'];
 			$orderDetail['product_id'] = $key;
 			$orderDetail['order_id'] = $result['id'];
-			$orderDetail['created_date'] = date('Y-m-d h:i:s');
-			$orderDetail['updated_date'] = date('Y-m-d h:i:s');
+			$orderDetail['created_date'] = date('Y-m-d H:i:s');
+			$orderDetail['updated_date'] = date('Y-m-d H:i:s');
 			$dataOrderDetails = $this->Orderdetails->newEntity($orderDetail);
 			if ($dataOrderDetails->hasErrors()) {
 				return [
@@ -382,9 +382,23 @@ class DataComponent extends CommonComponent
 	public function getCategory()
 	{
 		$query = $this->Categories->find()
+			->select([
+				'Categories.id',
+				'Categories.category_name',
+				'Products.id',
+				'Products.del_flag'
+			])
+			->join([
+				'table' => 'Products',
+				'alias' => 'Products',
+				'type' => 'inner',
+				'conditions' => ['Products.category_id = Categories.id']
+			])
 			->where([
 				'Categories.del_flag' => 0,
+				'Products.del_flag' => 0
 			])
+			->group('Categories.category_name')
 			->limit(5)
 			->all();
 		return $query;
@@ -467,7 +481,7 @@ class DataComponent extends CommonComponent
 				'Images.image_type' => 'Banner',
 			])
 			->order('Images.updated_date DESC')
-			->limit(5);
+			->limit(6);
 		return $query->toArray();
 	}
 
@@ -483,7 +497,7 @@ class DataComponent extends CommonComponent
 				'Products.category_id' => $idCategory,
 				'Products.del_flag' => 0,
 			]);
-		return $query;
+		return $query->toArray();
 	}
 
 	//Lấy các đơn hàng bằng Users

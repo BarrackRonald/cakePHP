@@ -152,7 +152,6 @@ $this->disableAutoLayout();
 							<?php foreach ($dataCategories as $category) { ?>
 								<li><a href="<?= $this->Url->build('/view-category/' . $category->id, ['fullBase' => true]) ?>"><?= h($category['category_name']) ?></a></li>
 							<?php } ?>
-							<li><a href="#">Contact</a></li>
 						</ul>
 					</div>
 					<div class="col-sm-3">

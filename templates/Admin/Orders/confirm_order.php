@@ -23,7 +23,7 @@ echo $this->element('Admin/sidebar');
 				<div class="col-12">
 					<?= $this->Form->create() ?>
 					<div class="form-group">
-					
+
 						<label for="email">Họ và tên Khách hàng:</label>
 						<input type="text" class="form-control input-color"
 						value="<?php if (isset($dataOrder['order_name'])) {
@@ -69,6 +69,9 @@ echo $this->element('Admin/sidebar');
 							<option value="2" <?php if ($dataOrder['status'] == 2) {
 													echo 'selected';
 												} ?>>Từ chối</option>
+							<option value="3" <?php if ($dataOrder['status'] == 3) {
+													echo 'selected';
+												} ?>>Khách hàng không nhận</option>
 						</select>
 					</div>
 					<div class="button_back">

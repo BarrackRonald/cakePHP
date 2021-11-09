@@ -48,8 +48,10 @@ echo $this->element('NormalUsers/header');
 																	echo 'Chờ Duyệt';
 																}elseif ($order['status'] == 1) {
 																	echo 'Đã Duyệt';
-																}else {
+																}elseif ($order['status'] == 2) {
 																	echo 'Từ chối';
+																}else{
+																	echo 'Khách hàng không nhận';
 																}
 															 ?>
 														</span>

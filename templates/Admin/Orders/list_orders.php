@@ -63,8 +63,10 @@ echo $this->element('serial');
 											echo 'Chờ duyệt';
 										} else if ($order['status'] == 1) {
 											echo 'Đã duyệt';
-										} else {
+										} else if ($order['status'] == 2) {
 											echo 'Từ chối';
+										}else{
+											echo 'Khách hàng không nhận';
 										} ?>
 									</a>
 								</td>

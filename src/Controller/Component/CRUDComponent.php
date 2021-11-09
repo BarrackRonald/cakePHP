@@ -72,8 +72,8 @@ class CRUDComponent extends CommonComponent
 		$user['password'] = $atribute['password'];
 		$user['role_id'] = $atribute['role_id'];
 		$user['avatar'] = 'none.jbg';
-		$user['created_date'] = date('Y-m-d h:i:s');
-		$user['updated_date'] = date('Y-m-d h:i:s');
+		$user['created_date'] = date('Y-m-d H:i:s');
+		$user['updated_date'] = date('Y-m-d H:i:s');
 		$dataUser = $this->Users->newEntity($user);
 
 		if ($dataUser->hasErrors()) {
@@ -167,8 +167,8 @@ class CRUDComponent extends CommonComponent
 	{
 		$category = [];
 		$category['category_name'] = trim($atribute['category_name']);
-		$category['created_date'] = date('Y-m-d h:i:s');
-		$category['updated_date'] = date('Y-m-d h:i:s');
+		$category['created_date'] = date('Y-m-d H:i:s');
+		$category['updated_date'] = date('Y-m-d H:i:s');
 		$dataCategory = $this->Categories->newEntity($category);
 		if ($dataCategory->hasErrors()) {
 			return [
@@ -232,8 +232,8 @@ class CRUDComponent extends CommonComponent
 		$product['amount_product'] = $atribute['amount_product'];
 		$product['point_product'] = $atribute['point_product'];
 		$product['category_id'] = $atribute['category_id'];
-		$product['created_date'] = date('Y-m-d h:i:s');
-		$product['updated_date'] = date('Y-m-d h:i:s');
+		$product['created_date'] = date('Y-m-d H:i:s');
+		$product['updated_date'] = date('Y-m-d H:i:s');
 		$dataProduct = $this->Products->newEntity($product);
 
 		if ($dataProduct->hasErrors()) {
@@ -261,8 +261,8 @@ class CRUDComponent extends CommonComponent
 			$images->image_type = 'Banner';
 			$images->user_id = 1;
 			$images->product_id = $result['id'];
-			$images->created_date = date('Y-m-d h:i:s');
-			$images->updated_date = date('Y-m-d h:i:s');
+			$images->created_date = date('Y-m-d H:i:s');
+			$images->updated_date = date('Y-m-d H:i:s');
 
 			$this->Images->save($images);
 
@@ -310,7 +310,7 @@ class CRUDComponent extends CommonComponent
 				return $q->order('Images.updated_date DESC');
 			}])
 			->where([
-				'Products.product_name like' => '%' . $key . '%',
+				'Products.product_name like BINARY' => '%' . $key . '%',
 				'Products.del_flag' => 0
 			])
 			->order('Products.created_date DESC');
@@ -340,7 +340,7 @@ class CRUDComponent extends CommonComponent
 				return $q->order('Images.updated_date DESC');
 			}])
 			->where([
-				'Products.product_name like' => '%' . $key . '%',
+				'Products.product_name like BINARY' => '%' . $key . '%',
 				'Products.del_flag' => 0
 			])
 			->order('Products.created_date DESC');
@@ -370,7 +370,7 @@ class CRUDComponent extends CommonComponent
 				'conditions' => ['Users.role_id = Roles.id']
 			])
 			->where([
-				'OR' => [['Users.username like' => '%' . $key . '%'], ['Users.email like' => '%' . $key . '%']],
+				'OR' => [['Users.username like BINARY' => '%' . $key . '%'], ['Users.email like BINARY' => '%' . $key . '%']],
 			])
 			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
 		return $query;
@@ -380,7 +380,7 @@ class CRUDComponent extends CommonComponent
 	{
 		$query = $this->Users->find()
 			->where([
-				'OR' => [['Users.username like' => '%' . $key . '%'], ['Users.email like' => '%' . $key . '%']],
+				'OR' => [['Users.username like BINARY' => '%' . $key . '%'], ['Users.email like BINARY' => '%' . $key . '%']],
 			])
 			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
 		return $query->toArray();
@@ -453,6 +453,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Orders->find()
 			->select([
 				'Orders.id',
+				'Orders.order_name',
 				'Orders.email',
 				'Orders.phonenumber',
 				'Orders.address',
@@ -470,7 +471,7 @@ class CRUDComponent extends CommonComponent
 				'conditions' => ['Orders.user_id = Users.id']
 			])
 			->where([
-				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
+				'OR' => [['Orders.order_name like BINARY' => '%' . $key . '%'], ['Orders.email like BINARY' => '%' . $key . '%']]
 			])
 			->order('Orders.id DESC');
 		return $query;
@@ -483,6 +484,7 @@ class CRUDComponent extends CommonComponent
 		$query = $this->Orders->find()
 			->select([
 				'Orders.id',
+				'Orders.order_name',
 				'Orders.email',
 				'Orders.phonenumber',
 				'Orders.address',
@@ -500,7 +502,7 @@ class CRUDComponent extends CommonComponent
 				'conditions' => ['Orders.user_id = Users.id']
 			])
 			->where([
-				'OR' => [['Users.username like' => '%' . $key . '%'], ['Orders.email like' => '%' . $key . '%']]
+				'OR' => [['Orders.order_name like BINARY' => '%' . $key . '%'], ['Orders.email like BINARY' => '%' . $key . '%']]
 			])
 			->order('Orders.id DESC');
 		return $query->toArray();
@@ -515,8 +517,8 @@ class CRUDComponent extends CommonComponent
 		$product['amount_product'] = $atribute['amount_product'];
 		$product['point_product'] = $atribute['point_product'];
 		$product['category_id'] = $atribute['category_id'];
-		$product['created_date'] = date('Y-m-d h:i:s');
-		$product['updated_date'] = date('Y-m-d h:i:s');
+		$product['created_date'] = date('Y-m-d H:i:s');
+		$product['updated_date'] = date('Y-m-d H:i:s');
 		$dataProduct = $this->Products->newEntity($product);
 
 		if ($dataProduct->hasErrors()) {
@@ -573,8 +575,8 @@ class CRUDComponent extends CommonComponent
 		$user['point_user'] = 0;
 		$user['role_id'] = 1;
 		$user['avatar'] = 'none.jbg';
-		$user['created_date'] = date('Y-m-d h:i:s');
-		$user['updated_date'] = date('Y-m-d h:i:s');
+		$user['created_date'] = date('Y-m-d H:i:s');
+		$user['updated_date'] = date('Y-m-d H:i:s');
 		$dataUser = $this->Users->newEntity($user);
 
 		if ($dataUser->hasErrors()) {

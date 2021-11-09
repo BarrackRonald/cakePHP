@@ -134,7 +134,7 @@ class OrdersController extends AppController
 			} else {
 				//Check F12
 				if ((
-					($atribute['username'] != $dataOrder[0]['order_name']||
+					($atribute['order_name'] != $dataOrder[0]['order_name']||
 					$atribute['email'] != $dataOrder[0]['email']||
 					$atribute['phonenumber'] != $dataOrder[0]['phonenumber']||
 					$atribute['address'] != $dataOrder[0]['address']||
@@ -143,17 +143,20 @@ class OrdersController extends AppController
 					$atribute['total_amount'] != $dataOrder[0]['total_amount']) ||
 					($atribute['status'] != 0 &&
 					$atribute['status'] != 1 &&
-					$atribute['status'] != 2))) {
+					$atribute['status'] != 2 &&
+					$atribute['status'] != 3 ))) {
 					$this->Flash->error(__(ERROR_ORDER_DATA_CHANGED_NOT_CONFIRM));
 					$data = $atribute;
 				}else{
 
-					//Tính toán Xóa Point Khi Từ chối đơn
-					if ($atribute['status'] == $dataOrder[0]['status']) {
+					//Tính toán Xóa Point Khi Từ chối đơn và khách hàng không nhận đơn
+					if (($atribute['status'] == $dataOrder[0]['status']) ||
+					($atribute['status'] == 2 && $dataOrder[0]['status'] == 3) ||
+					($atribute['status'] == 3 && $dataOrder[0]['status'] == 2)) {
 						$pointAF = $dataUser[0]['point_user'];
-					} else if ($atribute['status'] == 2) {
+					} else if ($atribute['status'] == 2 || $atribute['status'] == 3) {
 						$pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
-					} else if ($dataOrder[0]['status'] == 2) {
+					} else if ($dataOrder[0]['status'] == 2 || $dataOrder[0]['status'] == 3) {
 						$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
 					} else {
 						$pointAF = $dataUser[0]['point_user'];

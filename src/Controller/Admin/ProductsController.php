@@ -188,7 +188,7 @@ class ProductsController extends AppController
 						$images->image_type = 'Banner';
 						$images->user_id = 1;
 						$images->product_id = $result['id'];
-						$images->updated_date = date('Y-m-d h:i:s');
+						$images->updated_date = date('Y-m-d H:i:s');
 						$this->Images->save($images);
 					}
 					if ($result) {

@@ -27,6 +27,7 @@ class NormalUsersController extends AppController
 	public function beforeRender(EventInterface $event)
 	{
 		$dataCategories = $this->{'Data'}->getCategory();
+		
 		$dataProducts = $this->{'Data'}->getAllProducts();
 		$dataSlideImages = $this->{'Data'}->getSlideImage();
 		$dataNewsProducts = $this->{'Data'}->getNewsProduct();
@@ -948,8 +949,6 @@ class NormalUsersController extends AppController
 		if ($session->check('dataInput')) {
 			$session->delete('dataInput');
 		}
-
-
 	}
 
 	public function pageError(){
@@ -1265,7 +1264,13 @@ class NormalUsersController extends AppController
 		$idCategory = $dataProduct[0]['category_id'];
 		$idProduct = $dataProduct[0]['id'];
 		$dataProductByCategory = $this->{'Data'}->similarProduct($idCategory, $idProduct);
-		$this->set(compact('dataProduct', 'dataImage', 'dataProductByCategory'));
+
+		//Kiểm tra có tồn tại sản phẩm liên quan không
+		if($dataProductByCategory == null){
+			$this->set(compact('dataProduct', 'dataImage'));
+		}else{
+			$this->set(compact('dataProduct', 'dataImage', 'dataProductByCategory'));
+		}
 	}
 
 	//History Product

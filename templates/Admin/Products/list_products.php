@@ -22,6 +22,15 @@ echo $this->element('serial');
 					<button type="submit" class="btn btn-primary btn-default">Search</button>
 				</form>
 			</div>
+			<?php if ($_SESSION['flag'] == 2) { ?>
+				<div class="col-12 col-md-6 order-md-1 order-last" style="align-self: flex-end; text-align: end;">
+					<div class="form-group" style="display: inline-block">
+						<a href="/admin/add-product">
+							<input type="submit" class="btn btn-info" value="Add Sản Phẩm" style="margin-bottom: 5px" />
+						</a>
+					</div>
+				</div>
+			<?php } ?>
 		</div>
 		<div class="row">
 			<div class="col-12 col-md-6 order-md-1 order-last">
@@ -40,6 +49,7 @@ echo $this->element('serial');
 							<th>Tên sản phẩm</th>
 							<th>Hình ảnh</th>
 							<th>Mô tả</th>
+							<th>Số lượng</th>
 							<th>Giá sản phẩm</th>
 							<th>Point sản phẩm</th>
 							<th>Danh mục</th>
@@ -64,6 +74,7 @@ echo $this->element('serial');
 									</a>
 								</td>
 								<td><a><?= h(Text::excerpt($product['description'], 'method', 50, '...')); ?></a></td>
+								<td><a><?= number_format(h($product['quantity_product'])) ?></a></td>
 								<td><a><?= number_format(h($product['amount_product'])) ?></a></td>
 								<td><a><?= number_format(h($product['point_product'])) ?></a></td>
 								<td><a><?= h($product['Categories']['category_name']) ?></a></td>

@@ -10,7 +10,7 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 }
 ?>
 <div id="message">
-	<div class="message success" onclick="this.classList.add('hidden')"><?= $message ?></div> <br><br>
+	<div class="message success" onclick="this.classList.add('hidden')"><?= $message ?></div>
 </div>
 
 <script>

@@ -115,13 +115,20 @@ class ProductsController extends AppController
 					$error = $dataProduct['data'];
 					$this->set('error', $error);
 					$data = $atribute;
-					$this->set('dataProduct', $data);
 				} else {
 					$this->Flash->success(__(SUCCESS_ADD_PRODUCT));
-					return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
+					return $this->redirect($atribute['referer']);
 				}
 			}
+		}else{
+			$data = [];
+			$data["referer"] = $this->referer();
+			if ($data["referer"] == "/") {
+				return $this->redirect(['action' => ADMIN_LIST_PRODUCTS]);
+			}
 		}
+
+		$this->set('dataProduct', $data);
 		$this->set(compact('dataCategory'));
 	}
 

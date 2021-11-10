@@ -155,6 +155,9 @@ Router::prefix('admin', function (RouteBuilder $routes) {
 
 	//Quản lý nhập kho
 	$routes->connect('/input-product', ['controller' => 'HistoryInput', 'action' => 'inputProduct']);
+	$routes->connect('/input-product/:id', ['controller' => 'HistoryInput', 'action' => 'inputProduct'], ["pass" => ["id"]]);
+	$routes->connect('/list-history', ['controller' => 'HistoryInput', 'action' => 'listHistory']);
+	$routes->connect('/list-inventory', ['controller' => 'HistoryInput', 'action' => 'listInventory']);
 
 
 	$routes->fallbacks(DashedRoute::class);

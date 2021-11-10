@@ -80,6 +80,10 @@ const SUCCESS_UPDATED_USER = 'User đã được cập nhật thành công.';
 const SUCCESS_USER_LOCK = 'User đã được khóa thành công';
 const SUCCESS_USER_UNLOCK = 'User đã được mở thành công';
 
+//History input
+const ERROR_INPUT_PRODUCT = 'Sản phẩm chưa được nhập. Vui lòng thử lại!!!';
+const SUCCESS_INPUT_PRODUCT = 'Sản phẩm đã được nhập thành công';
+
 /*/////////////// ACTION ////////////////////////*/
 
 //Authexs
@@ -119,6 +123,7 @@ const URL_ADMIN_LIST_ORDERS = '/admin/list-orders';
 const URL_ADMIN_LIST_PRODUCTS = '/admin/list-products';
 const URL_ADMIN_LIST_USER = '/admin/list-user';
 const URL_ADMIN_LIST_CATEGORIES = '/admin/list-categories';
+const URL_ADMIN_LIST_INVENTORY = '/admin/list-inventory';
 
 /*/////////////// Name Router ////////////////////////*/
 const NAME_LOGIN = 'login';
@@ -130,3 +135,4 @@ const ERROR_NULL_USERNAME = 'Tên không được để trống.';
 const ERROR_NULL_ADDRESS = 'Địa chỉ không được để trống.';
 const ERROR_DATA_NOT_CHANGED = 'Dữ liệu không có sự thay đổi!!!';
 const ERROR_DATA_CHANGED = 'Dữ liệu đã bị thay đổi!!!';
+const ERROR_NULL_QUANTITY = 'Số lượng không được để trống.';

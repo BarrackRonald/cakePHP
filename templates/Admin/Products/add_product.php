@@ -76,13 +76,13 @@ echo $this->element('Admin/sidebar');
 						</select>
 					</div>
 					<div class="button_back">
-						<a href="<?= URL_ADMIN_LIST_PRODUCTS ?>">
+						<a href="<?= $dataProduct['referer'] ?>">
 							<button type="button" class="btn btn-primary btn-default">Back</button>
 						</a>
 					</div>
 
 					<div class="button_submit">
-						<button type="submit" id="submit" onclick="disable()" class="btn btn-primary btn-default">Submit</button>
+						<button type="submit"  value="<?= $dataProduct['referer'] ?>" name="referer" id="submit" onclick="disable()" class="btn btn-primary btn-default">Submit</button>
 						<button type="submit" id="none" style="display: none" disabled class="btn btn-primary btn-default">Submit</button>
 					</div>
 					<?= $this->Form->end() ?>

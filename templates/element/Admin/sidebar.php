@@ -72,11 +72,6 @@
 						<li>
 							<a href="<?= $this->Url->build('admin/list-products', ['fullBase' => true]) ?>">List sản phẩm</a>
 						</li>
-						<?php if ($_SESSION['flag'] == 2) { ?>
-							<li>
-								<a href="<?= $this->Url->build('admin/add-product', ['fullBase' => true]) ?>">Add sản phẩm</a>
-							</li>
-						<?php } ?>
 					</ul>
 				</li>
 
@@ -98,13 +93,16 @@
 						<span>Quản lý Nhập</span>
 					</a>
 					<ul class="submenu ">
-
 						<li>
-							<a href="<?= $this->Url->build('admin/history-input', ['fullBase' => true]) ?>">Lịch sử Nhập</a>
+							<a href="<?= $this->Url->build('admin/input-product', ['fullBase' => true]) ?>">Nhập Kho</a>
 						</li>
 
 						<li>
-							<a href="<?= $this->Url->build('admin/input-product', ['fullBase' => true]) ?>">Nhập Kho</a>
+							<a href="<?= $this->Url->build('admin/list-inventory', ['fullBase' => true]) ?>">Danh sách tồn kho</a>
+						</li>
+
+						<li>
+							<a href="<?= $this->Url->build('admin/list-history', ['fullBase' => true]) ?>">Lịch sử Nhập</a>
 						</li>
 					</ul>
 				</li>

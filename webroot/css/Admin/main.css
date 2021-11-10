@@ -30,6 +30,12 @@
 
 }
 
+.button_add {
+	padding-bottom: 1px;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .t-al-center {
   text-align: center;
 }

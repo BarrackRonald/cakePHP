@@ -27,6 +27,7 @@ class CRUDComponent extends CommonComponent
 		$this->loadModel('Categories');
 		$this->loadModel('Orders');
 		$this->loadModel('Orderdetails');
+		$this->loadModel('HistoryInput');
 	}
 
 	//Check Users có bị khóa không
@@ -202,6 +203,7 @@ class CRUDComponent extends CommonComponent
 				'Products.id',
 				'Products.product_name',
 				'Products.description',
+				'Products.quantity_product',
 				'Products.amount_product',
 				'Products.point_product',
 				'Products.category_id',
@@ -839,6 +841,57 @@ class CRUDComponent extends CommonComponent
 				'Users.del_flag' => $filters,
 			])
 			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
+		return $query;
+	}
+
+	//Add Input History
+	public function addInputHistory($dataUser, $result, $inputQuantity)
+	{
+		$user = [];
+		$user['user_id'] = $dataUser[0]['id'];
+		$user['username'] = $dataUser[0]['username'];
+		$user['product_id'] = $result['id'];
+		$user['product_name'] = $result['product_name'];
+		$user['quantity_input'] = $inputQuantity;
+		$user['created_date'] = date('Y-m-d H:i:s');
+		$user['updated_date'] = date('Y-m-d H:i:s');
+		$dataUser = $this->HistoryInput->newEntity($user);
+
+		if ($dataUser->hasErrors()) {
+			return [
+				'result' => 'invalid',
+				'data' => $dataUser->getErrors(),
+			];
+		};
+		return [
+			'result' => 'success',
+			'data' => $this->HistoryInput->save($dataUser),
+		];
+	}
+
+	//List History Input
+	public function getAllHistoryInput()
+	{
+		$query = $this->HistoryInput->find()
+		->select([
+			'HistoryInput.id',
+			'HistoryInput.username',
+			'HistoryInput.product_name',
+			'HistoryInput.quantity_input',
+			'HistoryInput.product_id',
+			'HistoryInput.user_id',
+			'HistoryInput.status',
+			'HistoryInput.created_date',
+			'HistoryInput.updated_date',
+			'Users.email'
+		])
+		->join([
+			'table' => 'Users',
+			'alias' => 'Users',
+			'type' => 'inner',
+			'conditions' => ['Users.id = HistoryInput.user_id']
+		])
+		->order(['HistoryInput.id' => 'DESC']);
 		return $query;
 	}
 

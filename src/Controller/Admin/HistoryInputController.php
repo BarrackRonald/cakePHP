@@ -23,6 +23,7 @@ class HistoryInputController extends AppController
 		$this->loadComponent('Data');
 		$this->loadComponent('CRUD');
 		$this->loadModel("HistoryInput");
+		$this->loadModel("Products");
 	}
 	public function beforeFilter(EventInterface $event)
 	{
@@ -52,10 +53,127 @@ class HistoryInputController extends AppController
 		}
 	}
 
-	public function inputProduct()
+	//Nhập kho
+	public function inputProduct($id = null)
 	{
+		$session = $this->request->getSession();
+		$idUsers = $session->read('idUser');
+		$dataUser = $this->{'Data'}->getInfoUser($idUsers);
 		$products = $this->{'CRUD'}->getAllProduct();
+
+		if($session->check('success')){
+			$session->delete('success');
+		}
+
+		if ($this->request->is('post')) {
+			$atribute = $this->request->getData();
+			$dataProduct = $this->{'CRUD'}->getProductByID($atribute['product_id']);
+
+			if($atribute['quantity_product'] == ""){
+				$error['quantity_product'] = [ERROR_NULL_QUANTITY];
+				$this->set('error', $error);
+				$data = $atribute;
+			}else{
+				//Cộng số lượng khi nhập vào
+				$oldQuantity = $dataProduct[0]['quantity_product'];
+				$inputQuantity = $atribute['quantity_product'];
+
+				//Giá trị hiện tại
+				$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
+				$product = $this->Products->patchEntity($dataProduct[0], $atribute);
+
+				if($product->hasErrors()){
+					$error = $product->getErrors();
+					$this->set('error', $error);
+					$data = $atribute;
+				}else{
+					$result = $this->Products->save($product);
+					if ($result) {
+						$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
+						if ($dataHistory['result'] == "invalid") {
+							$error = $dataHistory['data'];
+							$this->set('error', $error);
+						} else {
+							$this->Flash->success(__(SUCCESS_INPUT_PRODUCT));
+							$data = $atribute;
+							$session->write('success', 1);
+						}
+					}else{
+						$this->Flash->success(__(ERROR_INPUT_PRODUCT));
+						$data = $atribute;
+					}
+				}
+			}
+		}else{
+			$data = [];
+			$data["referer"] = $this->referer();
+			if ($data["referer"] == "/") {
+				return $this->redirect(['action' => URL_ADMIN_LIST_INVENTORY]);
+			}
+		}
+
+		$this->set('dataProduct', $data);
+		$this->set('product_id', $id);
 		$this->set(compact('products'));
+	}
+
+	//Lịch sử nhập
+	public function listHistory(){
+		$session = $this->request->getSession();
+		if($session->check('success')){
+			$session->delete('success');
+		}
+		$historyInput = $this->{'CRUD'}->getAllHistoryInput();
+		try {
+			$this->set(compact('historyInput', $this->paginate($historyInput, ['limit' => PAGINATE_LIMIT])));
+		} catch (NotFoundException $e) {
+			$atribute = $this->request->getAttribute('paging');
+			$requestedPage = $atribute['HistoryInput']['requestedPage'];
+			$pageCount = $atribute['HistoryInput']['pageCount'];
+			if ($requestedPage > $pageCount) {
+				return $this->redirect("/admin/list-history?page=" . $pageCount . "");
+			}
+		}
+	}
+
+	//Danh sách hàng còn trong kho
+	public function listInventory(){
+		$session = $this->request->getSession();
+		if($session->check('success')){
+			$session->delete('success');
+		}
+
+		$products = $this->{'CRUD'}->getAllProduct();
+		$session = $this->request->getSession();
+		//Search
+		$key = $this->request->getQuery('key');
+		if ($key) {
+			//Lưu key
+			$session->write('keySearch', trim($key));
+			$query = $this->{'CRUD'}->getSearch(trim($key));
+			$querytoArr = $this->{'CRUD'}->getSearchtoArr(trim($key));
+			if(count($querytoArr) == 0){
+				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
+			}
+		} else {
+			if ($session->check('keySearch')) {
+				$session->delete('keySearch');
+			}
+
+			$query = $products;
+		}
+
+		//Pagination
+		try {
+			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
+		} catch (NotFoundException $e) {
+			$atribute = $this->request->getAttribute('paging');
+			$requestedPage = $atribute['Products']['requestedPage'];
+			$pageCount = $atribute['Products']['pageCount'];
+			if ($requestedPage > $pageCount) {
+				return $this->redirect("/admin/list-inventory?page=" . $pageCount . "");
+			}
+		}
 	}
 
 }

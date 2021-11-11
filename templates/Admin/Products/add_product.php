@@ -28,7 +28,8 @@ echo $this->element('Admin/sidebar');
 
 					<div class="form-group">
 						<label for="email">Hình ảnh:</label>
-						<input type="file" class="form-control input-file" id='uploadfile' name="uploadfile">
+						<input type="file" id="files" class="form-control input-file light" id='uploadfile' name="uploadfile"><br>
+						<img id="image" style="width: 10%;" />
 					</div>
 
 					<div class="form-group">
@@ -50,7 +51,7 @@ echo $this->element('Admin/sidebar');
 					</div>
 					<div class="form-group">
 						<label for="email">Giá sản phẩm:</label>
-						<input type="text" class="form-control" value="<?php if (isset($dataProduct['amount_product'])) { ?><?= trim($dataProduct['amount_product']) ?><?php } ?>" name="amount_product">
+						<input type="text" class="form-control" value="<?php if (isset($dataProduct['amount_product'])) { ?><?= trim($dataProduct['amount_product']) ?><?php } ?>" onkeypress='validate(event)' name="amount_product">
 						<?php if (isset($error['amount_product'])) { ?>
 							<i style="color: red;">
 								<?= implode($error['amount_product']) ?>
@@ -59,7 +60,7 @@ echo $this->element('Admin/sidebar');
 					</div>
 					<div class="form-group">
 						<label for="email">Point sản phẩm:</label>
-						<input type="text" class="form-control" value="<?php if (isset($dataProduct['point_product'])) { ?><?= trim($dataProduct['point_product']) ?><?php } ?>" name="point_product">
+						<input type="text" class="form-control" value="<?php if (isset($dataProduct['point_product'])) { ?><?= trim($dataProduct['point_product']) ?><?php } ?>" onkeypress='validate(event)' name="point_product">
 						<?php if (isset($error['point_product'])) { ?>
 							<i style="color: red;">
 								<?= implode($error['point_product']) ?>
@@ -69,7 +70,7 @@ echo $this->element('Admin/sidebar');
 
 					<div class="form-group">
 						<label for="pwd">Danh mục:</label>
-						<select name="category_id" id="" class="form-control">
+						<select name="category_id" id="" class="form-control light">
 							<?php foreach ($dataCategory as $category) { ?>
 								<option value="<?= $category->id ?>"><?= $category->category_name ?></option>
 							<?php } ?>
@@ -101,4 +102,31 @@ echo $this->element('Admin/footer');
 		document.getElementById("submit").style.display = "none";
 		document.getElementById("none").style.display = "block";
 	}
+
+	function validate(evt) {
+		var theEvent = evt || window.event;
+
+		// Handle paste
+		if (theEvent.type === 'paste') {
+			key = event.clipboardData.getData('text/plain');
+		} else {
+			// Handle key press
+			var key = theEvent.keyCode || theEvent.which;
+			key = String.fromCharCode(key);
+		}
+		var regex = /[0-9]|\./;
+		if (!regex.test(key)) {
+			theEvent.returnValue = false;
+			if (theEvent.preventDefault) theEvent.preventDefault();
+		}
+	}
+
+	//Hiển thị hình ảnh trước khi submit
+	document.getElementById("files").onchange = function() {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById("image").src = e.target.result;
+		};
+		reader.readAsDataURL(this.files[0]);
+	};
 </script>

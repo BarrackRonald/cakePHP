@@ -35,10 +35,10 @@ class OrdersController extends AppController
 		if (!$session->check('flag') || $flag == 1) {
 			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
-		}else{
+		} else {
 			$idUser = $session->read('idUser');
 			$check = $this->{'CRUD'}->checkUserLock($idUser);
-			if(count($check) < 1){
+			if (count($check) < 1) {
 				$session->destroy();
 				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
 				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
@@ -68,7 +68,7 @@ class OrdersController extends AppController
 			$session->write('keySearch', trim($key));
 			$query1 = $this->{'CRUD'}->getSearchOrder(trim($key));
 			$querytoArr = $this->{'CRUD'}->getSearchOrderArr(trim($key));
-			if(count($querytoArr) == 0){
+			if (count($querytoArr) == 0) {
 				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
 			}
 		} else {
@@ -98,9 +98,9 @@ class OrdersController extends AppController
 		$dataOrderDetails = $this->{'CRUD'}->getOrderDetailsByID($id);
 		$referer = $this->referer();
 		$this->set('referer', $referer);
-		if($referer == "/"){
+		if ($referer == "/") {
 			return $this->redirect(['action' => ADMIN_LIST_ORDERS]);
-		}else{
+		} else {
 			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => PAGINATE_LIMIT])));
 		}
 	}
@@ -121,8 +121,12 @@ class OrdersController extends AppController
 		}
 
 		$dataOrder = $this->{'CRUD'}->getOrderByID($id);
+		$dataProducts = $this->{'CRUD'}->getAllProductArr();
 		$idUser = $dataOrder[0]['user_id'];
 		$dataUser = $this->{'CRUD'}->getUserByID($idUser);
+
+		//Lấy dữ liệu Sản phẩm của Orders
+		$dataProductForOrder = $this->{'CRUD'}->getOrderProductByID($id);
 
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
@@ -134,32 +138,52 @@ class OrdersController extends AppController
 			} else {
 				//Check F12
 				if ((
-					($atribute['order_name'] != $dataOrder[0]['order_name']||
-					$atribute['email'] != $dataOrder[0]['email']||
-					$atribute['phonenumber'] != $dataOrder[0]['phonenumber']||
-					$atribute['address'] != $dataOrder[0]['address']||
-					$atribute['total_point'] != $dataOrder[0]['total_point']||
-					$atribute['total_quantity'] != $dataOrder[0]['total_quantity']||
-					$atribute['total_amount'] != $dataOrder[0]['total_amount']) ||
+					($atribute['order_name'] != $dataOrder[0]['order_name'] ||
+						$atribute['email'] != $dataOrder[0]['email'] ||
+						$atribute['phonenumber'] != $dataOrder[0]['phonenumber'] ||
+						$atribute['address'] != $dataOrder[0]['address'] ||
+						$atribute['total_point'] != $dataOrder[0]['total_point'] ||
+						$atribute['total_quantity'] != $dataOrder[0]['total_quantity'] ||
+						$atribute['total_amount'] != $dataOrder[0]['total_amount']) ||
 					($atribute['status'] != 0 &&
-					$atribute['status'] != 1 &&
-					$atribute['status'] != 2 &&
-					$atribute['status'] != 3 ))) {
+						$atribute['status'] != 1 &&
+						$atribute['status'] != 2 &&
+						$atribute['status'] != 3))) {
 					$this->Flash->error(__(ERROR_ORDER_DATA_CHANGED_NOT_CONFIRM));
 					$data = $atribute;
-				}else{
+				} else {
 
-					//Tính toán Xóa Point Khi Từ chối đơn và khách hàng không nhận đơn
-					if (($atribute['status'] == $dataOrder[0]['status']) ||
-					($atribute['status'] == 2 && $dataOrder[0]['status'] == 3) ||
-					($atribute['status'] == 3 && $dataOrder[0]['status'] == 2)) {
-						$pointAF = $dataUser[0]['point_user'];
-					} else if ($atribute['status'] == 2 || $atribute['status'] == 3) {
-						$pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
-					} else if ($dataOrder[0]['status'] == 2 || $dataOrder[0]['status'] == 3) {
-						$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
-					} else {
-						$pointAF = $dataUser[0]['point_user'];
+					//Tính toán Số lượng sản phẩm, point của User khi confirm Order ở Admin
+					foreach ($dataProducts as $product) {
+						foreach ($dataProductForOrder[0]['orderdetails'] as $productOrder) {
+							if($product['id'] == $productOrder['product_id']){
+								switch ($atribute['status']) {
+									case 0:
+									case 1:
+										if ($dataOrder[0]['status'] == 2 || $dataOrder[0]['status'] == 3) {
+											$quantity = $product['quantity_product'] - $productOrder['quantity_orderDetails'];
+											$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
+										}else{
+											$quantity = $product['quantity_product'];
+											$pointAF = $dataUser[0]['point_user'];
+										}
+										break;
+									case 2:
+									case 3:
+										if ($dataOrder[0]['status'] == 0 || $dataOrder[0]['status'] == 1) {
+											$quantity = $product['quantity_product'] + $productOrder['quantity_orderDetails'];
+											$pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
+										}else{
+											$quantity = $product['quantity_product'];
+											$pointAF = $dataUser[0]['point_user'];
+										}
+										break;
+									default:
+										break;
+								}
+								$this->{'Data'}->updateQuantity($quantity, $product['id']);
+							}
+						}
 					}
 					$this->{'Data'}->updatePoint($pointAF, $idUser);
 

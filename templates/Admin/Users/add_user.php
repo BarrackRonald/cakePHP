@@ -71,7 +71,7 @@ echo $this->element('Admin/sidebar');
 
 					<div class="form-group">
 						<label for="pwd">Role:</label>
-						<select name="role_id" id="" class="form-control">
+						<select name="role_id" id="" class="form-control light">
 							<?php foreach ($dataRole as $role) { ?>
 								<option value="<?= $role->id ?>"><?= $role->role_name ?></option>
 							<?php } ?>

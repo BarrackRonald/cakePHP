@@ -27,7 +27,6 @@ class NormalUsersController extends AppController
 	public function beforeRender(EventInterface $event)
 	{
 		$dataCategories = $this->{'Data'}->getCategory();
-		
 		$dataProducts = $this->{'Data'}->getAllProducts();
 		$dataSlideImages = $this->{'Data'}->getSlideImage();
 		$dataNewsProducts = $this->{'Data'}->getNewsProduct();
@@ -359,19 +358,26 @@ class NormalUsersController extends AppController
 				$infoUser = $cartData['infoUser'];
 				$dataProds = $session->read('cartData');
 
-				//Kiểm tra Sản phẩm còn trên hệ thống không trước khi đặt hàng
+				//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
 				foreach ($dataProds['cart'] as $key => $valueProduct) {
-					$checkProduct = $this->{'CRUD'}->getProductByID($key);
+					$checkProduct = $this->{'CRUD'}->checkProductByID($key);
 					if (count($checkProduct) < 1) {
 						$session->write('checkErr', 1);
 						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
 						$dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
 						$dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
-						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên Hệ thống. Vui lòng Đặt hàng lại!!!'));
+						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên hệ thống hoặc hết hàng. Vui lòng Đặt hàng lại!!!'));
 						if (isset($dataProds['cart'][$key])) {
 							unset($dataProds['cart'][$key]);
 						}
 						$session->write('cartData', $dataProds);
+					}else if($checkProduct[0]['quantity_product'] < $valueProduct['quantity']){
+						$session->write('checkErr', 1);
+						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
+
+					}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
+						$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
+						$this->{'Data'}->updateQuantity($quantity, $checkProduct[0]['id']);
 					}
 				}
 
@@ -663,21 +669,29 @@ class NormalUsersController extends AppController
 
 			if ($session->check('cartData')) {
 				$dataProds = $session->read('cartData');
-				//Kiểm tra Sản phẩm còn trên hệ thống không trước khi đặt hàng
-				foreach ($dataProds['cart'] as $key => $valueProduct) {
-					$checkProduct = $this->{'CRUD'}->getProductByID($key);
-					if (count($checkProduct) < 1) {
-						$session->write('checkErr', 1);
-						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
-						$dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
-						$dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
-						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên Hệ thống. Vui lòng Đặt hàng lại!!!'));
-						if (isset($dataProds['cart'][$key])) {
-							unset($dataProds['cart'][$key]);
+
+					//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
+					foreach ($dataProds['cart'] as $key => $valueProduct) {
+						$checkProduct = $this->{'CRUD'}->checkProductByID($key);
+						if (count($checkProduct) < 1) {
+							$session->write('checkErr', 1);
+							$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
+							$dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
+							$dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
+							$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên hệ thống hoặc hết hàng. Vui lòng Đặt hàng lại!!!'));
+							if (isset($dataProds['cart'][$key])) {
+								unset($dataProds['cart'][$key]);
+							}
+							$session->write('cartData', $dataProds);
+						}else if($checkProduct[0]['quantity_product'] < $valueProduct['quantity']){
+							$session->write('checkErr', 1);
+							$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
+
+						}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
+							$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
+							$this->{'Data'}->updateQuantity($quantity, $checkProduct[0]['id']);
 						}
-						$session->write('cartData', $dataProds);
 					}
-				}
 
 				if ($session->check('checkErr')) {
 					$session->delete('checkErr');
@@ -690,7 +704,7 @@ class NormalUsersController extends AppController
 				$result = $this->{'Data'}->createOrders($dataProds, $dataCustomer);
 				$pointuser = $this->{'Data'}->getPointByUser($idUsers);
 
-				//Point user trước khi mua
+				//Update Point cho User
 				$pointBF = $pointuser[0]['point_user'];
 				$pointAF = $pointBF + $dataProds['totalAllPoint'];
 				$this->{'Data'}->updatePoint($pointAF, $idUsers);

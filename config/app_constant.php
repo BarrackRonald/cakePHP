@@ -136,3 +136,4 @@ const ERROR_NULL_ADDRESS = 'Địa chỉ không được để trống.';
 const ERROR_DATA_NOT_CHANGED = 'Dữ liệu không có sự thay đổi!!!';
 const ERROR_DATA_CHANGED = 'Dữ liệu đã bị thay đổi!!!';
 const ERROR_NULL_QUANTITY = 'Số lượng không được để trống.';
+const ERROR_NOT_STRING_QUANTITY = 'Số lượng chỉ được nhập số.';

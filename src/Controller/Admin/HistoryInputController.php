@@ -78,37 +78,44 @@ class HistoryInputController extends AppController
 				$oldQuantity = $dataProduct[0]['quantity_product'];
 				$inputQuantity = $atribute['quantity_product'];
 
-				//Giá trị hiện tại
-				$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
-				$product = $this->Products->patchEntity($dataProduct[0], $atribute);
-
-				if($product->hasErrors()){
-					$error = $product->getErrors();
+				if (!is_numeric($inputQuantity)) {
+					$error['quantity_product'] = [ERROR_NOT_STRING_QUANTITY];
 					$this->set('error', $error);
 					$data = $atribute;
 				}else{
-					$result = $this->Products->save($product);
-					if ($result) {
-						$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
-						if ($dataHistory['result'] == "invalid") {
-							$error = $dataHistory['data'];
-							$this->set('error', $error);
-						} else {
-							$this->Flash->success(__(SUCCESS_INPUT_PRODUCT));
-							$data = $atribute;
-							$session->write('success', 1);
-						}
-					}else{
-						$this->Flash->success(__(ERROR_INPUT_PRODUCT));
+					//Giá trị hiện tại
+					$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
+					$product = $this->Products->patchEntity($dataProduct[0], $atribute);
+
+					if($product->hasErrors()){
+						$error = $product->getErrors();
+						$this->set('error', $error);
 						$data = $atribute;
+					}else{
+						$result = $this->Products->save($product);
+						if ($result) {
+							$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
+							if ($dataHistory['result'] == "invalid") {
+								$error = $dataHistory['data'];
+								$this->set('error', $error);
+							} else {
+								//Success
+								$data = $atribute;
+								$session->write('success', 1);
+							}
+						}else{
+							$this->Flash->error(__(ERROR_INPUT_PRODUCT));
+							$data = $atribute;
+						}
 					}
+
 				}
 			}
 		}else{
 			$data = [];
 			$data["referer"] = $this->referer();
-			if ($data["referer"] == "/") {
-				return $this->redirect(['action' => URL_ADMIN_LIST_INVENTORY]);
+			if ($data["referer"] == "/" || $data["referer"] == '/admin/input-product') {
+				return $this->redirect(['action' => 'listInventory']);
 			}
 		}
 

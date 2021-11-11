@@ -225,6 +225,36 @@ class CRUDComponent extends CommonComponent
 		return $query;
 	}
 
+	//Products
+	public function getAllProductArr()
+	{
+		$query = $this->Products->find()
+			->select([
+				'Products.id',
+				'Products.product_name',
+				'Products.description',
+				'Products.quantity_product',
+				'Products.amount_product',
+				'Products.point_product',
+				'Products.category_id',
+				'Categories.category_name'
+			])
+			->join([
+				'table' => 'Categories',
+				'alias' => 'Categories',
+				'type' => 'inner',
+				'conditions' => ['Products.category_id = Categories.id']
+			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
+			->where([
+				'Products.del_flag' => 0,
+			])
+			->order('Products.id DESC');
+		return $query->toArray();
+	}
+
 	//Add Product
 	public function addproduct($atribute)
 	{
@@ -286,6 +316,23 @@ class CRUDComponent extends CommonComponent
 				'Products.id' => $id,
 				'Products.del_flag' => 0
 			]);
+		return $query->toArray();
+	}
+
+	//Check Product bằng ID (Kiểm tra thêm số lượng)
+	public function checkProductByID($id)
+	{
+		$query = $this->Products->find()
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
+			->where([
+				'Products.id' => $id,
+				'Products.del_flag' => 0
+			])
+			->andWhere(
+				'Products.quantity_product > 0'
+			);
 		return $query->toArray();
 	}
 
@@ -558,6 +605,30 @@ class CRUDComponent extends CommonComponent
 				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
 			])
+			->where([
+				'Orders.id' => $id,
+			]);
+
+		return $query->toArray();
+	}
+
+	//Lấy Order và Product bằng ID
+	public function getOrderProductByID($id)
+	{
+		$query = $this->Orders->find()
+			->select([
+				'Orders.id',
+				'Orders.order_name',
+				'Orders.email',
+				'Orders.phonenumber',
+				'Orders.address',
+				'Orders.total_point',
+				'Orders.total_quantity',
+				'Orders.total_amount',
+				'Orders.status',
+				'Orders.user_id',
+			])
+			->contain(['Orderdetails'])
 			->where([
 				'Orders.id' => $id,
 			]);

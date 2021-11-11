@@ -26,7 +26,7 @@ $n = $this->request->getAttribute('paging')['Products']['start'];
 			<div class="col-12 col-md-6 order-md-1 order-last" style="align-self: flex-end; text-align: end;">
 				<div class="form-group" style="display: inline-block">
 					<a href="/admin/add-product">
-						<input type="submit" class="btn btn-info" value="Add Sản Phẩm" style="margin-bottom: 5px" />
+						<input type="submit" class="btn btn-primary" value="Add Sản Phẩm" style="margin-bottom: 5px" />
 					</a>
 				</div>
 			</div>

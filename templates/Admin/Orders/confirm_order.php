@@ -59,7 +59,7 @@ echo $this->element('Admin/sidebar');
 					</div>
 					<div class="form-group">
 						<label for="pwd">Xác nhận đơn:</label>
-						<select name="status" id="" class="form-control">
+						<select name="status" id="" class="form-control light">
 							<option value="0" <?php if ($dataOrder['status'] == 0) {
 													echo 'selected';
 												} ?>>Chờ Duyệt</option>

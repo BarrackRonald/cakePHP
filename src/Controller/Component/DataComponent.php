@@ -283,6 +283,20 @@ class DataComponent extends CommonComponent
 			->execute();
 	}
 
+	//Cập nhật lại số lượng trong sản phẩm
+	public function updateQuantity($quantity, $idProduct)
+	{
+		$this->Products->query()
+			->update()
+			->set([
+				'Products.quantity_product' => $quantity,
+			])
+			->where([
+				'Products.id' => $idProduct,
+			])
+			->execute();
+	}
+
 	//Lấy thông tin Users
 	public function getInfoUser($idUser)
 	{
@@ -370,6 +384,9 @@ class DataComponent extends CommonComponent
 			->where([
 				'Products.del_flag' => 0,
 			])
+			->andWhere(
+				'Products.quantity_product > 0'
+			)
 			->contain(['Images' => function ($q) {
 				return $q->order('Images.updated_date DESC');
 			}])
@@ -438,7 +455,10 @@ class DataComponent extends CommonComponent
 			->Where([
 				'Products.category_id' => $id,
 				'Products.del_flag' => 0,
-			]);
+			])
+			->andWhere(
+				'Products.quantity_product > 0'
+			);
 		return $query;
 	}
 
@@ -496,7 +516,10 @@ class DataComponent extends CommonComponent
 				'Products.id NOT IN' => $idProduct,
 				'Products.category_id' => $idCategory,
 				'Products.del_flag' => 0,
-			]);
+			])
+			->andWhere(
+				'Products.quantity_product > 0'
+			);
 		return $query->toArray();
 	}
 

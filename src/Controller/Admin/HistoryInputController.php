@@ -67,50 +67,61 @@ class HistoryInputController extends AppController
 
 		if ($this->request->is('post')) {
 			$atribute = $this->request->getData();
-			$dataProduct = $this->{'CRUD'}->getProductByID($atribute['product_id']);
 
-			if($atribute['quantity_product'] == ""){
-				$error['quantity_product'] = [ERROR_NULL_QUANTITY];
-				$this->set('error', $error);
+			//Check F12
+			$idProducts = $atribute['product_id'];
+			$checkIDProducts = $this->{'CRUD'}->getProductByID($idProducts);
+			if (count($checkIDProducts) < 1) {
+				$this->Flash->error(__(ERROR_PRODUCT_DATA_CHANGED_NOT_CONFIRM));
 				$data = $atribute;
-			}else{
-				//Cộng số lượng khi nhập vào
-				$oldQuantity = $dataProduct[0]['quantity_product'];
-				$inputQuantity = $atribute['quantity_product'];
-
-				if (!is_numeric($inputQuantity)) {
-					$error['quantity_product'] = [ERROR_NOT_STRING_QUANTITY];
+			}else {
+				$dataProduct = $this->{'CRUD'}->getProductByID($atribute['product_id']);
+				if($atribute['quantity_product'] == ""){
+					$error['quantity_product'] = [ERROR_NULL_QUANTITY];
 					$this->set('error', $error);
 					$data = $atribute;
 				}else{
-					//Giá trị hiện tại
-					$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
-					$product = $this->Products->patchEntity($dataProduct[0], $atribute);
+					//Cộng số lượng khi nhập vào
+					$oldQuantity = $dataProduct[0]['quantity_product'];
+					$inputQuantity = $atribute['quantity_product'];
 
-					if($product->hasErrors()){
-						$error = $product->getErrors();
+					if (!is_numeric($inputQuantity)) {
+						$error['quantity_product'] = [ERROR_NOT_STRING_QUANTITY];
 						$this->set('error', $error);
 						$data = $atribute;
 					}else{
-						$result = $this->Products->save($product);
-						if ($result) {
-							$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
-							if ($dataHistory['result'] == "invalid") {
-								$error = $dataHistory['data'];
-								$this->set('error', $error);
-							} else {
-								//Success
-								$data = $atribute;
-								$session->write('success', 1);
-							}
-						}else{
-							$this->Flash->error(__(ERROR_INPUT_PRODUCT));
-							$data = $atribute;
-						}
-					}
+						//Giá trị hiện tại
+						$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
+						$product = $this->Products->patchEntity($dataProduct[0], $atribute);
 
+						if($product->hasErrors()){
+							$error = $product->getErrors();
+							$this->set('error', $error);
+							$data = $atribute;
+						}else{
+							$result = $this->Products->save($product);
+							if ($result) {
+								$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
+								if ($dataHistory['result'] == "invalid") {
+									$error = $dataHistory['data'];
+									$this->set('error', $error);
+								} else {
+									//Success
+									$data = $atribute;
+									$session->write('success', 1);
+								}
+							}else{
+								$this->Flash->error(__(ERROR_INPUT_PRODUCT));
+								$data = $atribute;
+							}
+						}
+
+					}
 				}
+
 			}
+
+			
 		}else{
 			$data = [];
 			$data["referer"] = $this->referer();
@@ -181,6 +192,21 @@ class HistoryInputController extends AppController
 				return $this->redirect("/admin/list-inventory?page=" . $pageCount . "");
 			}
 		}
+	}
+
+	//Export
+	public function exportInventory()
+	{
+		$this->setResponse($this->getResponse()->withDownload('San-pham-ton-kho.csv'));
+		$products = $this->{'CRUD'}->getAllProduct();
+		$data = [
+			['a', 'b', 'c'],
+			[1, 2, 3],
+			['you', 'and', 'me'],
+		];
+
+		$this->set(compact('data'));
+		$this->viewBuilder()->setClassName('CsvView.Csv')->setOption('serialize', 'data');
 	}
 
 }

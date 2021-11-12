@@ -3,7 +3,7 @@
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 ?>
-<?php if ($_SESSION['flag'] == 2) { ?>
+<?php if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
 	<div class="main-content container-fluid">
 		<div class="page-title">
 			<div class="row">
@@ -11,7 +11,12 @@ echo $this->element('Admin/sidebar');
 					<h3>Nhập Kho</h3>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-12 col-md-6 order-md-1 order-last">
+					<?= $this->Flash->render() ?>
 				</div>
+			</div>
+		</div>
 		<div class="section">
 			<div class="row">
 				<div class="col-12">

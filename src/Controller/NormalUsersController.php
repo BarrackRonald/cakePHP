@@ -1145,6 +1145,7 @@ class NormalUsersController extends AppController
 
 			//Lấy ID sản phẩm ở cartData = Mảng thông tin số lượng
 			$cartData[$product_id] = $productArr[$product_id];
+
 			//Tổng tất cả mặt hàng
 			$totalAmounts = $cartData[$product_id]['amount'];
 

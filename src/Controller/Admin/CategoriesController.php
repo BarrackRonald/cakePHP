@@ -37,10 +37,10 @@ class CategoriesController extends AppController
 		if (!$session->check('flag') || $flag == 1) {
 			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
-		}else{
+		} else {
 			$idUser = $session->read('idUser');
 			$check = $this->{'CRUD'}->checkUserLock($idUser);
-			if(count($check) < 1){
+			if (count($check) < 1) {
 				$session->destroy();
 				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
 				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
@@ -158,7 +158,7 @@ class CategoriesController extends AppController
 		$checkProduct = $this->{'CRUD'}->checkProductByCategory($atribute);
 		if (count($checkProduct) > 0) {
 			$this->Flash->error(__(ERROR_CATEGORY_HAS_PRODUCT_NOT_DEL));
-		}else{
+		} else {
 			$atribute['del_flag'] = 1;
 			$category = $this->Categories->patchEntity($dataCategory[0], $atribute);
 			if ($this->Categories->save($category)) {
@@ -171,10 +171,5 @@ class CategoriesController extends AppController
 		return $this->redirect("$urlPageList");
 	}
 
-	//View Categories
-	public function viewCategory($id = null)
-	{
-		$dataCategory = $this->{'CRUD'}->getCategoryByID($id);
-		$this->set(compact('dataCategory'));
-	}
+
 }

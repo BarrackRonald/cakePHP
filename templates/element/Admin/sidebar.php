@@ -21,7 +21,7 @@
 				<li class="sidebar-item ">
 					<a href="/admin" class='sidebar-link'>
 						<i data-feather="home" width="20"></i>
-						<span>Dashboard</span>
+						<span>Thống Kê</span>
 					</a>
 				</li>
 

@@ -2,6 +2,9 @@
 
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
+$n = 1;
+$i = 1;
+$j = $this->request->getAttribute('paging')['Products']['start'];
 ?>
 
 <div class="main-content container-fluid">
@@ -16,7 +19,7 @@ echo $this->element('Admin/sidebar');
 					<div class="card-body p-0">
 						<div class="d-flex flex-column">
 							<div class='px-3 py-3 d-flex justify-content-between' style="justify-content: center;">
-								<h3 class='card-title'>Tổng Đơn hàng năm <?= '20'.Date('y') ?></h3> <br>
+								<h3 class='card-title'>Tổng Đơn hàng năm <?= '20' . Date('y') ?></h3> <br>
 							</div>
 							<div style="margin: -15px 0 0 10px">
 								<i></i>
@@ -94,18 +97,80 @@ echo $this->element('Admin/sidebar');
 				</div>
 			</div>
 		</div>
+
 		<div class="row mb-4">
-			<div class="col-md-11">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<h4 class="card-title">Top 5 sản phẩm bán chạy nhất trong tháng <?= Date('m') ?></h4>
+					</div>
+					<div class="card-body px-0 pb-0">
+						<div class="table-responsive">
+							<table class='table mb-0' id="table1">
+								<thead>
+									<tr>
+										<th>Top</th>
+										<th>Sản phẩm</th>
+										<th>Số lượng bán ra</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ($topSellMost as $product) { ?>
+										<tr>
+											<td><?= $n++ ?></td>
+											<td><?= $product['Products']['product_name'] ?></td>
+											<td><?= $product['totalQuantity'] ?></td>
+										</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<h4 class="card-title">Top 5 sản phẩm bán chậm nhất trong tháng <?= Date('m') ?></h4>
+					</div>
+					<div class="card-body px-0 pb-0">
+						<div class="table-responsive">
+							<table class='table mb-0' id="table1">
+								<thead>
+									<tr>
+										<th>Top</th>
+										<th>Sản phẩm</th>
+										<th>Số lượng bán ra</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ($dataTopSellLeast as $product) { ?>
+										<tr>
+											<td><?= $i++ ?></td>
+											<td><?= $product['product_name'] ?></td>
+											<td><?= $product['totalQuantity'] ?></td>
+										</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row mb-4">
+			<div class="col-md-7">
 				<div class="card">
 					<div class="card-header">
-						<h3 class='card-heading p-1 pl-3'>Doanh Thu Năm <?= '20'.Date('y') ?> </h3>
+						<h3 class='card-heading p-1 pl-3'>Doanh Thu Năm <?= '20' . Date('y') ?> </h3>
 					</div>
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-4 col-12">
 								<div class="pl-3">
-									<h1 class='mt-5'><?= 'Tổng Doanh thu: $' . number_format($revenueOrder[0]['sum']) ?></h1>
-									<p class='text-xs'><span class="text-green"><i data-feather="bar-chart" width="15"></i> <?= $percentGrowth?>%</span> so với tháng trước</p>
+									<h3 class='mt-5'><?= 'Tổng Doanh thu: $' . number_format($revenueOrder[0]['sum']) ?></h3>
+									<p class='text-xs'><span class="text-green"><i data-feather="bar-chart" width="15"></i> <?= $percentGrowth ?>%</span> so với tháng trước</p>
 									<div class="legends">
 										<div class="legend d-flex flex-row align-items-center">
 											<div class='w-3 h-3 rounded-full bg-info me-2'></div><span class='text-xs'>Tháng Trước</span>
@@ -123,6 +188,44 @@ echo $this->element('Admin/sidebar');
 					</div>
 				</div>
 			</div>
+
+			<div class="col-md-5">
+				<div class="card">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<h4 class="card-title">Sản phẩm hết hàng</h4>
+						<div class="d-flex ">
+							<a href="/admin/inventory/export">
+								<i data-feather="download"></i>
+							</a>
+						</div>
+					</div>
+					<div class="card-body px-0 pb-0">
+						<div class="table-responsive">
+							<table class='table mb-0' id="table1">
+								<thead>
+									<tr>
+										<th>STT</th>
+										<th>Sản phẩm</th>
+										<th>Số lượng</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach ($getProductNoneQuantity as $product) { ?>
+										<tr>
+											<td><?= $j++ ?></td>
+											<td><?= $product['product_name'] ?></td>
+											<td><?= $product['quantity_product'] ?></td>
+										</tr>
+									<?php } ?>
+								</tbody>
+							</table>
+						</div>
+					</div> <br>
+					<div class="pagination-button">
+						<?= $this->element('paginator') ?>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 </div>
@@ -132,7 +235,6 @@ echo $this->element('Admin/sidebar');
 echo $this->element('Admin/footer');
 ?>
 <script>
-
 	// Biểu đồ thống kê tổng đơn hàng của các tháng trong năm
 	lineChart1.data.datasets[0].data = [
 		<?= $totalOrderForMonth['1'] ?>,
@@ -230,6 +332,4 @@ echo $this->element('Admin/footer');
 		<?= $totalColorCurrentMonth['12'] ?>
 	];
 	myBar.update();
-
-
 </script>

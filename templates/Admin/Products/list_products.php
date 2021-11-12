@@ -22,7 +22,7 @@ echo $this->element('serial');
 					<button type="submit" class="btn btn-primary btn-default">Search</button>
 				</form>
 			</div>
-			<?php if ($_SESSION['flag'] == 2) { ?>
+			<?php if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
 				<div class="col-12 col-md-6 order-md-1 order-last" style="align-self: flex-end; text-align: end;">
 					<div class="form-group" style="display: inline-block">
 						<a href="/admin/add-product">
@@ -53,7 +53,7 @@ echo $this->element('serial');
 							<th>Giá sản phẩm</th>
 							<th>Point sản phẩm</th>
 							<th>Danh mục</th>
-							<?php if ($_SESSION['flag'] == 2) { ?>
+							<?php if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
 								<th>Trạng thái</th>
 							<?php } ?>
 						</tr>
@@ -78,7 +78,7 @@ echo $this->element('serial');
 								<td><a><?= number_format(h($product['amount_product'])) ?></a></td>
 								<td><a><?= number_format(h($product['point_product'])) ?></a></td>
 								<td><a><?= h($product['Categories']['category_name']) ?></a></td>
-								<?php if ($_SESSION['flag'] == 2) { ?>
+								<?php if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
 									<td style="text-align: center;">
 										<a href="<?= $this->Url->build('/admin/edit-product/' . $product->id, ['fullBase' => true]) ?>">
 											<input type="submit" class="btn btn-info" value="Sửa" style="margin-bottom: 5px" />

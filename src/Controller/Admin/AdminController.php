@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Controller\Admin;
+
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
 use Cake\Routing\Router;
@@ -38,10 +39,10 @@ class AdminController extends AppController
 		if (!$session->check('flag') || $flag == 1) {
 			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
-		}else{
+		} else {
 			$idUser = $session->read('idUser');
 			$check = $this->{'CRUD'}->checkUserLock($idUser);
-			if(count($check) < 1){
+			if (count($check) < 1) {
 				$session->destroy();
 				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
 				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
@@ -127,29 +128,28 @@ class AdminController extends AppController
 		$revenueCurrentMonth = $this->{'CRUD'}->revenueCurrentMonth();
 
 		foreach ($revenueCurrentMonth as $month) {
-			if($month['Month'] == Date('m')){
+			if ($month['Month'] == Date('m')) {
 				$currentMonth = $month['sum'];
-			}else{
+			} else {
 				$lastMonth = $month['sum'];
 			}
 		}
 		//check rỗng tháng hiện tại và thagns trước
-		if($currentMonth == null && $lastMonth == null){
+		if ($currentMonth == null && $lastMonth == null) {
 			$currentMonth = 0;
 			$lastMonth = 0;
-		}elseif($currentMonth == null){
+		} elseif ($currentMonth == null) {
 			$currentMonth = 0;
-		}elseif($lastMonth == null){
+		} elseif ($lastMonth == null) {
 			$lastMonth = 0;
 		}
 
 		//Tính % tăng trưởng của tháng hiện tại so với tháng trước
-		$percent = (int) (($currentMonth - $lastMonth)/$lastMonth * 100);
+		$percent = (int) (($currentMonth - $lastMonth) / $lastMonth * 100);
 
-		if($percent > 0){
-			$percentGrowth = '+'.$percent;
-
-		}else{
+		if ($percent > 0) {
+			$percentGrowth = '+' . $percent;
+		} else {
 			$percentGrowth = $percent;
 		}
 
@@ -159,13 +159,60 @@ class AdminController extends AppController
 			7 => "chartColors.grey", 8 => "chartColors.grey", 9 => "chartColors.grey", 10 => "chartColors.grey", 11 => "chartColors.grey", 12 => "chartColors.grey"
 		];
 		foreach ($revenueCurrentMonth as $month) {
-			if($month['Month'] == Date('m')){
+			if ($month['Month'] == Date('m')) {
 				$totalColorCurrentMonth[$month['Month']] = 'chartColors.blue';
-			}else{
+			} else {
 				$totalColorCurrentMonth[$month['Month']] = 'chartColors.info';
 			}
 		}
 
-		$this->set(compact('OrderForYear', 'totalOrders', 'totalUser', 'totalProduct', 'revenueOrder', 'totalOrderForMonth', 'totalOrderForYear', 'totalUserForMonths', 'totalProductsForMonths', 'totalrevenueOrderForMonth', 'totalColorCurrentMonth', 'percentGrowth'));
+		//Top 5 sản phẩm bán ra nhiều nhất trong tháng này
+		$topSellMost = $this->{'CRUD'}->topSellMost();
+
+		//Top 5 sản phẩm bán chậm nhất trong tháng này
+		$dataTopSellLeast = array();
+		$dataProductsAtOrder = $this->{'CRUD'}->getProductsNotInOrder();
+		foreach ($dataProductsAtOrder as $product) {
+			array_push(
+				$dataTopSellLeast,
+				[
+					'product_id' => $product['id'],
+					'product_name' => $product['product_name'],
+					'totalQuantity' => 0
+				]
+			);
+		}
+
+		$limit = 5 - count($dataProductsAtOrder);
+		$topSellLeast = $this->{'CRUD'}->topSellLeast($limit);
+		if ($limit != 0) {
+			foreach ($topSellLeast as $product) {
+				array_push(
+					$dataTopSellLeast,
+					[
+						'product_id' => $product['product_id'],
+						'product_name' => $product['Products']['product_name'],
+						'totalQuantity' => $product['totalQuantity']
+					]
+				);
+			}
+		}
+
+		//Sản phẩm đã hết hàng
+		$getProductNoneQuantity = $this->{'CRUD'}->getProductNoneQuantity();
+		$this->set(compact('getProductNoneQuantity', $this->paginate($getProductNoneQuantity, ['limit' => 3])));
+
+		$this->set(compact('dataTopSellLeast'));
+		$this->set(compact('OrderForYear', 'totalOrders', 'topSellMost', 'totalUser', 'totalProduct', 'revenueOrder', 'totalOrderForMonth', 'totalOrderForYear', 'totalUserForMonths', 'totalProductsForMonths', 'totalrevenueOrderForMonth', 'totalColorCurrentMonth', 'percentGrowth'));
+	}
+
+	//Xuất file Excel sản phẩm hết hàng
+	public function exportInventory()
+	{
+		$this->setResponse($this->getResponse()->withDownload('San-pham-het-hang.csv'));
+		$data = $this->{'CRUD'}->getAllCategory();
+
+		$this->set(compact('data'));
+		$this->viewBuilder()->setClassName('CsvView.Csv')->setOption('serialize', 'data');
 	}
 }

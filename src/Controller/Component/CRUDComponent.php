@@ -887,6 +887,160 @@ class CRUDComponent extends CommonComponent
 		return $query->toArray();
 	}
 
+	//Top 5 sản phẩm được bán ra nhiều nhất trong tháng này
+	public function topSellMost(){
+		$query = $this->Orderdetails->find()
+		->select([
+			'Orderdetails.product_id',
+			'Products.product_name',
+			'totalQuantity'=>'SUM(Orderdetails.quantity_orderDetails)'
+		])
+		->join([
+			'table' => 'Products',
+			'alias' => 'Products',
+			'type' => 'inner',
+			'conditions' => ['Products.id = Orderdetails.product_id']
+		])
+		->join([
+			'table' => 'Orders',
+			'alias' => 'Orders',
+			'type' => 'inner',
+			'conditions' => ['Orders.id = Orderdetails.order_id']
+		])
+		->where([
+			'Products.del_flag' => 0,
+			'Month(Orders.created_date)' => Date('m'),
+			'OR' => [
+				['Orders.status' => 0],
+				['Orders.status' => 1],
+			]
+		])
+		->group('Orderdetails.product_id')
+		->order(['totalQuantity' => 'DESC'])
+		->limit(5);
+		return $query->toArray();
+	}
+
+	//Top 5 sản phẩm được bán ra ít nhất trong tháng này
+	public function topSellLeast($limit){
+		$query = $this->Orderdetails->find()
+		->select([
+			'Orderdetails.product_id',
+			'Products.product_name',
+			'totalQuantity'=>'SUM(Orderdetails.quantity_orderDetails)'
+		])
+		->join([
+			'table' => 'Products',
+			'alias' => 'Products',
+			'type' => 'inner',
+			'conditions' => ['Products.id = Orderdetails.product_id']
+		])
+		->join([
+			'table' => 'Orders',
+			'alias' => 'Orders',
+			'type' => 'inner',
+			'conditions' => ['Orders.id = Orderdetails.order_id']
+		])
+		->where([
+			'Products.del_flag' => 0,
+			'Month(Orders.created_date)' => Date('m'),
+			'OR' => [
+				['Orders.status' => 0],
+				['Orders.status' => 1],
+			]
+		])
+		->group('Orderdetails.product_id')
+		->order(['totalQuantity' => 'ASC'])
+		->limit($limit);
+		return $query->toArray();
+	}
+
+	//Lấy tất cả sản phẩm nhưng không nằm trong các sản phẩm đã Orders
+	public function getProductsNotInOrder(){
+		$query = $this->Products->find()
+		->select([
+			'Products.id',
+			'Products.product_name',
+		])
+		->where([
+			'Products.del_flag' => 0,
+			'Products.id NOT IN' => [
+				$query = $this->Orderdetails->find()
+				->select([
+					'Orderdetails.product_id'
+				])
+				->where([
+					'Month(Orderdetails.created_date)' => Date('m'),
+				])
+				->group('Orderdetails.product_id')
+			]
+		])
+		->limit(5);
+		return $query->toArray();
+	}
+
+	//Lấy tất cả sản phẩm có số lượng  = 0
+	public function getProductNoneQuantity()
+	{
+		$query = $this->Products->find()
+			->select([
+				'Products.id',
+				'Products.product_name',
+				'Products.description',
+				'Products.quantity_product',
+				'Products.amount_product',
+				'Products.point_product',
+				'Products.category_id',
+				'Categories.category_name'
+			])
+			->join([
+				'table' => 'Categories',
+				'alias' => 'Categories',
+				'type' => 'inner',
+				'conditions' => ['Products.category_id = Categories.id']
+			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
+			->where([
+				'Products.del_flag' => 0,
+				'Products.quantity_product' => 0,
+			])
+			->order('Products.id DESC');
+		return $query;
+	}
+
+	//Lấy tất cả sản phẩm có số lượng  = 0 kiểu mảng
+	public function getProductNoneQuantityArr()
+	{
+		$query = $this->Products->find()
+			->select([
+				'Products.id',
+				'Products.product_name',
+				'Products.description',
+				'Products.quantity_product',
+				'Products.amount_product',
+				'Products.point_product',
+				'Products.category_id',
+				'Categories.category_name'
+			])
+			->join([
+				'table' => 'Categories',
+				'alias' => 'Categories',
+				'type' => 'inner',
+				'conditions' => ['Products.category_id = Categories.id']
+			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
+			->where([
+				'Products.del_flag' => 0,
+				'Products.quantity_product' => 0,
+			])
+			->order('Products.id DESC');
+		return $query->toArray();
+	}
+
 	//Lọc
 	public function filterUser($filters){
 		$query = $this->Users->find()

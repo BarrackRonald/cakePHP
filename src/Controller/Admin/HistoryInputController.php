@@ -161,7 +161,7 @@ class HistoryInputController extends AppController
 			$session->delete('success');
 		}
 
-		$products = $this->{'CRUD'}->getAllProduct();
+		$products = $this->{'CRUD'}->getAllProductNoneOrderBy();
 		$session = $this->request->getSession();
 		//Search
 		$key = $this->request->getQuery('key');
@@ -183,6 +183,14 @@ class HistoryInputController extends AppController
 
 		//Pagination
 		try {
+			$this->paginate = [
+                'sortableFields' => [
+					'Products.product_name',
+					'Products.quantity_product',
+					'Categories.category_name'
+    			]
+			];
+			
 			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');

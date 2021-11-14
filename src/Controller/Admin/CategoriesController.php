@@ -67,7 +67,12 @@ class CategoriesController extends AppController
 			$session->delete('error');
 		}
 		$categories = $this->{'CRUD'}->getAllCategory();
+		
 		try {
+			
+			$this->paginate = [
+                'order' => ['id' => 'DESC'],
+			];
 			$this->set(compact('categories', $this->paginate($categories, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');

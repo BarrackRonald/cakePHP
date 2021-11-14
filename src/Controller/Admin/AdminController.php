@@ -210,9 +210,25 @@ class AdminController extends AppController
 	public function exportInventory()
 	{
 		$this->setResponse($this->getResponse()->withDownload('San-pham-het-hang.csv'));
-		$data = $this->{'CRUD'}->getAllCategory();
-
+		$data = $this->{'CRUD'}->getProductNoneQuantity();
+	
+		$header = ['Product ID', 'Tên Sản phẩm', 'Danh mục', 'Số lượng'];
+		$extract = [
+			'id',
+			'product_name',
+			function (array $row) {
+				return $row['Categories']['category_name'];
+			},
+			'quantity_product'
+		];
+	
 		$this->set(compact('data'));
-		$this->viewBuilder()->setClassName('CsvView.Csv')->setOption('serialize', 'data');
+		$this->viewBuilder()
+			->setClassName('CsvView.Csv')
+			->setOptions([
+				'serialize' => 'data',
+				'header' => $header,
+				'extract' => $extract
+			]);
 	}
 }

@@ -126,8 +126,7 @@ class CRUDComponent extends CommonComponent
 			])
 			->where([
 				'Categories.del_flag' => 0,
-			])
-			->order('Categories.id DESC');
+			]);
 		return $query;
 	}
 
@@ -222,6 +221,36 @@ class CRUDComponent extends CommonComponent
 				'Products.del_flag' => 0,
 			])
 			->order('Products.id DESC');
+		return $query;
+	}
+
+	//Products không sắp xếp
+	public function getAllProductNoneOrderBy()
+	{
+		$query = $this->Products->find()
+			->select([
+				'Products.id',
+				'Products.product_name',
+				'Products.description',
+				'Products.quantity_product',
+				'Products.amount_product',
+				'Products.point_product',
+				'Products.category_id',
+				'Categories.category_name',
+				
+			])
+			->join([
+				'table' => 'Categories',
+				'alias' => 'Categories',
+				'type' => 'inner',
+				'conditions' => ['Products.category_id = Categories.id']
+			])
+			->contain(['Images' => function ($q) {
+				return $q->order('Images.updated_date DESC');
+			}])
+			->where([
+				'Products.del_flag' => 0,
+			]);
 		return $query;
 	}
 

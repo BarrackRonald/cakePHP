@@ -24,7 +24,7 @@ echo $this->element('serial');
 					<thead>
 						<tr>
 							<th>STT</th>
-							<th class="t-al-center">Tên Danh mục</th>
+							<th class="t-al-center"><?= $this->Paginator->sort('category_name', 'Tên Danh mục'); ?></th>
 							<?php if ($_SESSION['flag'] == 2) { ?>
 								<th class="center">Chức năng</th>
 							<?php } ?>

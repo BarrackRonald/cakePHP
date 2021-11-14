@@ -44,9 +44,10 @@ $n = $this->request->getAttribute('paging')['Products']['start'];
 					<thead>
 						<tr>
 							<th>STT<th>
-							<th>Tên sản phẩm</th>
-							<th>Số lượng</th>
-							<th>Danh mục</th>
+							
+							<th><?= $this->Paginator->sort('Products.product_name', 'Tên sản phẩm'); ?></th>
+							<th><?= $this->Paginator->sort('Products.quantity_product', 'Số lượng'); ?></th>
+							<th><?= $this->Paginator->sort('Categories.category_name', 'Danh mục'); ?></th>
 							<th>Chức năng</th>
 						</tr>
 					</thead>

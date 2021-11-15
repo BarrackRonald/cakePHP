@@ -350,8 +350,10 @@ class NormalUsersController extends AppController
 				$dataProds = $session->read('cartData');
 
 				//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
+				$dataUpdateQuantity = array();
 				foreach ($dataProds['cart'] as $key => $valueProduct) {
 					$checkProduct = $this->{'CRUD'}->checkProductByID($key);
+					
 					if (count($checkProduct) < 1) {
 						$session->write('checkErr', 1);
 						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
@@ -365,16 +367,24 @@ class NormalUsersController extends AppController
 					}else if($checkProduct[0]['quantity_product'] < $valueProduct['quantity']){
 						$session->write('checkErr', 1);
 						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
-
 					}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
 						$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
-						$this->{'Data'}->updateQuantity($quantity, $checkProduct[0]['id']);
+						array_push($dataUpdateQuantity,[
+							'id' => $checkProduct[0]['id'],
+							'quantity_product' => $quantity,
+						]);
 					}
+					
 				}
-
-				if ($session->check('checkErr')) {
-					$session->delete('checkErr');
-					return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
+				if(count($dataUpdateQuantity) == count($dataProds['cart'])){
+					foreach ($dataUpdateQuantity as $data) {
+						$this->{'Data'}->updateQuantity($data['quantity_product'], $data['id']);
+					}
+				}else{
+					if ($session->check('checkErr')) {
+						$session->delete('checkErr');
+						return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
+					}
 				}
 
 				//Point user trước khi mua
@@ -662,10 +672,10 @@ class NormalUsersController extends AppController
 				$dataProds = $session->read('cartData');
 
 					//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
+					$dataUpdateQuantity = array();
 					foreach ($dataProds['cart'] as $key => $valueProduct) {
 						$checkProduct = $this->{'CRUD'}->checkProductByID($key);
-						// dd($checkProduct);
-						$dataUpdateQuantity = [];
+						
 						if (count($checkProduct) < 1) {
 							$session->write('checkErr', 1);
 							$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
@@ -681,17 +691,22 @@ class NormalUsersController extends AppController
 							$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
 						}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
 							$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
-							$dataUpdateQuantity[$checkProduct[0]['id']] = $quantity;
-
-							// $this->{'Data'}->updateQuantity($quantity, $checkProduct[0]['id']);
+							array_push($dataUpdateQuantity,[
+								'id' => $checkProduct[0]['id'],
+								'quantity_product' => $quantity,
+							]);
 						}
+						
 					}
-
-					dd($dataUpdateQuantity);
-
-				if ($session->check('checkErr')) {
-					$session->delete('checkErr');
-					return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
+				if(count($dataUpdateQuantity) == count($dataProds['cart'])){
+					foreach ($dataUpdateQuantity as $data) {
+						$this->{'Data'}->updateQuantity($data['quantity_product'], $data['id']);
+					}
+				}else{
+					if ($session->check('checkErr')) {
+						$session->delete('checkErr');
+						return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
+					}
 				}
 
 				$idUsers = $session->read('idUser');

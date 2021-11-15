@@ -103,6 +103,21 @@ class UsersController extends AppController
 		}
 
 		try {
+			//Sort
+			$this->paginate = [
+				'order' => [
+					'Users.id' => 'DESC'
+				],
+				'sortableFields' => [
+					'Users.id',
+					'Users.username',
+					'Users.email',
+					'Users.phonenumber',
+					'Users.address',
+					'Users.point_user',
+					'Roles.role_name'
+				],
+			];
 			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');

@@ -24,11 +24,11 @@ echo $this->element('serial');
 					<thead>
 						<tr>
 							<th>STT</th>
-							<th class="t-al-center">Người nhập</th>
-							<th class="t-al-center">Email</th>
-							<th class="t-al-center">Sản phẩm</th>
-							<th class="t-al-center">Số lượng nhập</th>
-							<th class="t-al-center">Ngày nhập</th>
+							<th class="t-al-center"><?= $this->Paginator->sort('HistoryInput.username', 'Người nhập'); ?></th>
+							<th class="t-al-center"><?= $this->Paginator->sort('Users.email', 'Email'); ?></th>
+							<th class="t-al-center"><?= $this->Paginator->sort('HistoryInput.product_name', 'Sản phẩm'); ?></th>
+							<th class="t-al-center"><?= $this->Paginator->sort('HistoryInput.quantity_input', 'Số lượng nhập'); ?></th>
+							<th class="t-al-center"><?= $this->Paginator->sort('HistoryInput.created_date', 'Ngày nhập'); ?></th>
 						</tr>
 					</thead>
 					<tbody>

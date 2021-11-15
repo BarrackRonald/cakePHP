@@ -52,13 +52,8 @@
 					</a>
 					<ul class="submenu ">
 						<li>
-							<a href="<?= $this->Url->build('admin/list-categories', ['fullBase' => true]) ?>">List danh mục</a>
+							<a href="<?= $this->Url->build('admin/list-categories', ['fullBase' => true]) ?>">Danh sách danh mục</a>
 						</li>
-						<?php if ($_SESSION['flag'] == 2) { ?>
-							<li>
-								<a href="<?= $this->Url->build('admin/add-category', ['fullBase' => true]) ?>">Add danh mục</a>
-							</li>
-						<?php } ?>
 
 					</ul>
 				</li>
@@ -70,7 +65,7 @@
 					</a>
 					<ul class="submenu ">
 						<li>
-							<a href="<?= $this->Url->build('admin/list-products', ['fullBase' => true]) ?>">List sản phẩm</a>
+							<a href="<?= $this->Url->build('admin/list-products', ['fullBase' => true]) ?>">Danh sách sản phẩm</a>
 						</li>
 					</ul>
 				</li>
@@ -78,11 +73,11 @@
 				<li class="sidebar-item  has-sub">
 					<a href="#" class='sidebar-link'>
 						<i data-feather="file-text" width="20"></i>
-						<span>Quản lý Order</span>
+						<span>Quản lý Đơn hàng</span>
 					</a>
 					<ul class="submenu ">
 						<li>
-							<a href="<?= $this->Url->build('admin/list-orders', ['fullBase' => true]) ?>">List Order</a>
+							<a href="<?= $this->Url->build('admin/list-orders', ['fullBase' => true]) ?>">Danh sách Đơn hàng</a>
 						</li>
 					</ul>
 				</li>

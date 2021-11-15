@@ -58,12 +58,12 @@ $n = $this->request->getAttribute('paging')[$this->request->getParam('controller
 						<thead>
 							<tr>
 								<th>STT</th>
-								<th>Họ và tên</th>
-								<th>Email</th>
-								<th>Số Điện thoại</th>
-								<th>Địa chỉ</th>
-								<th>Point</th>
-								<th>Quyền</th>
+								<th><?= $this->Paginator->sort('Users.username', 'Họ và tên'); ?></th>
+								<th><?= $this->Paginator->sort(	'Users.email', 'Email'); ?></th>
+								<th><?= $this->Paginator->sort('Users.phonenumber', 'Số Điện thoại'); ?></th>
+								<th><?= $this->Paginator->sort('Users.address', 'Địa chỉ'); ?></th>
+								<th><?= $this->Paginator->sort('Users.point_user', 'Point'); ?></th>
+								<th><?= $this->Paginator->sort('Roles.role_name', 'Quyền'); ?></th>
 								<th>Trạng thái</th>
 							</tr>
 						</thead>

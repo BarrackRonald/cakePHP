@@ -32,10 +32,10 @@ class HistoryInputController extends AppController
 		if (!$session->check('flag') || $flag == 1) {
 			$this->Flash->error(__(ERROR_ROLE_ADMIN));
 			return $this->redirect('/');
-		}else{
+		} else {
 			$idUser = $session->read('idUser');
 			$check = $this->{'CRUD'}->checkUserLock($idUser);
-			if(count($check) < 1){
+			if (count($check) < 1) {
 				$session->destroy();
 				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
 				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
@@ -61,7 +61,7 @@ class HistoryInputController extends AppController
 		$dataUser = $this->{'Data'}->getInfoUser($idUsers);
 		$products = $this->{'CRUD'}->getAllProduct();
 
-		if($session->check('success')){
+		if ($session->check('success')) {
 			$session->delete('success');
 		}
 
@@ -70,59 +70,60 @@ class HistoryInputController extends AppController
 
 			//Check F12
 			$idProducts = $atribute['product_id'];
-			$checkIDProducts = $this->{'CRUD'}->getProductByID($idProducts);
-			if (count($checkIDProducts) < 1) {
+			if (!is_numeric($idProducts)) {
 				$this->Flash->error(__(ERROR_PRODUCT_DATA_CHANGED_NOT_CONFIRM));
 				$data = $atribute;
-			}else {
-				$dataProduct = $this->{'CRUD'}->getProductByID($atribute['product_id']);
-				if($atribute['quantity_product'] == ""){
-					$error['quantity_product'] = [ERROR_NULL_QUANTITY];
-					$this->set('error', $error);
+			} else {
+				$checkIDProducts = $this->{'CRUD'}->getProductByID($idProducts);
+				if (count($checkIDProducts) < 1) {
+					$this->Flash->error(__(ERROR_PRODUCT_DATA_CHANGED_NOT_CONFIRM));
 					$data = $atribute;
-				}else{
-					//Cộng số lượng khi nhập vào
-					$oldQuantity = $dataProduct[0]['quantity_product'];
-					$inputQuantity = $atribute['quantity_product'];
-
-					if (!is_numeric($inputQuantity)) {
-						$error['quantity_product'] = [ERROR_NOT_STRING_QUANTITY];
+				} else {
+					$dataProduct = $this->{'CRUD'}->getProductByID($atribute['product_id']);
+					if ($atribute['quantity_product'] == "") {
+						$error['quantity_product'] = [ERROR_NULL_QUANTITY];
 						$this->set('error', $error);
 						$data = $atribute;
-					}else{
-						//Giá trị hiện tại
-						$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
-						$product = $this->Products->patchEntity($dataProduct[0], $atribute);
+					} else {
 
-						if($product->hasErrors()){
-							$error = $product->getErrors();
+						//Cộng số lượng khi nhập vào
+						$oldQuantity = $dataProduct[0]['quantity_product'];
+						$inputQuantity = $atribute['quantity_product'];
+						if (!is_numeric($inputQuantity)) {
+							$error['quantity_product'] = [ERROR_NOT_STRING_QUANTITY];
 							$this->set('error', $error);
 							$data = $atribute;
-						}else{
-							$result = $this->Products->save($product);
-							if ($result) {
-								$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
-								if ($dataHistory['result'] == "invalid") {
-									$error = $dataHistory['data'];
-									$this->set('error', $error);
-								} else {
-									//Success
-									$data = $atribute;
-									$session->write('success', 1);
-								}
-							}else{
-								$this->Flash->error(__(ERROR_INPUT_PRODUCT));
+						} else {
+							//Giá trị hiện tại
+							$atribute['quantity_product'] = $oldQuantity + $inputQuantity;
+							$product = $this->Products->patchEntity($dataProduct[0], $atribute);
+
+							if ($product->hasErrors()) {
+								$error = $product->getErrors();
+								$this->set('error', $error);
 								$data = $atribute;
+							} else {
+								$result = $this->Products->save($product);
+								if ($result) {
+									$dataHistory = $this->{'CRUD'}->addInputHistory($dataUser, $result, $inputQuantity);
+									if ($dataHistory['result'] == "invalid") {
+										$error = $dataHistory['data'];
+										$this->set('error', $error);
+									} else {
+										//Success
+										$data = $atribute;
+										$session->write('success', 1);
+									}
+								} else {
+									$this->Flash->error(__(ERROR_INPUT_PRODUCT));
+									$data = $atribute;
+								}
 							}
 						}
-
 					}
 				}
-
 			}
-
-			
-		}else{
+		} else {
 			$data = [];
 			$data["referer"] = $this->referer();
 			if ($data["referer"] == "/" || $data["referer"] == '/admin/input-product') {
@@ -136,13 +137,29 @@ class HistoryInputController extends AppController
 	}
 
 	//Lịch sử nhập
-	public function listHistory(){
+	public function listHistory()
+	{
 		$session = $this->request->getSession();
-		if($session->check('success')){
+		if ($session->check('success')) {
 			$session->delete('success');
 		}
 		$historyInput = $this->{'CRUD'}->getAllHistoryInput();
 		try {
+			//Sort
+			$this->paginate = [
+				'order' => [
+					'HistoryInput.id' => 'DESC'
+				],
+				'sortableFields' => [
+					'HistoryInput.id',
+					'HistoryInput.username',
+					'HistoryInput.product_name',
+					'HistoryInput.quantity_input',
+					'HistoryInput.created_date',
+					'Users.email',
+				],
+			];
+
 			$this->set(compact('historyInput', $this->paginate($historyInput, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');
@@ -155,13 +172,14 @@ class HistoryInputController extends AppController
 	}
 
 	//Danh sách hàng còn trong kho
-	public function listInventory(){
+	public function listInventory()
+	{
 		$session = $this->request->getSession();
-		if($session->check('success')){
+		if ($session->check('success')) {
 			$session->delete('success');
 		}
 
-		$products = $this->{'CRUD'}->getAllProductNoneOrderBy();
+		$products = $this->{'CRUD'}->getAllProduct();
 		$session = $this->request->getSession();
 		//Search
 		$key = $this->request->getQuery('key');
@@ -170,7 +188,7 @@ class HistoryInputController extends AppController
 			$session->write('keySearch', trim($key));
 			$query = $this->{'CRUD'}->getSearch(trim($key));
 			$querytoArr = $this->{'CRUD'}->getSearchtoArr(trim($key));
-			if(count($querytoArr) == 0){
+			if (count($querytoArr) == 0) {
 				$this->Flash->error(__(ERROR_SEARCH_NOT_FOUND));
 			}
 		} else {
@@ -183,14 +201,18 @@ class HistoryInputController extends AppController
 
 		//Pagination
 		try {
+			//Sort
 			$this->paginate = [
-                'sortableFields' => [
+				'order' => [
+					'Products.id' => 'DESC'
+				],
+				'sortableFields' => [
+					'Products.id',
 					'Products.product_name',
 					'Products.quantity_product',
 					'Categories.category_name'
-    			]
+				],
 			];
-			
 			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');
@@ -201,20 +223,4 @@ class HistoryInputController extends AppController
 			}
 		}
 	}
-
-	//Export
-	public function exportInventory()
-	{
-		$this->setResponse($this->getResponse()->withDownload('San-pham-ton-kho.csv'));
-		$products = $this->{'CRUD'}->getAllProduct();
-		$data = [
-			['a', 'b', 'c'],
-			[1, 2, 3],
-			['you', 'and', 'me'],
-		];
-
-		$this->set(compact('data'));
-		$this->viewBuilder()->setClassName('CsvView.Csv')->setOption('serialize', 'data');
-	}
-
 }

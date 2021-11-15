@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 
 /**
@@ -126,7 +127,6 @@ class AdminController extends AppController
 		$currentMonth = null;
 		$lastMonth = null;
 		$revenueCurrentMonth = $this->{'CRUD'}->revenueCurrentMonth();
-
 		foreach ($revenueCurrentMonth as $month) {
 			if ($month['Month'] == Date('m')) {
 				$currentMonth = $month['sum'];
@@ -134,7 +134,8 @@ class AdminController extends AppController
 				$lastMonth = $month['sum'];
 			}
 		}
-		//check rỗng tháng hiện tại và thagns trước
+
+		//Check rỗng tháng hiện tại và tháng trước
 		if ($currentMonth == null && $lastMonth == null) {
 			$currentMonth = 0;
 			$lastMonth = 0;
@@ -200,7 +201,16 @@ class AdminController extends AppController
 
 		//Sản phẩm đã hết hàng
 		$getProductNoneQuantity = $this->{'CRUD'}->getProductNoneQuantity();
-		$this->set(compact('getProductNoneQuantity', $this->paginate($getProductNoneQuantity, ['limit' => 3])));
+		try {
+			$this->set(compact('getProductNoneQuantity', $this->paginate($getProductNoneQuantity, ['limit' => PAGINATE_LIMIT])));
+		} catch (NotFoundException $e) {
+			$atribute = $this->request->getAttribute('paging');
+			$requestedPage = $atribute['Products']['requestedPage'];
+			$pageCount = $atribute['Products']['pageCount'];
+			if ($requestedPage > $pageCount) {
+				return $this->redirect("/admin?page=" . $pageCount . "");
+			}
+		}
 
 		$this->set(compact('dataTopSellLeast'));
 		$this->set(compact('OrderForYear', 'totalOrders', 'topSellMost', 'totalUser', 'totalProduct', 'revenueOrder', 'totalOrderForMonth', 'totalOrderForYear', 'totalUserForMonths', 'totalProductsForMonths', 'totalrevenueOrderForMonth', 'totalColorCurrentMonth', 'percentGrowth'));
@@ -211,7 +221,7 @@ class AdminController extends AppController
 	{
 		$this->setResponse($this->getResponse()->withDownload('San-pham-het-hang.csv'));
 		$data = $this->{'CRUD'}->getProductNoneQuantity();
-	
+
 		$header = ['Product ID', 'Tên Sản phẩm', 'Danh mục', 'Số lượng'];
 		$extract = [
 			'id',
@@ -221,14 +231,24 @@ class AdminController extends AppController
 			},
 			'quantity_product'
 		];
-	
+
+		//Xuất file không lỗi tiếng việt
+		$csvEncoding = 'UTF-8';
+		$bom = true;
+		$newline = "\r\n";
+		$eol = "\r\n";
+
 		$this->set(compact('data'));
 		$this->viewBuilder()
 			->setClassName('CsvView.Csv')
 			->setOptions([
 				'serialize' => 'data',
 				'header' => $header,
-				'extract' => $extract
+				'extract' => $extract,
+				'csvEncoding' => $csvEncoding,
+				'bom' => $bom,
+				'newline' => $newline,
+				'eol' => $eol,
 			]);
 	}
 }

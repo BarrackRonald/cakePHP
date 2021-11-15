@@ -23,7 +23,7 @@ echo $this->element('Admin/sidebar');
 					<?= $this->Form->create() ?>
 					<div class="button_add">
 						<a href="/admin/add-product">
-							<input type="button" class="btn btn-info" value="Add Sản phẩm" style="margin-bottom: 5px" />
+							<input type="button" class="btn btn-info" value="Thêm Sản phẩm" style="margin-bottom: 5px" />
 						</a>
 					</div>
 					<div class="form-group">

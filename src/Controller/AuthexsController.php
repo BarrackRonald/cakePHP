@@ -214,6 +214,7 @@ class AuthexsController extends AppController
 							if ($user->hasErrors()) {
 								$error = $user->getErrors();
 								$this->set('error', $error);
+								$data = $atribute;
 							} else {
 								$newpass = $hashPswdObj->hash($atribute['password']);
 								$user->password = $newpass;

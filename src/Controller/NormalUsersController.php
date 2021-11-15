@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 
 /**
@@ -134,33 +135,23 @@ class NormalUsersController extends AppController
 				$data['phonenumber'] = trim($atribute['phonenumber1']);
 				$session->write('dataInput', $atribute);
 
-				//Check thay đổi địa chỉ
-				if($User[0]['address'] == $data['address']){
-					$session->write('errorAddress', ERROR_DATA_NOT_CHANGED);
+				//Validate address
+				$checkAddress = $this->{'Validate'}->validateAddress($data['address']);
+				if($checkAddress['result'] == 'invalid'){
+					$session->write('errorAddress', $checkAddress['message']);
 				}else{
-					//Validate address
-					$checkAddress = $this->{'Validate'}->validateAddress($data['address']);
-					if($checkAddress['result'] == 'invalid'){
-						$session->write('errorAddress', $checkAddress['message']);
-					}else{
-						if($session->check('errorAddress')){
-							$session->delete('errorAddress');
-						}
+					if($session->check('errorAddress')){
+						$session->delete('errorAddress');
 					}
 				}
 
-				//Check thay đổi số điện thoại
-				if($User[0]['phonenumber'] == $data['phonenumber']){
-					$session->write('errorPhone1', ERROR_DATA_NOT_CHANGED);
+				//Validate PhoneNumber
+				$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
+				if($checkPhoneNumber['result'] == 'invalid'){
+					$session->write('errorPhone1', $checkPhoneNumber['message']);
 				}else{
-					//Validate PhoneNumber
-					$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
-					if($checkPhoneNumber['result'] == 'invalid'){
-						$session->write('errorPhone1', $checkPhoneNumber['message']);
-					}else{
-						if($session->check('errorPhone1')){
-							$session->delete('errorPhone1');
-						}
+					if($session->check('errorPhone1')){
+						$session->delete('errorPhone1');
 					}
 				}
 
@@ -673,6 +664,8 @@ class NormalUsersController extends AppController
 					//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
 					foreach ($dataProds['cart'] as $key => $valueProduct) {
 						$checkProduct = $this->{'CRUD'}->checkProductByID($key);
+						// dd($checkProduct);
+						$dataUpdateQuantity = [];
 						if (count($checkProduct) < 1) {
 							$session->write('checkErr', 1);
 							$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
@@ -686,12 +679,15 @@ class NormalUsersController extends AppController
 						}else if($checkProduct[0]['quantity_product'] < $valueProduct['quantity']){
 							$session->write('checkErr', 1);
 							$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
-
 						}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
 							$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
-							$this->{'Data'}->updateQuantity($quantity, $checkProduct[0]['id']);
+							$dataUpdateQuantity[$checkProduct[0]['id']] = $quantity;
+
+							// $this->{'Data'}->updateQuantity($quantity, $checkProduct[0]['id']);
 						}
 					}
+
+					dd($dataUpdateQuantity);
 
 				if ($session->check('checkErr')) {
 					$session->delete('checkErr');
@@ -1256,7 +1252,17 @@ class NormalUsersController extends AppController
 		$dataCategory = $this->{'CRUD'}->getCategoryByID($id);
 		$dataProduct = $this->{'Data'}->getProductByCategory($id);
 		$this->set(compact('dataCategory'));
-		$this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit' => PAGINATE_LIMIT])));
+
+		try {
+			$this->set(compact('dataProduct', $this->paginate($dataProduct, ['limit' => 2])));
+		} catch (NotFoundException $e) {
+			$atribute = $this->request->getAttribute('paging');
+			$requestedPage = $atribute['Products']['requestedPage'];
+			$pageCount = $atribute['Products']['pageCount'];
+			if ($requestedPage > $pageCount) {
+				return $this->redirect("/view-category/".$id."?page=" . $pageCount . "");
+			}
+		}
 	}
 
 	//Details Product
@@ -1297,7 +1303,17 @@ class NormalUsersController extends AppController
 			$dataUser = $this->{'Data'}->getInfoUser($idUsers);
 			$this->set(compact('dataUser'));
 			$dataOrders = $this->{'Data'}->getOrdersByUser($idUsers);
-			$this->set(compact('dataOrders', $this->paginate($dataOrders, ['limit' => PAGINATE_LIMIT])));
+
+			try {
+				$this->set(compact('dataOrders', $this->paginate($dataOrders, ['limit' => PAGINATE_LIMIT])));
+			} catch (NotFoundException $e) {
+				$atribute = $this->request->getAttribute('paging');
+				$requestedPage = $atribute['Orders']['requestedPage'];
+				$pageCount = $atribute['Orders']['pageCount'];
+				if ($requestedPage > $pageCount) {
+					return $this->redirect("/history-orders?page=" . $pageCount . "");
+				}
+			}
 		}
 
 	}
@@ -1321,7 +1337,16 @@ class NormalUsersController extends AppController
 		if($referer == "/"){
 			return $this->redirect(['action' => NORMALUSER_HISTORY_ORDER]);
 		}else{
-			$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => PAGINATE_LIMIT])));
+			try {
+				$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => PAGINATE_LIMIT])));
+			} catch (NotFoundException $e) {
+				$atribute = $this->request->getAttribute('paging');
+				$requestedPage = $atribute['Orders']['requestedPage'];
+				$pageCount = $atribute['Orders']['pageCount'];
+				if ($requestedPage > $pageCount) {
+					return $this->redirect("/details-order/".$id."?page=" . $pageCount . "");
+				}
+			}
 		}
 	}
 

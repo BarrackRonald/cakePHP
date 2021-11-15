@@ -160,6 +160,5 @@ Router::prefix('admin', function (RouteBuilder $routes) {
 	$routes->connect('/list-inventory', ['controller' => 'HistoryInput', 'action' => 'listInventory']);
 	$routes->connect('/inventory/export', ['controller' => 'Admin', 'action' => 'exportInventory']);
 
-
 	$routes->fallbacks(DashedRoute::class);
 });

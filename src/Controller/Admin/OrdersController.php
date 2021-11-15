@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
 
 /**
@@ -56,7 +57,7 @@ class OrdersController extends AppController
 		}
 	}
 
-	//List Products
+	//List Order
 	public function listOrders()
 	{
 		$orders = $this->{'CRUD'}->getAllOrder();
@@ -78,7 +79,34 @@ class OrdersController extends AppController
 
 			$query1 = $orders;
 		}
-		$this->set(compact('query1', $this->paginate($query1, ['limit' => PAGINATE_LIMIT])));
+
+		try {
+			//Sort
+			$this->paginate = [
+				'order' => [
+					'Orders.id' => 'DESC'
+				],
+				'sortableFields' => [
+					'Orders.id',
+					'Orders.order_name',
+					'Orders.email',
+					'Orders.phonenumber',
+					'Orders.address',
+					'Orders.total_point',
+					'Orders.total_quantity',
+					'Orders.total_amount',
+					'Orders.status'
+				],
+			];
+			$this->set(compact('query1', $this->paginate($query1, ['limit' => PAGINATE_LIMIT])));
+		} catch (NotFoundException $e) {
+			$atribute = $this->request->getAttribute('paging');
+			$requestedPage = $atribute['Orders']['requestedPage'];
+			$pageCount = $atribute['Orders']['pageCount'];
+			if ($requestedPage > $pageCount) {
+				return $this->redirect("/admin/list-orders?page=" . $pageCount . "");
+			}
+		}
 	}
 
 	//Chi tiết đơn hàng

@@ -110,8 +110,7 @@ class CRUDComponent extends CommonComponent
 				'alias' => 'Roles',
 				'type' => 'inner',
 				'conditions' => ['Users.role_id = Roles.id']
-			])
-			->order(['Users.id' => 'DESC']);
+			]);
 		return $query;
 	}
 
@@ -207,37 +206,6 @@ class CRUDComponent extends CommonComponent
 				'Products.point_product',
 				'Products.category_id',
 				'Categories.category_name'
-			])
-			->join([
-				'table' => 'Categories',
-				'alias' => 'Categories',
-				'type' => 'inner',
-				'conditions' => ['Products.category_id = Categories.id']
-			])
-			->contain(['Images' => function ($q) {
-				return $q->order('Images.updated_date DESC');
-			}])
-			->where([
-				'Products.del_flag' => 0,
-			])
-			->order('Products.id DESC');
-		return $query;
-	}
-
-	//Products không sắp xếp
-	public function getAllProductNoneOrderBy()
-	{
-		$query = $this->Products->find()
-			->select([
-				'Products.id',
-				'Products.product_name',
-				'Products.description',
-				'Products.quantity_product',
-				'Products.amount_product',
-				'Products.point_product',
-				'Products.category_id',
-				'Categories.category_name',
-				
 			])
 			->join([
 				'table' => 'Categories',
@@ -372,6 +340,7 @@ class CRUDComponent extends CommonComponent
 			->select([
 				'Products.id',
 				'Products.product_name',
+				'Products.quantity_product',
 				'Products.description',
 				'Products.amount_product',
 				'Products.point_product',
@@ -390,8 +359,7 @@ class CRUDComponent extends CommonComponent
 			->where([
 				'Products.product_name like BINARY' => '%' . $key . '%',
 				'Products.del_flag' => 0
-			])
-			->order('Products.created_date DESC');
+			]);
 		return $query;
 	}
 
@@ -402,6 +370,7 @@ class CRUDComponent extends CommonComponent
 			->select([
 				'Products.id',
 				'Products.product_name',
+				'Products.quantity_product',
 				'Products.description',
 				'Products.amount_product',
 				'Products.point_product',
@@ -449,8 +418,7 @@ class CRUDComponent extends CommonComponent
 			])
 			->where([
 				'OR' => [['Users.username like BINARY' => '%' . $key . '%'], ['Users.email like BINARY' => '%' . $key . '%']],
-			])
-			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
+			]);
 		return $query;
 	}
 
@@ -486,8 +454,7 @@ class CRUDComponent extends CommonComponent
 				'alias' => 'Users',
 				'type' => 'inner',
 				'conditions' => ['Orders.user_id = Users.id']
-			])
-			->order('Orders.id DESC');
+			]);
 		return $query;
 	}
 
@@ -550,8 +517,7 @@ class CRUDComponent extends CommonComponent
 			])
 			->where([
 				'OR' => [['Orders.order_name like BINARY' => '%' . $key . '%'], ['Orders.email like BINARY' => '%' . $key . '%']]
-			])
-			->order('Orders.id DESC');
+			]);
 		return $query;
 	}
 
@@ -1093,8 +1059,7 @@ class CRUDComponent extends CommonComponent
 			])
 			->where([
 				'Users.del_flag' => $filters,
-			])
-			->order(['Users.del_flag' => 'ASC', 'Users.id' => 'DESC']);
+			]);
 		return $query;
 	}
 
@@ -1144,8 +1109,7 @@ class CRUDComponent extends CommonComponent
 			'alias' => 'Users',
 			'type' => 'inner',
 			'conditions' => ['Users.id = HistoryInput.user_id']
-		])
-		->order(['HistoryInput.id' => 'DESC']);
+		]);
 		return $query;
 	}
 

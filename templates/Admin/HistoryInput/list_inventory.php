@@ -26,7 +26,7 @@ $n = $this->request->getAttribute('paging')['Products']['start'];
 			<div class="col-12 col-md-6 order-md-1 order-last" style="align-self: flex-end; text-align: end;">
 				<div class="form-group" style="display: inline-block">
 					<a href="/admin/add-product">
-						<input type="submit" class="btn btn-primary" value="Add Sản Phẩm" style="margin-bottom: 5px" />
+						<input type="submit" class="btn btn-primary" value="Thêm Sản Phẩm" style="margin-bottom: 5px" />
 					</a>
 				</div>
 			</div>
@@ -44,7 +44,6 @@ $n = $this->request->getAttribute('paging')['Products']['start'];
 					<thead>
 						<tr>
 							<th>STT<th>
-							
 							<th><?= $this->Paginator->sort('Products.product_name', 'Tên sản phẩm'); ?></th>
 							<th><?= $this->Paginator->sort('Products.quantity_product', 'Số lượng'); ?></th>
 							<th><?= $this->Paginator->sort('Categories.category_name', 'Danh mục'); ?></th>

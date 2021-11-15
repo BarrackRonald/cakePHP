@@ -26,7 +26,7 @@ echo $this->element('serial');
 				<div class="col-12 col-md-6 order-md-1 order-last" style="align-self: flex-end; text-align: end;">
 					<div class="form-group" style="display: inline-block">
 						<a href="/admin/add-product">
-							<input type="submit" class="btn btn-info" value="Add Sản Phẩm" style="margin-bottom: 5px" />
+							<input type="submit" class="btn btn-info" value="Thêm Sản Phẩm" style="margin-bottom: 5px" />
 						</a>
 					</div>
 				</div>
@@ -46,13 +46,13 @@ echo $this->element('serial');
 						<tr>
 							<th>STT
 							<th>
-							<th>Tên sản phẩm</th>
+							<th><?= $this->Paginator->sort('Products.product_name', 'Tên sản phẩm'); ?></th>
 							<th>Hình ảnh</th>
-							<th>Mô tả</th>
-							<th>Số lượng</th>
-							<th>Giá sản phẩm</th>
-							<th>Point sản phẩm</th>
-							<th>Danh mục</th>
+							<th><?= $this->Paginator->sort('Products.description', 'Mô tả'); ?></th>
+							<th><?= $this->Paginator->sort('Products.quantity_product', 'Số lượng'); ?></th>
+							<th><?= $this->Paginator->sort('Products.amount_product', 'Giá sản phẩm'); ?></th>
+							<th><?= $this->Paginator->sort('Products.point_product', 'Point sản phẩm'); ?></th>
+							<th><?= $this->Paginator->sort('Categories.category_name', 'Danh mục'); ?></th>
 							<?php if ($_SESSION['flag'] == 2 || $_SESSION['flag'] == 3) { ?>
 								<th>Trạng thái</th>
 							<?php } ?>

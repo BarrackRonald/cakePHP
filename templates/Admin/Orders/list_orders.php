@@ -35,14 +35,14 @@ echo $this->element('serial');
 					<thead>
 						<tr>
 							<th>STT</th>
-							<th>Họ và tên</th>
-							<th>Email</th>
-							<th>Số điện thoại</th>
-							<th>Địa chỉ</th>
-							<th>Tổng Point</th>
-							<th>Tổng Số Lượng</th>
-							<th>Tổng giá</th>
-							<th>Trạng Thái</th>
+							<th><?= $this->Paginator->sort('Orders.order_name', 'Họ và tên'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.email', 'Email'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.phonenumber', 'Số điện thoại'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.address', 'Địa chỉ'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.total_point', 'Tổng Point'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.total_quantity', 'Tổng Số Lượng'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.total_amount', 'Tổng giá'); ?></th>
+							<th><?= $this->Paginator->sort('Orders.status', 'Trạng Thái'); ?></th>
 							<th>Chức năng</th>
 						</tr>
 					</thead>

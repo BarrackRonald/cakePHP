@@ -16,6 +16,15 @@ echo $this->element('serial');
 				<?= $this->Flash->render() ?>
 			</div>
 		</div>
+		<?php if ($_SESSION['flag'] == 2) { ?>
+			<div class="col-12 col-md-12 order-md-1 order-last" style="align-self: flex-end; text-align: end;">
+				<div class="form-group" style="display: inline-block">
+					<a href="/admin/add-category">
+						<input type="submit" class="btn btn-info" value="Thêm Danh Mục" style="margin-bottom: 5px" />
+					</a>
+				</div>
+			</div>
+		<?php } ?>
 	</div>
 	<section class="section">
 		<div class="card">

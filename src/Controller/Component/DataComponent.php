@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Component;
 use Cake\Auth\DefaultPasswordHasher;
-use PhpParser\Node\Stmt\TryCatch;
 
 /**
  * Data component
@@ -143,7 +142,7 @@ class DataComponent extends CommonComponent
 		];
 	}
 
-	//Kiểm tra mail
+	//Kiểm tra Mail
 	public function checkmail($atribute)
 	{
 		$query = $this->Users->find()
@@ -203,7 +202,6 @@ class DataComponent extends CommonComponent
 		}
 
 		return $result;
-
 	}
 
 	//Tạo orders không login

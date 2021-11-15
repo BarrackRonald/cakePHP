@@ -84,6 +84,21 @@ class ProductsController extends AppController
 
 		//Pagination
 		try {
+			//Sort
+			$this->paginate = [
+				'order' => [
+					'Products.id' => 'DESC'
+				],
+				'sortableFields' => [
+					'Products.id',
+					'Products.product_name',
+					'Products.quantity_product',
+					'Products.description',
+					'Products.amount_product',
+					'Products.point_product',
+					'Categories.category_name'
+				],
+			];
 			$this->set(compact('query', $this->paginate($query, ['limit' => PAGINATE_LIMIT])));
 		} catch (NotFoundException $e) {
 			$atribute = $this->request->getAttribute('paging');

@@ -152,6 +152,7 @@ class OrdersController extends AppController
 		$dataProducts = $this->{'CRUD'}->getAllProductArr();
 		$idUser = $dataOrder[0]['user_id'];
 		$dataUser = $this->{'CRUD'}->getUserByID($idUser);
+		$session = $this->request->getSession();
 
 		//Lấy dữ liệu Sản phẩm của Orders
 		$dataProductForOrder = $this->{'CRUD'}->getOrderProductByID($id);
@@ -182,6 +183,7 @@ class OrdersController extends AppController
 				} else {
 
 					//Tính toán Số lượng sản phẩm, point của User khi confirm Order ở Admin
+					$dataUpdateQuantity = array();
 					foreach ($dataProducts as $product) {
 						foreach ($dataProductForOrder[0]['orderdetails'] as $productOrder) {
 							if($product['id'] == $productOrder['product_id']){
@@ -189,11 +191,24 @@ class OrdersController extends AppController
 									case 0:
 									case 1:
 										if ($dataOrder[0]['status'] == 2 || $dataOrder[0]['status'] == 3) {
-											$quantity = $product['quantity_product'] - $productOrder['quantity_orderDetails'];
-											$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
+											if($product['quantity_product'] < $productOrder['quantity_orderDetails']){
+												$this->Flash->error(__('Sản phẩm "' . $product['product_name'] . '" chỉ còn ' . $product['quantity_product'] . ' sản phẩm . Không thể xác nhận!!!'));
+												$session->write('checkErr', 1);
+											}else{
+												$quantity = $product['quantity_product'] - $productOrder['quantity_orderDetails'];
+												$pointAF = $dataUser[0]['point_user'] + $dataOrder[0]['total_point'];
+												array_push($dataUpdateQuantity, [
+													'id' => $product['id'],
+													'quantity_product' => $quantity,
+												]);
+											}
 										}else{
 											$quantity = $product['quantity_product'];
 											$pointAF = $dataUser[0]['point_user'];
+											array_push($dataUpdateQuantity, [
+												'id' => $product['id'],
+												'quantity_product' => $quantity,
+											]);
 										}
 										break;
 									case 2:
@@ -201,18 +216,38 @@ class OrdersController extends AppController
 										if ($dataOrder[0]['status'] == 0 || $dataOrder[0]['status'] == 1) {
 											$quantity = $product['quantity_product'] + $productOrder['quantity_orderDetails'];
 											$pointAF = $dataUser[0]['point_user'] - $dataOrder[0]['total_point'];
+											array_push($dataUpdateQuantity, [
+												'id' => $product['id'],
+												'quantity_product' => $quantity,
+											]);
 										}else{
 											$quantity = $product['quantity_product'];
 											$pointAF = $dataUser[0]['point_user'];
+											array_push($dataUpdateQuantity, [
+												'id' => $product['id'],
+												'quantity_product' => $quantity,
+											]);
 										}
 										break;
 									default:
 										break;
 								}
-								$this->{'Data'}->updateQuantity($quantity, $product['id']);
+
 							}
 						}
 					}
+
+					if (count($dataUpdateQuantity) == count($dataProductForOrder[0]['orderdetails'])) {
+						foreach ($dataUpdateQuantity as $data) {
+							$this->{'Data'}->updateQuantity($data['quantity_product'], $data['id']);
+						}
+					} else {
+						if ($session->check('checkErr')) {
+							$session->delete('checkErr');
+							return $this->redirect($atribute['referer']);
+						}
+					}
+
 					$this->{'Data'}->updatePoint($pointAF, $idUser);
 
 					$confirm = $this->Orders->patchEntity($dataOrder[0], $this->request->getData());

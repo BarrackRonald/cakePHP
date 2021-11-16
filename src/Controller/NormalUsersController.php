@@ -47,7 +47,7 @@ class NormalUsersController extends AppController
 		if ($session->check('flag')) {
 			$idUser = $session->read('idUser');
 			$check = $this->{'CRUD'}->checkUserLock($idUser);
-			if(count($check) < 1){
+			if (count($check) < 1) {
 				$session->destroy();
 				$this->Flash->error(__(ERROR_LOCK_ACCOUNT));
 				return $this->redirect(Router::url(['_name' => NAME_LOGIN]));
@@ -79,33 +79,33 @@ class NormalUsersController extends AppController
 			$data['email'] = $atribute['email'];
 
 			//Lấy thông tin người dùng từ bảng infomation Customer
-			if($atribute['address_status'] == 0){
+			if ($atribute['address_status'] == 0) {
 				$data['address'] = $atribute['address0'];
 
-				if(isset($atribute['phonenumber_status'])){
+				if (isset($atribute['phonenumber_status'])) {
 					$session->write('phonenumber_status', 1);
 					$data['phonenumber'] = $atribute['phonenumber01'];
 					$session->write('dataInput', $atribute);
 
 					//check thay đổi
-					if($User[0]['phonenumber'] == $data['phonenumber']){
+					if ($User[0]['phonenumber'] == $data['phonenumber']) {
 						$session->write('errorPhone01', ERROR_DATA_NOT_CHANGED);
-					}else{
+					} else {
 						//Validate PhoneNumber
 						$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
-						if($checkPhoneNumber['result'] == 'invalid'){
+						if ($checkPhoneNumber['result'] == 'invalid') {
 							$session->write('errorPhone01', $checkPhoneNumber['message']);
-						}else{
-							if($session->check('errorPhone01')){
+						} else {
+							if ($session->check('errorPhone01')) {
 								$session->delete('errorPhone01');
 							}
 						}
 					}
-				}else{
-					if($session->check('phonenumber_status')){
+				} else {
+					if ($session->check('phonenumber_status')) {
 						$session->delete('phonenumber_status');
 					}
-					if($session->check('errorPhone01')){
+					if ($session->check('errorPhone01')) {
 						$session->delete('errorPhone01');
 					}
 
@@ -113,23 +113,23 @@ class NormalUsersController extends AppController
 				}
 
 				//Del Session
-				if($session->check('error')){
+				if ($session->check('error')) {
 					$session->delete('error');
 				}
 
 				//Del address status 1 and del error
-				if($session->check('address_status')){
+				if ($session->check('address_status')) {
 					$session->delete('address_status');
 				}
 
-				if($session->check('errorAddress')){
+				if ($session->check('errorAddress')) {
 					$session->delete('errorAddress');
 				}
 
-				if($session->check('errorPhone1')){
+				if ($session->check('errorPhone1')) {
 					$session->delete('errorPhone1');
 				}
-			}elseif($atribute['address_status'] == 1){
+			} elseif ($atribute['address_status'] == 1) {
 				$session->write('address_status', 1);
 				$data['address'] = trim($atribute['address1']);
 				$data['phonenumber'] = trim($atribute['phonenumber1']);
@@ -137,69 +137,69 @@ class NormalUsersController extends AppController
 
 				//Validate address
 				$checkAddress = $this->{'Validate'}->validateAddress($data['address']);
-				if($checkAddress['result'] == 'invalid'){
+				if ($checkAddress['result'] == 'invalid') {
 					$session->write('errorAddress', $checkAddress['message']);
-				}else{
-					if($session->check('errorAddress')){
+				} else {
+					if ($session->check('errorAddress')) {
 						$session->delete('errorAddress');
 					}
 				}
 
 				//Validate PhoneNumber
 				$checkPhoneNumber = $this->{'Validate'}->validatePhoneNumber($data['phonenumber']);
-				if($checkPhoneNumber['result'] == 'invalid'){
+				if ($checkPhoneNumber['result'] == 'invalid') {
 					$session->write('errorPhone1', $checkPhoneNumber['message']);
-				}else{
-					if($session->check('errorPhone1')){
+				} else {
+					if ($session->check('errorPhone1')) {
 						$session->delete('errorPhone1');
 					}
 				}
 
 				//Del Session
-				if($session->check('phonenumber_status')){
+				if ($session->check('phonenumber_status')) {
 					$session->delete('phonenumber_status');
 				}
 
-				if($session->check('error')){
+				if ($session->check('error')) {
 					$session->delete('error');
 				}
-			}else{
+			} else {
 				//Check F12 đổi value
 				$this->Flash->error(__(ERROR_DATA_CHANGED));
 				$session->write('error', 1);
 			}
 
-			if(isset($atribute['username_status'])){
+			if (isset($atribute['username_status'])) {
 				$session->write('username_status', 1);
 				$data['username'] = $atribute['username1'];
 				$session->write('dataInput', $atribute);
 
 				//Check thay đổi
-				if($User[0]['username'] == $data['username']){
+				if ($User[0]['username'] == $data['username']) {
 					$session->write('errorUsername1', ERROR_DATA_NOT_CHANGED);
-				}else{
+				} else {
 					//Validate Username
 					$checkUsername = $this->{'Validate'}->validateUsername($data['username']);
-					if($checkUsername['result'] == 'invalid'){
+					if ($checkUsername['result'] == 'invalid') {
 						$session->write('errorUsername1', $checkUsername['message']);
-					}else{
-						if($session->check('errorUsername1')){
+					} else {
+						if ($session->check('errorUsername1')) {
 							$session->delete('errorUsername1');
 						}
 					}
 				}
-			}else{
+			} else {
 				$data['username'] = $atribute['username'];
-				if($session->check('username_status')){
+				if ($session->check('username_status')) {
 					$session->delete('username_status');
 				}
 
-				if($session->check('errorUsername1')){
+				if ($session->check('errorUsername1')) {
 					$session->delete('errorUsername1');
 				}
 			}
 			//Check hasError
-			if($session->check('errorUsername1') || $session->check('errorPhone01') || $session->check('errorAddress') || $session->check('errorPhone1') || $session->check('error')){
+			if ($session->check('errorUsername1') || $session->check('errorPhone01') || $session->check('errorAddress') || $session->check('errorPhone1') || $session->check('error')) {
 				return $this->redirect(['action' => NORMALUSER_INFO_CUSTOMER]);
 			}
 
@@ -235,13 +235,14 @@ class NormalUsersController extends AppController
 
 			$session->write('cartData', $dataProds);
 			$this->set(compact('dataProds'));
-		}else{
+		} else {
 			$this->redirect(['action' => NORMALUSER_PAGE_ERROR]);
 		}
 	}
 
 	//Infomation Customer
-	public function infoCustomer(){
+	public function infoCustomer()
+	{
 		$session = $this->request->getSession();
 		//check user đã đăng nhập chưa
 		if (!$session->check('idUser')) {
@@ -302,7 +303,6 @@ class NormalUsersController extends AppController
 		}
 	}
 
-
 	//Xác nhận cho phần không login
 	public function confirm()
 	{
@@ -353,7 +353,6 @@ class NormalUsersController extends AppController
 				$dataUpdateQuantity = array();
 				foreach ($dataProds['cart'] as $key => $valueProduct) {
 					$checkProduct = $this->{'CRUD'}->checkProductByID($key);
-					
 					if (count($checkProduct) < 1) {
 						$session->write('checkErr', 1);
 						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
@@ -364,23 +363,23 @@ class NormalUsersController extends AppController
 							unset($dataProds['cart'][$key]);
 						}
 						$session->write('cartData', $dataProds);
-					}else if($checkProduct[0]['quantity_product'] < $valueProduct['quantity']){
+					} else if ($checkProduct[0]['quantity_product'] < $valueProduct['quantity']) {
 						$session->write('checkErr', 1);
-						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
-					}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
+						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn ' . $checkProduct[0]['quantity_product'] . ' sản phẩm . Vui lòng Đặt hàng lại!!!'));
+					} else if (($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])) {
 						$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
-						array_push($dataUpdateQuantity,[
+						array_push($dataUpdateQuantity, [
 							'id' => $checkProduct[0]['id'],
 							'quantity_product' => $quantity,
 						]);
 					}
-					
 				}
-				if(count($dataUpdateQuantity) == count($dataProds['cart'])){
+
+				if (count($dataUpdateQuantity) == count($dataProds['cart'])) {
 					foreach ($dataUpdateQuantity as $data) {
 						$this->{'Data'}->updateQuantity($data['quantity_product'], $data['id']);
 					}
-				}else{
+				} else {
 					if ($session->check('checkErr')) {
 						$session->delete('checkErr');
 						return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
@@ -510,9 +509,9 @@ class NormalUsersController extends AppController
                                                                  <table cellspacing="0" cellpadding="0" border="0" align="right">
                                                                      <tr>
                                                                          <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400;">
-                                                                             <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
+                                                                             <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="' . DOMAIN . '" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
                                                                          </td>
-                                                                         <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
+                                                                         <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="' . DOMAIN . '" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
                                                                      </tr>
                                                                  </table>
                                                              </td>
@@ -636,7 +635,7 @@ class NormalUsersController extends AppController
                                                          <td align="center" style="padding: 25px 0 15px 0;">
                                                              <table border="0" cellspacing="0" cellpadding="0">
                                                                  <tr>
-                                                                     <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="'. DOMAIN .'" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
+                                                                     <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="' . DOMAIN . '" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
                                                                  </tr>
                                                              </table>
                                                          </td>
@@ -671,38 +670,37 @@ class NormalUsersController extends AppController
 			if ($session->check('cartData')) {
 				$dataProds = $session->read('cartData');
 
-					//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
-					$dataUpdateQuantity = array();
-					foreach ($dataProds['cart'] as $key => $valueProduct) {
-						$checkProduct = $this->{'CRUD'}->checkProductByID($key);
-						
-						if (count($checkProduct) < 1) {
-							$session->write('checkErr', 1);
-							$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
-							$dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
-							$dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
-							$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên hệ thống hoặc hết hàng. Vui lòng Đặt hàng lại!!!'));
-							if (isset($dataProds['cart'][$key])) {
-								unset($dataProds['cart'][$key]);
-							}
-							$session->write('cartData', $dataProds);
-						}else if($checkProduct[0]['quantity_product'] < $valueProduct['quantity']){
-							$session->write('checkErr', 1);
-							$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn '.$checkProduct[0]['quantity_product'].' sản phẩm . Vui lòng Đặt hàng lại!!!'));
-						}else if(($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])){
-							$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
-							array_push($dataUpdateQuantity,[
-								'id' => $checkProduct[0]['id'],
-								'quantity_product' => $quantity,
-							]);
+				//Kiểm tra và cập nhật số lượng sản phẩm trên hệ thống
+				$dataUpdateQuantity = array();
+				foreach ($dataProds['cart'] as $key => $valueProduct) {
+					$checkProduct = $this->{'CRUD'}->checkProductByID($key);
+					if (count($checkProduct) < 1) {
+						$session->write('checkErr', 1);
+						$dataProds['totalAllAmount'] = $dataProds['totalAllAmount'] - $valueProduct['totalAmount'];
+						$dataProds['totalAllPoint'] = $dataProds['totalAllPoint'] - $valueProduct['totalPoint'];
+						$dataProds['totalquantity'] = $dataProds['totalquantity'] - $valueProduct['quantity'];
+						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" không còn trên hệ thống hoặc hết hàng. Vui lòng Đặt hàng lại!!!'));
+						if (isset($dataProds['cart'][$key])) {
+							unset($dataProds['cart'][$key]);
 						}
-						
+						$session->write('cartData', $dataProds);
+					} else if ($checkProduct[0]['quantity_product'] < $valueProduct['quantity']) {
+						$session->write('checkErr', 1);
+						$this->Flash->error(__('Sản phẩm "' . $valueProduct['name'] . '" chỉ còn ' . $checkProduct[0]['quantity_product'] . ' sản phẩm . Vui lòng Đặt hàng lại!!!'));
+					} else if (($checkProduct[0]['id'] == $key) && ($checkProduct[0]['quantity_product'] >= $valueProduct['quantity'])) {
+						$quantity = $checkProduct[0]['quantity_product'] - $valueProduct['quantity'];
+						array_push($dataUpdateQuantity, [
+							'id' => $checkProduct[0]['id'],
+							'quantity_product' => $quantity,
+						]);
 					}
-				if(count($dataUpdateQuantity) == count($dataProds['cart'])){
+				}
+
+				if (count($dataUpdateQuantity) == count($dataProds['cart'])) {
 					foreach ($dataUpdateQuantity as $data) {
 						$this->{'Data'}->updateQuantity($data['quantity_product'], $data['id']);
 					}
-				}else{
+				} else {
 					if ($session->check('checkErr')) {
 						$session->delete('checkErr');
 						return $this->redirect(['action' => NORMALUSER_INFORMATION_CART]);
@@ -809,9 +807,9 @@ class NormalUsersController extends AppController
                                                                 <table cellspacing="0" cellpadding="0" border="0" align="right">
                                                                     <tr>
                                                                         <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400;">
-                                                                            <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
+                                                                            <p style="font-size: 18px; font-weight: 400; margin: 0; color: #ffffff;"><a href="' . DOMAIN . '" target="_blank" style="color: #ffffff; text-decoration: none;">Shop &nbsp;</a></p>
                                                                         </td>
-                                                                        <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="'. DOMAIN .'" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
+                                                                        <td style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 24px;"> <a href="' . DOMAIN . '" target="_blank" style="color: #ffffff; text-decoration: none;"><img src="https://img.icons8.com/color/48/000000/small-business.png" width="27" height="23" style="display: block; border: 0px;" /></a> </td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -932,7 +930,7 @@ class NormalUsersController extends AppController
                                                         <td align="center" style="padding: 25px 0 15px 0;">
                                                             <table border="0" cellspacing="0" cellpadding="0">
                                                                 <tr>
-                                                                    <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="'. DOMAIN .'" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
+                                                                    <td align="center" style="border-radius: 5px;" bgcolor="#66b3b7"> <a href="' . DOMAIN . '" target="_blank" style="font-size: 18px; font-family: Open Sans, Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; background-color: #F44336; padding: 15px 30px; border: 1px solid #F44336; display: block;">Truy Cập</a> </td>
                                                                 </tr>
                                                             </table>
                                                         </td>
@@ -976,8 +974,8 @@ class NormalUsersController extends AppController
 		}
 	}
 
-	public function pageError(){
-
+	public function pageError()
+	{
 	}
 
 	public function informationCart()
@@ -1229,20 +1227,20 @@ class NormalUsersController extends AppController
 				$data[0] = $atribute;
 			} else {
 				$user = $this->Users->patchEntity($dataUser[0], $this->request->getData());
-				if($user->hasErrors()){
+				if ($user->hasErrors()) {
 					$error = $user->getErrors();
 					$this->set('error', $error);
 					$data[0] = $atribute;
-				}else{
+				} else {
 					if ($this->Users->save($user)) {
 						$this->Flash->success(__(SUCCESS_UPDATED_ACCOUNT));
 						return $this->redirect(['action' => NORMALUSER_MY_ACCOUNT]);
-					}else{
+					} else {
 						$this->Flash->error(__(ERROR_UPDATED_ACCOUNT));
 					}
 				}
 			}
-		}else {
+		} else {
 			$data = $dataUser;
 		}
 		$this->set('dataUser', $data);
@@ -1275,7 +1273,7 @@ class NormalUsersController extends AppController
 			$requestedPage = $atribute['Products']['requestedPage'];
 			$pageCount = $atribute['Products']['pageCount'];
 			if ($requestedPage > $pageCount) {
-				return $this->redirect("/view-category/".$id."?page=" . $pageCount . "");
+				return $this->redirect("/view-category/" . $id . "?page=" . $pageCount . "");
 			}
 		}
 	}
@@ -1302,9 +1300,9 @@ class NormalUsersController extends AppController
 		$dataProductByCategory = $this->{'Data'}->similarProduct($idCategory, $idProduct);
 
 		//Kiểm tra có tồn tại sản phẩm liên quan không
-		if($dataProductByCategory == null){
+		if ($dataProductByCategory == null) {
 			$this->set(compact('dataProduct', 'dataImage'));
-		}else{
+		} else {
 			$this->set(compact('dataProduct', 'dataImage', 'dataProductByCategory'));
 		}
 	}
@@ -1330,10 +1328,10 @@ class NormalUsersController extends AppController
 				}
 			}
 		}
-
 	}
 
-	public function orderDetails ($id=null){
+	public function orderDetails($id = null)
+	{
 		//Check URL_ID
 		if (!is_numeric($id)) {
 			$this->Flash->error(__(ERROR_ORDER_EMPTY));
@@ -1349,9 +1347,9 @@ class NormalUsersController extends AppController
 		$dataOrderDetails = $this->{'CRUD'}->getOrderDetailsByID($id);
 		$referer = $this->referer();
 		$this->set('referer', $referer);
-		if($referer == "/"){
+		if ($referer == "/") {
 			return $this->redirect(['action' => NORMALUSER_HISTORY_ORDER]);
-		}else{
+		} else {
 			try {
 				$this->set(compact('dataOrderDetails', $this->paginate($dataOrderDetails, ['limit' => PAGINATE_LIMIT])));
 			} catch (NotFoundException $e) {
@@ -1359,10 +1357,9 @@ class NormalUsersController extends AppController
 				$requestedPage = $atribute['Orders']['requestedPage'];
 				$pageCount = $atribute['Orders']['pageCount'];
 				if ($requestedPage > $pageCount) {
-					return $this->redirect("/details-order/".$id."?page=" . $pageCount . "");
+					return $this->redirect("/details-order/" . $id . "?page=" . $pageCount . "");
 				}
 			}
 		}
 	}
-
 }

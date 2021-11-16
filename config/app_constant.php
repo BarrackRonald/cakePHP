@@ -63,6 +63,7 @@ const SUCCESS_DEL_PRODUCT = 'Sản phẩm đã được xóa thành công.';
 const ERROR_ORDER_EMPTY = 'Đơn hàng không tồn tại.';
 const ERROR_ORDER_NOT_CHANGED = 'Đơn hàng không có sự thay đổi!!!';
 const ERROR_ORDER_DATA_CHANGED_NOT_CONFIRM = 'Dữ liệu đã bị thay đổi. Không thể xác nhận đơn hàng!!!';
+const ERROR_ORDER_UNDER_QUANTITY = 'Sản phẩm trên hệ thống không đủ. Không thể xác nhận đơn hàng!!!';
 
 const SUCCESS_UPDATED_ORDER = 'Đơn hàng đã được cập nhật thành công.';
 

@@ -1,6 +1,6 @@
 <?php
 /*/////////////// Pagination ////////////////////////*/
-const PAGINATE_LIMIT = '5';
+const PAGINATE_LIMIT = '3';
 
 /*/////////////// DOMAIN ////////////////////////*/
 const DOMAIN = 'https://test.com/';

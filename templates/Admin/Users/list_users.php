@@ -1,5 +1,5 @@
 <?php
-
+use Cake\Utility\Text;
 echo $this->element('Admin/header');
 echo $this->element('Admin/sidebar');
 echo $this->element('serial');
@@ -72,7 +72,12 @@ $n = $this->request->getAttribute('paging')[$this->request->getParam('controller
 								<tr class="list">
 									<td><?=$GLOBALS['n']++?></td>
 									<td><a><?= $user['username'] ?></a></td>
-									<td><a><?= $user['email'] ?></a></td>
+									<td><a title="<?= $user['email']?>"><?=Text::truncate($user['email'],22,
+										[
+										'ellipsis' => '...',
+											'exact' => false
+										]
+									);?></a></td>
 									<td><a><?= $user['phonenumber'] ?></a></td>
 									<td><a><?= $user['address'] ?></a></td>
 									<td><a><?= $user['point_user'] ?></a></td>
